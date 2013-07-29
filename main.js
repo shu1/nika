@@ -33,6 +33,7 @@ function draw() {
 	var time = new Date().getTime();
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	
+	// Draw pieces
 	for (var i = 0; i < 4; ++i) {
 		for (var j = 0; j < 6; ++j) {
 			context.save();
@@ -44,6 +45,18 @@ function draw() {
 	}
 	context.stroke();
 	
+	// Draw piece highlight
+	if (inputMan.mouseDown) {
+		if (inputMan.x >= 0 && inputMan.y >= 0) {
+			context.beginPath();
+			context.arc(inputMan.x * cellSize + gridOffsetX + cellSize/2, inputMan.y * cellSize + gridOffsetY + cellSize/2, pieceSize/2 +1, 0, 2*Math.PI);
+			context.strokeStyle = "#ff0";
+			context.restore();
+			context.stroke();
+		}
+	}
+
+	// HUD
 	if (time - hud.fpsTime > 983) {
 		hud.fpsText = hud.fpsCount + " fps ";
 		hud.fpsTime = time;
