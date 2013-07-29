@@ -1,8 +1,10 @@
+"use strict";
+
 function mouseDown(event) {
-	var x, y, r, c;
+	var x, y, col, row;
 	
 	if (event.touches) {
-		x = event.touches[0].pageX;	// TODO: pageX/Y may not be the right property to use
+		x = event.touches[0].pageX;
 		y = event.touches[0].pageY;
 	}
 	else {
@@ -10,9 +12,10 @@ function mouseDown(event) {
 		y = event.offsetY;
 	}
 	
-	c = Math.floor((x*2 - gridOffsetX) / cellWidth);
-	r = Math.floor((y*2 - gridOffsetY) / cellHeight);
-	alert(x + ", " + y + ". " + c + ", " + r);
+	col = Math.floor((x * scale - gridOffsetX) / cellSize);
+	row = Math.floor((y * scale - gridOffsetY) / cellSize);
+
+	hud.inputText = col + "," + row;
 	
 	event.preventDefault();
 }
