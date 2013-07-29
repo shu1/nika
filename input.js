@@ -4,12 +4,13 @@ function mouseDown(event) {
 	inputMan.mouseDown = true;
 	getXY(event);
 	getPlayerPiece();
-	hud.inputText = inputMan.x + "," + inputMan.y;
+	hud.inputText = inputMan.x + "," + inputMan.y + " down";
 }
 
 function mouseMove(event) {
 	if (inputMan.mouseDown) {
 		getXY(event);
+		rotatePiece();
 		hud.inputText = inputMan.x + "," + inputMan.y;
 	}
 }
@@ -28,8 +29,8 @@ function getXY(event) {
 		y = event.touches[0].pageY;
 	}
 	else {
-		x = event.offsetX;
-		y = event.offsetY;
+		x = event.layerX;
+		y = event.layerY;
 	}
 	
 	inputMan.x = Math.floor((x * scale - gridOffsetX) / cellSize);
