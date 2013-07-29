@@ -51,7 +51,6 @@ function draw() {
 			context.beginPath();
 			context.arc(inputMan.x * cellSize + gridOffsetX + cellSize/2, inputMan.y * cellSize + gridOffsetY + cellSize/2, pieceSize/2 +1, 0, 2*Math.PI);
 			context.strokeStyle = "#ff0";
-			context.restore();
 			context.stroke();
 		}
 	}
