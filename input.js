@@ -1,8 +1,28 @@
 "use strict";
 
 function mouseDown(event) {
-	var x, y, col, row;
-	
+	inputMan.mouseDown = true;
+	getXY(event);
+	getPlayerPiece();
+	hud.inputText = inputMan.x + "," + inputMan.y;
+}
+
+function mouseMove(event) {
+	if (inputMan.mouseDown) {
+		getXY(event);
+		hud.inputText = inputMan.x + "," + inputMan.y;
+	}
+}
+
+function mouseUp(event) {
+	inputMan.mouseDown = false;
+	movePiece();
+	hud.inputText += " up";
+}
+
+function getXY(event) {
+	var x, y;
+
 	if (event.touches) {
 		x = event.touches[0].pageX;
 		y = event.touches[0].pageY;
@@ -12,10 +32,8 @@ function mouseDown(event) {
 		y = event.offsetY;
 	}
 	
-	col = Math.floor((x * scale - gridOffsetX) / cellSize);
-	row = Math.floor((y * scale - gridOffsetY) / cellSize);
+	inputMan.x = Math.floor((x * scale - gridOffsetX) / cellSize);
+	inputMan.y = Math.floor((y * scale - gridOffsetY) / cellSize);
 
-	hud.inputText = col + "," + row;
-	
 	event.preventDefault();
 }
