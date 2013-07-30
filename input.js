@@ -4,22 +4,21 @@ function mouseDown(event) {
 	inputMan.mouseDown = true;
 	getXY(event);
 	getPlayerPiece();
-	hud.inputText = inputMan.x + "," + inputMan.y + " down";
-	console.log(grid[inputMan.x],grid[inputMan.y]);
+	hudMan.inputText = inputMan.x + "," + inputMan.y + " down";
 }
 
 function mouseMove(event) {
 	if (inputMan.mouseDown) {
 		getXY(event);
 		rotatePiece();
-		hud.inputText = inputMan.x + "," + inputMan.y;
+		hudMan.inputText = inputMan.x + "," + inputMan.y;
 	}
 }
 
 function mouseUp(event) {
 	inputMan.mouseDown = false;
 	movePiece();
-	hud.inputText += " up";
+	hudMan.inputText += " up";
 }
 
 function getXY(event) {

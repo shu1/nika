@@ -15,6 +15,8 @@ function init() {
 	players[1].img = document.getElementById("sparta");
 	players[2].img = document.getElementById("mesene");
 	players[3].img = document.getElementById("thebes");
+
+	generateGrid();
 	
 	var useCapture = false;
 	canvas.addEventListener('mousedown',  mouseDown, useCapture);
@@ -52,14 +54,14 @@ function draw() {
 		context.stroke();
 	}
 	
-	// HUD
-	if (time - hud.fpsTime > 983) {
-		hud.fpsText = hud.fpsCount + " fps ";
-		hud.fpsTime = time;
-		hud.fpsCount = 0;
+	// draw HUD
+	if (time - hudMan.fpsTime > 983) {
+		hudMan.fpsText = hudMan.fpsCount + " fps ";
+		hudMan.fpsTime = time;
+		hudMan.fpsCount = 0;
 	}
-	hud.fpsCount++;
-	context.fillText(hud.fpsText + hud.inputText, 0, gridOffsetY);
+	hudMan.fpsCount++;
+	context.fillText(hudMan.fpsText + hudMan.inputText, 0, gridOffsetY);
 	
 	requestAnimFrame(draw);
 }
