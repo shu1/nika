@@ -5,6 +5,7 @@ function mouseDown(event) {
 	getXY(event);
 	getPlayerPiece();
 	hud.inputText = inputMan.x + "," + inputMan.y + " down";
+	console.log(grid[inputMan.x],grid[inputMan.y]);
 }
 
 function mouseMove(event) {
