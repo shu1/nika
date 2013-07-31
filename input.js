@@ -4,6 +4,9 @@ function mouseDown(event) {
 	inputMan.mouseDown = true;
 	getRowCol(event);
 	getPiece(inputMan.row, inputMan.col);
+	if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
+		event.preventDefault();
+	}
 	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
 }
 
@@ -35,6 +38,4 @@ function getRowCol(event) {
 	
 	inputMan.col = Math.floor((x * scale - gridOffsetX) / cellSize);
 	inputMan.row = Math.floor((y * scale - gridOffsetY) / cellSize);
-
-	event.preventDefault();
 }
