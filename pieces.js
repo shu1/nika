@@ -38,6 +38,11 @@ function movePiece(pieceRow, pieceCol, row, col) {
 
 function checkMove(pieceRow, pieceCol, row, col) {
 
+	// Clicked-on-piece check
+	if (pieceRow == -1 || pieceCol == -1) {
+		return false;
+	}
+
 	// Adjacent-square check
 	if (grid[pieceRow][pieceCol].cell != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1) {
 		return false;
