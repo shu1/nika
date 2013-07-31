@@ -22,7 +22,7 @@ function init() {
 	var useCapture = false;
 	canvas.addEventListener('mousedown',  mouseDown, useCapture);
 	canvas.addEventListener('mousemove',  mouseMove, useCapture);
-	canvas.addEventListener('mouseup',    mouseUp,   useCapture);
+	window.addEventListener('mouseup',    mouseUp,   useCapture);
 	window.addEventListener('touchstart', mouseDown, useCapture);
 	window.addEventListener('touchmove',  mouseMove, useCapture);
 	window.addEventListener('touchend',   mouseUp,   useCapture);
