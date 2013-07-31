@@ -39,7 +39,7 @@ function movePiece(pieceRow, pieceCol, row, col) {
 function checkMove(pieceRow, pieceCol, row, col) {
 
 	// Adjacent-square check
-	if (Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1) {
+	if (grid[pieceRow][pieceCol].cell != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1) {
 		return false;
 	}
 
@@ -63,7 +63,15 @@ function checkMove(pieceRow, pieceCol, row, col) {
 		return false;
 	}
 
+	// Opponent-win-square check
+	if (grid[row][col].cell == 1 && (grid[row][col].zone - grid[pieceRow][pieceCol].player)%2 != 0 ) {
+		return false;
+	}
 
+	// Routed-to-respawn check
+	if (grid[pieceRow][pieceCol].cell == 3 && (grid[row][col].cell != 2 || grid[pieceRow][pieceCol].player != grid[row][col].zone) ) {
+		return false;
+	}
 
 	return true;
 
