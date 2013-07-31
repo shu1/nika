@@ -51,7 +51,7 @@ function draw() {
 	}
 	
 	// draw piece highlight
-	if (inputMan.mouseDown && inputMan.row >= 0 && inputMan.col >= 0 && checkMove(inputMan.row, inputMan.col)) {
+	if (inputMan.mouseDown && inputMan.row >= 0 && inputMan.col >= 0 && checkMove(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
 		context.beginPath();
 		context.arc(inputMan.col * cellSize + cellSize/2 + gridOffsetX, inputMan.row * cellSize + cellSize/2 + gridOffsetY, pieceSize/2 + 1, 0, Math.PI*2);
 		context.stroke();

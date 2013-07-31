@@ -28,7 +28,7 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 }
 
 function movePiece(pieceRow, pieceCol, row, col) {
-	if (pieceRow >= 0 && pieceCol >= 0 && checkMove(row, col)) {
+	if (pieceRow >= 0 && pieceCol >= 0 && checkMove(pieceRow, pieceCol, row, col)) {
 		grid[row][col].player = grid[pieceRow][pieceCol].player;
 		grid[row][col].rot = grid[pieceRow][pieceCol].rot;
 		grid[pieceRow][pieceCol].player = -1;
@@ -36,9 +36,35 @@ function movePiece(pieceRow, pieceCol, row, col) {
 	}
 }
 
-function checkMove(row, col) {
-	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].cell >= 0 && grid[row][col].player < 0) {
-		return true;
+function checkMove(pieceRow, pieceCol, row, col) {
+
+	// Adjacent-square check
+	if (Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1) {
+		return false;
 	}
-	return false;
+
+	// On-board check
+	if (row < 0 || row >= 15 || col < 0 || col >= 21) {
+		return false;
+	}
+
+	// Invalid-sqaure check
+	if (grid[row][col].cell < 0) {
+		return false;
+	}
+
+	// Occupied-by-same-team check
+	if (grid[row][col].player >= 0 && (grid[row][col].player - grid[pieceRow][pieceCol].player)%2 == 0) {
+		return false;
+	}
+
+	// Routed cell check
+	if (grid[row][col].cell == 3) {
+		return false;
+	}
+
+
+
+	return true;
+
 }
