@@ -1,42 +1,37 @@
 "use strict";
 
-function getPlayerPiece() {
-	inputMan.player = -1;
-	inputMan.piece = -1;
+function getPiece(row, col) {
+	inputMan.pieceRow = -1;
+	inputMan.pieceCol = -1;
 
-	for (var i = 0; i < 4; ++i) {
-		for (var j = 0; j < 6; ++j) {
-			if (players[i].pieces[j].x == inputMan.x && players[i].pieces[j].y == inputMan.y) {
-				inputMan.player = i;
-				inputMan.piece = j;
-				break;
-			}
+	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player >= 0) {
+		inputMan.pieceRow = row;
+		inputMan.pieceCol = col;
+	}
+}
+
+function rotatePiece(pieceRow, pieceCol, row, col) {
+	if (pieceRow >= 0 && pieceCol >= 0) {
+		if (row < pieceRow) {
+			grid[pieceRow][pieceCol].rot = 0;
+		}
+		else if (col > pieceCol) {
+			grid[pieceRow][pieceCol].rot = 1;
+		}
+		else if (row > pieceRow) {
+			grid[pieceRow][pieceCol].rot = 2;
+		}
+		else if (col < pieceCol) {
+			grid[pieceRow][pieceCol].rot = 3;
 		}
 	}
 }
 
-function rotatePiece() {
-	if (inputMan.player >= 0 && inputMan.piece >= 0) {
-		var piece = players[inputMan.player].pieces[inputMan.piece]
-
-		if (inputMan.y < piece.y) {
-			piece.r = 0;
-		}
-		else if (inputMan.x > piece.x) {
-			piece.r = 1;
-		}
-		else if (inputMan.y > piece.y) {
-			piece.r = 2;
-		}
-		else if (inputMan.x < piece.x) {
-			piece.r = 3;
-		}
-	}
-}
-
-function movePiece() {
-	if (inputMan.player >= 0 && inputMan.piece >= 0 && inputMan.x >= 0 && inputMan.x < 21 && inputMan.y >= 0 && inputMan.y < 15) {
-		players[inputMan.player].pieces[inputMan.piece].x = inputMan.x;
-		players[inputMan.player].pieces[inputMan.piece].y = inputMan.y;
+function movePiece(pieceRow, pieceCol, row, col) {
+	if (pieceRow >= 0 && pieceCol >= 0 && row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player < 0) {
+		grid[row][col].player = grid[pieceRow][pieceCol].player;
+		grid[row][col].rot = grid[pieceRow][pieceCol].rot;
+		grid[pieceRow][pieceCol].player = -1;
+		grid[pieceRow][pieceCol].rot = -1;
 	}
 }

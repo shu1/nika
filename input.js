@@ -2,26 +2,26 @@
 
 function mouseDown(event) {
 	inputMan.mouseDown = true;
-	getXY(event);
-	getPlayerPiece();
-	hudMan.inputText = inputMan.x + "," + inputMan.y + " down";
+	getRowCol(event);
+	getPiece(inputMan.row, inputMan.col);
+	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
 }
 
 function mouseMove(event) {
 	if (inputMan.mouseDown) {
-		getXY(event);
-		rotatePiece();
-		hudMan.inputText = inputMan.x + "," + inputMan.y;
+		getRowCol(event);
+		rotatePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
+		hudMan.inputText = inputMan.row + "," + inputMan.col;
 	}
 }
 
 function mouseUp(event) {
 	inputMan.mouseDown = false;
-	movePiece();
+	movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 	hudMan.inputText += " up";
 }
 
-function getXY(event) {
+function getRowCol(event) {
 	var x, y;
 
 	if (event.touches) {
@@ -33,8 +33,8 @@ function getXY(event) {
 		y = event.layerY;
 	}
 	
-	inputMan.x = Math.floor((x * scale - gridOffsetX) / cellSize);
-	inputMan.y = Math.floor((y * scale - gridOffsetY) / cellSize);
+	inputMan.col = Math.floor((x * scale - gridOffsetX) / cellSize);
+	inputMan.row = Math.floor((y * scale - gridOffsetY) / cellSize);
 
 	event.preventDefault();
 }

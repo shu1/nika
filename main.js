@@ -11,12 +11,13 @@ function init() {
 	gridOffsetX *= scale;
 	gridOffsetY *= scale;
 
-	players[0].img = document.getElementById("athens");
-	players[1].img = document.getElementById("sparta");
-	players[2].img = document.getElementById("mesene");
-	players[3].img = document.getElementById("thebes");
-
 	generateGrid();
+
+	pieceImgs = new Array(4);
+	pieceImgs[0] = document.getElementById("athens");
+	pieceImgs[1] = document.getElementById("sparta");
+	pieceImgs[2] = document.getElementById("mesene");
+	pieceImgs[3] = document.getElementById("thebes");
 	
 	var useCapture = false;
 	canvas.addEventListener('mousedown',  mouseDown, useCapture);
@@ -37,25 +38,27 @@ function draw() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	
 	// draw pieces
-	for (var i = 0; i < 4; ++i) {
-		for (var j = 0; j < 6; ++j) {
-			context.save();
-			context.translate(players[i].pieces[j].x * cellSize + cellSize/2 + gridOffsetX, players[i].pieces[j].y * cellSize + cellSize/2 + gridOffsetY);
-			context.rotate(players[i].pieces[j].r * Math.PI/2);
-			context.drawImage(players[i].img, -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);
-			context.restore();
+	for (var row = 0; row < 15; ++row) {
+		for (var col = 0; col < 21; ++col) {
+			if (grid[row][col].player >= 0) {
+				context.save();
+				context.translate(col * cellSize + cellSize/2 + gridOffsetX, row * cellSize + cellSize/2 + gridOffsetY);
+				context.rotate(grid[row][col].rot * Math.PI/2);
+				context.drawImage(pieceImgs[grid[row][col].player], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);
+				context.restore();
+			}
 		}
 	}
 	
 	// draw piece highlight
-	if (inputMan.mouseDown && inputMan.x >= 0 && inputMan.y >= 0) {
+	if (inputMan.mouseDown && inputMan.row >= 0 && inputMan.col >= 0) {
 		context.beginPath();
-		context.arc(inputMan.x * cellSize + cellSize/2 + gridOffsetX, inputMan.y * cellSize + cellSize/2 + gridOffsetY, pieceSize/2 + 1, 0, Math.PI*2);
+		context.arc(inputMan.col * cellSize + cellSize/2 + gridOffsetX, inputMan.row * cellSize + cellSize/2 + gridOffsetY, pieceSize/2 + 1, 0, Math.PI*2);
 		context.stroke();
 	}
 	
 	// draw HUD
-	if (time - hudMan.fpsTime > 983) {
+	if (time - hudMan.fpsTime > 984) {
 		hudMan.fpsText = hudMan.fpsCount + " fps ";
 		hudMan.fpsTime = time;
 		hudMan.fpsCount = 0;
