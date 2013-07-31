@@ -28,10 +28,17 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 }
 
 function movePiece(pieceRow, pieceCol, row, col) {
-	if (pieceRow >= 0 && pieceCol >= 0 && row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player < 0) {
+	if (pieceRow >= 0 && pieceCol >= 0 && checkMove(row, col)) {
 		grid[row][col].player = grid[pieceRow][pieceCol].player;
 		grid[row][col].rot = grid[pieceRow][pieceCol].rot;
 		grid[pieceRow][pieceCol].player = -1;
 		grid[pieceRow][pieceCol].rot = -1;
 	}
+}
+
+function checkMove(row, col) {
+	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].cell >= 0 && grid[row][col].player < 0) {
+		return true;
+	}
+	return false;
 }

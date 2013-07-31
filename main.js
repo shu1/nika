@@ -27,7 +27,7 @@ function init() {
 	window.addEventListener('touchmove',  mouseMove, useCapture);
 	window.addEventListener('touchend',   mouseUp,   useCapture);
 
-	context.strokeStyle = "#ff0";
+	context.strokeStyle = "yellow";
 	context.font = gridOffsetY + "px sans-serif";
 	context.fillStyle = "white";
 	draw();
@@ -51,7 +51,7 @@ function draw() {
 	}
 	
 	// draw piece highlight
-	if (inputMan.mouseDown && inputMan.row >= 0 && inputMan.col >= 0) {
+	if (inputMan.mouseDown && inputMan.row >= 0 && inputMan.col >= 0 && checkMove(inputMan.row, inputMan.col)) {
 		context.beginPath();
 		context.arc(inputMan.col * cellSize + cellSize/2 + gridOffsetX, inputMan.row * cellSize + cellSize/2 + gridOffsetY, pieceSize/2 + 1, 0, Math.PI*2);
 		context.stroke();
