@@ -12,7 +12,10 @@ function getPiece(row, col) {
 
 function rotatePiece(pieceRow, pieceCol, row, col) {
 	if (pieceRow >= 0 && pieceCol >= 0) {
-		if (row < pieceRow) {
+		if (grid[pieceRow][pieceCol].cell == 3) {
+			// do nothing
+		}
+		else if (row < pieceRow) {
 			grid[pieceRow][pieceCol].rot = 0;
 		}
 		else if (col > pieceCol) {
@@ -29,13 +32,24 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 
 function movePiece(pieceRow, pieceCol, row, col) {
 	if (checkMove(pieceRow, pieceCol, row, col)) {
-
-		routPiece(row,col);
+		
+		if ((grid[pieceRow][pieceCol].rot + 2)%4 == grid[row][col].rot) {
+			pushPiece(pieceRow, pieceCol, row, col);	
+		}
+		else {
+			routPiece(pieceRow, pieceCol, row, col);
+		}
+		
 
 		grid[row][col].player = grid[pieceRow][pieceCol].player;
 		grid[row][col].rot = grid[pieceRow][pieceCol].rot;
 		grid[pieceRow][pieceCol].player = -1;
 		grid[pieceRow][pieceCol].rot = -1;
+
+		if (grid[row][col].cell == 2 && grid[pieceRow][pieceCol].cell == 3) { // rally rotation
+			grid[row][col].rot = grid[row][col].player;
+		}
+
 	}
 }
 
@@ -67,7 +81,7 @@ function checkMove(pieceRow, pieceCol, row, col) {
 	return true;
 }
 
-function routPiece(row, col) {
+function routPiece(pieceRow, pieceCol, row, col) {
 	if (grid[row][col].player >= 0) {
 		var pos = findRoutedSquare(grid[row][col].player);
 
@@ -77,11 +91,8 @@ function routPiece(row, col) {
 }
 
 function findRoutedSquare(player) {
-
-
 	var emptyRow = -1;
 	var emptyCol = -1;
-
 	switch (player) {
 		case 0 : 
 			for (var row=14; row>=0; --row) {
@@ -106,6 +117,7 @@ function findRoutedSquare(player) {
 				}
 			}
 			break;
+
 		case 2:
 			for (var row=0; row<15; ++row) {
 				for (var col=20; col>=0; --col) {
@@ -130,6 +142,25 @@ function findRoutedSquare(player) {
 			}
 			break;
 	}	
+}
 
+function pushPiece(pieceRow, pieceCol, row, col) {
 	
+	if (grid[2*row - pieceRow][2*col - pieceCol].cell == -1) { // || (grid[2*row - pieceRow][2*col - pieceCol].player >= 0 && ) 
+		return false;
+	}
+
+	if (grid[2*row - pieceRow][2*col - pieceCol].cell == 0 && grid[2*row - pieceRow][2*col - pieceCol].player == -1) {
+
+		grid[2*row - pieceRow][2*col - pieceCol].player = grid[row][col].player;
+		grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
+		return true;
+	}
+
+	if (pushPiece(row, col, 2*row - pieceRow, 2*col - pieceCol) ) {
+
+		grid[2*row - pieceRow][2*col - pieceCol].player = grid[row][col].player;
+		grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
+		return true;
+	}
 }
