@@ -81,18 +81,55 @@ function findRoutedSquare(player) {
 
 	var emptyRow = -1;
 	var emptyCol = -1;
-	var rowPolarity = 1;
-	var colPolarity = 1;
 
-	for (var row=0; row<15; ++row) {
-		for (var col=0; col<21; ++col) {
-			if (grid[row][col].cell == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
-				if (  (row*rowPolarity) > (emptyRow*rowPolarity) || (col*colPolarity) > (emptyCol*colPolarity)   )
-				emptyRow = row;
-				emptyCol = col;
+	switch (player) {
+		case 0 : 
+			for (var row=14; row>=0; --row) {
+				for (var col=0; col<21; ++col) {
+					if (grid[row][col].cell == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
+						emptyRow = row;
+						emptyCol = col;
+						return {routRow:emptyRow, routCol:emptyCol};
+					}
+				}
 			}
-		}
-	}
+			break;
 
-	return {routRow:emptyRow, routCol:emptyCol};
+		case 1:	
+			for (var col=0; col<21; ++col) {
+				for (var row=0; row<15; ++row) {
+					if (grid[row][col].cell == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
+						emptyRow = row;
+						emptyCol = col;
+						return {routRow:emptyRow, routCol:emptyCol};
+					}
+				}
+			}
+			break;
+		case 2:
+			for (var row=0; row<15; ++row) {
+				for (var col=20; col>=0; --col) {
+					if (grid[row][col].cell == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
+						emptyRow = row;
+						emptyCol = col;
+						return {routRow:emptyRow, routCol:emptyCol};
+					}
+				}
+			}
+			break;
+
+		case 3:
+			for (var col=20; col>=0; --col) {
+				for (var row=14; row>=0; --row) {
+					if (grid[row][col].cell == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
+						emptyRow = row;
+						emptyCol = col;
+						return {routRow:emptyRow, routCol:emptyCol};
+					}
+				}
+			}
+			break;
+	}	
+
+	
 }
