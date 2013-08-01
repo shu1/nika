@@ -65,7 +65,8 @@ function generateGrid() {
 				cell:cell,
 				zone:zone,
 				player:player,
-				rot:rot
+				rot:rot,
+				checked:false
 			}
 		}
 	}

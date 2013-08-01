@@ -39,3 +39,5 @@ var ascii = [
 	"......iiieee.........",
 	"......iiieee........."
 ]
+
+var phalanx = [];

@@ -10,6 +10,33 @@ function getPiece(row, col) {
 	}
 }
 
+function getAdjacent(pieceRow, pieceCol){
+	var me = grid[pieceRow][pieceCol];
+	me.checked = true;
+	phalanx.push(me);
+	if(pieceRow - 1 >= 0 && pieceCol >= 0){
+		var up = grid[pieceRow - 1][pieceCol];
+		if (up.player == me.player && up.rot == me.rot && !up.checked){
+			getAdjacent(pieceRow - 1, pieceCol);
+		}
+	}
+	if(pieceRow >= 0 && pieceCol - 1 >= 0){
+		var left = grid[pieceRow][pieceCol - 1];
+		if (left.player == me.player && left.rot == me.rot && !left.checked){
+			getAdjacent(pieceRow, pieceCol - 1);
+		}
+	}
+	var right = grid[pieceRow][pieceCol + 1];
+	if (right.player == me.player && right.rot == me.rot && !right.checked){
+		getAdjacent(pieceRow, pieceCol + 1);
+	}
+
+	var down = grid[pieceRow + 1][pieceCol];
+	if (down.player == me.player && down.rot == me.rot && !down.checked){
+		getAdjacent(pieceRow + 1, pieceCol);
+	}
+}
+
 function rotatePiece(pieceRow, pieceCol, row, col) {
 	if (pieceRow >= 0 && pieceCol >= 0) {
 		if (grid[pieceRow][pieceCol].cell == 3) {
