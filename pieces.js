@@ -29,6 +29,9 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 
 function movePiece(pieceRow, pieceCol, row, col) {
 	if (checkMove(pieceRow, pieceCol, row, col)) {
+
+		routPiece(row,col);
+
 		grid[row][col].player = grid[pieceRow][pieceCol].player;
 		grid[row][col].rot = grid[pieceRow][pieceCol].rot;
 		grid[pieceRow][pieceCol].player = -1;
@@ -62,4 +65,34 @@ function checkMove(pieceRow, pieceCol, row, col) {
 	}
 
 	return true;
+}
+
+function routPiece(row, col) {
+	if (grid[row][col].player >= 0) {
+		var pos = findRoutedSquare(grid[row][col].player);
+
+		grid[pos.routRow][pos.routCol].player = grid[row][col].player;
+		grid[pos.routRow][pos.routCol].rot = grid[row][col].player;
+	}
+}
+
+function findRoutedSquare(player) {
+
+
+	var emptyRow = -1;
+	var emptyCol = -1;
+	var rowPolarity = 1;
+	var colPolarity = 1;
+
+	for (var row=0; row<15; ++row) {
+		for (var col=0; col<21; ++col) {
+			if (grid[row][col].cell == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
+				if (  (row*rowPolarity) > (emptyRow*rowPolarity) || (col*colPolarity) > (emptyCol*colPolarity)   )
+				emptyRow = row;
+				emptyCol = col;
+			}
+		}
+	}
+
+	return {routRow:emptyRow, routCol:emptyCol};
 }
