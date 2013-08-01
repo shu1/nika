@@ -33,21 +33,23 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 function movePiece(pieceRow, pieceCol, row, col) {
 	if (checkMove(pieceRow, pieceCol, row, col)) {
 		
+		var pushSuccess = true;
 		if ((grid[pieceRow][pieceCol].rot + 2)%4 == grid[row][col].rot) {
-			pushPiece(pieceRow, pieceCol, row, col);	
+			pushSuccess = pushPiece(pieceRow, pieceCol, row, col);	
 		}
 		else {
-			routPiece(pieceRow, pieceCol, row, col);
+			routPiece(row, col);
 		}
 		
+		if (pushSuccess) {
+			grid[row][col].player = grid[pieceRow][pieceCol].player;
+			grid[row][col].rot = grid[pieceRow][pieceCol].rot;
+			grid[pieceRow][pieceCol].player = -1;
+			grid[pieceRow][pieceCol].rot = -1;
 
-		grid[row][col].player = grid[pieceRow][pieceCol].player;
-		grid[row][col].rot = grid[pieceRow][pieceCol].rot;
-		grid[pieceRow][pieceCol].player = -1;
-		grid[pieceRow][pieceCol].rot = -1;
-
-		if (grid[row][col].cell == 2 && grid[pieceRow][pieceCol].cell == 3) { // rally rotation
-			grid[row][col].rot = grid[row][col].player;
+			if (grid[row][col].cell == 2 && grid[pieceRow][pieceCol].cell == 3) { // rally rotation
+				grid[row][col].rot = grid[row][col].player;
+			}
 		}
 
 	}
@@ -81,7 +83,7 @@ function checkMove(pieceRow, pieceCol, row, col) {
 	return true;
 }
 
-function routPiece(pieceRow, pieceCol, row, col) {
+function routPiece(row, col) {
 	if (grid[row][col].player >= 0) {
 		var pos = findRoutedSquare(grid[row][col].player);
 
@@ -146,8 +148,9 @@ function findRoutedSquare(player) {
 
 function pushPiece(pieceRow, pieceCol, row, col) {
 	
-	if (grid[2*row - pieceRow][2*col - pieceCol].cell == -1) { // || (grid[2*row - pieceRow][2*col - pieceCol].player >= 0 && ) 
-		return false;
+	if (grid[2*row - pieceRow][2*col - pieceCol].cell == -1 || (grid[2*row - pieceRow][2*col - pieceCol].player >= 0 && Math.abs(grid[2*row - pieceRow][2*col - pieceCol].player - grid[row][col].player)%2 == 1 )    ) { 
+		routPiece(row,col);
+		return true;
 	}
 
 	if (grid[2*row - pieceRow][2*col - pieceCol].cell == 0 && grid[2*row - pieceRow][2*col - pieceCol].player == -1) {
@@ -163,4 +166,6 @@ function pushPiece(pieceRow, pieceCol, row, col) {
 		grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
 		return true;
 	}
+
+	return false;
 }
