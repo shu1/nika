@@ -45,6 +45,6 @@ function getRowCol(event) {
 		y = event.layerY;
 	}
 	
-	inputMan.col = Math.floor((x * scale - gridOffsetX) / cellSize);
-	inputMan.row = Math.floor((y * scale - gridOffsetY) / cellSize);
+	inputMan.col = Math.floor((x - gridOffsetX) / cellSize);
+	inputMan.row = Math.floor((y - gridOffsetY) / cellSize);
 }
