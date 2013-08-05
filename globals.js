@@ -1,11 +1,12 @@
 "use strict";
 
+// for default resolution 1024x748
 var pieceSize = 40;
 var cellSize = 48;
 var gridOffsetX = 8;
 var gridOffsetY = 14;
 
-var canvas, context, scale, grid, pieceImgs;
+var canvas, context, scale, grid, pieceImgs, phalanx;
 
 var	hudMan = {
 	fpsCount:0,
@@ -39,5 +40,3 @@ var ascii = [
 	"......iiieee.........",
 	"......iiieee........."
 ]
-
-var phalanx = [];

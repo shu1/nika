@@ -10,39 +10,39 @@ function getPiece(row, col) {
 	}
 }
 
-function getAdjacent(pieceRow, pieceCol){
+function getPhalanx(pieceRow, pieceCol) {
 	var me = grid[pieceRow][pieceCol];
 	me.checked = true;
 	phalanx.push(me);
-	if(pieceRow - 1 >= 0 && pieceCol >= 0){
+
+	if (pieceRow - 1 >= 0 && pieceCol >= 0) {
 		var up = grid[pieceRow - 1][pieceCol];
-		if (up.player == me.player && up.rot == me.rot && !up.checked){
-			getAdjacent(pieceRow - 1, pieceCol);
+		if (up.player == me.player && up.rot == me.rot && !up.checked) {
+			getPhalanx(pieceRow - 1, pieceCol);
 		}
 	}
-	if(pieceRow >= 0 && pieceCol - 1 >= 0){
+
+	if (pieceRow >= 0 && pieceCol - 1 >= 0) {
 		var left = grid[pieceRow][pieceCol - 1];
-		if (left.player == me.player && left.rot == me.rot && !left.checked){
-			getAdjacent(pieceRow, pieceCol - 1);
+		if (left.player == me.player && left.rot == me.rot && !left.checked) {
+			getPhalanx(pieceRow, pieceCol - 1);
 		}
 	}
+
 	var right = grid[pieceRow][pieceCol + 1];
-	if (right.player == me.player && right.rot == me.rot && !right.checked){
-		getAdjacent(pieceRow, pieceCol + 1);
+	if (right.player == me.player && right.rot == me.rot && !right.checked) {
+		getPhalanx(pieceRow, pieceCol + 1);
 	}
 
 	var down = grid[pieceRow + 1][pieceCol];
-	if (down.player == me.player && down.rot == me.rot && !down.checked){
-		getAdjacent(pieceRow + 1, pieceCol);
+	if (down.player == me.player && down.rot == me.rot && !down.checked) {
+		getPhalanx(pieceRow + 1, pieceCol);
 	}
 }
 
 function rotatePiece(pieceRow, pieceCol, row, col) {
-	if (pieceRow >= 0 && pieceCol >= 0) {
-		if (grid[pieceRow][pieceCol].cell == 3) {
-			// do nothing
-		}
-		else if (row < pieceRow) {
+	if (pieceRow >= 0 && pieceCol >= 0 && grid[pieceRow][pieceCol].type != 3) {
+		if (row < pieceRow) {
 			grid[pieceRow][pieceCol].rot = 0;
 		}
 		else if (col > pieceCol) {
@@ -59,7 +59,6 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 
 function movePiece(pieceRow, pieceCol, row, col) {
 	if (checkMove(pieceRow, pieceCol, row, col)) {
-		
 		var pushSuccess = true;
 		if ((grid[pieceRow][pieceCol].rot + 2)%4 == grid[row][col].rot) {
 			pushSuccess = pushPiece(pieceRow, pieceCol, row, col);	
@@ -74,59 +73,80 @@ function movePiece(pieceRow, pieceCol, row, col) {
 			grid[pieceRow][pieceCol].player = -1;
 			grid[pieceRow][pieceCol].rot = -1;
 
-			if (grid[row][col].cell == 2 && grid[pieceRow][pieceCol].cell == 3) { // rally rotation
+			if (grid[row][col].type == 2 && grid[pieceRow][pieceCol].type == 3) { // rally rotation
 				grid[row][col].rot = grid[row][col].player;
 			}
 		}
-
 	}
 }
 
 function checkMove(pieceRow, pieceCol, row, col) {
-	if (pieceRow < 0 || pieceCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21) {	// bounds
+	if (pieceRow < 0 || pieceCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21) { // bounds
 		return false;
 	}
 
-	if (grid[row][col].cell < 0 || grid[row][col].cell == 3) {	// invalid-sqaure
+	if (grid[row][col].type < 0 || grid[row][col].type == 3) { // invalid sqaure
 		return false;
 	}
 
-	if (grid[row][col].player >= 0 && (grid[row][col].player - grid[pieceRow][pieceCol].player)%2 == 0) {	// occupied-by-same-team
+	if (grid[row][col].player >= 0 && (grid[row][col].player - grid[pieceRow][pieceCol].player)%2 == 0) { // same team
 		return false;
 	}
 
-	if (grid[row][col].cell == 1 && (grid[row][col].zone - grid[pieceRow][pieceCol].player)%2 != 0 ) {	// opponent-win-square
+	if (grid[row][col].type == 1 && (grid[row][col].zone - grid[pieceRow][pieceCol].player)%2 != 0 ) { // opponent win square
 		return false;
 	}
 
-	if (grid[pieceRow][pieceCol].cell != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1) {	// adjacent-square
+	if (grid[pieceRow][pieceCol].type != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1) { // adjacent square
 		return false;
 	}
 
-	if (grid[pieceRow][pieceCol].cell == 3 && (grid[row][col].cell != 2 || grid[pieceRow][pieceCol].player != grid[row][col].zone) ) {	// routed-to-respawn
+	if (grid[pieceRow][pieceCol].type == 3 && (grid[row][col].type != 2 || grid[pieceRow][pieceCol].player != grid[row][col].zone) ) { // routed to respawn
 		return false;
 	}
 
 	return true;
 }
 
+function pushPiece(pieceRow, pieceCol, row, col) {
+	if (grid[2*row - pieceRow][2*col - pieceCol].type == -1 || (grid[2*row - pieceRow][2*col - pieceCol].player >= 0
+		&& Math.abs(grid[2*row - pieceRow][2*col - pieceCol].player - grid[row][col].player)%2 == 1)) { 
+		routPiece(row,col);
+		return true;
+	}
+
+	if (grid[2*row - pieceRow][2*col - pieceCol].type == 0 && grid[2*row - pieceRow][2*col - pieceCol].player == -1) {
+		grid[2*row - pieceRow][2*col - pieceCol].player = grid[row][col].player;
+		grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
+		return true;
+	}
+
+	if (pushPiece(row, col, 2*row - pieceRow, 2*col - pieceCol)) {
+		grid[2*row - pieceRow][2*col - pieceCol].player = grid[row][col].player;
+		grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
+		return true;
+	}
+
+	return false;
+}
+
 function routPiece(row, col) {
 	if (grid[row][col].player >= 0) {
-		var pos = findRoutedSquare(grid[row][col].player);
+		var cell = getRoutedCell(grid[row][col].player);
 
-		grid[pos.routRow][pos.routCol].player = grid[row][col].player;
-		grid[pos.routRow][pos.routCol].rot = grid[row][col].player;
+		grid[cell.routRow][cell.routCol].player = grid[row][col].player;
+		grid[cell.routRow][cell.routCol].rot = grid[row][col].player;
 	}
 }
 
-function findRoutedSquare(player) {
+function getRoutedCell(player) {
 	var emptyRow = -1;
 	var emptyCol = -1;
 	switch (player) {
-		case 0 : 
+		case 0: 
 			for (var row=14; row>=0; --row) {
 				for (var col=0; col<21; ++col) {
-					if (grid[row][col].cell == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
+					if (grid[row][col].type == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
 						emptyRow = row;
 						emptyCol = col;
 						return {routRow:emptyRow, routCol:emptyCol};
@@ -138,7 +158,7 @@ function findRoutedSquare(player) {
 		case 1:	
 			for (var col=0; col<21; ++col) {
 				for (var row=0; row<15; ++row) {
-					if (grid[row][col].cell == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
+					if (grid[row][col].type == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
 						emptyRow = row;
 						emptyCol = col;
 						return {routRow:emptyRow, routCol:emptyCol};
@@ -150,7 +170,7 @@ function findRoutedSquare(player) {
 		case 2:
 			for (var row=0; row<15; ++row) {
 				for (var col=20; col>=0; --col) {
-					if (grid[row][col].cell == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
+					if (grid[row][col].type == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
 						emptyRow = row;
 						emptyCol = col;
 						return {routRow:emptyRow, routCol:emptyCol};
@@ -162,7 +182,7 @@ function findRoutedSquare(player) {
 		case 3:
 			for (var col=20; col>=0; --col) {
 				for (var row=14; row>=0; --row) {
-					if (grid[row][col].cell == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
+					if (grid[row][col].type == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
 						emptyRow = row;
 						emptyCol = col;
 						return {routRow:emptyRow, routCol:emptyCol};
@@ -171,28 +191,4 @@ function findRoutedSquare(player) {
 			}
 			break;
 	}	
-}
-
-function pushPiece(pieceRow, pieceCol, row, col) {
-	
-	if (grid[2*row - pieceRow][2*col - pieceCol].cell == -1 || (grid[2*row - pieceRow][2*col - pieceCol].player >= 0 && Math.abs(grid[2*row - pieceRow][2*col - pieceCol].player - grid[row][col].player)%2 == 1 )    ) { 
-		routPiece(row,col);
-		return true;
-	}
-
-	if (grid[2*row - pieceRow][2*col - pieceCol].cell == 0 && grid[2*row - pieceRow][2*col - pieceCol].player == -1) {
-
-		grid[2*row - pieceRow][2*col - pieceCol].player = grid[row][col].player;
-		grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
-		return true;
-	}
-
-	if (pushPiece(row, col, 2*row - pieceRow, 2*col - pieceCol) ) {
-
-		grid[2*row - pieceRow][2*col - pieceCol].player = grid[row][col].player;
-		grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
-		return true;
-	}
-
-	return false;
 }

@@ -20,21 +20,21 @@ function init() {
 	pieceImgs[3] = document.getElementById("thebes");
 	
 	var useCapture = false;
-	canvas.addEventListener('mousedown',  mouseDown, useCapture);
-	canvas.addEventListener('mousemove',  mouseMove, useCapture);
-	window.addEventListener('mouseup',    mouseUp,   useCapture);
-	window.addEventListener('touchstart', mouseDown, useCapture);
-	window.addEventListener('touchmove',  mouseMove, useCapture);
-	window.addEventListener('touchend',   mouseUp,   useCapture);
+	canvas.addEventListener("mousedown",  mouseDown, useCapture);
+	canvas.addEventListener("mousemove",  mouseMove, useCapture);
+	window.addEventListener("mouseup",    mouseUp,   useCapture);
+	window.addEventListener("touchstart", mouseDown, useCapture);
+	window.addEventListener("touchmove",  mouseMove, useCapture);
+	window.addEventListener("touchend",   mouseUp,   useCapture);
 
-	context.strokeStyle = "yellow";
 	context.font = gridOffsetY + "px sans-serif";
 	context.fillStyle = "white";
+	context.strokeStyle = "yellow";
 	draw();
 }
 
 function draw() {
-	var time = new Date().getTime();
+	var time = Date.now();
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	
 	// draw pieces
@@ -66,16 +66,14 @@ function draw() {
 	hudMan.fpsCount++;
 	context.fillText(hudMan.fpsText + hudMan.inputText, 0, gridOffsetY);
 	
-	requestAnimFrame(draw);
+	requestAnimationFrame(draw);
 }
 
-this.requestAnimFrame = (function() {
-	return window.requestAnimationFrame	||
-	window.webkitRequestAnimationFrame	||
-	window.mozRequestAnimationFrame		||
-	window.msRequestAnimationFrame		||
-	window.oRequestAnimationFrame		||
-	function(callback) {
-		window.setTimeout(callback, 17);
-	};
-})();
+// browser compatibility
+(function() {
+	var vendors = ['webkit', 'moz'];
+	for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+		window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+		window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+	}
+}());

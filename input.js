@@ -7,16 +7,10 @@ function mouseDown(event) {
 	if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
 		event.preventDefault();
 		phalanx = [];
-		getAdjacent(inputMan.pieceRow,inputMan.pieceCol);
-		for (var i = grid.length - 1; i >= 0; i--) {
-			for (var j = grid[i].length - 1; j >= 0; j--) {
-				grid[i][j].checked = false;
-			};
-		};
-		console.log(phalanx);
+		getPhalanx(inputMan.pieceRow,inputMan.pieceCol);
+		clearChecked();
 	}
 	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
-
 }
 
 function mouseMove(event) {
