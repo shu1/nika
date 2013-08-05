@@ -13,19 +13,19 @@ function init() {
 
 	generateGrid();
 
-	pieceImgs = new Array(4);
-	pieceImgs[0] = document.getElementById("athens");
-	pieceImgs[1] = document.getElementById("sparta");
-	pieceImgs[2] = document.getElementById("mesene");
-	pieceImgs[3] = document.getElementById("thebes");
+	images = new Array(5);
+	images[0] = document.getElementById("athens");
+	images[1] = document.getElementById("sparta");
+	images[2] = document.getElementById("mesene");
+	images[3] = document.getElementById("thebes");
+	images[4] = document.getElementById("board");
 	
-	var useCapture = false;
-	canvas.addEventListener("mousedown",  mouseDown, useCapture);
-	canvas.addEventListener("mousemove",  mouseMove, useCapture);
-	window.addEventListener("mouseup",    mouseUp,   useCapture);
-	window.addEventListener("touchstart", mouseDown, useCapture);
-	window.addEventListener("touchmove",  mouseMove, useCapture);
-	window.addEventListener("touchend",   mouseUp,   useCapture);
+	canvas.addEventListener("mousedown",  mouseDown);
+	canvas.addEventListener("mousemove",  mouseMove);
+	window.addEventListener("mouseup",    mouseUp);
+	window.addEventListener("touchstart", mouseDown);
+	window.addEventListener("touchmove",  mouseMove);
+	window.addEventListener("touchend",   mouseUp);
 
 	context.font = gridOffsetY + "px sans-serif";
 	context.fillStyle = "white";
@@ -35,7 +35,8 @@ function init() {
 
 function draw() {
 	var time = Date.now();
-	context.clearRect(0, 0, canvas.width, canvas.height);
+//	context.clearRect(0, 0, canvas.width, canvas.height);
+	context.drawImage(images[4], 0, 0);
 	
 	// draw pieces
 	for (var row = 0; row < 15; ++row) {
@@ -44,14 +45,14 @@ function draw() {
 				context.save();
 				context.translate(col * cellSize + cellSize/2 + gridOffsetX, row * cellSize + cellSize/2 + gridOffsetY);
 				context.rotate(grid[row][col].rot * Math.PI/2);
-				context.drawImage(pieceImgs[grid[row][col].player], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);
+				context.drawImage(images[grid[row][col].player], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);
 				context.restore();
 			}
 		}
 	}
 	
 	// draw piece highlight
-	if (inputMan.mouseDown && checkMove(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
+	if (inputMan.click && checkMove(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
 		context.beginPath();
 		context.arc(inputMan.col * cellSize + cellSize/2 + gridOffsetX, inputMan.row * cellSize + cellSize/2 + gridOffsetY, pieceSize/2 + 1, 0, Math.PI*2);
 		context.stroke();

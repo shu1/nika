@@ -1,20 +1,30 @@
 "use strict";
 
 function mouseDown(event) {
-	inputMan.mouseDown = true;
+	inputMan.click = true;
 	getRowCol(event);
+
+	var dblClick = ""
+	var time = Date.now();
+	if (time - inputMan.time < 500) {	// default 500 milliseconds
+		if (inputMan.row == inputMan.pieceRow && inputMan.col == inputMan.pieceCol) {
+			dblClick = " dblclick";
+		}
+	}
+	inputMan.time = time;
+
 	getPiece(inputMan.row, inputMan.col);
 	if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
 		event.preventDefault();
 		phalanx = [];
-		getPhalanx(inputMan.pieceRow,inputMan.pieceCol);
+		getPhalanx(inputMan.pieceRow, inputMan.pieceCol);
 		clearChecked();
 	}
-	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
+	hudMan.inputText = inputMan.row + "," + inputMan.col + " down" + dblClick;
 }
 
 function mouseMove(event) {
-	if (inputMan.mouseDown) {
+	if (inputMan.click) {
 		getRowCol(event);
 		rotatePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 		hudMan.inputText = inputMan.row + "," + inputMan.col;
@@ -22,7 +32,7 @@ function mouseMove(event) {
 }
 
 function mouseUp(event) {
-	inputMan.mouseDown = false;
+	inputMan.click = false;
 	movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 	hudMan.inputText += " up";
 }

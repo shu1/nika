@@ -6,7 +6,7 @@ var cellSize = 48;
 var gridOffsetX = 8;
 var gridOffsetY = 14;
 
-var canvas, context, scale, grid, pieceImgs, phalanx;
+var canvas, context, scale, grid, images, phalanx;
 
 var	hudMan = {
 	fpsCount:0,
@@ -16,11 +16,12 @@ var	hudMan = {
 }
 
 var inputMan = {
-	mouseDown:false,
+	click:false,
 	pieceRow:-1,
 	pieceCol:-1,
 	row:-1,
-	col:-1
+	col:-1,
+	time:0
 }
 
 var ascii = [
