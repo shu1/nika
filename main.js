@@ -36,7 +36,9 @@ function init() {
 function draw() {
 	var time = Date.now();
 //	context.clearRect(0, 0, canvas.width, canvas.height);
-	context.drawImage(images[4], 0, 0);
+	context.save();
+	context.scale(1, 1);
+	context.drawImage(images[4], 0, 0, canvas.width, canvas.height);
 	
 	// draw pieces
 	for (var row = 0; row < 15; ++row) {
@@ -67,6 +69,7 @@ function draw() {
 	hudMan.fpsCount++;
 	context.fillText(hudMan.fpsText + hudMan.inputText, 0, gridOffsetY);
 	
+	context.restore();
 	requestAnimationFrame(draw);
 }
 
