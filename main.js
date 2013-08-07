@@ -74,12 +74,12 @@ function draw() {
 	
 	// draw HUD
 	if (time - hudMan.fpsTime > 984) {
-		hudMan.fpsText = hudMan.fpsCount + " fps ";
+		hudMan.fpsText = hudMan.fpsCount + "fps ";
 		hudMan.fpsTime = time;
 		hudMan.fpsCount = 0;
 	}
 	hudMan.fpsCount++;
-	context.fillText(hudMan.fpsText + hudMan.inputText, 0, gridOffsetY);
+	context.fillText(hudMan.fpsText + drawMan.scale + "x " + hudMan.inputText, 0, gridOffsetY);
 	
 	requestAnimationFrame(draw);
 }

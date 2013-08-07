@@ -4,7 +4,7 @@ function mouseDown(event) {
 	inputMan.click = true;
 	getRowCol(event);
 	getPiece(inputMan.row, inputMan.col);
-	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
+	hudMan.inputText = inputMan.row + "," + inputMan.col;
 	
 	if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
 		event.preventDefault();
@@ -24,8 +24,6 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	inputMan.click = false;
-	hudMan.inputText += " up";
-	
 	if (!dblClick()) {
 		movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 	}
@@ -33,7 +31,7 @@ function mouseUp(event) {
 
 function getRowCol(event) {
 	var x, y;
-
+	
 	if (event.touches) {
 		x = event.touches[0].pageX;
 		y = event.touches[0].pageY;
@@ -52,10 +50,9 @@ function dblClick() {
 	if (time - inputMan.time < 500) {	// default 500 milliseconds
 		inputMan.time = 0;	// reset so next click is not double click
 		zoom();
-		hudMan.inputText += " dblClick";
 		
 		if (inputMan.row == inputMan.pieceRow && inputMan.col == inputMan.pieceCol) {
-			console.log("phalanx");
+			hudMan.inputText += " phalanx";
 		}
 		return true;
 	}
