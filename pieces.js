@@ -10,33 +10,33 @@ function getPiece(row, col) {
 	}
 }
 
-function getPhalanx(pieceRow, pieceCol) {
-	var me = grid[pieceRow][pieceCol];
+function getPhalanx(row, col) {
+	var me = grid[row][col];
 	me.checked = true;
 	phalanx.push(me);
 
-	if (pieceRow - 1 >= 0 && pieceCol >= 0) {
-		var up = grid[pieceRow - 1][pieceCol];
+	if (row - 1 >= 0 && col >= 0) {
+		var up = grid[row - 1][col];
 		if (up.player == me.player && up.rot == me.rot && !up.checked) {
-			getPhalanx(pieceRow - 1, pieceCol);
+			getPhalanx(row - 1, col);
 		}
 	}
 
-	if (pieceRow >= 0 && pieceCol - 1 >= 0) {
-		var left = grid[pieceRow][pieceCol - 1];
+	if (row >= 0 && col - 1 >= 0) {
+		var left = grid[row][col - 1];
 		if (left.player == me.player && left.rot == me.rot && !left.checked) {
-			getPhalanx(pieceRow, pieceCol - 1);
+			getPhalanx(row, col - 1);
 		}
 	}
 
-	var right = grid[pieceRow][pieceCol + 1];
+	var right = grid[row][col + 1];
 	if (right.player == me.player && right.rot == me.rot && !right.checked) {
-		getPhalanx(pieceRow, pieceCol + 1);
+		getPhalanx(row, col + 1);
 	}
 
-	var down = grid[pieceRow + 1][pieceCol];
+	var down = grid[row + 1][col];
 	if (down.player == me.player && down.rot == me.rot && !down.checked) {
-		getPhalanx(pieceRow + 1, pieceCol);
+		getPhalanx(row + 1, col);
 	}
 }
 

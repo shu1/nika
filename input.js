@@ -25,6 +25,7 @@ function mouseMove(event) {
 function mouseUp(event) {
 	inputMan.click = false;
 	hudMan.inputText += " up";
+	
 	if (!dblClick()) {
 		movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 	}
@@ -49,14 +50,15 @@ function getRowCol(event) {
 function dblClick() {
 	var time = Date.now();
 	if (time - inputMan.time < 500) {	// default 500 milliseconds
-//		if (inputMan.row == inputMan.clickRow && inputMan.col == inputMan.clickCol) {
-			hudMan.inputText += " dblClick";
-			zoom();
-			return true;
-//		}
+		inputMan.time = 0;	// reset so next click is not double click
+		zoom();
+		hudMan.inputText += " dblClick";
+		
+		if (inputMan.row == inputMan.pieceRow && inputMan.col == inputMan.pieceCol) {
+			console.log("phalanx");
+		}
+		return true;
 	}
 	inputMan.time = time;
-	inputMan.clickRow = inputMan.row;
-	inputMan.clickCol = inputMan.col;
 	return false;
 }
