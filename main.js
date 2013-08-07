@@ -20,12 +20,16 @@ function init() {
 	images[3] = document.getElementById("thebes");
 	images[4] = document.getElementById("board");
 	
-	canvas.addEventListener("mousedown",  mouseDown);
-	canvas.addEventListener("mousemove",  mouseMove);
-	window.addEventListener("mouseup",    mouseUp);
-	window.addEventListener("touchstart", mouseDown);
-	window.addEventListener("touchmove",  mouseMove);
-	window.addEventListener("touchend",   mouseUp);
+	if ("ontouchstart" in window) {
+		window.addEventListener("touchstart", mouseDown);
+		window.addEventListener("touchmove",  mouseMove);
+		window.addEventListener("touchend",   mouseUp);
+	}
+	else {
+		canvas.addEventListener("mousedown",  mouseDown);
+		canvas.addEventListener("mousemove",  mouseMove);
+		window.addEventListener("mouseup",    mouseUp);
+	}
 	
 	context.font = gridOffsetY + "px sans-serif";
 	context.fillStyle = "yellow";
@@ -79,7 +83,7 @@ function draw() {
 		hudMan.fpsCount = 0;
 	}
 	hudMan.fpsCount++;
-	context.fillText(hudMan.fpsText + drawMan.scale + "x " + hudMan.inputText, 0, gridOffsetY);
+	context.fillText(hudMan.fpsText + drawMan.scale + "x " + hudMan.inputText, cellSize*2 + gridOffsetX, gridOffsetY);
 	
 	requestAnimationFrame(draw);
 }
