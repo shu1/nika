@@ -47,14 +47,26 @@ function zoom() {
 }
 
 function draw() {
-	var time = Date.now();
-	
 	context.save();
 	context.translate(drawMan.x, drawMan.y);
 	context.scale(drawMan.scale, drawMan.scale);
-	context.drawImage(images[4], 0, 0, canvas.width, canvas.height);
 	
-	// draw pieces
+	drawBoard();
+	drawPieces();
+	drawHighlight();
+
+	context.restore();
+
+	drawHud();
+	
+	requestAnimationFrame(draw);
+}
+
+function drawBoard() {
+	context.drawImage(images[4], 0, 0, canvas.width, canvas.height);
+}
+
+function drawPieces() {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			if (grid[row][col].player >= 0) {
@@ -66,17 +78,18 @@ function draw() {
 			}
 		}
 	}
-	
-	// draw piece highlight
+}
+
+function drawHighlight() {
 	if (inputMan.click && checkMove(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
 		context.beginPath();
 		context.arc(inputMan.col * cellSize + cellSize/2 + gridOffsetX, inputMan.row * cellSize + cellSize/2 + gridOffsetY, pieceSize/2 + 1, 0, Math.PI*2);
 		context.stroke();
 	}
-	
-	context.restore();
-	
-	// draw HUD
+}
+
+function drawHud() {
+	var time = Date.now();
 	if (time - hudMan.fpsTime > 984) {
 		hudMan.fpsText = hudMan.fpsCount + "fps ";
 		hudMan.fpsTime = time;
@@ -84,30 +97,26 @@ function draw() {
 	}
 	hudMan.fpsCount++;
 	context.fillText(hudMan.fpsText + drawMan.scale + "x " + hudMan.inputText, cellSize*2 + gridOffsetX, gridOffsetY);
-	
-	requestAnimationFrame(draw);
 }
 
 // browser compatibility
 (function() {
-    var lastTime = 0;
-    var vendors = ['webkit', 'moz'];
-    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
-    }
-
-    if (!window.requestAnimationFrame)
-        window.requestAnimationFrame = function(callback, element) {
-            var currTime = new Date().getTime();
-            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, timeToCall);
-            lastTime = currTime + timeToCall;
-            return id;
-        };
-
-    if (!window.cancelAnimationFrame)
-        window.cancelAnimationFrame = function(id) {
-            clearTimeout(id);
-        };
+	var lastTime = 0;
+	var vendors = ['webkit', 'moz'];
+	for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+		window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+		window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+	}
+	if (!window.requestAnimationFrame)
+		window.requestAnimationFrame = function(callback, element) {
+			var currTime = new Date().getTime();
+			var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+			var id = window.setTimeout(function() { callback(currTime + timeToCall); }, timeToCall);
+			lastTime = currTime + timeToCall;
+			return id;
+		};
+	if (!window.cancelAnimationFrame)
+		window.cancelAnimationFrame = function(id) {
+			clearTimeout(id);
+		};
 }());
