@@ -3,24 +3,15 @@
 function mouseDown(event) {
 	inputMan.click = true;
 	getRowCol(event);
-
-	var dblClick = ""
-	var time = Date.now();
-	if (time - inputMan.time < 500) {	// default 500 milliseconds
-		if (inputMan.row == inputMan.pieceRow && inputMan.col == inputMan.pieceCol) {
-			dblClick = " dblclick";
-		}
-	}
-	inputMan.time = time;
-
 	getPiece(inputMan.row, inputMan.col);
+	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
+	
 	if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
 		event.preventDefault();
 		phalanx = [];
 		getPhalanx(inputMan.pieceRow, inputMan.pieceCol);
 		clearChecked();
 	}
-	hudMan.inputText = inputMan.row + "," + inputMan.col + " down" + dblClick;
 }
 
 function mouseMove(event) {
@@ -33,8 +24,10 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	inputMan.click = false;
-	movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 	hudMan.inputText += " up";
+	if (!dblClick()) {
+		movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
+	}
 }
 
 function getRowCol(event) {
@@ -49,6 +42,21 @@ function getRowCol(event) {
 		y = event.layerY;
 	}
 	
-	inputMan.col = Math.floor((x - gridOffsetX) / cellSize);
-	inputMan.row = Math.floor((y - gridOffsetY) / cellSize);
+	inputMan.col = Math.floor((x - drawMan.x - gridOffsetX * drawMan.scale) / (cellSize * drawMan.scale));
+	inputMan.row = Math.floor((y - drawMan.y - gridOffsetY * drawMan.scale) / (cellSize * drawMan.scale));
+}
+
+function dblClick() {
+	var time = Date.now();
+	if (time - inputMan.time < 500) {	// default 500 milliseconds
+//		if (inputMan.row == inputMan.clickRow && inputMan.col == inputMan.clickCol) {
+			hudMan.inputText += " dblClick";
+			zoom();
+			return true;
+//		}
+	}
+	inputMan.time = time;
+	inputMan.clickRow = inputMan.row;
+	inputMan.clickCol = inputMan.col;
+	return false;
 }

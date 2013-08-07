@@ -1,12 +1,18 @@
 "use strict";
 
-// for default resolution 1024x748
+// for canvas 1024x748
 var pieceSize = 40;
 var cellSize = 48;
 var gridOffsetX = 8;
 var gridOffsetY = 14;
 
-var canvas, context, scale, grid, images, phalanx;
+var canvas, context, images, grid, phalanx;
+
+var drawMan = {
+	scale:1,
+	x:0,
+	y:0
+}
 
 var	hudMan = {
 	fpsCount:0,
@@ -17,10 +23,12 @@ var	hudMan = {
 
 var inputMan = {
 	click:false,
-	pieceRow:-1,
-	pieceCol:-1,
 	row:-1,
 	col:-1,
+	pieceRow:-1,
+	pieceCol:-1,
+	clickRow:-1,
+	clickCol:-1,
 	time:0
 }
 

@@ -2,17 +2,17 @@
 
 window.onload = init;
 function init() {
+	generateGrid();
+	
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
-
-	scale = canvas.width / 1024;	// assume multiples of 1024
+	
+	var scale = canvas.width / 1024;
 	pieceSize *= scale;
 	cellSize *= scale;
 	gridOffsetX *= scale;
 	gridOffsetY *= scale;
-
-	generateGrid();
-
+	
 	images = new Array(5);
 	images[0] = document.getElementById("athens");
 	images[1] = document.getElementById("sparta");
@@ -26,18 +26,28 @@ function init() {
 	window.addEventListener("touchstart", mouseDown);
 	window.addEventListener("touchmove",  mouseMove);
 	window.addEventListener("touchend",   mouseUp);
-
+	
 	context.font = gridOffsetY + "px sans-serif";
-	context.fillStyle = "white";
+	context.fillStyle = "yellow";
 	context.strokeStyle = "yellow";
 	draw();
 }
 
+function zoom() {
+	drawMan.scale++;
+	if (drawMan.scale > 4) {
+		drawMan.scale = 1;
+	}
+	drawMan.x = -(inputMan.clickCol * cellSize + cellSize/2 + gridOffsetX) * (drawMan.scale - 1);
+	drawMan.y = -(inputMan.clickRow * cellSize + cellSize/2 + gridOffsetY) * (drawMan.scale - 1);
+}
+
 function draw() {
 	var time = Date.now();
-//	context.clearRect(0, 0, canvas.width, canvas.height);
+	
 	context.save();
-	context.scale(1, 1);
+	context.translate(drawMan.x, drawMan.y);
+	context.scale(drawMan.scale, drawMan.scale);
 	context.drawImage(images[4], 0, 0, canvas.width, canvas.height);
 	
 	// draw pieces
@@ -60,6 +70,8 @@ function draw() {
 		context.stroke();
 	}
 	
+	context.restore();
+	
 	// draw HUD
 	if (time - hudMan.fpsTime > 984) {
 		hudMan.fpsText = hudMan.fpsCount + " fps ";
@@ -69,7 +81,6 @@ function draw() {
 	hudMan.fpsCount++;
 	context.fillText(hudMan.fpsText + hudMan.inputText, 0, gridOffsetY);
 	
-	context.restore();
 	requestAnimationFrame(draw);
 }
 
