@@ -96,7 +96,7 @@ function drawHud() {
 		hudMan.fpsCount = 0;
 	}
 	hudMan.fpsCount++;
-	context.fillText(hudMan.fpsText + drawMan.scale + "x " + hudMan.inputText, cellSize*2 + gridOffsetX, gridOffsetY);
+	context.fillText(window.innerWidth + "x" + window.innerHeight + " " + drawMan.scale + "x " + hudMan.fpsText + hudMan.inputText, cellSize*2 + gridOffsetX, gridOffsetY);
 }
 
 // browser compatibility
