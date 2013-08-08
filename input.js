@@ -4,7 +4,7 @@ function mouseDown(event) {
 	inputMan.click = true;
 	getRowCol(event);
 	getPiece(inputMan.row, inputMan.col);
-	hudMan.inputText = inputMan.row + "," + inputMan.col;
+	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
 	
 	if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
 		event.preventDefault();
@@ -24,6 +24,8 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	inputMan.click = false;
+	hudMan.inputText += " up";
+	
 	if (!dblClick()) {
 		movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 	}
