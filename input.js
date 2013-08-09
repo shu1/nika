@@ -27,7 +27,9 @@ function mouseUp(event) {
 	hudMan.inputText += " up";
 	
 	if (!dblClick()) {
-		movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
+		if (movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
+			inputMan.time = 0;
+		}
 	}
 }
 

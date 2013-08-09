@@ -58,6 +58,9 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 }
 
 function movePiece(pieceRow, pieceCol, row, col) {
+
+	var moveSuccess = false;
+
 	if (checkMove(pieceRow, pieceCol, row, col)) {
 		var pushSuccess = true;
 		if ((grid[pieceRow][pieceCol].rot + 2)%4 == grid[row][col].rot) {
@@ -75,12 +78,15 @@ function movePiece(pieceRow, pieceCol, row, col) {
 			grid[row][col].rot = grid[pieceRow][pieceCol].rot;
 			grid[pieceRow][pieceCol].player = -1;
 			grid[pieceRow][pieceCol].rot = -1;
+			moveSuccess = true;
 
 			if (grid[row][col].type == 2 && grid[pieceRow][pieceCol].type == 3) { // rally rotation
 				grid[row][col].rot = grid[row][col].player;
 			}
 		}
 	}
+	
+	return moveSuccess;
 }
 
 function checkMove(pieceRow, pieceCol, row, col) {
