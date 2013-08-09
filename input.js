@@ -12,6 +12,7 @@ function mouseDown(event) {
 		getPhalanx(inputMan.pieceRow, inputMan.pieceCol);
 		clearChecked();
 	}
+	drawMan.draw = true;
 }
 
 function mouseMove(event) {
@@ -19,6 +20,7 @@ function mouseMove(event) {
 		getRowCol(event);
 		rotatePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 		hudMan.inputText = inputMan.row + "," + inputMan.col;
+		drawMan.draw = true;
 	}
 }
 
@@ -31,6 +33,7 @@ function mouseUp(event) {
 			inputMan.time = 0;
 		}
 	}
+	drawMan.draw = true;
 }
 
 function getRowCol(event) {

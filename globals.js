@@ -9,6 +9,7 @@ var gridOffsetY = 14;
 var canvas, context, images, grid, phalanx;
 
 var drawMan = {
+	draw:true,
 	scale:1,
 	x:0,
 	y:0

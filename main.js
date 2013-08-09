@@ -42,21 +42,25 @@ function zoom() {
 	if (drawMan.scale > 3) {
 		drawMan.scale = 1;
 	}
-	drawMan.x = -(inputMan.col * cellSize + cellSize/2 + gridOffsetX) * (drawMan.scale - 1);
-	drawMan.y = -(inputMan.row * cellSize + cellSize/2 + gridOffsetY) * (drawMan.scale - 1);
+	drawMan.x = -(inputMan.col * cellSize + cellSize/2 + gridOffsetX) * (drawMan.scale-1);
+	drawMan.y = -(inputMan.row * cellSize + cellSize/2 + gridOffsetY) * (drawMan.scale-1);
 }
 
 function draw() {
-	context.save();
-	context.translate(drawMan.x, drawMan.y);
-	context.scale(drawMan.scale, drawMan.scale);
+	if (drawMan.draw) {
+		context.save();
+		context.translate(drawMan.x, drawMan.y);
+		context.scale(drawMan.scale, drawMan.scale);
+		
+		drawBoard();
+		drawPieces();
+		drawHighlight();
+		
+		context.restore();
+		drawMan.draw = false;
+	}
 	
-	drawBoard();
-	drawPieces();
-	drawHighlight();
-
-	context.restore();
-
+	context.clearRect(0, 0, canvas.width, gridOffsetY+5);
 	drawHud();
 	
 	requestAnimationFrame(draw);
