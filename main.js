@@ -33,7 +33,6 @@ function init() {
 	
 	context.font = gridOffsetY + "px sans-serif";
 	context.fillStyle = "yellow";
-	context.strokeStyle = "yellow";
 	draw();
 }
 
@@ -57,6 +56,7 @@ function draw() {
 		drawBoard();
 		drawPieces();
 		drawHighlight();
+		drawPhalanx();
 		
 		context.restore();
 		drawMan.draw = false;
@@ -90,9 +90,21 @@ function drawPieces() {
 
 function drawHighlight() {
 	if (inputMan.click && checkMove(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
+		context.strokeStyle = "green";
 		context.beginPath();
 		context.arc(inputMan.col * cellSize + cellSize/2 + gridOffsetX, inputMan.row * cellSize + cellSize/2 + gridOffsetY, pieceSize/2 + 1, 0, Math.PI*2);
 		context.stroke();
+	}
+}
+
+function drawPhalanx() {
+	if (inputMan.click && phalanx.length > 0) {
+		context.strokeStyle = "red";
+		for (var i = phalanx.length - 1; i >= 0; --i) {
+			context.beginPath();
+			context.arc(phalanx[i].col * cellSize + cellSize/2 + gridOffsetX, phalanx[i].row * cellSize + cellSize/2 + gridOffsetY, pieceSize/2 + 1, 0, Math.PI*2);
+			context.stroke();
+		}
 	}
 }
 

@@ -10,36 +10,6 @@ function getPiece(row, col) {
 	}
 }
 
-function getPhalanx(row, col) {
-	var me = grid[row][col];
-	me.checked = true;
-	phalanx.push(me);
-
-	if (row - 1 >= 0 && col >= 0) {
-		var up = grid[row - 1][col];
-		if (up.player == me.player && up.rot == me.rot && !up.checked) {
-			getPhalanx(row - 1, col);
-		}
-	}
-
-	if (row >= 0 && col - 1 >= 0) {
-		var left = grid[row][col - 1];
-		if (left.player == me.player && left.rot == me.rot && !left.checked) {
-			getPhalanx(row, col - 1);
-		}
-	}
-
-	var right = grid[row][col + 1];
-	if (right.player == me.player && right.rot == me.rot && !right.checked) {
-		getPhalanx(row, col + 1);
-	}
-
-	var down = grid[row + 1][col];
-	if (down.player == me.player && down.rot == me.rot && !down.checked) {
-		getPhalanx(row + 1, col);
-	}
-}
-
 function rotatePiece(pieceRow, pieceCol, row, col) {
 	if (pieceRow >= 0 && pieceCol >= 0 && grid[pieceRow][pieceCol].type != 3) {
 		if (row < pieceRow) {
@@ -58,9 +28,6 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 }
 
 function movePiece(pieceRow, pieceCol, row, col) {
-
-	var moveSuccess = false;
-
 	if (checkMove(pieceRow, pieceCol, row, col)) {
 		var pushSuccess = true;
 		if ((grid[pieceRow][pieceCol].rot + 2)%4 == grid[row][col].rot) {
@@ -78,15 +45,14 @@ function movePiece(pieceRow, pieceCol, row, col) {
 			grid[row][col].rot = grid[pieceRow][pieceCol].rot;
 			grid[pieceRow][pieceCol].player = -1;
 			grid[pieceRow][pieceCol].rot = -1;
-			moveSuccess = true;
 
 			if (grid[row][col].type == 2 && grid[pieceRow][pieceCol].type == 3) { // rally rotation
 				grid[row][col].rot = grid[row][col].player;
 			}
+			return true;
 		}
 	}
-
-	return moveSuccess;
+	return false;
 }
 
 function checkMove(pieceRow, pieceCol, row, col) {
@@ -94,7 +60,7 @@ function checkMove(pieceRow, pieceCol, row, col) {
 		return false;
 	}
 
-	if (grid[row][col].type < 0 || grid[row][col].type == 3) { // invalid sqaure
+	if (grid[row][col].type < 0 || grid[row][col].type == 3) { // invalid cell
 		return false;
 	}
 
@@ -102,15 +68,15 @@ function checkMove(pieceRow, pieceCol, row, col) {
 		return false;
 	}
 
-	if (grid[row][col].type == 1 && (grid[row][col].zone - grid[pieceRow][pieceCol].player)%2 != 0 ) { // opponent win square
+	if (grid[row][col].type == 1 && (grid[row][col].zone - grid[pieceRow][pieceCol].player)%2 != 0 ) { // opponent win cell
 		return false;
 	}
 
 	// TODO: This is commented out for ease of debugging
-	// if (grid[pieceRow][pieceCol].type != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1) { // adjacent square
-	// 	return false;
-	// }
-
+/*	if (grid[pieceRow][pieceCol].type != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1) { // adjacent cell
+		return false;
+	}
+*/
 	if (grid[pieceRow][pieceCol].type == 3 && (grid[row][col].type != 2 || grid[pieceRow][pieceCol].player != grid[row][col].zone) ) { // routed to respawn
 		return false;
 	}
@@ -119,12 +85,10 @@ function checkMove(pieceRow, pieceCol, row, col) {
 }
 
 function pushPiece(pieceRow, pieceCol, row, col, weight) {
-
 	if (weight > 1) { // check line weight
-
 		if (grid[2*row - pieceRow][2*col - pieceCol].type == -1 || (grid[2*row - pieceRow][2*col - pieceCol].player >= 0
 			&& Math.abs(grid[2*row - pieceRow][2*col - pieceCol].player - grid[row][col].player)%2 == 1)) { // Invalid or enemy square
-			routPiece(row,col);1
+			routPiece(row,col);
 			return true;
 		}
 
@@ -141,7 +105,6 @@ function pushPiece(pieceRow, pieceCol, row, col, weight) {
 			return true;
 		}
 	}
-
 	return false;
 }
 

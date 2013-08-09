@@ -3,8 +3,8 @@
 function mouseDown(event) {
 	inputMan.click = true;
 	getRowCol(event);
-	getPiece(inputMan.row, inputMan.col);
 	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
+	getPiece(inputMan.row, inputMan.col);
 	
 	if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
 		event.preventDefault();
@@ -18,8 +18,8 @@ function mouseDown(event) {
 function mouseMove(event) {
 	if (inputMan.click) {
 		getRowCol(event);
-		rotatePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 		hudMan.inputText = inputMan.row + "," + inputMan.col;
+		rotatePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 		drawMan.draw = true;
 	}
 }

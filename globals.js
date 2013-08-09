@@ -8,7 +8,7 @@ var cellSize = 48;
 var gridOffsetX = 8;
 var gridOffsetY = 14;
 
-var canvas, context, images, grid, phalanx;
+var canvas, context, images, grid, phalanx = [];
 
 var drawMan = {
 	draw:true,
@@ -31,6 +31,10 @@ var inputMan = {
 	row:-1,
 	col:-1,
 	time:0
+}
+
+var phalanxMan = {
+	mode:0
 }
 
 var ascii = [
