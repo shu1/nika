@@ -13,12 +13,13 @@ function init() {
 	gridOffsetX *= scale;
 	gridOffsetY *= scale;
 	
-	images = new Array(5);
+	images = new Array(6);
 	images[0] = document.getElementById("athens");
 	images[1] = document.getElementById("sparta");
 	images[2] = document.getElementById("mesene");
 	images[3] = document.getElementById("thebes");
-	images[4] = document.getElementById("board");
+	images[4] = document.getElementById("shadow");
+	images[5] = document.getElementById("board");
 	
 	if ("ontouchstart" in window) {
 		window.addEventListener("touchstart", mouseDown);
@@ -55,8 +56,8 @@ function draw() {
 		
 		drawBoard();
 		drawPieces();
-		drawHighlight();
 		drawPhalanx();
+		drawHighlight();
 		
 		context.restore();
 		drawMan.draw = false;
@@ -71,7 +72,7 @@ function draw() {
 }
 
 function drawBoard() {
-	context.drawImage(images[4], 0, 0, canvas.width, canvas.height);
+	context.drawImage(images[5], 0, 0, canvas.width, canvas.height);
 }
 
 function drawPieces() {
@@ -82,18 +83,11 @@ function drawPieces() {
 				context.translate(col * cellSize + cellSize/2 + gridOffsetX, row * cellSize + cellSize/2 + gridOffsetY);
 				context.rotate(grid[row][col].rot * Math.PI/2);
 				context.drawImage(images[grid[row][col].player], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);
+				context.rotate(grid[row][col].rot * -Math.PI/2);	// ugh waste
+				context.drawImage(images[4], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);
 				context.restore();
 			}
 		}
-	}
-}
-
-function drawHighlight() {
-	if (inputMan.click && checkMove(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
-		context.strokeStyle = "green";
-		context.beginPath();
-		context.arc(inputMan.col * cellSize + cellSize/2 + gridOffsetX, inputMan.row * cellSize + cellSize/2 + gridOffsetY, pieceSize/2 + 1, 0, Math.PI*2);
-		context.stroke();
 	}
 }
 
@@ -105,6 +99,15 @@ function drawPhalanx() {
 			context.arc(phalanx[i].col * cellSize + cellSize/2 + gridOffsetX, phalanx[i].row * cellSize + cellSize/2 + gridOffsetY, pieceSize/2 + 1, 0, Math.PI*2);
 			context.stroke();
 		}
+	}
+}
+
+function drawHighlight() {
+	if (inputMan.click && checkMove(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
+		context.strokeStyle = "green";
+		context.beginPath();
+		context.arc(inputMan.col * cellSize + cellSize/2 + gridOffsetX, inputMan.row * cellSize + cellSize/2 + gridOffsetY, pieceSize/2 + 1, 0, Math.PI*2);
+		context.stroke();
 	}
 }
 
