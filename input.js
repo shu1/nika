@@ -8,7 +8,6 @@ function mouseDown(event) {
 	
 	if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
 		event.preventDefault();
-		phalanx = [];
 		getPhalanx(inputMan.pieceRow, inputMan.pieceCol);
 		clearChecked();
 	}
@@ -27,6 +26,7 @@ function mouseMove(event) {
 function mouseUp(event) {
 	inputMan.click = false;
 	hudMan.inputText += " up";
+	phalanx = [];
 	
 	if (!dblClick()) {
 		if (movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
