@@ -1,6 +1,8 @@
 "use strict";
 
-// for canvas 1024x748
+var debug = false;
+
+// values for board 1024x748
 var pieceSize = 40;
 var cellSize = 48;
 var gridOffsetX = 8;

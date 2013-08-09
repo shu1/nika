@@ -60,8 +60,10 @@ function draw() {
 		drawMan.draw = false;
 	}
 	
-	context.clearRect(0, 0, canvas.width, gridOffsetY+5);
-	drawHud();
+	if (debug) {
+		context.clearRect(0, 0, canvas.width, gridOffsetY+5);
+		drawHud();
+	}
 	
 	requestAnimationFrame(draw);
 }
