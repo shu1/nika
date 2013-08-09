@@ -85,7 +85,7 @@ function movePiece(pieceRow, pieceCol, row, col) {
 			}
 		}
 	}
-	
+
 	return moveSuccess;
 }
 
@@ -124,11 +124,12 @@ function pushPiece(pieceRow, pieceCol, row, col, weight) {
 
 		if (grid[2*row - pieceRow][2*col - pieceCol].type == -1 || (grid[2*row - pieceRow][2*col - pieceCol].player >= 0
 			&& Math.abs(grid[2*row - pieceRow][2*col - pieceCol].player - grid[row][col].player)%2 == 1)) { // Invalid or enemy square
-			routPiece(row,col);
+			routPiece(row,col);1
 			return true;
 		}
 
-		if (grid[2*row - pieceRow][2*col - pieceCol].type == 0 && grid[2*row - pieceRow][2*col - pieceCol].player == -1) { // Empty square
+		if ((grid[2*row - pieceRow][2*col - pieceCol].type > -1 || grid[2*row - pieceRow][2*col - pieceCol].type < 3) 
+			&& grid[2*row - pieceRow][2*col - pieceCol].player == -1) { // Empty square
 			grid[2*row - pieceRow][2*col - pieceCol].player = grid[row][col].player;
 			grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
 			return true;
