@@ -56,11 +56,17 @@ function dblClick() {
 	var time = Date.now();
 	if (time - inputMan.time < 500) {	// default 500 milliseconds
 		inputMan.time = 0;	// reset so next click is not double click
-		zoom();
+		var zoomed = zoom();
 		
-		if (inputMan.row == inputMan.pieceRow && inputMan.col == inputMan.pieceCol) {
-			hudMan.inputText += " phalanx";
+		if (zoomed && inputMan.row == inputMan.pieceRow && inputMan.col == inputMan.pieceCol) {
+			phalanxMan.mode = 1;
+			hudMan.phalanxText = " phalanx";
 		}
+		else {
+			phalanxMan.mode = 0;
+			hudMan.phalanxText = "";
+		}
+		
 		return true;
 	}
 	inputMan.time = time;

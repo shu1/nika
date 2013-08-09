@@ -44,8 +44,11 @@ function zoom() {
 	else {
 		drawMan.scale = 1;
 	}
+	
 	drawMan.x = -(inputMan.col * cellSize + cellSize/2 + gridOffsetX) * (drawMan.scale-1);
 	drawMan.y = -(inputMan.row * cellSize + cellSize/2 + gridOffsetY) * (drawMan.scale-1);
+	
+	return drawMan.scale != 1;
 }
 
 function draw() {
@@ -119,7 +122,7 @@ function drawHud() {
 		hudMan.fpsCount = 0;
 	}
 	hudMan.fpsCount++;
-	context.fillText(hudMan.fpsText + window.innerWidth + "x" + window.innerHeight + " " + drawMan.scale + "x " + hudMan.inputText, cellSize*2 + gridOffsetX, gridOffsetY);
+	context.fillText(hudMan.fpsText + window.innerWidth + "x" + window.innerHeight + " " + drawMan.scale + "x " + hudMan.inputText + hudMan.phalanxText, cellSize*2 + gridOffsetX, gridOffsetY);
 }
 
 // browser compatibility

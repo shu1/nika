@@ -21,7 +21,8 @@ var	hudMan = {
 	fpsCount:0,
 	fpsTime:0,
 	fpsText:"",
-	inputText:""
+	inputText:"",
+	phalanxText:""
 }
 
 var inputMan = {
