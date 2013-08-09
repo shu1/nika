@@ -26,17 +26,24 @@ function mouseMove(event) {
 			rotatePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 		}
 		else if (drawMan.scale > 1) {
-			event.preventDefault();
 			var x = inputMan.x - inputMan.prevX;
 			var y = inputMan.y - inputMan.prevY;
+			var pan = false;
 
 			if (drawMan.x + x <= 0 && drawMan.x + x >= -canvas.width * (drawMan.scale-1)) {
 				drawMan.x += x;
-			}
-			if (drawMan.y + y <= 0 && drawMan.y + y >= -canvas.height * (drawMan.scale-1)) {
-				drawMan.y += inputMan.y - inputMan.prevY;
+				pan = true;
 			}
 
+			if (drawMan.y + y <= 0 && drawMan.y + y >= -canvas.height * (drawMan.scale-1)) {
+				drawMan.y += y;
+				pan = true;
+			}
+			
+			if (pan) {
+				event.preventDefault();
+			}
+			
 			inputMan.prevX = inputMan.x;
 			inputMan.prevY = inputMan.y;
 			hudMan.inputText = -drawMan.x + "," + -drawMan.y;
