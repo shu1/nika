@@ -100,9 +100,10 @@ function checkMove(pieceRow, pieceCol, row, col) {
 		return false;
 	}
 
-	if (grid[pieceRow][pieceCol].type != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1) { // adjacent square
-		return false;
-	}
+	// TODO: This is commented out for ease of debugging
+	// if (grid[pieceRow][pieceCol].type != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1) { // adjacent square
+	// 	return false;
+	// }
 
 	if (grid[pieceRow][pieceCol].type == 3 && (grid[row][col].type != 2 || grid[pieceRow][pieceCol].player != grid[row][col].zone) ) { // routed to respawn
 		return false;
