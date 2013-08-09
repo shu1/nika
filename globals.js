@@ -2,9 +2,9 @@
 
 var debug = true;
 
-// values for board 1024x748
-var pieceSize = 40;
+// values for canvas 1024x748
 var cellSize = 48;
+var pieceSize = 40;
 var gridOffsetX = 8;
 var gridOffsetY = 14;
 
@@ -18,9 +18,10 @@ var drawMan = {
 }
 
 var	hudMan = {
-	fpsCount:0,
 	fpsTime:0,
+	fpsCount:0,
 	fpsText:"",
+	drawText:"",
 	inputText:"",
 	phalanxText:""
 }
@@ -31,7 +32,11 @@ var inputMan = {
 	pieceCol:-1,
 	row:-1,
 	col:-1,
-	time:0
+	time:0,
+	startX:0,
+	startY:0,
+	x:0,
+	y:0
 }
 
 var phalanxMan = {

@@ -11,7 +11,7 @@ function getPiece(row, col) {
 }
 
 function rotatePiece(pieceRow, pieceCol, row, col) {
-	if (pieceRow >= 0 && pieceCol >= 0 && grid[pieceRow][pieceCol].type != 3) {
+	if (grid[pieceRow][pieceCol].type != 3) {
 		if (row < pieceRow) {
 			grid[pieceRow][pieceCol].rot = 0;
 		}
@@ -30,7 +30,7 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 function movePiece(pieceRow, pieceCol, row, col) {
 	if (checkMove(pieceRow, pieceCol, row, col)) {
 		var pushSuccess = true;
-		if ((grid[pieceRow][pieceCol].rot + 2)%4 == grid[row][col].rot) {
+		if ((grid[pieceRow][pieceCol].rot+2)%4 == grid[row][col].rot) {
 
 			// TODO: Perform line weight calculation here and feed it to pushPiece()
 			var weight = 3;
@@ -49,7 +49,7 @@ function movePiece(pieceRow, pieceCol, row, col) {
 			if (grid[row][col].type == 2 && grid[pieceRow][pieceCol].type == 3) { // rally rotation
 				grid[row][col].rot = grid[row][col].player;
 			}
-			return true;
+			return true;	// return if a piece was moved so it can be redrawn
 		}
 	}
 	return false;

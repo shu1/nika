@@ -82,14 +82,3 @@ function clearChecked() {
 		}
 	}
 }
-
-function debugGrid() {
-	for (var row = 0; row < 15; ++row) {
-		var str = "";
-		for (var col = 0; col < 21; ++col) {
-			var a = grid[row][col].type; 
-			str += a == -1 ? '.' : a;
-		}
-		console.log(str);
-	}
-}
