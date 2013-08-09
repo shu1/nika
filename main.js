@@ -38,8 +38,8 @@ function init() {
 }
 
 function zoom() {
-	drawMan.scale++;
-	if (drawMan.scale > 4) {
+	drawMan.scale += 0.5;
+	if (drawMan.scale > 3) {
 		drawMan.scale = 1;
 	}
 	drawMan.x = -(inputMan.col * cellSize + cellSize/2 + gridOffsetX) * (drawMan.scale - 1);
