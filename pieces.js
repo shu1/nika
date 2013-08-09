@@ -61,7 +61,10 @@ function movePiece(pieceRow, pieceCol, row, col) {
 	if (checkMove(pieceRow, pieceCol, row, col)) {
 		var pushSuccess = true;
 		if ((grid[pieceRow][pieceCol].rot + 2)%4 == grid[row][col].rot) {
-			pushSuccess = pushPiece(pieceRow, pieceCol, row, col);	
+
+			// TODO: Perform line weight calculation here and feed it to pushPiece()
+			var weight = 2;
+			pushSuccess = pushSuccess && pushPiece(pieceRow, pieceCol, row, col, weight);
 		}
 		else {
 			routPiece(row, col);
@@ -108,20 +111,25 @@ function checkMove(pieceRow, pieceCol, row, col) {
 	return true;
 }
 
-function pushPiece(pieceRow, pieceCol, row, col) {
+function pushPiece(pieceRow, pieceCol, row, col, weight) {
+
+	if (weight <= 0) { // not enough weight
+		return false;
+	}
+
 	if (grid[2*row - pieceRow][2*col - pieceCol].type == -1 || (grid[2*row - pieceRow][2*col - pieceCol].player >= 0
-		&& Math.abs(grid[2*row - pieceRow][2*col - pieceCol].player - grid[row][col].player)%2 == 1)) { 
+		&& Math.abs(grid[2*row - pieceRow][2*col - pieceCol].player - grid[row][col].player)%2 == 1)) { // Invalid or enemy square
 		routPiece(row,col);
 		return true;
 	}
 
-	if (grid[2*row - pieceRow][2*col - pieceCol].type == 0 && grid[2*row - pieceRow][2*col - pieceCol].player == -1) {
+	if (grid[2*row - pieceRow][2*col - pieceCol].type == 0 && grid[2*row - pieceRow][2*col - pieceCol].player == -1) { // Empty square
 		grid[2*row - pieceRow][2*col - pieceCol].player = grid[row][col].player;
 		grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
 		return true;
 	}
 
-	if (pushPiece(row, col, 2*row - pieceRow, 2*col - pieceCol)) {
+	if (pushPiece(row, col, 2*row - pieceRow, 2*col - pieceCol, weight-1)) { // 
 		grid[2*row - pieceRow][2*col - pieceCol].player = grid[row][col].player;
 		grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
 		return true;
