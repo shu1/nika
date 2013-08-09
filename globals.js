@@ -1,6 +1,6 @@
 "use strict";
 
-var debug = false;
+var debug = true;
 
 // values for board 1024x748
 var pieceSize = 40;

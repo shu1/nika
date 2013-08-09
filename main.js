@@ -61,7 +61,7 @@ function draw() {
 	}
 	
 	if (debug) {
-		context.clearRect(0, 0, canvas.width, gridOffsetY+5);
+		context.clearRect(0, 0, canvas.width, gridOffsetY*1.5);
 		drawHud();
 	}
 	
@@ -102,7 +102,7 @@ function drawHud() {
 		hudMan.fpsCount = 0;
 	}
 	hudMan.fpsCount++;
-	context.fillText(window.innerWidth + "x" + window.innerHeight + " " + drawMan.scale + "x " + hudMan.fpsText + hudMan.inputText, cellSize*2 + gridOffsetX, gridOffsetY);
+	context.fillText(hudMan.fpsText + window.innerWidth + "x" + window.innerHeight + " " + drawMan.scale + "x " + hudMan.inputText, cellSize*2 + gridOffsetX, gridOffsetY);
 }
 
 // browser compatibility
