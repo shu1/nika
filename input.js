@@ -3,8 +3,8 @@
 function mouseDown(event) {
 	inputMan.click = true;
 	getRowCol(event);
-	inputMan.startX = inputMan.x;
-	inputMan.startY = inputMan.y;
+	inputMan.prevX = inputMan.x;
+	inputMan.prevY = inputMan.y;
 	getPiece(inputMan.row, inputMan.col);
 	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
 	
@@ -24,6 +24,22 @@ function mouseMove(event) {
 		if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
 			event.preventDefault();
 			rotatePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
+		}
+		else if (drawMan.scale > 1) {
+			event.preventDefault();
+			var x = inputMan.x - inputMan.prevX;
+			var y = inputMan.y - inputMan.prevY;
+
+			if (drawMan.x + x <= 0 && drawMan.x + x >= -canvas.width * (drawMan.scale-1)) {
+				drawMan.x += x;
+			}
+			if (drawMan.y + y <= 0 && drawMan.y + y >= -canvas.height * (drawMan.scale-1)) {
+				drawMan.y += inputMan.y - inputMan.prevY;
+			}
+
+			inputMan.prevX = inputMan.x;
+			inputMan.prevY = inputMan.y;
+			hudMan.inputText = -drawMan.x + "," + -drawMan.y;
 		}
 		drawMan.draw = true;
 	}

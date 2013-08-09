@@ -33,8 +33,8 @@ var inputMan = {
 	row:-1,
 	col:-1,
 	time:0,
-	startX:0,
-	startY:0,
+	prevX:0,
+	prevY:0,
 	x:0,
 	y:0
 }
