@@ -26,7 +26,7 @@ function mouseMove(event) {
 			event.preventDefault();
 			rotatePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 		}
-		else if (drawMan.scale > 1) {	// panning
+		else if (drawMan.scale > 1 || boardWidth > canvas.width || boardHeight > canvas.height) {	// panning
 			var x = inputMan.x - inputMan.prevX;
 			var y = inputMan.y - inputMan.prevY;
 			var pan = false;

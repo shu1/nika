@@ -31,7 +31,7 @@ function init() {
 		window.addEventListener("mouseup",    mouseUp);
 	}
 	
-	context.font = drawMan.offsetY + "px sans-serif";
+	context.font = "12px sans-serif";
 	context.fillStyle = "yellow";
 	draw();
 }
@@ -147,9 +147,9 @@ function drawHud() {
 		hudMan.fpsCount = 0;
 	}
 	hudMan.fpsCount++;
-	hudMan.drawText = window.innerWidth + "," + window.innerHeight + " " + drawMan.scale + "x ";
-	context.clearRect(cellSize*2 + drawMan.offsetX, 0, canvas.width/2, drawMan.offsetY*1.5);
-	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.inputText + hudMan.phalanxText, cellSize*2 + drawMan.offsetX, drawMan.offsetY);
+	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + drawMan.scale + "x ";
+	context.clearRect(0, 0, canvas.width, 18);
+	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.inputText + hudMan.phalanxText, 100, 12);
 }
 
 // browser compatibility
