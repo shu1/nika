@@ -11,18 +11,41 @@ function getPiece(row, col) {
 }
 
 function rotatePiece(pieceRow, pieceCol, row, col) {
-	if (grid[pieceRow][pieceCol].type != 3) {
-		if (row < pieceRow) {
-			grid[pieceRow][pieceCol].rot = 0;
+
+	if (phalanxMan.mode == 0) {
+		for (var i=0,len=phalanx.length; i<len; ++i) {
+
+			if (grid[phalanx[i].row][phalanx[i].col].type != 3) {
+				if (row < pieceRow) {
+					grid[phalanx[i].row][phalanx[i].col].rot = 0;
+				}
+				else if (col > pieceCol) {
+					grid[phalanx[i].row][phalanx[i].col].rot = 1;
+				}
+				else if (row > pieceRow) {
+					grid[phalanx[i].row][phalanx[i].col].rot = 2;
+				}
+				else if (col < pieceCol) {
+					grid[phalanx[i].row][phalanx[i].col].rot = 3;
+				}
+			}
 		}
-		else if (col > pieceCol) {
-			grid[pieceRow][pieceCol].rot = 1;
-		}
-		else if (row > pieceRow) {
-			grid[pieceRow][pieceCol].rot = 2;
-		}
-		else if (col < pieceCol) {
-			grid[pieceRow][pieceCol].rot = 3;
+	}
+	
+	else {
+		if (grid[pieceRow][pieceCol].type != 3) {
+			if (row < pieceRow) {
+				grid[pieceRow][pieceCol].rot = 0;
+			}
+			else if (col > pieceCol) {
+				grid[pieceRow][pieceCol].rot = 1;
+			}
+			else if (row > pieceRow) {
+				grid[pieceRow][pieceCol].rot = 2;
+			}
+			else if (col < pieceCol) {
+				grid[pieceRow][pieceCol].rot = 3;
+			}
 		}
 	}
 }
