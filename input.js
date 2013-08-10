@@ -3,12 +3,12 @@
 function mouseDown(event) {
 	inputMan.click = true;
 	getRowCol(event);
+	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
 	inputMan.prevX = inputMan.x;
 	inputMan.prevY = inputMan.y;
 	getPiece(inputMan.row, inputMan.col);
-	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
+
 	phalanx = [];
-	
 	if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
 		event.preventDefault();
 		getPhalanx(inputMan.pieceRow, inputMan.pieceCol);
@@ -58,14 +58,9 @@ function mouseUp(event) {
 	hudMan.inputText += " up";	
 	
 	if (!dblClick(event)) {
-		var moveMade;
-			
-			if (movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
-				inputMan.time = 0;	// reset so next click is not double click
-			}
-
-
-		
+		if (movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
+			inputMan.time = 0;	// reset so next click is not double click
+		}
 	}
 	drawMan.draw = true;
 }
@@ -87,6 +82,7 @@ function getRowCol(event) {
 function dblClick(event) {
 	var time = Date.now();
 	if (time - inputMan.time < 500) {	// default 500 milliseconds
+		hudMan.inputText += " " + (time - inputMan.time) + "ms";
 		event.preventDefault();
 		zoom();
 		

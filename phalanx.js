@@ -63,6 +63,10 @@ function movePhalanx(pieceRow, pieceCol, row, col) {
 }
 
 function checkMovePhalanx(pieceRow, pieceCol, row, col) {
+	if (pieceRow < 0 || pieceCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21) { // bounds
+		return false;
+	}
+	
 	var deltaRow = row - pieceRow;
 	var deltaCol = col - pieceCol;
 

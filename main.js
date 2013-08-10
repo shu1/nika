@@ -92,50 +92,39 @@ function drawPieces() {
 }
 
 function drawPiecesHighlight() {
-
 	context.strokeStyle = "red";
 
 	if (phalanxMan.mode == 0) {
-		if (phalanx.length > 0) {
-			
-			for (var i = phalanx.length - 1; i >= 0; --i) {
-				context.beginPath();
-				context.arc(phalanx[i].col * cellSize + cellSize/2, phalanx[i].row * cellSize + cellSize/2, pieceSize/2 + 1, 0, Math.PI*2);
-				context.stroke();
-			}
-		}
-	} 
-	else if (phalanxMan.mode == 1) {
-		if (grid[inputMan.pieceRow][inputMan.pieceCol].player > -1) {
+		for (var i = phalanx.length-1; i >= 0; --i) {
 			context.beginPath();
-			context.arc(inputMan.pieceCol * cellSize + cellSize/2, inputMan.pieceRow * cellSize + cellSize/2, pieceSize/2 + 1, 0, Math.PI*2);
+			context.arc(phalanx[i].col * cellSize + cellSize/2, phalanx[i].row * cellSize + cellSize/2, pieceSize/2 + 1, 0, Math.PI*2);
 			context.stroke();
 		}
+	}
+	else if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
+		context.beginPath();
+		context.arc(inputMan.pieceCol * cellSize + cellSize/2, inputMan.pieceRow * cellSize + cellSize/2, pieceSize/2 + 1, 0, Math.PI*2);
+		context.stroke();
 	}
 }
 
 function drawMoveHighlight() {
-
 	context.strokeStyle = "green";
-	if (phalanxMan.mode == 0) {
+
+	if (phalanxMan.mode == 0 && inputMan.click && checkMovePhalanx(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
 		var deltaRow = inputMan.row - inputMan.pieceRow;
 		var deltaCol = inputMan.col - inputMan.pieceCol;
 
-		if (inputMan.click && checkMovePhalanx(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
-			for (var i=phalanx.length-1; i>=0; --i) {
-				context.beginPath();
-				context.arc((phalanx[i].col+deltaCol) * cellSize + cellSize/2, (phalanx[i].row+deltaRow) * cellSize + cellSize/2, pieceSize/2 + 1, 0, Math.PI*2);
-				context.stroke();	
-			}
-			
+		for (var i = phalanx.length-1; i >= 0; --i) {
+			context.beginPath();
+			context.arc((phalanx[i].col + deltaCol) * cellSize + cellSize/2, (phalanx[i].row + deltaRow) * cellSize + cellSize/2, pieceSize/2 + 1, 0, Math.PI*2);
+			context.stroke();	
 		}
 	}
-	else if (phalanxMan.mode == 1) {
-		if (inputMan.click && checkMove(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
-			context.beginPath();
-			context.arc(inputMan.col * cellSize + cellSize/2, inputMan.row * cellSize + cellSize/2, pieceSize/2 + 1, 0, Math.PI*2);
-			context.stroke();
-		}	
+	else if (inputMan.click && checkMove(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
+		context.beginPath();
+		context.arc(inputMan.col * cellSize + cellSize/2, inputMan.row * cellSize + cellSize/2, pieceSize/2 + 1, 0, Math.PI*2);
+		context.stroke();
 	}
 }
 
