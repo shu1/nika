@@ -42,3 +42,56 @@ function inPhalanx(row, col) {
 	}
 	return false;
 }
+
+function movePhalanx(pieceRow, pieceCol, row, col) {
+	var deltaRow = row - pieceRow;
+	var deltaCol = col - pieceCol;
+	var moveSuccess = true;
+	
+	// find the back of each row/col
+	for (var i=0, len=phalanx.length; i<len; ++i) {
+		if (!checkMove(phalanx[i].row + deltaRow, phalanx[i].col + deltaCol, phalanx[i].row, phalanx[i].col)    ) {
+			moveSuccess = false;
+		}
+	}
+
+	if(moveSuccess) {
+		for (var i=0, len=phalanx.length; i<len; ++i) {
+			movePiece(phalanx[i].row + deltaRow, phalanx[i].col + deltaCol, phalanx[i].row, phalanx[i].col)
+		}
+	}
+}
+
+function checkMovePhalanx(pieceRow, pieceCol, row, col) {
+	var deltaRow = row - pieceRow;
+	var deltaCol = col - pieceCol;
+
+	for (var i=0,len=phalanx.length; i<len; ++i) {
+
+		if (phalanx[i].row < 0 || phalanx[i].col < 0 || phalanx[i].row + deltaRow < 0 || phalanx[i].row + deltaRow >= 15 
+			|| phalanx[i].col + deltaCol < 0 || phalanx[i].col + deltaCol >= 21) { // bounds
+			return false;
+		}
+
+		if (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].type < 0 
+			|| grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].type == 3) { // invalid cell
+			return false;
+		}
+
+		if (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].player >= 0 && !inPhalanx(phalanx[i].row + deltaRow,phalanx[i].col + deltaCol) && 
+			(grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].player - grid[phalanx[i].row][phalanx[i].col].player)%2 == 0) { // same team, not part of phalanx
+			return false;
+		}
+
+		if (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].type == 1 
+			&& (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].zone - grid[phalanx[i].row][phalanx[i].col].player)%2 != 0 ) { // opponent win cell
+			return false;
+		}
+	}
+
+	if (grid[pieceRow][pieceCol].type != 3 && Math.abs(deltaRow) + Math.abs(deltaCol) > 1) { // adjacent cell
+		return false;
+	}
+
+	return true;
+}

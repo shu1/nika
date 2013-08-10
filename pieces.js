@@ -28,17 +28,21 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 }
 
 function movePiece(pieceRow, pieceCol, row, col) {
-	if (checkMove(pieceRow, pieceCol, row, col)) {
-		var pushSuccess = true;
-		if ((grid[pieceRow][pieceCol].rot+2)%4 == grid[row][col].rot) {
 
-			// TODO: Perform line weight calculation here and feed it to pushPiece()
-			var weight = 3;
-			pushSuccess = pushSuccess && pushPiece(pieceRow, pieceCol, row, col, weight);
-		}
-		else {
-			routPiece(row, col);
-		}
+	if (pieceRow == row && pieceCol == col) {
+		return false;
+	}
+
+	if (checkMove(pieceRow, pieceCol, row, col)) {
+
+		var pushSuccess = true;
+		// if ((grid[pieceRow][pieceCol].rot+2)%4 == grid[row][col].rot) {
+			pushSuccess = pushSuccess && pushPiece(pieceRow, pieceCol, row, col, grid[pieceRow][pieceCol].player, 1);
+		// }
+		// else {
+			// console.log("I got called "+row+" "+col);
+			// routPiece(row, col);
+		// }
 		
 		if (pushSuccess) {
 			grid[row][col].player = grid[pieceRow][pieceCol].player;
@@ -64,7 +68,7 @@ function checkMove(pieceRow, pieceCol, row, col) {
 		return false;
 	}
 
-	if (grid[row][col].player >= 0 && (grid[row][col].player - grid[pieceRow][pieceCol].player)%2 == 0) { // same team
+	if (grid[row][col].player >= 0 && (grid[row][col].player - grid[pieceRow][pieceCol].player)%2 == 0 && !inPhalanx(row,col)) { // same team
 		return false;
 	}
 
@@ -84,25 +88,87 @@ function checkMove(pieceRow, pieceCol, row, col) {
 	return true;
 }
 
-function pushPiece(pieceRow, pieceCol, row, col, weight) {
-	if (weight > 1) { // check line weight
-		if (grid[2*row - pieceRow][2*col - pieceCol].type == -1 || (grid[2*row - pieceRow][2*col - pieceCol].player >= 0
-			&& Math.abs(grid[2*row - pieceRow][2*col - pieceCol].player - grid[row][col].player)%2 == 1)) { // Invalid or enemy square
+function pushPiece(pieceRow, pieceCol, row, col, pusher, weight) {
+	// the piece at (pieceRow, pieceCol) is trying to push me, the piece at (row, col), with a strength of (weight)
+
+	if (grid[row][col].type == -1 || grid[row][col].type == 3) { // if i'm an invalid or routed square
+		console.log("I'm invalid or routed "+row+" "+col);
+		return false;
+	}
+
+	if (grid[row][col].player == -1) { // if i'm empty
+		console.log("I'm empty "+row+" "+col);
+		if (grid[row][col].type == 0) { // regular board sq
+			console.log("I'm a regular square "+row+" "+col);
+			return true;
+		}
+
+		if ((grid[row][col].type == 1 || grid[row][col].type == 2) // i'm an allied win or rally square
+				&& Math.abs(pusher - grid[row][col].zone)%2 == 0) {
+			console.log("I'm an allied win/rally "+row+" "+col);
+			return true;
+		}
+
+		return false;
+	}
+
+
+
+	if (inPhalanx(row,col)) { // i'm a phalanx member
+		console.log("I'm in the phalanx, push forward with +1 weight"+row+" "+col);
+		if (pushPiece(row, col, 2*row - pieceRow, 2*col - pieceCol, pusher, weight+1)) { // I'll push if the square in front will too.
+			grid[2*row - pieceRow][2*col - pieceCol].player = grid[row][col].player;
+			grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
+			return true;
+		}
+
+		return false;
+	}
+
+	if (Math.abs(pusher - grid[row][col].player)%2 == 0) { // i'm a non-phalanx ally
+		console.log("I'm an ally, not in phalanx "+row+" "+col);
+		return false;
+	}
+
+	else {	// i'm an enemy piece
+
+		if ((grid[pieceRow][pieceCol].rot+2)%4 != grid[row][col].rot && grid[pieceRow][pieceCol].player == pusher) { // not facing enemy
+			console.log("Facing wrong way "+row+" "+col);
 			routPiece(row,col);
 			return true;
 		}
 
-		if ((grid[2*row - pieceRow][2*col - pieceCol].type > -1 || grid[2*row - pieceRow][2*col - pieceCol].type < 3) 
-			&& grid[2*row - pieceRow][2*col - pieceCol].player == -1) { // Empty square
-			grid[2*row - pieceRow][2*col - pieceCol].player = grid[row][col].player;
-			grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
-			return true;
-		}
+		if (weight > 1) { // check line weight
+			if (grid[2*row - pieceRow][2*col - pieceCol].type == -1 
+				|| grid[2*row - pieceRow][2*col - pieceCol].type == 3) { // pushed into invalid or routed square
 
-		if (pushPiece(row, col, 2*row - pieceRow, 2*col - pieceCol, weight-1)) { // I'll move if my teammate behind me will.
-			grid[2*row - pieceRow][2*col - pieceCol].player = grid[row][col].player;
-			grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
-			return true;
+				console.log("Routed: pushed into invalid square "+row+" "+col);
+				routPiece(row,col);
+				return true;
+			}
+			if (grid[2*row - pieceRow][2*col - pieceCol].player >= 0 
+				&& Math.abs(grid[2*row - pieceRow][2*col - pieceCol].player - grid[row][col].player)%2 == 1) { // pushed into enemy piece
+
+				console.log("Routed: pushed into enemy piece "+row+" "+col);
+				routPiece(row,col);
+				return true;	
+			}
+				
+			if (grid[2*row - pieceRow][2*col - pieceCol].type == 1 
+					&& Math.abs(grid[2*row - pieceRow][2*col - pieceCol].zone - grid[row][col].player)%2 == 1) { // pushed into enemy win square
+
+				console.log("Routed: pushed into enemy win square "+row+" "+col);
+				routPiece(row,col);
+				return true;
+			}
+
+			console.log("If those behind can be pushed with -1 weight... "+row+" "+col);
+			if (pushPiece(row, col, 2*row - pieceRow, 2*col - pieceCol, pusher, weight-1)) { // I'll be pushed if the square behind me will too.
+
+				grid[2*row - pieceRow][2*col - pieceCol].player = grid[row][col].player;
+				grid[2*row - pieceRow][2*col - pieceCol].rot = grid[row][col].rot;
+				return true;
+			}
 		}
 	}
 	return false;

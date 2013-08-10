@@ -58,6 +58,8 @@ function mouseUp(event) {
 	hudMan.inputText += " up";	
 	
 	if (!dblClick(event)) {
+		// console.log("Phalanx move : "+checkMovePhalanx(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col));
+		// movePhalanx(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 		if (movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
 			inputMan.time = 0;	// reset so next click is not double click
 		}
