@@ -59,17 +59,11 @@ function mouseUp(event) {
 	
 	if (!dblClick(event)) {
 		var moveMade;
-
-		if (phalanxMan.mode == 0) {
-
-			console.log("Hey, tried to move a phalanx");
-
-		} else {
 			
 			if (movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
 				inputMan.time = 0;	// reset so next click is not double click
 			}
-		}
+
 
 		
 	}
