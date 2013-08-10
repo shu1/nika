@@ -6,12 +6,11 @@ function init() {
 
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
-	
-	var scale = canvas.width / 1024;
-	pieceSize *= scale;
-	cellSize *= scale;
-	gridOffsetX *= scale;
-	gridOffsetY *= scale;
+
+	drawMan.offsetX = (canvas.width - boardWidth)/2;
+	drawMan.offsetY = (canvas.height - boardHeight)/2;
+	drawMan.x = drawMan.offsetX;
+	drawMan.y = drawMan.offsetY;
 	
 	images = new Array(6);
 	images[0] = document.getElementById("athens");
@@ -32,7 +31,7 @@ function init() {
 		window.addEventListener("mouseup",    mouseUp);
 	}
 	
-	context.font = gridOffsetY + "px sans-serif";
+	context.font = drawMan.offsetY + "px sans-serif";
 	context.fillStyle = "yellow";
 	draw();
 }
@@ -43,10 +42,11 @@ function zoom() {
 	}
 	else {
 		drawMan.scale = 1;
+		context.clearRect(0, 0, canvas.width, canvas.height);
 	}
 	
-	drawMan.x = -(inputMan.col * cellSize + cellSize/2 + gridOffsetX) * (drawMan.scale-1);
-	drawMan.y = -(inputMan.row * cellSize + cellSize/2 + gridOffsetY) * (drawMan.scale-1);
+	drawMan.x = -(inputMan.col * cellSize + cellSize/2) * (drawMan.scale-1) + drawMan.offsetX;
+	drawMan.y = -(inputMan.row * cellSize + cellSize/2) * (drawMan.scale-1) + drawMan.offsetY;
 }
 
 function draw() {
@@ -65,7 +65,6 @@ function draw() {
 	}
 	
 	if (debug) {
-		context.clearRect(0, 0, canvas.width, gridOffsetY*1.5);
 		drawHud();
 	}
 	
@@ -73,7 +72,7 @@ function draw() {
 }
 
 function drawBoard() {
-	context.drawImage(images[5], 0, 0, canvas.width, canvas.height);
+	context.drawImage(images[5], 0, 0, boardWidth, boardHeight);
 }
 
 function drawPieces() {
@@ -81,7 +80,7 @@ function drawPieces() {
 		for (var col = 0; col < 21; ++col) {
 			if (grid[row][col].player >= 0) {
 				context.save();
-				context.translate(col * cellSize + cellSize/2 + gridOffsetX, row * cellSize + cellSize/2 + gridOffsetY);
+				context.translate(col * cellSize + cellSize/2, row * cellSize + cellSize/2);
 				context.rotate(grid[row][col].rot * Math.PI/2);
 				context.drawImage(images[grid[row][col].player], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);
 				context.rotate(grid[row][col].rot * -Math.PI/2);	// ugh waste
@@ -97,7 +96,7 @@ function drawPhalanx() {
 		context.strokeStyle = "red";
 		for (var i = phalanx.length - 1; i >= 0; --i) {
 			context.beginPath();
-			context.arc(phalanx[i].col * cellSize + cellSize/2 + gridOffsetX, phalanx[i].row * cellSize + cellSize/2 + gridOffsetY, pieceSize/2 + 1, 0, Math.PI*2);
+			context.arc(phalanx[i].col * cellSize + cellSize/2, phalanx[i].row * cellSize + cellSize/2, pieceSize/2 + 1, 0, Math.PI*2);
 			context.stroke();
 		}
 	}
@@ -107,7 +106,7 @@ function drawHighlight() {
 	if (inputMan.click && checkMove(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
 		context.strokeStyle = "green";
 		context.beginPath();
-		context.arc(inputMan.col * cellSize + cellSize/2 + gridOffsetX, inputMan.row * cellSize + cellSize/2 + gridOffsetY, pieceSize/2 + 1, 0, Math.PI*2);
+		context.arc(inputMan.col * cellSize + cellSize/2, inputMan.row * cellSize + cellSize/2, pieceSize/2 + 1, 0, Math.PI*2);
 		context.stroke();
 	}
 }
@@ -120,8 +119,9 @@ function drawHud() {
 		hudMan.fpsCount = 0;
 	}
 	hudMan.fpsCount++;
-	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + drawMan.scale + "x ";
-	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.inputText + hudMan.phalanxText, cellSize*2 + gridOffsetX, gridOffsetY);
+	hudMan.drawText = window.innerWidth + "," + window.innerHeight + " " + drawMan.scale + "x ";
+	context.clearRect(cellSize*2 + drawMan.offsetX, 0, canvas.width/2, drawMan.offsetY*1.5);
+	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.inputText + hudMan.phalanxText, cellSize*2 + drawMan.offsetX, drawMan.offsetY);
 }
 
 // browser compatibility

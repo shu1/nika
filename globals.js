@@ -1,18 +1,12 @@
 "use strict";
 
-var debug = true;
-
-// values for canvas 1024x748
-var cellSize = 48;
-var pieceSize = 40;
-var gridOffsetX = 8;
-var gridOffsetY = 14;
-
-var canvas, context, images, grid, phalanx = [];
+var canvas, context, images, grid, phalanx=[], debug = true;
 
 var drawMan = {
 	draw:true,
 	scale:1,
+	offsetX:0,
+	offsetY:0,
 	x:0,
 	y:0
 }

@@ -6,6 +6,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 <title>Nika Digital</title>
+<script type="text/javascript">
+var zoomLevel = 2;
+var cellSize = 48;
+var pieceSize = 40;
+var boardWidth = 1008;
+var boardHeight = 720;
+</script>
 <script src="globals.js"></script>
 <script src="main.js"></script>
 <script src="input.js"></script>
@@ -17,19 +24,17 @@ var _gaq=_gaq||[];_gaq.push(['_setAccount','UA-42200724-1']);_gaq.push(['_trackP
 (function(){var ga=document.createElement('script');ga.type='text/javascript';ga.async=true;
 ga.src=('https:'==document.location.protocol?'https://ssl':'http://www')+'.google-analytics.com/ga.js';
 var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga,s);})();
-
-var zoomLevel = 2;
 </script>
 </head>
 <body style="margin:0px; background-color:#073c50">
-	<div style="width:1024px; height:748px; margin-left:auto; margin-right:auto; position:relative">
+	<div style="width:1024px; margin-left:auto; margin-right:auto; position:relative">
 		<img src="athens80.png" id="athens" style="display:none"/>
 		<img src="sparta80.png" id="sparta" style="display:none"/>
 		<img src="mesene80.png" id="mesene" style="display:none"/>
 		<img src="thebes80.png" id="thebes" style="display:none"/>
 		<img src="shadow80.png" id="shadow" style="display:none"/>
-		<img src="board2048.png" id="board" style="display:none"/>
-		<canvas id="canvas" width=1024 height=748></canvas>
+		<img src="board1440.png" id="board" style="display:none"/>
+		<canvas id="canvas" width=1024 height=768></canvas>
 	</div>
 </body>
 </html>
