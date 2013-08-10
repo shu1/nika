@@ -81,7 +81,7 @@ function getRowCol(event) {
 
 function dblClick(event) {
 	var time = Date.now();
-	if (time - inputMan.time < 500) {	// default 500 milliseconds
+	if (time - inputMan.time < 300) {	// double click time in milliseconds
 		hudMan.inputText += " " + (time - inputMan.time) + "ms";
 		event.preventDefault();
 		zoom();
