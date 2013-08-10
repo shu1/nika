@@ -3,7 +3,7 @@
 window.onload = init;
 function init() {
 	generateGrid();
-	
+
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
 	
@@ -93,7 +93,7 @@ function drawPieces() {
 }
 
 function drawPhalanx() {
-	if (inputMan.click && phalanx.length > 0) {
+	if (phalanx.length > 0) {
 		context.strokeStyle = "red";
 		for (var i = phalanx.length - 1; i >= 0; --i) {
 			context.beginPath();
