@@ -43,20 +43,31 @@ function inPhalanx(row, col) {
 	return false;
 }
 
+function rotatePhalanx(rot) {
+	if (phalanxMan.mode == 0) {
+		for (var i = phalanx.length - 1; i >= 0; --i) {
+			grid[phalanx[i].row][phalanx[i].col].rot = rot;
+		}
+	}
+	else {
+		grid[pieceRow][pieceCol].rot = rot;
+	}
+}
+
 function movePhalanx(pieceRow, pieceCol, row, col) {
 	var deltaRow = row - pieceRow;
 	var deltaCol = col - pieceCol;
 	var moveSuccess = true;
 	
 	// find the back of each row/col
-	for (var i=0, len=phalanx.length; i<len; ++i) {
-		if (!checkMove(phalanx[i].row + deltaRow, phalanx[i].col + deltaCol, phalanx[i].row, phalanx[i].col)    ) {
+	for (var i = phalanx.length-1; i >= 0; --i) {
+		if (!checkMove(phalanx[i].row + deltaRow, phalanx[i].col + deltaCol, phalanx[i].row, phalanx[i].col)) {
 			moveSuccess = false;
 		}
 	}
 
-	if(moveSuccess) {
-		for (var i=0, len=phalanx.length; i<len; ++i) {
+	if (moveSuccess) {
+		for (var i = phalanx.length-1; i >= 0; --i) {
 			movePiece(phalanx[i].row + deltaRow, phalanx[i].col + deltaCol, phalanx[i].row, phalanx[i].col)
 		}
 	}
@@ -70,8 +81,7 @@ function checkMovePhalanx(pieceRow, pieceCol, row, col) {
 	var deltaRow = row - pieceRow;
 	var deltaCol = col - pieceCol;
 
-	for (var i=0,len=phalanx.length; i<len; ++i) {
-
+	for (var i = phalanx.length-1; i >= 0; --i) {
 		if (phalanx[i].row < 0 || phalanx[i].col < 0 || phalanx[i].row + deltaRow < 0 || phalanx[i].row + deltaRow >= 15 
 			|| phalanx[i].col + deltaCol < 0 || phalanx[i].col + deltaCol >= 21) { // bounds
 			return false;

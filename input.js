@@ -2,12 +2,12 @@
 
 function mouseDown(event) {
 	inputMan.click = true;
-	getRowCol(event);
+	getXYRowCol(event);
 	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
 	inputMan.prevX = inputMan.x;
 	inputMan.prevY = inputMan.y;
 	getPiece(inputMan.row, inputMan.col);
-
+	
 	phalanx = [];
 	if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
 		event.preventDefault();
@@ -19,9 +19,9 @@ function mouseDown(event) {
 
 function mouseMove(event) {
 	if (inputMan.click) {
-		getRowCol(event);
+		getXYRowCol(event);
 		hudMan.inputText = inputMan.row + "," + inputMan.col;
-
+		
 		if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
 			event.preventDefault();
 			rotatePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
@@ -30,17 +30,15 @@ function mouseMove(event) {
 			var x = inputMan.x - inputMan.prevX;
 			var y = inputMan.y - inputMan.prevY;
 			var pan = false;
-
+			
 			if (drawMan.x + x <= 0 && drawMan.x + x >= -boardWidth * (drawMan.scale-1) + drawMan.offsetX*2) {
 				drawMan.x += x;
 				pan = true;
 			}
-
 			if (drawMan.y + y <= 0 && drawMan.y + y >= -boardHeight * (drawMan.scale-1) + drawMan.offsetY*2) {
 				drawMan.y += y;
 				pan = true;
 			}
-			
 			if (pan) {
 				event.preventDefault();
 			}
@@ -65,7 +63,7 @@ function mouseUp(event) {
 	drawMan.draw = true;
 }
 
-function getRowCol(event) {
+function getXYRowCol(event) {
 	if (event.touches) {
 		inputMan.x = event.touches[0].pageX;
 		inputMan.y = event.touches[0].pageY;
