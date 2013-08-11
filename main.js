@@ -21,6 +21,14 @@ function main() {
 	images[3] = document.getElementById("thebes");
 	images[4] = document.getElementById("shadow");
 	images[5] = document.getElementById("board");
+
+	audio = new Array(6);
+	audio[0] = document.getElementById("pick");
+	audio[1] = document.getElementById("drop");
+	audio[2] = document.getElementById("move");
+	audio[3] = document.getElementById("push");
+	audio[5] = document.getElementById("rout");
+	audio[4] = document.getElementById("raly");
 	
 	if ("ontouchstart" in window) {
 		window.addEventListener("touchstart", mouseDown);
@@ -36,6 +44,31 @@ function main() {
 	context.font = "14px sans-serif";
 	context.fillStyle = "yellow";
 	draw();
+}
+
+function playAudio(name) {
+	switch (name) {
+	case "pick":
+		audio[0].play();
+		break;
+	case "drop":
+		audio[1].play();
+		break;
+	case "move":
+		audio[2].play();
+		break;
+	case "push":
+		audio[3].play();
+		break;
+	case "rout":
+		audio[4].play();
+		break;
+	case "raly":
+		audio[5].play();
+		break;
+	}
+	
+	hudMan.audioText = name + " ";
 }
 
 function zoom() {
@@ -70,7 +103,7 @@ function draw() {
 		drawHud();
 	}
 	
-	requestAnimationFrame(draw);
+	window.requestAnimationFrame(draw);
 }
 
 function drawBoard() {
@@ -140,7 +173,7 @@ function drawHud() {
 	hudMan.fpsCount++;
 	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + drawMan.scale + "x ";
 	context.clearRect(0, 0, canvas.width, 20);
-	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.inputText + hudMan.phalanxText, 120, 14);
+	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.audioText + hudMan.inputText + hudMan.phalanxText, 120, 14);
 }
 
 // browser compatibility
