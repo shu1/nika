@@ -1,11 +1,13 @@
 "use strict";
 
-window.onload = init;
-function init() {
+window.onload = main;
+function main() {
 	generateGrid();
 
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
+
+	init(canvas);
 
 	drawMan.offsetX = (canvas.width - boardWidth)/2;
 	drawMan.offsetY = (canvas.height - boardHeight)/2;
@@ -31,7 +33,7 @@ function init() {
 		window.addEventListener("mouseup",    mouseUp);
 	}
 	
-	context.font = "12px sans-serif";
+	context.font = "14px sans-serif";
 	context.fillStyle = "yellow";
 	draw();
 }
@@ -137,8 +139,8 @@ function drawHud() {
 	}
 	hudMan.fpsCount++;
 	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + drawMan.scale + "x ";
-	context.clearRect(0, 0, canvas.width, 18);
-	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.inputText + hudMan.phalanxText, 100, 12);
+	context.clearRect(0, 0, canvas.width, 20);
+	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.inputText + hudMan.phalanxText, 120, 14);
 }
 
 // browser compatibility
