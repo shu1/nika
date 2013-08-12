@@ -75,12 +75,12 @@ function init() {
 
 function reSize() {
 	if (fullScreen) {
-		canvas.width = window.innerWidth;
+		canvas.width = window.innerWidth-6;
 		canvas.height = window.innerHeight-6;
 	}
 	
 	context.font = "14px sans-serif";
-	context.fillStyle = "yellow";
+	context.fillStyle = "white";
 
 	drawMan.offsetX = (canvas.width - boardWidth)/2;
 	drawMan.offsetY = (canvas.height - boardHeight)/2;
@@ -111,22 +111,22 @@ function pan(x, y) {
 	var height = -boardHeight * (drawMan.scale-1) + drawMan.offsetY*2;
 	var panned = false;
 	
-	if (drawMan.x + x > 0) {
-		drawMan.x = 0;
-	}
-	else if (drawMan.x + x < width) {
+	if (drawMan.x + x < width) {
 		drawMan.x = width;
+	}
+	else if (drawMan.x + x > 0) {
+		drawMan.x = 0;
 	}
 	else {
 		drawMan.x += x;
 		panned = true;
 	}
 
-	if (drawMan.y + y > 0) {
-		drawMan.y = 0;
-	}
-	else if (drawMan.y + y < height) {
+	if (drawMan.y + y < height) {
 		drawMan.y = height;
+	}
+	else if (drawMan.y + y > 0) {
+		drawMan.y = 0;
 	}
 	else {
 		drawMan.y += y;
