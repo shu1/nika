@@ -48,7 +48,13 @@ function init() {
 	audio[5] = document.getElementById("rout");
 	audio[4] = document.getElementById("raly");
 	
-	if ("ontouchstart" in window) {
+	if (window.navigator.msPointerEnabled) {
+		canvas.style.msTouchAction = "none";
+		canvas.addEventListener("MSPointerDown", mouseDown);
+		canvas.addEventListener("MSPointerMove", mouseMove);
+		window.addEventListener("MSPointerUp",   mouseUp);
+	}
+	else if ("ontouchstart" in window) {
 		window.addEventListener("touchstart", mouseDown);
 		window.addEventListener("touchmove",  mouseMove);
 		window.addEventListener("touchend",   mouseUp);
@@ -70,7 +76,7 @@ function init() {
 function reSize() {
 	if (fullScreen) {
 		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
+		canvas.height = window.innerHeight-6;
 	}
 	
 	context.font = "14px sans-serif";
@@ -94,6 +100,40 @@ function zoom() {
 	
 	drawMan.x = -(inputMan.col * cellSize + cellSize/2) * (drawMan.scale-1) + drawMan.offsetX;
 	drawMan.y = -(inputMan.row * cellSize + cellSize/2) * (drawMan.scale-1) + drawMan.offsetY;
+
+	if (drawMan.scale > 1) {
+		pan(0, 0);	// hack to fix if outside board
+	}
+}
+
+function pan(x, y) {
+	var width = -boardWidth * (drawMan.scale-1) + drawMan.offsetX*2;
+	var height = -boardHeight * (drawMan.scale-1) + drawMan.offsetY*2;
+	var panned = false;
+	
+	if (drawMan.x + x > 0) {
+		drawMan.x = 0;
+	}
+	else if (drawMan.x + x < width) {
+		drawMan.x = width;
+	}
+	else {
+		drawMan.x += x;
+		panned = true;
+	}
+
+	if (drawMan.y + y > 0) {
+		drawMan.y = 0;
+	}
+	else if (drawMan.y + y < height) {
+		drawMan.y = height;
+	}
+	else {
+		drawMan.y += y;
+		panned = true;
+	}
+
+	return panned;
 }
 
 function draw() {

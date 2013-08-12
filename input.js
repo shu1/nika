@@ -1,5 +1,19 @@
 "use strict";
 
+function getXYRowCol(event) {
+	if (event.touches) {
+		inputMan.x = event.touches[0].pageX;
+		inputMan.y = event.touches[0].pageY;
+	}
+	else {
+		inputMan.x = event.layerX;
+		inputMan.y = event.layerY;
+	}
+	
+	inputMan.col = Math.floor((inputMan.x - drawMan.x) / (cellSize * drawMan.scale));
+	inputMan.row = Math.floor((inputMan.y - drawMan.y) / (cellSize * drawMan.scale));
+}
+
 function mouseDown(event) {
 	inputMan.click = true;
 	getXYRowCol(event);
@@ -29,17 +43,8 @@ function mouseMove(event) {
 		else if (drawMan.scale > 1 || boardWidth > canvas.width || boardHeight > canvas.height) {	// panning
 			var x = inputMan.x - inputMan.prevX;
 			var y = inputMan.y - inputMan.prevY;
-			var pan = false;
-			
-			if (drawMan.x + x <= 0 && drawMan.x + x >= -boardWidth * (drawMan.scale-1) + drawMan.offsetX*2) {
-				drawMan.x += x;
-				pan = true;
-			}
-			if (drawMan.y + y <= 0 && drawMan.y + y >= -boardHeight * (drawMan.scale-1) + drawMan.offsetY*2) {
-				drawMan.y += y;
-				pan = true;
-			}
-			if (pan) {
+
+			if (pan(x, y)) {
 				event.preventDefault();
 			}
 			
@@ -53,7 +58,7 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	inputMan.click = false;
-	hudMan.inputText += " up";	
+	hudMan.inputText += " up";
 	
 	if (!dblClick(event)) {
 		if (movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
@@ -61,20 +66,6 @@ function mouseUp(event) {
 		}
 	}
 	drawMan.draw = true;
-}
-
-function getXYRowCol(event) {
-	if (event.touches) {
-		inputMan.x = event.touches[0].pageX;
-		inputMan.y = event.touches[0].pageY;
-	}
-	else {
-		inputMan.x = event.layerX;
-		inputMan.y = event.layerY;
-	}
-	
-	inputMan.col = Math.floor((inputMan.x - drawMan.x) / (cellSize * drawMan.scale));
-	inputMan.row = Math.floor((inputMan.y - drawMan.y) / (cellSize * drawMan.scale));
 }
 
 function dblClick(event) {
