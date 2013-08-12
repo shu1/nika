@@ -1,18 +1,36 @@
 "use strict";
 
-window.onload = main;
-function main() {
+function playAudio(name) {
+	switch (name) {
+	case "pick":
+		audio[0].play();
+		break;
+	case "drop":
+		audio[1].play();
+		break;
+	case "move":
+		audio[2].play();
+		break;
+	case "push":
+		audio[3].play();
+		break;
+	case "rout":
+		audio[4].play();
+		break;
+	case "raly":
+		audio[5].play();
+		break;
+	}
+	
+	hudMan.audioText = name + " ";
+}
+
+window.onload = init;
+function init() {
 	generateGrid();
 
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
-
-	init(canvas);
-
-	drawMan.offsetX = (canvas.width - boardWidth)/2;
-	drawMan.offsetY = (canvas.height - boardHeight)/2;
-	drawMan.x = drawMan.offsetX;
-	drawMan.y = drawMan.offsetY;
 	
 	images = new Array(6);
 	images[0] = document.getElementById("athens");
@@ -40,35 +58,29 @@ function main() {
 		canvas.addEventListener("mousemove",  mouseMove);
 		window.addEventListener("mouseup",    mouseUp);
 	}
+
+	if (fullScreen) {
+		window.addEventListener("resize", reSize);
+	}
 	
-	context.font = "14px sans-serif";
-	context.fillStyle = "yellow";
+	reSize();
 	draw();
 }
 
-function playAudio(name) {
-	switch (name) {
-	case "pick":
-		audio[0].play();
-		break;
-	case "drop":
-		audio[1].play();
-		break;
-	case "move":
-		audio[2].play();
-		break;
-	case "push":
-		audio[3].play();
-		break;
-	case "rout":
-		audio[4].play();
-		break;
-	case "raly":
-		audio[5].play();
-		break;
+function reSize() {
+	if (fullScreen) {
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
 	}
 	
-	hudMan.audioText = name + " ";
+	context.font = "14px sans-serif";
+	context.fillStyle = "yellow";
+
+	drawMan.offsetX = (canvas.width - boardWidth)/2;
+	drawMan.offsetY = (canvas.height - boardHeight)/2;
+	drawMan.x = drawMan.offsetX;
+	drawMan.y = drawMan.offsetY;
+	drawMan.draw = true;
 }
 
 function zoom() {
