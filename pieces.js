@@ -29,68 +29,45 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 }
 
 function movePiece(pieceRow, pieceCol, row, col) {
-	if (pieceRow == row && pieceCol == col) {
-		return false;
-	}
-	
-	if (checkMove(pieceRow, pieceCol, row, col)) {
-		var pushSuccess = true;
-//		if ((grid[pieceRow][pieceCol].rot+2)%4 == grid[row][col].rot) {
+	if (!(row == pieceRow && col == pieceCol) && checkMove(pieceRow, pieceCol, row, col)
+	&& pushPiece(pieceRow, pieceCol, row, col, grid[pieceRow][pieceCol].player, 1)) {
+/*		var pushSuccess = true;
+		if ((grid[pieceRow][pieceCol].rot+2)%4 == grid[row][col].rot) {
 			pushSuccess = pushSuccess && pushPiece(pieceRow, pieceCol, row, col, grid[pieceRow][pieceCol].player, 1);
-/*		}
+		}
 		else {
 			console.log("I got called "+row+" "+col);
 			routPiece(row, col);
 		}
 */		
-		if (pushSuccess) {
-			playAudio("move");
-			grid[row][col].player = grid[pieceRow][pieceCol].player;
-			grid[row][col].rot = grid[pieceRow][pieceCol].rot;
-			grid[pieceRow][pieceCol].player = -1;
-			grid[pieceRow][pieceCol].rot = -1;
+		playAudio("move");
+		grid[row][col].player = grid[pieceRow][pieceCol].player;
+		grid[row][col].rot = grid[pieceRow][pieceCol].rot;
+		grid[pieceRow][pieceCol].player = -1;
+		grid[pieceRow][pieceCol].rot = -1;
 
-			if (grid[row][col].kind == 2 && grid[pieceRow][pieceCol].kind == 3) { // rally rotation
-				grid[row][col].rot = grid[row][col].player;
-			}
-			return true;	// return if a piece was moved so it can be redrawn
+		if (grid[pieceRow][pieceCol].kind == 3 && grid[row][col].kind == 2) { // rally rotation
+			grid[row][col].rot = grid[row][col].player;
 		}
+		return true;	// return if a piece was moved so it can be redrawn
 	}
 	return false;
 }
 
 function checkMove(pieceRow, pieceCol, row, col) {
-	if (pieceRow < 0 || pieceCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21) { // bounds
+	if (pieceRow < 0 || pieceCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21												// bounds
+	|| grid[row][col].kind < 0 || grid[row][col].kind == 3																			// invalid cell
+//	|| (grid[pieceRow][pieceCol].kind != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1)									// adjacent cell
+	|| (grid[row][col].kind == 1 && (grid[row][col].city - grid[pieceRow][pieceCol].player)%2 != 0 )								// opponent win cell
+	|| (grid[pieceRow][pieceCol].kind == 3 && (grid[row][col].kind != 2 || grid[pieceRow][pieceCol].player != grid[row][col].city))	// routed to respawn
+	|| (grid[row][col].player >= 0 && (grid[row][col].player - grid[pieceRow][pieceCol].player)%2 == 0 && !inPhalanx(row, col))) {	// same team
 		return false;
 	}
-
-	if (grid[row][col].kind < 0 || grid[row][col].kind == 3) { // invalid cell
-		return false;
-	}
-
-	if (grid[row][col].player >= 0 && (grid[row][col].player - grid[pieceRow][pieceCol].player)%2 == 0 && !inPhalanx(row,col)) { // same team
-		return false;
-	}
-
-	if (grid[row][col].kind == 1 && (grid[row][col].city - grid[pieceRow][pieceCol].player)%2 != 0 ) { // opponent win cell
-		return false;
-	}
-
-	// TODO: This is commented out for ease of debugging
-/*	if (grid[pieceRow][pieceCol].kind != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1) { // adjacent cell
-		return false;
-	}
-*/
-	if (grid[pieceRow][pieceCol].kind == 3 && (grid[row][col].kind != 2 || grid[pieceRow][pieceCol].player != grid[row][col].city) ) { // routed to respawn
-		return false;
-	}
-
 	return true;
 }
 
-function pushPiece(pieceRow, pieceCol, row, col, pusher, weight) {
-	// the piece at (pieceRow, pieceCol) is trying to push me, the piece at (row, col), with a strength of (weight)
-
+// the piece at (pieceRow, pieceCol) is trying to push me, the piece at (row, col), with a strength of (weight)
+function pushPiece(pieceRow, pieceCol, row, col, pusher, weight) {	
 	if (grid[row][col].kind == -1 || grid[row][col].kind == 3) { // if i'm an invalid or routed square
 		console.log("I'm invalid or routed "+row+" "+col);
 		return false;
@@ -170,24 +147,20 @@ function pushPiece(pieceRow, pieceCol, row, col, pusher, weight) {
 
 function routPiece(row, col) {
 	if (grid[row][col].player >= 0) {
-		var cell = getRoutedCell(grid[row][col].player);
+		var cell = getRoutCell(grid[row][col].player);
 
-		grid[cell.routRow][cell.routCol].player = grid[row][col].player;
-		grid[cell.routRow][cell.routCol].rot = grid[row][col].player;
+		grid[cell.row][cell.col].player = grid[row][col].player;
+		grid[cell.row][cell.col].rot = grid[row][col].player;
 	}
 }
 
-function getRoutedCell(player) {
-	var emptyRow = -1;
-	var emptyCol = -1;
+function getRoutCell(player) {
 	switch (player) {
 	case 0: 
 		for (var row = 14; row >= 0; --row) {
 			for (var col = 0; col < 21; ++col) {
 				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
-					emptyRow = row;
-					emptyCol = col;
-					return {routRow:emptyRow, routCol:emptyCol};
+					return {row:row, col:col};
 				}
 			}
 		}
@@ -196,9 +169,7 @@ function getRoutedCell(player) {
 		for (var col = 0; col < 21; ++col) {
 			for (var row = 0; row < 15; ++row) {
 				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
-					emptyRow = row;
-					emptyCol = col;
-					return {routRow:emptyRow, routCol:emptyCol};
+					return {row:row, col:col};
 				}
 			}
 		}
@@ -207,9 +178,7 @@ function getRoutedCell(player) {
 		for (var row = 0; row < 15; ++row) {
 			for (var col = 20; col >= 0; --col) {
 				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
-					emptyRow = row;
-					emptyCol = col;
-					return {routRow:emptyRow, routCol:emptyCol};
+					return {row:row, col:col};
 				}
 			}
 		}
@@ -218,9 +187,7 @@ function getRoutedCell(player) {
 		for (var col = 20; col >= 0; --col) {
 			for (var row = 14; row >= 0; --row) {
 				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
-					emptyRow = row;
-					emptyCol = col;
-					return {routRow:emptyRow, routCol:emptyCol};
+					return {row:row, col:col};
 				}
 			}
 		}
