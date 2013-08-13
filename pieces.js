@@ -14,16 +14,16 @@ function getPiece(row, col) {
 function rotatePiece(pieceRow, pieceCol, row, col) {
 	if (grid[pieceRow][pieceCol].type != 3) {
 		if (row < pieceRow) {
-			rotatePhalanx(0);
+			rotatePhalanx(0, pieceRow, pieceCol);
 		}
 		else if (col > pieceCol) {
-			rotatePhalanx(1);
+			rotatePhalanx(1, pieceRow, pieceCol);
 		}
 		else if (row > pieceRow) {
-			rotatePhalanx(2);
+			rotatePhalanx(2, pieceRow, pieceCol);
 		}
 		else if (col < pieceCol) {
-			rotatePhalanx(3);
+			rotatePhalanx(3, pieceRow, pieceCol);
 		}
 	}
 }

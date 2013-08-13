@@ -43,7 +43,7 @@ function inPhalanx(row, col) {
 	return false;
 }
 
-function rotatePhalanx(rot) {
+function rotatePhalanx(rot, pieceRow, pieceCol) {
 	if (phalanxMan.mode == 0) {
 		for (var i = phalanx.length - 1; i >= 0; --i) {
 			grid[phalanx[i].row][phalanx[i].col].rot = rot;
