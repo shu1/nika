@@ -2,18 +2,15 @@
 
 function generateGrid() {
 	grid = new Array(15);
-
 	for (var row = 0; row < 15; ++row) {
 		grid[row] = new Array(21);
-
 		for (var col = 0; col < 21; ++col) {
 			var a = ascii[row][col];
-
 			var cell = {
 				checked:false,
-				type:-1,
-				zone:-1,
 				player:-1,
+				kind:-1,
+				city:-1,
 				rot:-1
 			}
 
@@ -42,36 +39,46 @@ function generateGrid() {
 			else if (a == 'D' || a == 'H' || a == 'L' || a == 'P') {
 				cell.rot = 3;
 			}
-			
-			if (a == '0' || a == '1' || a == '2' || a == '3' || cell.player >= 0) {
-				cell.zone = cell.player;
-				cell.type = 0;
+
+			if (a == 'a' || a == 'b' || a == 'c' || a == 'd' || cell.player == 0) {
+				cell.city = 0;
 			}
-			else if (a == 'a' || a == 'b' || a == 'c' || a == 'd') {
-				cell.type = 1;
+			else if (a == 'e' || a == 'f' || a == 'g' || a == 'h' || cell.player == 1) {
+				cell.city = 1;
 			}
-			else if (a == 'e' || a == 'f' || a == 'g' || a == 'h') {
-				cell.type = 2;
+			else if (a == 'i' || a == 'j' || a == 'k' || a == 'l' || cell.player == 2) {
+				cell.city = 2;
 			}
-			else if (a == 'i' || a == 'j' || a == 'k' || a == 'l') {
-				cell.type = 3;
+			else if (a == 'm' || a == 'n' || a == 'o' || a == 'p' || cell.player == 3) {
+				cell.city = 3;
 			}
 
-			if (a == '0' || a == 'a' || a == 'e' || a == 'i') {
-				cell.zone = 0;
+			if (a == 'a' || a == 'e' || a == 'i' || a == 'm' || cell.player >= 0) {
+				cell.kind = 0;	// normal
 			}
-			else if (a == '1' || a == 'b' || a == 'f' || a == 'j') {
-				cell.zone = 1;
+			else if (a == 'b' || a == 'f' || a == 'j' || a == 'n') {
+				cell.kind = 1;	// goal
 			}
-			else if (a == '2' || a == 'c' || a == 'g' || a == 'k') {
-				cell.zone = 2;
+			else if (a == 'c' || a == 'g' || a == 'k' || a == 'o') {
+				cell.kind = 2;	// rally
 			}
-			else if (a == '3' || a == 'd' || a == 'h' || a == 'l') {
-				cell.zone = 3;
+			else if (a == 'd' || a == 'h' || a == 'l' || a == 'p') {
+				cell.kind = 3;	// routed
 			}
 
 			grid[row][col] = cell;
 		}
+	}
+}
+
+function debugGrid() {
+	for (var row = 0; row < 15; ++row) {
+		var str = "";
+		for (var col = 0; col < 21; ++col) {
+			var a = grid[row][col].kind; 
+			str += a == -1 ? '.' : a;
+		}
+		console.log(str);
 	}
 }
 

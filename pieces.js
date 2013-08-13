@@ -12,7 +12,7 @@ function getPiece(row, col) {
 }
 
 function rotatePiece(pieceRow, pieceCol, row, col) {
-	if (grid[pieceRow][pieceCol].type != 3) {
+	if (grid[pieceRow][pieceCol].kind != 3) {
 		if (row < pieceRow) {
 			rotatePhalanx(0, pieceRow, pieceCol);
 		}
@@ -50,7 +50,7 @@ function movePiece(pieceRow, pieceCol, row, col) {
 			grid[pieceRow][pieceCol].player = -1;
 			grid[pieceRow][pieceCol].rot = -1;
 
-			if (grid[row][col].type == 2 && grid[pieceRow][pieceCol].type == 3) { // rally rotation
+			if (grid[row][col].kind == 2 && grid[pieceRow][pieceCol].kind == 3) { // rally rotation
 				grid[row][col].rot = grid[row][col].player;
 			}
 			return true;	// return if a piece was moved so it can be redrawn
@@ -64,7 +64,7 @@ function checkMove(pieceRow, pieceCol, row, col) {
 		return false;
 	}
 
-	if (grid[row][col].type < 0 || grid[row][col].type == 3) { // invalid cell
+	if (grid[row][col].kind < 0 || grid[row][col].kind == 3) { // invalid cell
 		return false;
 	}
 
@@ -72,16 +72,16 @@ function checkMove(pieceRow, pieceCol, row, col) {
 		return false;
 	}
 
-	if (grid[row][col].type == 1 && (grid[row][col].zone - grid[pieceRow][pieceCol].player)%2 != 0 ) { // opponent win cell
+	if (grid[row][col].kind == 1 && (grid[row][col].city - grid[pieceRow][pieceCol].player)%2 != 0 ) { // opponent win cell
 		return false;
 	}
 
 	// TODO: This is commented out for ease of debugging
-/*	if (grid[pieceRow][pieceCol].type != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1) { // adjacent cell
+/*	if (grid[pieceRow][pieceCol].kind != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1) { // adjacent cell
 		return false;
 	}
 */
-	if (grid[pieceRow][pieceCol].type == 3 && (grid[row][col].type != 2 || grid[pieceRow][pieceCol].player != grid[row][col].zone) ) { // routed to respawn
+	if (grid[pieceRow][pieceCol].kind == 3 && (grid[row][col].kind != 2 || grid[pieceRow][pieceCol].player != grid[row][col].city) ) { // routed to respawn
 		return false;
 	}
 
@@ -91,19 +91,19 @@ function checkMove(pieceRow, pieceCol, row, col) {
 function pushPiece(pieceRow, pieceCol, row, col, pusher, weight) {
 	// the piece at (pieceRow, pieceCol) is trying to push me, the piece at (row, col), with a strength of (weight)
 
-	if (grid[row][col].type == -1 || grid[row][col].type == 3) { // if i'm an invalid or routed square
+	if (grid[row][col].kind == -1 || grid[row][col].kind == 3) { // if i'm an invalid or routed square
 		console.log("I'm invalid or routed "+row+" "+col);
 		return false;
 	}
 	
 	if (grid[row][col].player == -1) { // if i'm empty
 		console.log("I'm empty "+row+" "+col);
-		if (grid[row][col].type == 0) { // regular board sq
+		if (grid[row][col].kind == 0) { // regular board sq
 			console.log("I'm a regular square "+row+" "+col);
 			return true;
 		}
 
-		if ((grid[row][col].type == 1 || grid[row][col].type == 2) && Math.abs(pusher - grid[row][col].zone)%2 == 0) { // i'm an allied win or rally square
+		if ((grid[row][col].kind == 1 || grid[row][col].kind == 2) && Math.abs(pusher - grid[row][col].city)%2 == 0) { // i'm an allied win or rally square
 			console.log("I'm an allied win/rally "+row+" "+col);
 			return true;
 		}
@@ -133,8 +133,8 @@ function pushPiece(pieceRow, pieceCol, row, col, pusher, weight) {
 		}
 		
 		if (weight > 1) { // check line weight
-			if (grid[2*row - pieceRow][2*col - pieceCol].type == -1 
-				|| grid[2*row - pieceRow][2*col - pieceCol].type == 3) { // pushed into invalid or routed square
+			if (grid[2*row - pieceRow][2*col - pieceCol].kind == -1 
+				|| grid[2*row - pieceRow][2*col - pieceCol].kind == 3) { // pushed into invalid or routed square
 
 				console.log("Routed: pushed into invalid square "+row+" "+col);
 				routPiece(row,col);
@@ -149,8 +149,8 @@ function pushPiece(pieceRow, pieceCol, row, col, pusher, weight) {
 				return true;	
 			}
 			
-			if (grid[2*row - pieceRow][2*col - pieceCol].type == 1 
-				&& Math.abs(grid[2*row - pieceRow][2*col - pieceCol].zone - grid[row][col].player)%2 == 1) { // pushed into enemy win square
+			if (grid[2*row - pieceRow][2*col - pieceCol].kind == 1 
+				&& Math.abs(grid[2*row - pieceRow][2*col - pieceCol].city - grid[row][col].player)%2 == 1) { // pushed into enemy win square
 
 				console.log("Routed: pushed into enemy win square "+row+" "+col);
 				routPiece(row,col);
@@ -184,7 +184,7 @@ function getRoutedCell(player) {
 	case 0: 
 		for (var row = 14; row >= 0; --row) {
 			for (var col = 0; col < 21; ++col) {
-				if (grid[row][col].type == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
+				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
 					emptyRow = row;
 					emptyCol = col;
 					return {routRow:emptyRow, routCol:emptyCol};
@@ -195,7 +195,7 @@ function getRoutedCell(player) {
 	case 1:	
 		for (var col = 0; col < 21; ++col) {
 			for (var row = 0; row < 15; ++row) {
-				if (grid[row][col].type == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
+				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
 					emptyRow = row;
 					emptyCol = col;
 					return {routRow:emptyRow, routCol:emptyCol};
@@ -206,7 +206,7 @@ function getRoutedCell(player) {
 	case 2:
 		for (var row = 0; row < 15; ++row) {
 			for (var col = 20; col >= 0; --col) {
-				if (grid[row][col].type == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
+				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
 					emptyRow = row;
 					emptyCol = col;
 					return {routRow:emptyRow, routCol:emptyCol};
@@ -217,7 +217,7 @@ function getRoutedCell(player) {
 	case 3:
 		for (var col = 20; col >= 0; --col) {
 			for (var row = 14; row >= 0; --row) {
-				if (grid[row][col].type == 3 && grid[row][col].zone == player && grid[row][col].player < 0) {
+				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
 					emptyRow = row;
 					emptyCol = col;
 					return {routRow:emptyRow, routCol:emptyCol};

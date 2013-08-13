@@ -40,17 +40,17 @@ function mouseMove(event) {
 			event.preventDefault();
 			rotatePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 		}
-		else if (drawMan.scale > 1 || boardWidth > canvas.width || boardHeight > canvas.height) {	// panning
+		else if (boardWidth * drawMan.scale > canvas.width || boardHeight * drawMan.scale > canvas.height) {	// panning
 			var x = inputMan.x - inputMan.prevX;
 			var y = inputMan.y - inputMan.prevY;
 
 			if (pan(x, y)) {
+				hudMan.inputText = -drawMan.x + "," + -drawMan.y;
 				event.preventDefault();
 			}
 			
 			inputMan.prevX = inputMan.x;
 			inputMan.prevY = inputMan.y;
-			hudMan.inputText = -drawMan.x + "," + -drawMan.y;
 		}
 		drawMan.draw = true;
 	}

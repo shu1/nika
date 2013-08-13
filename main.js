@@ -21,7 +21,7 @@ function playAudio(name) {
 		audio[5].play();
 		break;
 	}
-	
+
 	hudMan.audioText = name + " ";
 }
 
@@ -31,7 +31,7 @@ function init() {
 
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
-	
+
 	images = new Array(6);
 	images[0] = document.getElementById("athens");
 	images[1] = document.getElementById("sparta");
@@ -47,7 +47,7 @@ function init() {
 	audio[3] = document.getElementById("push");
 	audio[5] = document.getElementById("rout");
 	audio[4] = document.getElementById("raly");
-	
+
 	if (window.navigator.msPointerEnabled) {
 		canvas.style.msTouchAction = "none";
 		canvas.addEventListener("MSPointerDown", mouseDown);
@@ -68,7 +68,7 @@ function init() {
 	if (fullScreen) {
 		window.addEventListener("resize", reSize);
 	}
-	
+
 	reSize();
 	draw();
 }
@@ -78,7 +78,7 @@ function reSize() {
 		canvas.width = window.innerWidth-6;
 		canvas.height = window.innerHeight-6;
 	}
-	
+
 	context.font = "14px sans-serif";
 	context.fillStyle = "white";
 
@@ -97,7 +97,7 @@ function zoom() {
 		drawMan.scale = 1;
 		context.clearRect(0, 0, canvas.width, canvas.height);
 	}
-	
+
 	drawMan.x = -(inputMan.col * cellSize + cellSize/2) * (drawMan.scale-1) + drawMan.offsetX;
 	drawMan.y = -(inputMan.row * cellSize + cellSize/2) * (drawMan.scale-1) + drawMan.offsetY;
 
@@ -110,7 +110,7 @@ function pan(x, y) {
 	var width = -boardWidth * (drawMan.scale-1) + drawMan.offsetX*2;
 	var height = -boardHeight * (drawMan.scale-1) + drawMan.offsetY*2;
 	var panned = false;
-	
+
 	if (drawMan.x + x < width) {
 		drawMan.x = width;
 	}
@@ -146,15 +146,15 @@ function draw() {
 		drawPieces();
 		drawPiecesHighlight();
 		drawMoveHighlight();
-		
+
 		context.restore();
 		drawMan.draw = false;
 	}
-	
+
 	if (debug) {
 		drawHud();
 	}
-	
+
 	window.requestAnimationFrame(draw);
 }
 

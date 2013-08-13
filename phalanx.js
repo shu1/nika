@@ -87,8 +87,8 @@ function checkMovePhalanx(pieceRow, pieceCol, row, col) {
 			return false;
 		}
 
-		if (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].type < 0 
-			|| grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].type == 3) { // invalid cell
+		if (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].kind < 0 
+			|| grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].kind == 3) { // invalid cell
 			return false;
 		}
 
@@ -97,13 +97,13 @@ function checkMovePhalanx(pieceRow, pieceCol, row, col) {
 			return false;
 		}
 
-		if (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].type == 1 
-			&& (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].zone - grid[phalanx[i].row][phalanx[i].col].player)%2 != 0 ) { // opponent win cell
+		if (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].kind == 1 
+			&& (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].city - grid[phalanx[i].row][phalanx[i].col].player)%2 != 0 ) { // opponent win cell
 			return false;
 		}
 	}
 
-	if (grid[pieceRow][pieceCol].type != 3 && Math.abs(deltaRow) + Math.abs(deltaCol) > 1) { // adjacent cell
+	if (grid[pieceRow][pieceCol].kind != 3 && Math.abs(deltaRow) + Math.abs(deltaCol) > 1) { // adjacent cell
 		return false;
 	}
 

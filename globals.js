@@ -39,19 +39,19 @@ var phalanxMan = {
 }
 
 var ascii = [
-	".........gggkkk......",
-	".........gggkkk......",
-	".........ccc.........",
-	"jj.111222LKJ222333...",
-	"jj.1112222KJ222333...",
-	"jj.11122222J222333...",
-	"ffbEEE.........33Mdhh",
-	"ffbFF1.........3PPdhh",
-	"ffbG11.........OOOdhh",
-	"...111000D00000333.ll",
-	"...111000DA0000333.ll",
-	"...111000DAB000333.ll",
-	".........aaa.........",
-	"......iiieee.........",
-	"......iiieee........."
+	".........kkklll......",
+	".........kkklll......",
+	".........jjj.........",
+	"hh.eeeiiiLKJiiimmm...",
+	"hh.eeeiiiiKJiiimmm...",
+	"hh.eeeiiiiiJiiimmm...",
+	"ggfEEE.........mmMnoo",
+	"ggfFFe.........mPPnoo",
+	"ggfGee.........OOOnoo",
+	"...eeeaaaDaaaaammm.pp",
+	"...eeeaaaDAaaaammm.pp",
+	"...eeeaaaDABaaammm.pp",
+	".........bbb.........",
+	"......dddccc.........",
+	"......dddccc........."
 ]
