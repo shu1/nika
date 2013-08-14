@@ -71,11 +71,7 @@ function movePhalanx(pieceRow, pieceCol, row, col) {
 					for (var loopRow=14; loopRow>=0; --loopRow) {
 						if (inPhalanx(loopRow, loopCol)) {
 							if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
-								playAudio("move");
-								grid[loopRow+deltaRow][loopCol+deltaCol].player = grid[loopRow][loopCol].player;
-								grid[loopRow+deltaRow][loopCol+deltaCol].rot = grid[loopRow][loopCol].rot;
-								grid[loopRow][loopCol].player = -1;
-								grid[loopRow][loopCol].rot = -1;
+								moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
 								moveSuccess = true;
 							}
 							break;
@@ -89,11 +85,7 @@ function movePhalanx(pieceRow, pieceCol, row, col) {
 					for(var loopCol=0; loopCol<21; ++loopCol) {
 						if (inPhalanx(loopRow, loopCol)) {
 							if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
-								playAudio("move");
-								grid[loopRow+deltaRow][loopCol+deltaCol].player = grid[loopRow][loopCol].player;
-								grid[loopRow+deltaRow][loopCol+deltaCol].rot = grid[loopRow][loopCol].rot;
-								grid[loopRow][loopCol].player = -1;
-								grid[loopRow][loopCol].rot = -1;
+								moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
 								moveSuccess = true;
 							}
 							break;
@@ -107,11 +99,7 @@ function movePhalanx(pieceRow, pieceCol, row, col) {
 					for (var loopRow=0; loopRow<15; ++loopRow) {
 						if (inPhalanx(loopRow, loopCol)) {
 							if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
-								playAudio("move");
-								grid[loopRow+deltaRow][loopCol+deltaCol].player = grid[loopRow][loopCol].player;
-								grid[loopRow+deltaRow][loopCol+deltaCol].rot = grid[loopRow][loopCol].rot;
-								grid[loopRow][loopCol].player = -1;
-								grid[loopRow][loopCol].rot = -1;
+								moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
 								moveSuccess = true;
 							}
 							break;
@@ -125,11 +113,7 @@ function movePhalanx(pieceRow, pieceCol, row, col) {
 					for(var loopCol=20; loopCol>=0; --loopCol) {
 						if (inPhalanx(loopRow, loopCol)) {
 							if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
-								playAudio("move");
-								grid[loopRow+deltaRow][loopCol+deltaCol].player = grid[loopRow][loopCol].player;
-								grid[loopRow+deltaRow][loopCol+deltaCol].rot = grid[loopRow][loopCol].rot;
-								grid[loopRow][loopCol].player = -1;
-								grid[loopRow][loopCol].rot = -1;
+								moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
 								moveSuccess = true;
 							}
 							break;

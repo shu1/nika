@@ -39,12 +39,8 @@ function movePiece(pieceRow, pieceCol, row, col) {
 	else {
 		if (!(row == pieceRow && col == pieceCol) && checkMove(pieceRow, pieceCol, row, col)
 		&& pushPiece(pieceRow, pieceCol, row, col, grid[pieceRow][pieceCol].player, 1)) {
-	
-			playAudio("move");
-			grid[row][col].player = grid[pieceRow][pieceCol].player;
-			grid[row][col].rot = grid[pieceRow][pieceCol].rot;
-			grid[pieceRow][pieceCol].player = -1;
-			grid[pieceRow][pieceCol].rot = -1;
+
+			moveSinglePiece(pieceRow, pieceCol, row, col);
 			phalanx = [];
 			if (grid[pieceRow][pieceCol].kind == 3 && grid[row][col].kind == 2) { // rally rotation
 				grid[row][col].rot = grid[row][col].player;
@@ -55,6 +51,14 @@ function movePiece(pieceRow, pieceCol, row, col) {
 		}
 	}
 	return false;
+}
+
+function moveSinglePiece(pieceRow, pieceCol, row, col) {
+	playAudio("move");
+	grid[row][col].player = grid[pieceRow][pieceCol].player;
+	grid[row][col].rot = grid[pieceRow][pieceCol].rot;
+	grid[pieceRow][pieceCol].player = -1;
+	grid[pieceRow][pieceCol].rot = -1;
 }
 
 function checkMove(pieceRow, pieceCol, row, col) {
