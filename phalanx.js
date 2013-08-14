@@ -7,31 +7,34 @@ function getPhalanx(row, col) {
 	var me = grid[row][col];
 	me.checked = true;
 	phalanx.push({row:row, col:col});
+	if (me.kind == 3) {
+		return;
+	}
 
 	if (row-1 >= 0) {
 		var up = grid[row-1][col];
-		if (up.player == me.player && up.rot == me.rot && !up.checked) {
+		if (up.kind != 3 && up.player == me.player && up.rot == me.rot && !up.checked) {
 			getPhalanx(row-1, col);
 		}
 	}
 
 	if (col-1 >= 0) {
 		var left = grid[row][col-1];
-		if (left.player == me.player && left.rot == me.rot && !left.checked) {
+		if (left.kind != 3 && left.player == me.player && left.rot == me.rot && !left.checked) {
 			getPhalanx(row, col-1);
 		}
 	}
 
 	if (row+1 < grid.length) {
 		var down = grid[row+1][col];
-		if (down.player == me.player && down.rot == me.rot && !down.checked) {
+		if (down.kind != 3 && down.player == me.player && down.rot == me.rot && !down.checked) {
 			getPhalanx(row+1, col);
 		}
 	}
 
 	if (col+1 < grid[row].length) {
 		var right = grid[row][col+1];
-		if (right.player == me.player && right.rot == me.rot && !right.checked) {
+		if (right.kind != 3 && right.player == me.player && right.rot == me.rot && !right.checked) {
 			getPhalanx(row, col+1);
 		}
 	}
