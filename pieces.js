@@ -30,7 +30,10 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 
 function movePiece(pieceRow, pieceCol, row, col) {
 	if (phalanxMan.mode == 0) {
-			return movePhalanx(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
+			if(movePhalanx(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
+				phalanx = [];
+				return true;
+			}
 		}
 
 	else {
@@ -42,10 +45,11 @@ function movePiece(pieceRow, pieceCol, row, col) {
 			grid[row][col].rot = grid[pieceRow][pieceCol].rot;
 			grid[pieceRow][pieceCol].player = -1;
 			grid[pieceRow][pieceCol].rot = -1;
-
+			phalanx = [];
 			if (grid[pieceRow][pieceCol].kind == 3 && grid[row][col].kind == 2) { // rally rotation
 				grid[row][col].rot = grid[row][col].player;
 			}
+
 			moveHistory.push([actionType.pieceMove,pieceRow,pieceCol,row,col])
 			return true;	// return if a piece was moved so it can be redrawn
 		}
