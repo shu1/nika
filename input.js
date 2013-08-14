@@ -21,6 +21,7 @@ function mouseDown(event) {
 	inputMan.prevX = inputMan.x;
 	inputMan.prevY = inputMan.y;
 	getPiece(inputMan.row, inputMan.col);
+	rotationHolder = grid[inputMan.row][inputMan.col].rot;
 	
 	phalanx = [];
 	if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
@@ -66,6 +67,11 @@ function mouseUp(event) {
 			inputMan.time = 0;	// reset so next click is not double click
 		}	
 	}
+	if (grid[inputMan.row][inputMan.col].rot != rotationHolder){
+		moveHistory.push([actionType.pieceRotate, rotationHolder, inputMan.rot]);
+		rotationHolder = -1;
+	}
+	console.log(moveHistory)
 	drawMan.draw = true;
 }
 

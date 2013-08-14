@@ -46,6 +46,7 @@ function movePiece(pieceRow, pieceCol, row, col) {
 			if (grid[pieceRow][pieceCol].kind == 3 && grid[row][col].kind == 2) { // rally rotation
 				grid[row][col].rot = grid[row][col].player;
 			}
+			moveHistory.push([actionType.pieceMove,pieceRow,pieceCol,row,col])
 			return true;	// return if a piece was moved so it can be redrawn
 		}
 	}

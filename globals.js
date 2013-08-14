@@ -56,3 +56,17 @@ var ascii = [
 	"......dddccc.........",
 	"......dddccc........."
 ]
+
+var moveHistory = []
+
+var rotationHolder = -1;
+
+var actionType = {
+	pieceMove : 0,
+	pieceRotate : 1,
+	piecePush : 2,
+	pieceRout : 3,
+	pieceRally : 4,
+	phalanxMove : 5,
+	phalanxRotate : 6,
+}
