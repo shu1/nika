@@ -25,6 +25,7 @@ function mouseDown(event) {
 	phalanx = [];
 	if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
 		event.preventDefault();
+		getPhalanxStartingRot(inputMan.pieceRow, inputMan.pieceCol);
 		getPhalanx(inputMan.pieceRow, inputMan.pieceCol);
 		clearChecked();
 	}

@@ -1,4 +1,7 @@
 "use strict";
+function getPhalanxStartingRot(row, col) {
+	phalanxMan.startingRot = grid[row][col].rot;
+}
 
 function getPhalanx(row, col) {
 	var me = grid[row][col];
@@ -81,6 +84,9 @@ function checkMovePhalanx(pieceRow, pieceCol, row, col) {
 	var deltaRow = row - pieceRow;
 	var deltaCol = col - pieceCol;
 
+	var expDeltaRow = 0;
+	var expDeltaCol = 0;
+
 	for (var i = phalanx.length-1; i >= 0; --i) {
 		if (phalanx[i].row < 0 || phalanx[i].col < 0 || phalanx[i].row + deltaRow < 0 || phalanx[i].row + deltaRow >= 15 
 			|| phalanx[i].col + deltaCol < 0 || phalanx[i].col + deltaCol >= 21) { // bounds
@@ -103,7 +109,22 @@ function checkMovePhalanx(pieceRow, pieceCol, row, col) {
 		}
 	}
 
-	if (grid[pieceRow][pieceCol].kind != 3 && Math.abs(deltaRow) + Math.abs(deltaCol) > 1) { // adjacent cell
+	switch (phalanxMan.startingRot) {
+		case 0:
+			expDeltaRow = -1;
+			break;
+		case 1:
+			expDeltaCol = 1;
+			break;
+		case 2:
+			expDeltaRow = 1;
+			break;
+		case 3:
+			expDeltaCol = -1;
+			break;
+	}
+
+	if (deltaRow != expDeltaRow || deltaCol != expDeltaCol) { // adjacent cell
 		return false;
 	}
 

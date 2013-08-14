@@ -35,6 +35,7 @@ var inputMan = {
 }
 
 var phalanxMan = {
+	startingRot:-1,
 	mode:0
 }
 
