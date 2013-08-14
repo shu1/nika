@@ -29,27 +29,25 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 }
 
 function movePiece(pieceRow, pieceCol, row, col) {
-	if (!(row == pieceRow && col == pieceCol) && checkMove(pieceRow, pieceCol, row, col)
-	&& pushPiece(pieceRow, pieceCol, row, col, grid[pieceRow][pieceCol].player, 1)) {
-/*		var pushSuccess = true;
-		if ((grid[pieceRow][pieceCol].rot+2)%4 == grid[row][col].rot) {
-			pushSuccess = pushSuccess && pushPiece(pieceRow, pieceCol, row, col, grid[pieceRow][pieceCol].player, 1);
+	if (phalanxMan.mode == 0) {
+			return movePhalanx(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 		}
-		else {
-			console.log("I got called "+row+" "+col);
-			routPiece(row, col);
-		}
-*/		
-		playAudio("move");
-		grid[row][col].player = grid[pieceRow][pieceCol].player;
-		grid[row][col].rot = grid[pieceRow][pieceCol].rot;
-		grid[pieceRow][pieceCol].player = -1;
-		grid[pieceRow][pieceCol].rot = -1;
 
-		if (grid[pieceRow][pieceCol].kind == 3 && grid[row][col].kind == 2) { // rally rotation
-			grid[row][col].rot = grid[row][col].player;
+	else {
+		if (!(row == pieceRow && col == pieceCol) && checkMove(pieceRow, pieceCol, row, col)
+		&& pushPiece(pieceRow, pieceCol, row, col, grid[pieceRow][pieceCol].player, 1)) {
+	
+			playAudio("move");
+			grid[row][col].player = grid[pieceRow][pieceCol].player;
+			grid[row][col].rot = grid[pieceRow][pieceCol].rot;
+			grid[pieceRow][pieceCol].player = -1;
+			grid[pieceRow][pieceCol].rot = -1;
+
+			if (grid[pieceRow][pieceCol].kind == 3 && grid[row][col].kind == 2) { // rally rotation
+				grid[row][col].rot = grid[row][col].player;
+			}
+			return true;	// return if a piece was moved so it can be redrawn
 		}
-		return true;	// return if a piece was moved so it can be redrawn
 	}
 	return false;
 }

@@ -58,22 +58,89 @@ function rotatePhalanx(rot, pieceRow, pieceCol) {
 }
 
 function movePhalanx(pieceRow, pieceCol, row, col) {
-	var deltaRow = row - pieceRow;
-	var deltaCol = col - pieceCol;
-	var moveSuccess = true;
-	
-	// find the back of each row/col
-	for (var i = phalanx.length-1; i >= 0; --i) {
-		if (!checkMove(phalanx[i].row + deltaRow, phalanx[i].col + deltaCol, phalanx[i].row, phalanx[i].col)) {
-			moveSuccess = false;
+
+	if (checkMovePhalanx(pieceRow, pieceCol, row, col)) {
+		var deltaRow = row - pieceRow;
+		var deltaCol = col - pieceCol;
+		var moveSuccess = false;
+		
+		// find the back of each row/col
+		switch (phalanxMan.startingRot) {
+			case 0:
+				for(var loopCol=0; loopCol<21; ++loopCol) {
+					for (var loopRow=14; loopRow>=0; --loopRow) {
+						if (inPhalanx(loopRow, loopCol)) {
+							if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
+								playAudio("move");
+								grid[loopRow+deltaRow][loopCol+deltaCol].player = grid[loopRow][loopCol].player;
+								grid[loopRow+deltaRow][loopCol+deltaCol].rot = grid[loopRow][loopCol].rot;
+								grid[loopRow][loopCol].player = -1;
+								grid[loopRow][loopCol].rot = -1;
+								moveSuccess = true;
+							}
+							break;
+						}
+					}
+				}
+				break;
+
+			case 1:
+				for (var loopRow=0; loopRow<15; ++loopRow) {
+					for(var loopCol=0; loopCol<21; ++loopCol) {
+						if (inPhalanx(loopRow, loopCol)) {
+							if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
+								playAudio("move");
+								grid[loopRow+deltaRow][loopCol+deltaCol].player = grid[loopRow][loopCol].player;
+								grid[loopRow+deltaRow][loopCol+deltaCol].rot = grid[loopRow][loopCol].rot;
+								grid[loopRow][loopCol].player = -1;
+								grid[loopRow][loopCol].rot = -1;
+								moveSuccess = true;
+							}
+							break;
+						}
+					}
+				}
+				break;
+
+			case 2:
+				for(var loopCol=0; loopCol<21; ++loopCol) {
+					for (var loopRow=0; loopRow<15; ++loopRow) {
+						if (inPhalanx(loopRow, loopCol)) {
+							if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
+								playAudio("move");
+								grid[loopRow+deltaRow][loopCol+deltaCol].player = grid[loopRow][loopCol].player;
+								grid[loopRow+deltaRow][loopCol+deltaCol].rot = grid[loopRow][loopCol].rot;
+								grid[loopRow][loopCol].player = -1;
+								grid[loopRow][loopCol].rot = -1;
+								moveSuccess = true;
+							}
+							break;
+						}
+					}
+				}
+				break;
+
+			case 3:
+				for (var loopRow=0; loopRow<15; ++loopRow) {
+					for(var loopCol=20; loopCol>=0; --loopCol) {
+						if (inPhalanx(loopRow, loopCol)) {
+							if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
+								playAudio("move");
+								grid[loopRow+deltaRow][loopCol+deltaCol].player = grid[loopRow][loopCol].player;
+								grid[loopRow+deltaRow][loopCol+deltaCol].rot = grid[loopRow][loopCol].rot;
+								grid[loopRow][loopCol].player = -1;
+								grid[loopRow][loopCol].rot = -1;
+								moveSuccess = true;
+							}
+							break;
+						}
+					}
+				}
+				break;
 		}
 	}
 
-	if (moveSuccess) {
-		for (var i = phalanx.length-1; i >= 0; --i) {
-			movePiece(phalanx[i].row + deltaRow, phalanx[i].col + deltaCol, phalanx[i].row, phalanx[i].col)
-		}
-	}
+	return moveSuccess;
 }
 
 function checkMovePhalanx(pieceRow, pieceCol, row, col) {
@@ -83,7 +150,6 @@ function checkMovePhalanx(pieceRow, pieceCol, row, col) {
 	
 	var deltaRow = row - pieceRow;
 	var deltaCol = col - pieceCol;
-
 	var expDeltaRow = 0;
 	var expDeltaCol = 0;
 
@@ -109,7 +175,7 @@ function checkMovePhalanx(pieceRow, pieceCol, row, col) {
 		}
 	}
 
-	switch (phalanxMan.startingRot) {
+	switch (phalanxMan.startingRot) { // move one step forward only
 		case 0:
 			expDeltaRow = -1;
 			break;
@@ -124,7 +190,7 @@ function checkMovePhalanx(pieceRow, pieceCol, row, col) {
 			break;
 	}
 
-	if (deltaRow != expDeltaRow || deltaCol != expDeltaCol) { // adjacent cell
+	if (deltaRow != expDeltaRow || deltaCol != expDeltaCol) {
 		return false;
 	}
 

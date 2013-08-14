@@ -64,7 +64,7 @@ function mouseUp(event) {
 	if (!dblClick(event)) {
 		if (movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
 			inputMan.time = 0;	// reset so next click is not double click
-		}
+		}	
 	}
 	drawMan.draw = true;
 }
