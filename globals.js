@@ -1,6 +1,6 @@
 "use strict";
 
-var canvas, context, images, audio, grid, phalanx=[], debug = true;
+var canvas, context, images, audio, grid, phalanx = [], debug = true;
 
 var drawMan = {
 	draw:true,

@@ -30,12 +30,11 @@ function rotatePiece(pieceRow, pieceCol, row, col) {
 
 function movePiece(pieceRow, pieceCol, row, col) {
 	if (phalanxMan.mode == 0) {
-			if(movePhalanx(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
-				phalanx = [];
-				return true;
-			}
+		if(movePhalanx(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
+			phalanx = [];
+			return true;
 		}
-
+	}
 	else {
 		if (!(row == pieceRow && col == pieceCol) && checkMove(pieceRow, pieceCol, row, col)
 		&& pushPiece(pieceRow, pieceCol, row, col, grid[pieceRow][pieceCol].player, 1)) {
@@ -64,7 +63,7 @@ function moveSinglePiece(pieceRow, pieceCol, row, col) {
 function checkMove(pieceRow, pieceCol, row, col) {
 	if (pieceRow < 0 || pieceCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21												// bounds
 	|| grid[row][col].kind < 0 || grid[row][col].kind == 3																			// invalid cell
-//	|| (grid[pieceRow][pieceCol].kind != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1)									// adjacent cell
+	|| (grid[pieceRow][pieceCol].kind != 3 && Math.abs(pieceRow-row) + Math.abs(pieceCol-col) > 1)									// adjacent cell
 	|| (grid[row][col].kind == 1 && (grid[row][col].city - grid[pieceRow][pieceCol].player)%2 != 0 )								// opponent win cell
 	|| (grid[pieceRow][pieceCol].kind == 3 && (grid[row][col].kind != 2 || grid[pieceRow][pieceCol].player != grid[row][col].city))	// routed to respawn
 	|| (grid[row][col].player >= 0 && (grid[row][col].player - grid[pieceRow][pieceCol].player)%2 == 0 && !inPhalanx(row, col))) {	// same team

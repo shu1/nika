@@ -108,30 +108,30 @@ function zoom() {
 	}
 }
 
-function pan(x, y) {
+function pan(dx, dy) {
 	var width = -boardWidth * (drawMan.scale-1) + drawMan.offsetX*2;
 	var height = -boardHeight * (drawMan.scale-1) + drawMan.offsetY*2;
 	var panned = false;
 
-	if (drawMan.x + x < width) {
+	if (drawMan.x + dx < width) {
 		drawMan.x = width;
 	}
-	else if (drawMan.x + x > 0) {
+	else if (drawMan.x + dx > 0) {
 		drawMan.x = 0;
 	}
 	else {
-		drawMan.x += x;
+		drawMan.x += dx;
 		panned = true;
 	}
 
-	if (drawMan.y + y < height) {
+	if (drawMan.y + dy < height) {
 		drawMan.y = height;
 	}
-	else if (drawMan.y + y > 0) {
+	else if (drawMan.y + dy > 0) {
 		drawMan.y = 0;
 	}
 	else {
-		drawMan.y += y;
+		drawMan.y += dy;
 		panned = true;
 	}
 

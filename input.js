@@ -47,10 +47,10 @@ function mouseMove(event) {
 			rotatePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col);
 		}
 		else if (boardWidth * drawMan.scale > canvas.width || boardHeight * drawMan.scale > canvas.height) {	// panning
-			var x = inputMan.x - inputMan.prevX;
-			var y = inputMan.y - inputMan.prevY;
+			var dx = inputMan.x - inputMan.prevX;
+			var dy = inputMan.y - inputMan.prevY;
 
-			if (pan(x, y)) {
+			if (pan(dx, dy)) {
 				hudMan.inputText = -drawMan.x + "," + -drawMan.y;
 				event.preventDefault();
 			}
@@ -77,7 +77,6 @@ function mouseUp(event) {
 		moveHistory.push([actionType.pieceRotate, rotationHolder, inputMan.rot]);
 		rotationHolder = -1;
 	}
-	console.log(moveHistory)
 	drawMan.draw = true;
 }
 
@@ -86,7 +85,6 @@ function dblClick(event) {
 	if (time - inputMan.time < 300) {	// double click time in milliseconds
 		hudMan.inputText += " " + (time - inputMan.time) + "ms";
 		event.preventDefault();
-		
 		
 		if (inputMan.row == inputMan.pieceRow && inputMan.col == inputMan.pieceCol) {
 			phalanxMan.mode = 1 - phalanxMan.mode;
@@ -101,8 +99,7 @@ function dblClick(event) {
 		else {
 			zoom();
 		}
-		
-		
+
 		inputMan.time = 0;	// reset so next click is not double click
 		return true;
 	}
