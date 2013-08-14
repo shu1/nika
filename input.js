@@ -28,6 +28,9 @@ function mouseDown(event) {
 		event.preventDefault();
 		getPhalanxStartingRot(inputMan.pieceRow, inputMan.pieceCol);
 		getPhalanx(inputMan.pieceRow, inputMan.pieceCol);
+		if (phalanx.length == 1) {
+			phalanxMan.mode = 1;
+		}
 		clearChecked();
 	}
 	drawMan.draw = true;
@@ -64,6 +67,7 @@ function mouseUp(event) {
 	
 	if (!dblClick(event)) {
 		if (movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
+			phalanxMan.mode = 0;
 			inputMan.time = 0;	// reset so next click is not double click
 		}	
 	}
