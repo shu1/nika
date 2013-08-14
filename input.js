@@ -30,6 +30,7 @@ function mouseDown(event) {
 		getPhalanx(inputMan.pieceRow, inputMan.pieceCol);
 		if (phalanx.length == 1) {
 			phalanxMan.mode = 1;
+			hudMan.phalanxText = " phalanx";
 		}
 		clearChecked();
 	}
@@ -68,6 +69,7 @@ function mouseUp(event) {
 	if (!dblClick(event)) {
 		if (movePiece(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
 			phalanxMan.mode = 0;
+			hudMan.phalanxText = "";
 			inputMan.time = 0;	// reset so next click is not double click
 		}	
 	}
@@ -84,16 +86,22 @@ function dblClick(event) {
 	if (time - inputMan.time < 300) {	// double click time in milliseconds
 		hudMan.inputText += " " + (time - inputMan.time) + "ms";
 		event.preventDefault();
-		zoom();
 		
-		if (drawMan.scale > 1 && inputMan.row == inputMan.pieceRow && inputMan.col == inputMan.pieceCol) {
-			phalanxMan.mode = 1;
-			hudMan.phalanxText = " phalanx";
+		
+		if (inputMan.row == inputMan.pieceRow && inputMan.col == inputMan.pieceCol) {
+			phalanxMan.mode = 1 - phalanxMan.mode;
+
+			if (phalanxMan.mode == 1) {
+				hudMan.phalanxText = " phalanx";
+			}
+			else {
+				hudMan.phalanxText = "";
+			}
 		}
 		else {
-			phalanxMan.mode = 0;
-			hudMan.phalanxText = "";
+			zoom();
 		}
+		
 		
 		inputMan.time = 0;	// reset so next click is not double click
 		return true;
