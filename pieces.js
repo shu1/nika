@@ -83,7 +83,7 @@ function pushPiece(pieceRow, pieceCol, row, col, pusher, weight) {
 			return true;
 		}
 
-		if ((grid[row][col].kind == 1 || grid[row][col].kind == 2) && Math.abs(pusher - grid[row][col].city)%2 == 0) { // i'm an allied win or rally square
+		if ((grid[row][col].kind == 1 || grid[row][col].kind == 2) && Math.abs(grid[pieceRow][pieceCol].player - grid[row][col].city)%2 == 0) { // i'm an allied win or rally square
 			console.log("I'm an allied win/rally "+row+" "+col);
 			return true;
 		}
