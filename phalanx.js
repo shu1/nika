@@ -1,41 +1,38 @@
 "use strict";
-function getPhalanxStartingRot(row, col) {
-	phalanxMan.startingRot = grid[row][col].rot;
-}
 
 function getPhalanx(row, col) {
+	phalanx.push({row:row, col:col});
 	var me = grid[row][col];
 	me.checked = true;
-	phalanx.push({row:row, col:col});
-	if (me.kind == 3) {
-		return;
-	}
+	phalanxMan.pRot = me.rot;	// starting rotation
 
-	if (row-1 >= 0) {
-		var up = grid[row-1][col];
-		if (up.kind != 3 && up.player == me.player && up.rot == me.rot && !up.checked) {
-			getPhalanx(row-1, col);
+	if (me.kind != 3) {
+		if (row-1 >= 0) {
+			var up = grid[row-1][col];
+			if (up.player == me.player && up.rot == me.rot && !up.checked && up.kind != 3) {
+				getPhalanx(row-1, col);
+			}
 		}
-	}
 
-	if (col-1 >= 0) {
-		var left = grid[row][col-1];
-		if (left.kind != 3 && left.player == me.player && left.rot == me.rot && !left.checked) {
-			getPhalanx(row, col-1);
+		if (col-1 >= 0) {
+			var left = grid[row][col-1];
+			if (left.player == me.player && left.rot == me.rot && !left.checked && left.kind != 3) {
+				getPhalanx(row, col-1);
+			}
 		}
-	}
 
-	if (row+1 < grid.length) {
-		var down = grid[row+1][col];
-		if (down.kind != 3 && down.player == me.player && down.rot == me.rot && !down.checked) {
-			getPhalanx(row+1, col);
+		if (row+1 < grid.length) {
+			var down = grid[row+1][col];
+			if (down.player == me.player && down.rot == me.rot && !down.checked && down.kind != 3) {
+				getPhalanx(row+1, col);
+			}
 		}
-	}
 
-	if (col+1 < grid[row].length) {
-		var right = grid[row][col+1];
-		if (right.kind != 3 && right.player == me.player && right.rot == me.rot && !right.checked) {
-			getPhalanx(row, col+1);
+		if (col+1 < grid[row].length) {
+			var right = grid[row][col+1];
+			if (right.player == me.player && right.rot == me.rot && !right.checked && right.kind != 3) {
+				getPhalanx(row, col+1);
+			}
 		}
 	}
 }
@@ -62,19 +59,19 @@ function rotatePhalanx(pRow, pCol, rot) {
 
 function movePhalanx(pRow, pCol, row, col) {
 	if (checkMovePhalanx(pRow, pCol, row, col)) {
-		var deltaRow = row - pRow;
-		var deltaCol = col - pCol;
-		var moveSuccess = false;
+		var dRow = row - pRow;
+		var dCol = col - pCol;
+		var moved = false;
 		
 		// find the back of each row/col
-		switch (phalanxMan.startingRot) {
+		switch (phalanxMan.pRot) {
 		case 0:
-			for(var loopCol=0; loopCol<21; ++loopCol) {
-				for (var loopRow=14; loopRow>=0; --loopRow) {
-					if (inPhalanx(loopRow, loopCol)) {
-						if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
-							moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
-							moveSuccess = true;
+			for (var iCol = 0; iCol < 21; ++iCol) {
+				for (var iRow = 14; iRow >= 0; --iRow) {
+					if (inPhalanx(iRow, iCol)) {
+						if (pushPiece(iRow, iCol, iRow + dRow, iCol + dCol, grid[iRow][iCol].player, 1)) {
+							moveOnePiece(iRow, iCol, iRow + dRow, iCol + dCol);
+							moved = true;
 						}
 						break;
 					}
@@ -82,12 +79,12 @@ function movePhalanx(pRow, pCol, row, col) {
 			}
 			break;
 		case 1:
-			for (var loopRow=0; loopRow<15; ++loopRow) {
-				for(var loopCol=0; loopCol<21; ++loopCol) {
-					if (inPhalanx(loopRow, loopCol)) {
-						if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
-							moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
-							moveSuccess = true;
+			for (var iRow = 0; iRow < 15; ++iRow) {
+				for (var iCol = 0; iCol < 21; ++iCol) {
+					if (inPhalanx(iRow, iCol)) {
+						if (pushPiece(iRow, iCol, iRow + dRow, iCol + dCol, grid[iRow][iCol].player, 1)) {
+							moveOnePiece(iRow, iCol, iRow + dRow, iCol + dCol);
+							moved = true;
 						}
 						break;
 					}
@@ -95,12 +92,12 @@ function movePhalanx(pRow, pCol, row, col) {
 			}
 			break;
 		case 2:
-			for(var loopCol=0; loopCol<21; ++loopCol) {
-				for (var loopRow=0; loopRow<15; ++loopRow) {
-					if (inPhalanx(loopRow, loopCol)) {
-						if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
-							moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
-							moveSuccess = true;
+			for (var iCol = 0; iCol < 21; ++iCol) {
+				for (var iRow = 0; iRow < 15; ++iRow) {
+					if (inPhalanx(iRow, iCol)) {
+						if (pushPiece(iRow, iCol, iRow + dRow, iCol + dCol, grid[iRow][iCol].player, 1)) {
+							moveOnePiece(iRow, iCol, iRow + dRow, iCol + dCol);
+							moved = true;
 						}
 						break;
 					}
@@ -108,12 +105,12 @@ function movePhalanx(pRow, pCol, row, col) {
 			}
 			break;
 		case 3:
-			for (var loopRow=0; loopRow<15; ++loopRow) {
-				for(var loopCol=20; loopCol>=0; --loopCol) {
-					if (inPhalanx(loopRow, loopCol)) {
-						if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
-							moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
-							moveSuccess = true;
+			for (var iRow = 0; iRow < 15; ++iRow) {
+				for (var iCol = 20; iCol >= 0; --iCol) {
+					if (inPhalanx(iRow, iCol)) {
+						if (pushPiece(iRow, iCol, iRow + dRow, iCol + dCol, grid[iRow][iCol].player, 1)) {
+							moveOnePiece(iRow, iCol, iRow + dRow, iCol + dCol);
+							moved = true;
 						}
 						break;
 					}
@@ -123,57 +120,47 @@ function movePhalanx(pRow, pCol, row, col) {
 		}
 	}
 
-	return moveSuccess;
+	return moved;
 }
 
 function checkMovePhalanx(pRow, pCol, row, col) {
-	if (pRow < 0 || pCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21) { // bounds
+	if (pRow < 0 || pCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21) {	// TODO: check if this is still necessary
 		return false;
 	}
-	
-	var deltaRow = row - pRow;
-	var deltaCol = col - pCol;
-	var expDeltaRow = 0;
-	var expDeltaCol = 0;
 
+	var dRow = row - pRow;
+	var dCol = col - pCol;
 	for (var i = phalanx.length-1; i >= 0; --i) {
-		if (phalanx[i].row < 0 || phalanx[i].col < 0 || phalanx[i].row + deltaRow < 0 || phalanx[i].row + deltaRow >= 15 
-			|| phalanx[i].col + deltaCol < 0 || phalanx[i].col + deltaCol >= 21) { // bounds
-			return false;
-		}
+		var iRow = phalanx[i].row;
+		var iCol = phalanx[i].col;
 
-		if (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].kind < 0 
-			|| grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].kind == 3) { // invalid cell
-			return false;
-		}
-
-		if (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].player >= 0 && !inPhalanx(phalanx[i].row + deltaRow,phalanx[i].col + deltaCol) && 
-			(grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].player - grid[phalanx[i].row][phalanx[i].col].player)%2 == 0) { // same team, not part of phalanx
-			return false;
-		}
-
-		if (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].kind == 1 
-			&& (grid[phalanx[i].row + deltaRow][phalanx[i].col + deltaCol].city - grid[phalanx[i].row][phalanx[i].col].player)%2 != 0 ) { // opponent win cell
+		if (iRow < 0 || iCol < 0 || iRow + dRow < 0 || iRow + dRow >= 15 || iCol + dCol < 0 || iCol + dCol >= 21					// bounds
+		||  grid[iRow + dRow][iCol + dCol].kind < 0 || grid[iRow + dRow][iCol + dCol].kind == 3										// invalid cell
+		|| (grid[iRow + dRow][iCol + dCol].kind == 1 && (grid[iRow + dRow][iCol + dCol].city - grid[iRow][iCol].player)%2 != 0 )	// opponent win cell
+		|| (grid[iRow + dRow][iCol + dCol].player >= 0 && !inPhalanx(iRow + dRow, iCol + dCol)
+		&& (grid[iRow + dRow][iCol + dCol].player - grid[iRow][iCol].player)%2 == 0)) {	// same team, not part of phalanx
 			return false;
 		}
 	}
 
-	switch (phalanxMan.startingRot) { // move one step forward only
+	var eRow = 0;
+	var eCol = 0;
+	switch (phalanxMan.pRot) {	// move one step forward only
 		case 0:
-			expDeltaRow = -1;
+			eRow = -1;
 			break;
 		case 1:
-			expDeltaCol = 1;
+			eCol = 1;
 			break;
 		case 2:
-			expDeltaRow = 1;
+			eRow = 1;
 			break;
 		case 3:
-			expDeltaCol = -1;
+			eCol = -1;
 			break;
 	}
 
-	if (deltaRow != expDeltaRow || deltaCol != expDeltaCol) {
+	if (dRow != eRow || dCol != eCol) {
 		return false;
 	}
 

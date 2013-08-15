@@ -35,8 +35,8 @@ var inputMan = {
 }
 
 var phalanxMan = {
-	startingRot:-1,
-	mode:0
+	mode:0,
+	pRot:-1
 }
 
 var ascii = [
@@ -58,9 +58,7 @@ var ascii = [
 ]
 
 var moveHistory = []
-
 var rotationHolder = -1;
-
 var actionType = {
 	pieceMove : 0,
 	pieceRotate : 1,
