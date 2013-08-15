@@ -1,28 +1,31 @@
 "use strict";
 
 function playAudio(name) {
-	switch (name) {
-	case "pick":
-		audio[0].play();
-		break;
-	case "drop":
-		audio[1].play();
-		break;
-	case "move":
-		audio[2].play();
-		break;
-	case "push":
-		audio[3].play();
-		break;
-	case "rout":
-		audio[4].play();
-		break;
-	case "raly":
-		audio[5].play();
-		break;
+	if (audioMan.play) {
+		switch (name) {
+		case "pick":
+			audio[0].play();
+			break;
+		case "drop":
+			audio[1].play();
+			break;
+		case "move":
+			audio[2].play();
+			break;
+		case "push":
+			audio[3].play();
+			break;
+		case "rout":
+			audio[4].play();
+			break;
+		case "raly":
+			audio[5].play();
+			break;
+		}
+	
+		hudMan.audioText = name + " ";
+		audioMan.play = false;
 	}
-
-	hudMan.audioText = name + " ";
 }
 
 window.onload = init;

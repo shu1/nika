@@ -2,6 +2,10 @@
 
 var canvas, context, images, audio, grid, phalanx = [], debug = true;
 
+var audioMan = {
+	play:true
+}
+
 var drawMan = {
 	draw:true,
 	scale:1,

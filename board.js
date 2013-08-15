@@ -84,8 +84,8 @@ function debugGrid() {
 }
 
 function clearChecked() {
-	for (var row = grid.length - 1; row >= 0; --row) {
-		for (var col = grid[row].length - 1; col >= 0; --col) {
+	for (var row = 0; row < 15; ++row) {
+		for (var col = 0; col < 21; ++col) {
 			grid[row][col].checked = false;
 		}
 	}

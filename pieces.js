@@ -5,7 +5,7 @@ function getPiece(row, col) {
 		playAudio("pick");
 		return {row:row, col:col};
 	}
-	return {row:-1, col:-1};
+	return {row:-1, col:-1};	// no piece
 }
 
 function rotatePiece(pRow, pCol, row, col) {
@@ -38,6 +38,7 @@ function movePiece(pRow, pCol, row, col) {
 			phalanx = [];
 
 			if (grid[pRow][pCol].kind == 3 && grid[row][col].kind == 2) {	// rally rotation
+				playAudio("raly");
 				grid[row][col].rot = grid[row][col].player;
 			}
 
@@ -86,8 +87,7 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 
 	if (inPhalanx(row, col)) {
 		if (pushPiece(row, col, fRow, fCol, pusher, weight+1)) {	// i'll push if the cell in front will too
-			grid[fRow][fCol].player = grid[row][col].player;
-			grid[fRow][fCol].rot = grid[row][col].rot;
+			pushOnePiece(row, col, fRow, fCol);
 			return true;
 		}
 		return false;
@@ -103,7 +103,7 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 		}
 
 		if (weight > 1) {	// check line weight
-			if (grid[fRow][fCol].kind < 0 || grid[fRow][fCol].kind == 3	// pushed into invalid or routed cell
+			if (grid[fRow][fCol].kind < 0 || grid[fRow][fCol].kind == 3												// pushed into invalid or routed cell
 			|| (grid[fRow][fCol].player >= 0 && Math.abs(grid[fRow][fCol].player - grid[row][col].player)%2 == 1)	// pushed into enemy piece
 			|| (grid[fRow][fCol].kind == 1 && Math.abs(grid[fRow][fCol].city - grid[row][col].player)%2 == 1)) {	// pushed into enemy win cell
 				routPiece(row,col);
@@ -111,8 +111,7 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 			}
 
 			if (pushPiece(row, col, fRow, fCol, pusher, weight-1)) {	// i'll be pushed if the piece behind me will too
-				grid[fRow][fCol].player = grid[row][col].player;
-				grid[fRow][fCol].rot = grid[row][col].rot;
+				pushOnePiece(row, col, fRow, fCol);
 				return true;
 			}
 		}
@@ -120,9 +119,16 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 	return false;
 }
 
+function pushOnePiece(row, col, fRow, fCol) {
+	playAudio("push");
+	grid[fRow][fCol].player = grid[row][col].player;
+	grid[fRow][fCol].rot = grid[row][col].rot;
+}
+
 // move piece to rout cell
 function routPiece(row, col) {
 	if (grid[row][col].player >= 0) {
+		playAudio("rout");
 		var cell = getRoutCell(grid[row][col].player);
 
 		grid[cell.row][cell.col].player = grid[row][col].player;

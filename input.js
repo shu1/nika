@@ -16,6 +16,7 @@ function getXYRowCol(event) {
 
 function mouseDown(event) {
 	inputMan.click = true;
+	audioMan.play = true;
 
 	getXYRowCol(event);
 	inputMan.pX = inputMan.x;
@@ -42,6 +43,8 @@ function mouseDown(event) {
 
 function mouseMove(event) {
 	if (inputMan.click) {
+		audioMan.play = true;
+		
 		getXYRowCol(event);
 		hudMan.inputText = inputMan.row + "," + inputMan.col;
 
@@ -67,13 +70,14 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	inputMan.click = false;
+	audioMan.play = true;
 	hudMan.inputText += " up";
 
 	if (!dblClick(event)) {
 		if (movePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
+			inputMan.time = 0;	// reset so next click is not double click
 			phalanxMan.mode = 0;	// after move always get out of phalanx mode
 			hudMan.phalanxText = "";
-			inputMan.time = 0;	// reset so next click is not double click
 		}
 	}
 	drawMan.draw = true;
@@ -82,8 +86,8 @@ function mouseUp(event) {
 function dblClick(event) {
 	var time = Date.now();
 	if (time - inputMan.time < 300) {	// double click time in milliseconds
-		hudMan.inputText += " " + (time - inputMan.time) + "ms";
 		event.preventDefault();
+		hudMan.inputText += " " + (time - inputMan.time) + "ms";
 
 		if (inputMan.row == inputMan.pRow && inputMan.col == inputMan.pCol) {	// if there's a piece, toggle phalanx mode
 			if (phalanxMan.mode == 0) {
