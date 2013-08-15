@@ -23,13 +23,13 @@ var	hudMan = {
 
 var inputMan = {
 	click:false,
-	pieceRow:-1,
-	pieceCol:-1,
+	pRow:-1,
+	pCol:-1,
 	row:-1,
 	col:-1,
 	time:0,
-	prevX:0,
-	prevY:0,
+	pX:0,
+	pY:0,
 	x:0,
 	y:0
 }

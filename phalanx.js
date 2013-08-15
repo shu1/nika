@@ -49,94 +49,90 @@ function inPhalanx(row, col) {
 	return false;
 }
 
-function rotatePhalanx(rot, pieceRow, pieceCol) {
+function rotatePhalanx(pRow, pCol, rot) {
 	if (phalanxMan.mode == 0) {
 		for (var i = phalanx.length - 1; i >= 0; --i) {
 			grid[phalanx[i].row][phalanx[i].col].rot = rot;
 		}
 	}
 	else {
-		grid[pieceRow][pieceCol].rot = rot;
+		grid[pRow][pCol].rot = rot;
 	}
 }
 
-function movePhalanx(pieceRow, pieceCol, row, col) {
-
-	if (checkMovePhalanx(pieceRow, pieceCol, row, col)) {
-		var deltaRow = row - pieceRow;
-		var deltaCol = col - pieceCol;
+function movePhalanx(pRow, pCol, row, col) {
+	if (checkMovePhalanx(pRow, pCol, row, col)) {
+		var deltaRow = row - pRow;
+		var deltaCol = col - pCol;
 		var moveSuccess = false;
 		
 		// find the back of each row/col
 		switch (phalanxMan.startingRot) {
-			case 0:
+		case 0:
+			for(var loopCol=0; loopCol<21; ++loopCol) {
+				for (var loopRow=14; loopRow>=0; --loopRow) {
+					if (inPhalanx(loopRow, loopCol)) {
+						if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
+							moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
+							moveSuccess = true;
+						}
+						break;
+					}
+				}
+			}
+			break;
+		case 1:
+			for (var loopRow=0; loopRow<15; ++loopRow) {
 				for(var loopCol=0; loopCol<21; ++loopCol) {
-					for (var loopRow=14; loopRow>=0; --loopRow) {
-						if (inPhalanx(loopRow, loopCol)) {
-							if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
-								moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
-								moveSuccess = true;
-							}
-							break;
+					if (inPhalanx(loopRow, loopCol)) {
+						if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
+							moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
+							moveSuccess = true;
 						}
+						break;
 					}
 				}
-				break;
-
-			case 1:
+			}
+			break;
+		case 2:
+			for(var loopCol=0; loopCol<21; ++loopCol) {
 				for (var loopRow=0; loopRow<15; ++loopRow) {
-					for(var loopCol=0; loopCol<21; ++loopCol) {
-						if (inPhalanx(loopRow, loopCol)) {
-							if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
-								moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
-								moveSuccess = true;
-							}
-							break;
+					if (inPhalanx(loopRow, loopCol)) {
+						if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
+							moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
+							moveSuccess = true;
 						}
+						break;
 					}
 				}
-				break;
-
-			case 2:
-				for(var loopCol=0; loopCol<21; ++loopCol) {
-					for (var loopRow=0; loopRow<15; ++loopRow) {
-						if (inPhalanx(loopRow, loopCol)) {
-							if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
-								moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
-								moveSuccess = true;
-							}
-							break;
+			}
+			break;
+		case 3:
+			for (var loopRow=0; loopRow<15; ++loopRow) {
+				for(var loopCol=20; loopCol>=0; --loopCol) {
+					if (inPhalanx(loopRow, loopCol)) {
+						if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
+							moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
+							moveSuccess = true;
 						}
+						break;
 					}
 				}
-				break;
-
-			case 3:
-				for (var loopRow=0; loopRow<15; ++loopRow) {
-					for(var loopCol=20; loopCol>=0; --loopCol) {
-						if (inPhalanx(loopRow, loopCol)) {
-							if(pushPiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol, grid[loopRow][loopCol].player, 1)) {
-								moveSinglePiece(loopRow, loopCol, loopRow+deltaRow, loopCol+deltaCol);
-								moveSuccess = true;
-							}
-							break;
-						}
-					}
-				}
-				break;
+			}
+			break;
 		}
 	}
 
 	return moveSuccess;
 }
 
-function checkMovePhalanx(pieceRow, pieceCol, row, col) {
-	if (pieceRow < 0 || pieceCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21) { // bounds
+function checkMovePhalanx(pRow, pCol, row, col) {
+	if (pRow < 0 || pCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21) { // bounds
 		return false;
 	}
 	
-	var deltaRow = row - pieceRow;
-	var deltaCol = col - pieceCol;
+	var deltaRow = row - pRow;
+	var deltaCol = col - pCol;
 	var expDeltaRow = 0;
 	var expDeltaCol = 0;
 

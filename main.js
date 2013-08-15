@@ -108,30 +108,30 @@ function zoom() {
 	}
 }
 
-function pan(dx, dy) {
+function pan(dX, dY) {
 	var width = -boardWidth * (drawMan.scale-1) + drawMan.offsetX*2;
 	var height = -boardHeight * (drawMan.scale-1) + drawMan.offsetY*2;
 	var panned = false;
 
-	if (drawMan.x + dx < width) {
+	if (drawMan.x + dX < width) {
 		drawMan.x = width;
 	}
-	else if (drawMan.x + dx > 0) {
+	else if (drawMan.x + dX > 0) {
 		drawMan.x = 0;
 	}
 	else {
-		drawMan.x += dx;
+		drawMan.x += dX;
 		panned = true;
 	}
 
-	if (drawMan.y + dy < height) {
+	if (drawMan.y + dY < height) {
 		drawMan.y = height;
 	}
-	else if (drawMan.y + dy > 0) {
+	else if (drawMan.y + dY > 0) {
 		drawMan.y = 0;
 	}
 	else {
-		drawMan.y += dy;
+		drawMan.y += dY;
 		panned = true;
 	}
 
@@ -166,22 +166,22 @@ function setRings() {
 			grid[phalanx[i].row][phalanx[i].col].ring = 0;
 		}
 	}
-	else if (inputMan.pieceRow >= 0 && inputMan.pieceCol >= 0) {
-			grid[inputMan.pieceRow][inputMan.pieceCol].ring = 0;
+	else if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {
+			grid[inputMan.pRow][inputMan.pCol].ring = 0;
 	}
 
 	if (inputMan.click) {
 		if (phalanxMan.mode == 0) {
-			if (checkMovePhalanx(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
-				var dRow = inputMan.row - inputMan.pieceRow;
-				var dCol = inputMan.col - inputMan.pieceCol;
+			if (checkMovePhalanx(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
+				var dRow = inputMan.row - inputMan.pRow;
+				var dCol = inputMan.col - inputMan.pCol;
 
 				for (var i = phalanx.length-1; i >= 0; --i) {
 					grid[phalanx[i].row + dRow][phalanx[i].col + dCol].ring = 1;
 				}
 			}
 		}
-		else if (checkMove(inputMan.pieceRow, inputMan.pieceCol, inputMan.row, inputMan.col)) {
+		else if (checkMove(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
 			grid[inputMan.row][inputMan.col].ring = 1;
 		}
 	}
@@ -200,10 +200,9 @@ function drawPieces() {
 				context.translate(col * cellSize + cellSize/2, row * cellSize + cellSize/2);
 
 				if (cell.player >= 0) {
-					context.save()
 					context.rotate(cell.rot * Math.PI/2);
 					context.drawImage(images[cell.player], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);
-					context.restore();
+					context.rotate(cell.rot * Math.PI/-2);	// rotate back
 					context.drawImage(images[4], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);
 				}
 
