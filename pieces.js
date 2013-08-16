@@ -30,6 +30,7 @@ function movePiece(pRow, pCol, row, col) {
 		if (phalanxMan.mode == 0) {
 			if (movePhalanx(pRow, pCol, row, col)) {
 				phalanx = [];
+				playAudio("move");
 				return true;
 			}
 		}
@@ -87,7 +88,7 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 
 	if (inPhalanx(row, col)) {
 		if (pushPiece(row, col, fRow, fCol, pusher, weight+1)) {	// i'll push if the cell in front will too
-			pushOnePiece(row, col, fRow, fCol);
+			pushOnePiece(row, col, fRow, fCol, pusher);
 			return true;
 		}
 		return false;
@@ -111,7 +112,7 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 			}
 
 			if (pushPiece(row, col, fRow, fCol, pusher, weight-1)) {	// i'll be pushed if the piece behind me will too
-				pushOnePiece(row, col, fRow, fCol);
+				pushOnePiece(row, col, fRow, fCol, pusher);
 				return true;
 			}
 		}
@@ -119,8 +120,11 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 	return false;
 }
 
-function pushOnePiece(row, col, fRow, fCol) {
-	playAudio("push");
+function pushOnePiece(row, col, fRow, fCol, pusher) {
+	if (Math.abs((grid[row][col].player - pusher)%2) == 1) {
+		playAudio("push");	
+	}
+	
 	grid[fRow][fCol].player = grid[row][col].player;
 	grid[fRow][fCol].rot = grid[row][col].rot;
 }
