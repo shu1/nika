@@ -41,7 +41,7 @@ function movePiece(pRow, pCol, row, col) {
 				playAudio("raly");
 				grid[row][col].rot = grid[row][col].player;
 			}
-
+			playAudio("move");
 			return true;	// return if a piece was moved so it can be redrawn
 		}
 	}
@@ -49,7 +49,7 @@ function movePiece(pRow, pCol, row, col) {
 }
 
 function moveOnePiece(pRow, pCol, row, col) {
-	playAudio("move");
+	
 	grid[row][col].player = grid[pRow][pCol].player;
 	grid[row][col].rot = grid[pRow][pCol].rot;
 	grid[pRow][pCol].player = -1;
