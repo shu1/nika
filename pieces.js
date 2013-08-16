@@ -3,6 +3,11 @@
 function getPiece(row, col) {
 	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player >= 0) {
 		playSound("pickup");
+
+		phalanx = [];
+		getPhalanx(row, col);
+		clearChecked();
+
 		return {row:row, col:col, rot:grid[row][col].rot};
 	}
 	return {row:-1, col:-1, rot:-1};	// no piece
@@ -10,7 +15,7 @@ function getPiece(row, col) {
 
 function rotatePiece(pRow, pCol, row, col) {
 	if (grid[pRow][pCol].kind != 3) {
-		if (row < pRow) {	// up
+		if (row < pRow) {		// up
 			rotatePhalanx(pRow, pCol, 0);
 		}
 		else if (col > pCol) {	// right
@@ -26,7 +31,7 @@ function rotatePiece(pRow, pCol, row, col) {
 }
 
 function movePiece(pRow, pCol, row, col) {
-	if (row != pRow || col != pCol) {
+	if (pRow >= 0 && pCol >= 0) {
 		if (phalanxMan.mode == 0) {
 			if (movePhalanx(pRow, pCol, row, col)) {
 				playSound("move");
@@ -39,20 +44,19 @@ function movePiece(pRow, pCol, row, col) {
 			phalanx = [];
 
 			if (grid[pRow][pCol].kind == 3 && grid[row][col].kind == 2) {	// rally
+				grid[row][col].rot = grid[row][col].player;	// set rotation toward center of board
 				playSound("rally");
-				grid[row][col].rot = grid[row][col].player;
 			}
 			else {
 				playSound("move");
 			}
 			return true;	// return if a piece was moved so it can be redrawn
 		}
-	}
 
-	if (grid[pRow][pCol].rot != inputMan.pRot) {
-		playSound("rotate");
+		if (grid[pRow][pCol].rot != inputMan.pRot) {
+			playSound("rotate");
+		}
 	}
-
 	return false;
 }
 

@@ -28,15 +28,10 @@ function mouseDown(event) {
 	inputMan.pCol = piece.col;
 	inputMan.pRot = piece.rot;
 
-	phalanx = [];
 	if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {
 		event.preventDefault();
-		getPhalanx(inputMan.pRow, inputMan.pCol);
-		clearChecked();
-
-		if (phalanx.length == 1) {	// single pieces are automatically in phalanx mode
+		if (phalanx.length == 1) {	// TODO: change this behavior
 			phalanxMan.mode = 1;
-			hudMan.phalanxText = " phalanx";
 		}
 	}
 	drawMan.draw = true;
@@ -50,8 +45,8 @@ function mouseMove(event) {
 		hudMan.inputText = inputMan.row + "," + inputMan.col;
 
 		if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {	// if there's a piece, rotate it
-			event.preventDefault();
 			rotatePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col);
+			event.preventDefault();
 		}
 		else if (boardWidth * drawMan.scale > canvas.width || boardHeight * drawMan.scale > canvas.height) {	// else pan
 			var dX = inputMan.x - inputMan.pX;
@@ -78,7 +73,6 @@ function mouseUp(event) {
 		if (movePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
 			inputMan.time = 0;		// reset so next click is not double click
 			phalanxMan.mode = 0;	// after move always get out of phalanx edit mode
-			hudMan.phalanxText = "";
 		}
 	}
 	drawMan.draw = true;
@@ -87,18 +81,11 @@ function mouseUp(event) {
 function dblClick(event) {
 	var time = Date.now();
 	if (time - inputMan.time < 300) {	// double click time in milliseconds
-		event.preventDefault();
 		hudMan.inputText += " " + (time - inputMan.time) + "ms";
+		event.preventDefault();
 
-		if (inputMan.row == inputMan.pRow && inputMan.col == inputMan.pCol) {	// if there's a piece, toggle phalanx mode
-			if (phalanxMan.mode == 0) {
-				phalanxMan.mode = 1;
-				hudMan.phalanxText = " phalanx";
-			}
-			else {
-				phalanxMan.mode = 0;
-				hudMan.phalanxText = "";
-			}
+		if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {	// if there's a piece, toggle phalanx mode
+			phalanxMan.mode = 1 - phalanxMan.mode;
 		}
 		else {
 			zoom();

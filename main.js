@@ -229,6 +229,7 @@ function drawHud() {
 	}
 	hudMan.fpsCount++;
 	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + drawMan.scale + "x ";
+	hudMan.phalanxText = phalanxMan.mode == 0 ? "" : " SELECTION";
 	context.clearRect(0, 0, canvas.width, 20);
 	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.soundText + hudMan.inputText + hudMan.phalanxText, 120, 14);
 }
