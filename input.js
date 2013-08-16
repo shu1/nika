@@ -16,7 +16,7 @@ function getXYRowCol(event) {
 
 function mouseDown(event) {
 	inputMan.click = true;
-	audioMan.play = true;
+	soundMan.play = true;
 
 	getXYRowCol(event);
 	inputMan.pX = inputMan.x;
@@ -26,6 +26,7 @@ function mouseDown(event) {
 	var piece = getPiece(inputMan.row, inputMan.col);
 	inputMan.pRow = piece.row;
 	inputMan.pCol = piece.col;
+	inputMan.pRot = piece.rot;
 
 	phalanx = [];
 	if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {
@@ -43,8 +44,8 @@ function mouseDown(event) {
 
 function mouseMove(event) {
 	if (inputMan.click) {
-		audioMan.play = true;
-		
+		soundMan.play = true;
+
 		getXYRowCol(event);
 		hudMan.inputText = inputMan.row + "," + inputMan.col;
 
@@ -70,12 +71,12 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	inputMan.click = false;
-	audioMan.play = true;
+	soundMan.play = true;
 	hudMan.inputText += " up";
 
 	if (!dblClick(event)) {
 		if (movePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
-			inputMan.time = 0;	// reset so next click is not double click
+			inputMan.time = 0;		// reset so next click is not double click
 			phalanxMan.mode = 0;	// after move always get out of phalanx edit mode
 			hudMan.phalanxText = "";
 		}

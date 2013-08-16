@@ -2,10 +2,10 @@
 
 function getPiece(row, col) {
 	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player >= 0) {
-		playAudio("pick");
-		return {row:row, col:col};
+		playSound("pickup");
+		return {row:row, col:col, rot:grid[row][col].rot};
 	}
-	return {row:-1, col:-1};	// no piece
+	return {row:-1, col:-1, rot:-1};	// no piece
 }
 
 function rotatePiece(pRow, pCol, row, col) {
@@ -29,8 +29,8 @@ function movePiece(pRow, pCol, row, col) {
 	if (row != pRow || col != pCol) {
 		if (phalanxMan.mode == 0) {
 			if (movePhalanx(pRow, pCol, row, col)) {
+				playSound("move");
 				phalanx = [];
-				playAudio("move");
 				return true;
 			}
 		}
@@ -38,19 +38,25 @@ function movePiece(pRow, pCol, row, col) {
 			moveOnePiece(pRow, pCol, row, col);
 			phalanx = [];
 
-			if (grid[pRow][pCol].kind == 3 && grid[row][col].kind == 2) {	// rally rotation
-				playAudio("raly");
+			if (grid[pRow][pCol].kind == 3 && grid[row][col].kind == 2) {	// rally
+				playSound("rally");
 				grid[row][col].rot = grid[row][col].player;
 			}
-			playAudio("move");
+			else {
+				playSound("move");
+			}
 			return true;	// return if a piece was moved so it can be redrawn
 		}
 	}
+
+	if (grid[pRow][pCol].rot != inputMan.pRot) {
+		playSound("rotate");
+	}
+
 	return false;
 }
 
 function moveOnePiece(pRow, pCol, row, col) {
-	
 	grid[row][col].player = grid[pRow][pCol].player;
 	grid[row][col].rot = grid[pRow][pCol].rot;
 	grid[pRow][pCol].player = -1;
@@ -58,12 +64,12 @@ function moveOnePiece(pRow, pCol, row, col) {
 }
 
 function checkMove(pRow, pCol, row, col) {
-	if (pRow < 0 || pCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21												// bounds
-	|| grid[row][col].kind < 0 || grid[row][col].kind == 3																	// invalid cell
-	|| (grid[pRow][pCol].kind != 3 && Math.abs(row - pRow) + Math.abs(col - pCol) > 1)										// adjacent cell
-	|| (grid[row][col].kind == 1 && (grid[row][col].city - grid[pRow][pCol].player)%2 != 0 )								// opponent win cell
-	|| (grid[pRow][pCol].kind == 3 && (grid[row][col].kind != 2 || grid[pRow][pCol].player != grid[row][col].city))			// routed to respawn
-	|| (grid[row][col].player >= 0 && (grid[row][col].player - grid[pRow][pCol].player)%2 == 0)) {	// same team
+	if (pRow < 0 || pCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21										// bounds
+	|| grid[row][col].kind < 0 || grid[row][col].kind == 3															// invalid cell
+	|| (grid[pRow][pCol].kind != 3 && Math.abs(row - pRow) + Math.abs(col - pCol) > 1)								// adjacent cell
+	|| (grid[row][col].kind == 1 && (grid[row][col].city - grid[pRow][pCol].player)%2 != 0 )						// opponent win cell
+	|| (grid[pRow][pCol].kind == 3 && (grid[row][col].kind != 2 || grid[pRow][pCol].player != grid[row][col].city))	// routed to respawn
+	|| (grid[row][col].player >= 0 && (grid[row][col].player - grid[pRow][pCol].player)%2 == 0)) {					// same team
 		return false;
 	}
 	return true;
@@ -122,7 +128,7 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 
 function pushOnePiece(row, col, fRow, fCol, pusher) {
 	if (Math.abs((grid[row][col].player - pusher)%2) == 1) {
-		playAudio("push");	
+		playSound("push");	
 	}
 	
 	grid[fRow][fCol].player = grid[row][col].player;
@@ -132,7 +138,7 @@ function pushOnePiece(row, col, fRow, fCol, pusher) {
 // move piece to rout cell
 function routPiece(row, col) {
 	if (grid[row][col].player >= 0) {
-		playAudio("rout");
+		playSound("rout");
 		var cell = getRoutCell(grid[row][col].player);
 
 		grid[cell.row][cell.col].player = grid[row][col].player;

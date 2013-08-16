@@ -1,30 +1,30 @@
 "use strict";
 
-function playAudio(name) {
-	if (audioMan.play) {
+function playSound(name) {
+	if (soundMan.play) {
 		switch (name) {
-		case "pick":
-			audio[0].play();
+		case "pickup":
+			sounds[0].play();
 			break;
-		case "drop":
-			audio[1].play();
+		case "rotate":
+			sounds[1].play();
 			break;
 		case "move":
-			audio[2].play();
+			sounds[2].play();
 			break;
 		case "push":
-			audio[3].play();
+			sounds[3].play();
 			break;
 		case "rout":
-			audio[4].play();
+			sounds[4].play();
 			break;
-		case "raly":
-			audio[5].play();
+		case "rally":
+			sounds[5].play();
 			break;
 		}
-	
-		hudMan.audioText = name + " ";
-		audioMan.play = false;
+
+		hudMan.soundText = name + " ";
+		soundMan.play = false;
 	}
 }
 
@@ -42,13 +42,13 @@ function init() {
 	images[6] = document.getElementById("silver");
 	images[7] = document.getElementById("board");
 
-	audio = new Array(6);
-	audio[0] = document.getElementById("pick");
-	audio[1] = document.getElementById("drop");
-	audio[2] = document.getElementById("move");
-	audio[3] = document.getElementById("push");
-	audio[5] = document.getElementById("rout");
-	audio[4] = document.getElementById("raly");
+	sounds = new Array(6);
+	sounds[0] = document.getElementById("pick");
+	sounds[1] = document.getElementById("drop");
+	sounds[2] = document.getElementById("move");
+	sounds[3] = document.getElementById("push");
+	sounds[5] = document.getElementById("rout");
+	sounds[4] = document.getElementById("raly");
 
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
@@ -230,7 +230,7 @@ function drawHud() {
 	hudMan.fpsCount++;
 	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + drawMan.scale + "x ";
 	context.clearRect(0, 0, canvas.width, 20);
-	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.audioText + hudMan.inputText + hudMan.phalanxText, 120, 14);
+	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.soundText + hudMan.inputText + hudMan.phalanxText, 120, 14);
 }
 
 // browser compatibility

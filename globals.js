@@ -1,8 +1,8 @@
 "use strict";
 
-var canvas, context, images, audio, grid, phalanx = [], debug = true;
+var canvas, context, images, sounds, grid, phalanx = [], debug = true;
 
-var audioMan = {
+var soundMan = {
 	play:true
 }
 
@@ -20,7 +20,7 @@ var	hudMan = {
 	fpsCount:0,
 	fpsText:"",
 	drawText:"",
-	audioText:"",
+	soundText:"",
 	inputText:"",
 	phalanxText:""
 }
@@ -29,6 +29,7 @@ var inputMan = {
 	click:false,
 	pRow:-1,
 	pCol:-1,
+	pRot:-1,
 	row:-1,
 	col:-1,
 	time:0,
