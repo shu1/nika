@@ -62,7 +62,7 @@ function checkMove(pRow, pCol, row, col) {
 	|| (grid[pRow][pCol].kind != 3 && Math.abs(row - pRow) + Math.abs(col - pCol) > 1)										// adjacent cell
 	|| (grid[row][col].kind == 1 && (grid[row][col].city - grid[pRow][pCol].player)%2 != 0 )								// opponent win cell
 	|| (grid[pRow][pCol].kind == 3 && (grid[row][col].kind != 2 || grid[pRow][pCol].player != grid[row][col].city))			// routed to respawn
-	|| (grid[row][col].player >= 0 && (grid[row][col].player - grid[pRow][pCol].player)%2 == 0 && !inPhalanx(row, col))) {	// same team
+	|| (grid[row][col].player >= 0 && (grid[row][col].player - grid[pRow][pCol].player)%2 == 0)) {	// same team
 		return false;
 	}
 	return true;
@@ -74,7 +74,7 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 	}
 
 	if (grid[row][col].player < 0) {	// empty cell
-		if (grid[row][col].kind == 0	// normall cell
+		if (grid[row][col].kind == 0	// normal cell
 		|| (grid[row][col].kind > 0 && Math.abs(grid[pRow][pCol].player - grid[row][col].city)%2 == 0)) {	// allied win or rally cell
 			return true;
 		}

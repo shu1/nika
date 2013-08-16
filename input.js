@@ -76,7 +76,7 @@ function mouseUp(event) {
 	if (!dblClick(event)) {
 		if (movePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
 			inputMan.time = 0;	// reset so next click is not double click
-			phalanxMan.mode = 0;	// after move always get out of phalanx mode
+			phalanxMan.mode = 0;	// after move always get out of phalanx edit mode
 			hudMan.phalanxText = "";
 		}
 	}
