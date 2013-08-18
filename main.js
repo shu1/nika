@@ -4,22 +4,21 @@ function playSound(name) {
 	if (soundMan.play) {
 		switch (name) {
 		case "pickup":
-			sounds[0].play();
 			break;
 		case "rotate":
-			sounds[1].play();
+			sounds[5].play();
 			break;
 		case "move":
-			sounds[2].play();
+			sounds[1].play();
 			break;
 		case "push":
 			sounds[3].play();
 			break;
 		case "rout":
-			sounds[4].play();
+			sounds[2].play();
 			break;
 		case "rally":
-			sounds[5].play();
+			sounds[4].play();
 			break;
 		}
 
@@ -47,8 +46,8 @@ function init() {
 	sounds[1] = document.getElementById("drop");
 	sounds[2] = document.getElementById("move");
 	sounds[3] = document.getElementById("push");
-	sounds[5] = document.getElementById("rout");
-	sounds[4] = document.getElementById("raly");
+	sounds[4] = document.getElementById("rout");
+	sounds[5] = document.getElementById("raly");
 
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
