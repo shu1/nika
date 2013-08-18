@@ -23,15 +23,11 @@ function mouseDown(event) {
 	inputMan.pY = inputMan.y;
 	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
 
-	var piece = getPiece(inputMan.row, inputMan.col);
-	inputMan.pRow = piece.row;
-	inputMan.pCol = piece.col;
-	inputMan.pRot = piece.rot;
-
+	getPiece(inputMan.row, inputMan.col);
 	if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {
 		event.preventDefault();
-		if (phalanx.length == 1) {	// TODO: change this behavior
-			phalanxMan.mode = 1;
+		if (phalanx.length == 1) {	// if piece is single, automatically set to selection mode
+			inputMan.mode = 1;
 		}
 	}
 	drawMan.draw = true;
@@ -72,7 +68,7 @@ function mouseUp(event) {
 	if (!dblClick(event)) {
 		if (movePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
 			inputMan.time = 0;		// reset so next click is not double click
-			phalanxMan.mode = 0;	// after move always get out of phalanx edit mode
+			inputMan.mode = 0;	// after move always get out of selection mode
 		}
 	}
 	drawMan.draw = true;
@@ -84,8 +80,8 @@ function dblClick(event) {
 		hudMan.inputText += " " + (time - inputMan.time) + "ms";
 		event.preventDefault();
 
-		if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {	// if there's a piece, toggle phalanx mode
-			phalanxMan.mode = 1 - phalanxMan.mode;
+		if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {	// if there's a piece, toggle selection mode
+			inputMan.mode = 1 - inputMan.mode;
 		}
 		else {
 			zoom();

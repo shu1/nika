@@ -27,6 +27,7 @@ var	hudMan = {
 
 var inputMan = {
 	click:false,
+	mode:0,
 	pRow:-1,
 	pCol:-1,
 	pRot:-1,
@@ -37,11 +38,6 @@ var inputMan = {
 	pY:0,
 	x:0,
 	y:0
-}
-
-var phalanxMan = {
-	mode:0,
-	pRot:-1
 }
 
 var ascii = [

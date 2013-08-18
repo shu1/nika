@@ -164,7 +164,7 @@ function draw() {
 }
 
 function setRings() {
-	if (phalanxMan.mode == 0) {
+	if (inputMan.mode == 0) {
 		for (var i = phalanx.length-1; i >= 0; --i) {
 			grid[phalanx[i].row][phalanx[i].col].ring = 0;
 		}
@@ -174,7 +174,7 @@ function setRings() {
 	}
 
 	if (inputMan.click) {
-		if (phalanxMan.mode == 0) {
+		if (inputMan.mode == 0) {
 			if (checkMovePhalanx(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
 				var dRow = inputMan.row - inputMan.pRow;
 				var dCol = inputMan.col - inputMan.pCol;
@@ -229,7 +229,7 @@ function drawHud() {
 	}
 	hudMan.fpsCount++;
 	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + drawMan.scale + "x ";
-	hudMan.phalanxText = phalanxMan.mode == 0 ? "" : " SELECTION";
+	hudMan.phalanxText = inputMan.mode == 0 ? "" : " SELECTION";
 	context.clearRect(0, 0, canvas.width, 20);
 	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.soundText + hudMan.inputText + hudMan.phalanxText, 120, 14);
 }

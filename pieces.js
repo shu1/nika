@@ -1,16 +1,21 @@
 "use strict";
 
 function getPiece(row, col) {
+	inputMan.pRow = -1;
+	inputMan.pCol = -1;
+	inputMan.pRot = -1;
+
 	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player >= 0) {
 		playSound("pickup");
+
+		inputMan.pRow = row;
+		inputMan.pCol = col;
+		inputMan.pRot = grid[row][col].rot;
 
 		phalanx = [];
 		getPhalanx(row, col);
 		clearChecked();
-
-		return {row:row, col:col, rot:grid[row][col].rot};
 	}
-	return {row:-1, col:-1, rot:-1};	// no piece
 }
 
 function rotatePiece(pRow, pCol, row, col) {
@@ -32,7 +37,7 @@ function rotatePiece(pRow, pCol, row, col) {
 
 function movePiece(pRow, pCol, row, col) {
 	if (pRow >= 0 && pCol >= 0) {
-		if (phalanxMan.mode == 0) {
+		if (inputMan.mode == 0) {
 			if (movePhalanx(pRow, pCol, row, col)) {
 				playSound("move");
 				phalanx = [];
@@ -55,6 +60,7 @@ function movePiece(pRow, pCol, row, col) {
 
 		if (grid[pRow][pCol].rot != inputMan.pRot) {
 			playSound("rotate");
+			return true;
 		}
 	}
 	return false;

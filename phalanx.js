@@ -1,10 +1,9 @@
 "use strict";
 
 function getPhalanx(row, col) {
-	phalanx.push({row:row, col:col});
 	var me = grid[row][col];
 	me.checked = true;
-	phalanxMan.pRot = me.rot;	// starting rotation
+	phalanx.push({row:row, col:col});
 
 	if (me.kind != 3) {
 		if (row-1 >= 0) {
@@ -47,7 +46,7 @@ function inPhalanx(row, col) {
 }
 
 function rotatePhalanx(pRow, pCol, rot) {
-	if (phalanxMan.mode == 0) {
+	if (inputMan.mode == 0) {
 		for (var i = phalanx.length - 1; i >= 0; --i) {
 			grid[phalanx[i].row][phalanx[i].col].rot = rot;
 		}
@@ -64,7 +63,7 @@ function movePhalanx(pRow, pCol, row, col) {
 		var moved = false;
 		
 		// find the back of each row/col
-		switch (phalanxMan.pRot) {
+		switch (inputMan.pRot) {
 		case 0:
 			for (var iCol = 0; iCol < 21; ++iCol) {
 				for (var iRow = 14; iRow >= 0; --iRow) {
@@ -145,7 +144,7 @@ function checkMovePhalanx(pRow, pCol, row, col) {
 
 	var eRow = 0;
 	var eCol = 0;
-	switch (phalanxMan.pRot) {	// move one step forward only
+	switch (inputMan.pRot) {	// move one step forward only
 		case 0:
 			eRow = -1;
 			break;
