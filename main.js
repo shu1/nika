@@ -1,7 +1,7 @@
 "use strict";
 
 function playSound(name) {
-	if (soundMan.play) {
+	if (mediaMan.play) {
 		switch (name) {
 		case "pickup":
 			break;
@@ -23,7 +23,7 @@ function playSound(name) {
 		}
 
 		hudMan.soundText = name + " ";
-		soundMan.play = false;
+		mediaMan.play = false;
 	}
 }
 
@@ -86,54 +86,54 @@ function reSize() {
 	context.font = "14px sans-serif";
 	context.fillStyle = "white";
 
-	drawMan.offsetX = (canvas.width - boardWidth)/2;
-	drawMan.offsetY = (canvas.height - boardHeight)/2;
-	drawMan.x = drawMan.offsetX;
-	drawMan.y = drawMan.offsetY;
-	drawMan.draw = true;
+	mediaMan.offsetX = (canvas.width - boardWidth)/2;
+	mediaMan.offsetY = (canvas.height - boardHeight)/2;
+	mediaMan.x = mediaMan.offsetX;
+	mediaMan.y = mediaMan.offsetY;
+	mediaMan.draw = true;
 }
 
 function zoom() {
-	if (drawMan.scale == 1) {
-		drawMan.scale = zoomLevel;	// declared in html file
+	if (mediaMan.scale == 1) {
+		mediaMan.scale = zoomLevel;	// declared in html file
 	}
 	else {
-		drawMan.scale = 1;
+		mediaMan.scale = 1;
 		context.clearRect(0, 0, canvas.width, canvas.height);
 	}
 
-	drawMan.x = -(inputMan.col * cellSize + cellSize/2) * (drawMan.scale-1) + drawMan.offsetX;
-	drawMan.y = -(inputMan.row * cellSize + cellSize/2) * (drawMan.scale-1) + drawMan.offsetY;
+	mediaMan.x = -(inputMan.col * cellSize + cellSize/2) * (mediaMan.scale-1) + mediaMan.offsetX;
+	mediaMan.y = -(inputMan.row * cellSize + cellSize/2) * (mediaMan.scale-1) + mediaMan.offsetY;
 
-	if (drawMan.scale > 1) {
+	if (mediaMan.scale > 1) {
 		pan(0, 0);	// hack to fix if outside board
 	}
 }
 
 function pan(dX, dY) {
-	var width = -boardWidth * (drawMan.scale-1) + drawMan.offsetX*2;
-	var height = -boardHeight * (drawMan.scale-1) + drawMan.offsetY*2;
+	var width = -boardWidth * (mediaMan.scale-1) + mediaMan.offsetX*2;
+	var height = -boardHeight * (mediaMan.scale-1) + mediaMan.offsetY*2;
 	var panned = false;
 
-	if (drawMan.x + dX < width) {
-		drawMan.x = width;
+	if (mediaMan.x + dX < width) {
+		mediaMan.x = width;
 	}
-	else if (drawMan.x + dX > 0) {
-		drawMan.x = 0;
+	else if (mediaMan.x + dX > 0) {
+		mediaMan.x = 0;
 	}
 	else {
-		drawMan.x += dX;
+		mediaMan.x += dX;
 		panned = true;
 	}
 
-	if (drawMan.y + dY < height) {
-		drawMan.y = height;
+	if (mediaMan.y + dY < height) {
+		mediaMan.y = height;
 	}
-	else if (drawMan.y + dY > 0) {
-		drawMan.y = 0;
+	else if (mediaMan.y + dY > 0) {
+		mediaMan.y = 0;
 	}
 	else {
-		drawMan.y += dY;
+		mediaMan.y += dY;
 		panned = true;
 	}
 
@@ -141,18 +141,18 @@ function pan(dX, dY) {
 }
 
 function draw() {
-	if (drawMan.draw) {
+	if (mediaMan.draw) {
 		setRings();
 
 		context.save();
-		context.translate(drawMan.x, drawMan.y);
-		context.scale(drawMan.scale, drawMan.scale);
+		context.translate(mediaMan.x, mediaMan.y);
+		context.scale(mediaMan.scale, mediaMan.scale);
 		
 		drawBoard();
 		drawPieces();
 
 		context.restore();
-		drawMan.draw = false;
+		mediaMan.draw = false;
 	}
 
 	if (debug) {
@@ -227,7 +227,7 @@ function drawHud() {
 		hudMan.fpsCount = 0;
 	}
 	hudMan.fpsCount++;
-	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + drawMan.scale + "x ";
+	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + mediaMan.scale + "x ";
 	hudMan.phalanxText = inputMan.mode == 0 ? "" : " SELECTION";
 	context.clearRect(0, 0, canvas.width, 20);
 	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.soundText + hudMan.inputText + hudMan.phalanxText, 120, 14);

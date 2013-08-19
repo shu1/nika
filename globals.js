@@ -1,12 +1,9 @@
 "use strict";
 
-var canvas, context, images, sounds, grid, phalanx = [], debug = true;
+var canvas, context, images, sounds, grid, phalanx=[], debug=true;
 
-var soundMan = {
-	play:true
-}
-
-var drawMan = {
+var mediaMan = {
+	play:true,
 	draw:true,
 	scale:1,
 	offsetX:0,

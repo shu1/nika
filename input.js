@@ -10,13 +10,13 @@ function getXYRowCol(event) {
 		inputMan.y = event.layerY;
 	}
 
-	inputMan.col = Math.floor((inputMan.x - drawMan.x) / (cellSize * drawMan.scale));
-	inputMan.row = Math.floor((inputMan.y - drawMan.y) / (cellSize * drawMan.scale));
+	inputMan.col = Math.floor((inputMan.x - mediaMan.x) / (cellSize * mediaMan.scale));
+	inputMan.row = Math.floor((inputMan.y - mediaMan.y) / (cellSize * mediaMan.scale));
 }
 
 function mouseDown(event) {
 	inputMan.click = true;
-	soundMan.play = true;
+	mediaMan.play = true;
 
 	getXYRowCol(event);
 	inputMan.pX = inputMan.x;
@@ -30,12 +30,12 @@ function mouseDown(event) {
 			inputMan.mode = 1;
 		}
 	}
-	drawMan.draw = true;
+	mediaMan.draw = true;
 }
 
 function mouseMove(event) {
 	if (inputMan.click) {
-		soundMan.play = true;
+		mediaMan.play = true;
 
 		getXYRowCol(event);
 		hudMan.inputText = inputMan.row + "," + inputMan.col;
@@ -44,25 +44,25 @@ function mouseMove(event) {
 			rotatePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col);
 			event.preventDefault();
 		}
-		else if (boardWidth * drawMan.scale > canvas.width || boardHeight * drawMan.scale > canvas.height) {	// else pan
+		else if (boardWidth * mediaMan.scale > canvas.width || boardHeight * mediaMan.scale > canvas.height) {	// else pan
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
 
 			if (pan(dX, dY)) {
-				hudMan.inputText = -drawMan.x + "," + -drawMan.y;
+				hudMan.inputText = -mediaMan.x + "," + -mediaMan.y;
 				event.preventDefault();
 			}
 
 			inputMan.pX = inputMan.x;
 			inputMan.pY = inputMan.y;
 		}
-		drawMan.draw = true;
+		mediaMan.draw = true;
 	}
 }
 
 function mouseUp(event) {
 	inputMan.click = false;
-	soundMan.play = true;
+	mediaMan.play = true;
 	hudMan.inputText += " up";
 
 	if (!dblClick(event)) {
@@ -71,7 +71,7 @@ function mouseUp(event) {
 			inputMan.mode = 0;	// after move always get out of selection mode
 		}
 	}
-	drawMan.draw = true;
+	mediaMan.draw = true;
 }
 
 function dblClick(event) {
