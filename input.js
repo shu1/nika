@@ -15,22 +15,25 @@ function getXYRowCol(event) {
 }
 
 function mouseDown(event) {
-	inputMan.click = true;
 	mediaMan.play = true;
 
 	getXYRowCol(event);
 	inputMan.pX = inputMan.x;
 	inputMan.pY = inputMan.y;
 	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
+	hudMan.soundText = "";
 
-	getPiece(inputMan.row, inputMan.col);
-	if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {
-		event.preventDefault();
-		if (phalanx.length == 1) {	// if piece is single, automatically set to selection mode
-			inputMan.mode = 1;
+	if (!ai(inputMan.row, inputMan.col)) {
+		inputMan.click = true;
+		getPiece(inputMan.row, inputMan.col);
+		if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {
+			event.preventDefault();
+			if (phalanx.length == 1) {	// if piece is single, automatically set to selection mode
+				inputMan.mode = 1;
+			}
 		}
+		mediaMan.draw = true;
 	}
-	mediaMan.draw = true;
 }
 
 function mouseMove(event) {

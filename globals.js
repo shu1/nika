@@ -1,6 +1,6 @@
 "use strict";
 
-var canvas, context, images, sounds, grid, phalanx=[], debug=true;
+var canvas, context, images, sounds, grid, pieces=[], phalanx=[], debug=true;
 
 var mediaMan = {
 	play:true,
@@ -17,6 +17,7 @@ var	hudMan = {
 	fpsCount:0,
 	fpsText:"",
 	drawText:"",
+	gameText:"",
 	soundText:"",
 	inputText:"",
 	phalanxText:""

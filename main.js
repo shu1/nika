@@ -3,8 +3,6 @@
 function playSound(name) {
 	if (mediaMan.play) {
 		switch (name) {
-		case "pickup":
-			break;
 		case "rotate":
 			sounds[5].play();
 			break;
@@ -22,7 +20,7 @@ function playSound(name) {
 			break;
 		}
 
-		hudMan.soundText = name + " ";
+		hudMan.soundText = " " + name;
 		mediaMan.play = false;
 	}
 }
@@ -230,7 +228,7 @@ function drawHud() {
 	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + mediaMan.scale + "x ";
 	hudMan.phalanxText = inputMan.mode == 0 ? "" : " SELECTION";
 	context.clearRect(0, 0, canvas.width, 20);
-	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.soundText + hudMan.inputText + hudMan.phalanxText, 120, 14);
+	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.gameText + hudMan.inputText + hudMan.soundText + hudMan.phalanxText, 120, 14);
 }
 
 // browser compatibility
