@@ -33,5 +33,37 @@ function ai(row, col) {
 		}
 	}
 
+	var done = false;
+	while (!done) {
+		var i = Math.floor(Math.random()*6);
+		var row = pieces[i].row;
+		var col = pieces[i].col;
+
+		var rot = Math.floor(Math.random()*4);
+		if (rot == 0) {
+			--row;
+		}
+		else if (rot == 1) {
+			++col;
+		}
+		else if (rot == 2) {
+			++row;
+		}
+		else if (rot == 3) {
+			--col;
+		}
+
+		var action = Math.floor(Math.random());
+		if (action == 0) {
+			done = movePiece(pieces[i].row, pieces[i].col, row, col);
+		}
+		else if (action == 1) {
+			done = rotatePiece(pieces[i].row, pieces[i].col, row, col);
+		}
+
+		console.log(i + " " + pieces[i].row + "," + pieces[i].col + " " + rot + " " + row + "," + col + " " + action);
+	}
+	console.log("");
+
 	return true;
 }

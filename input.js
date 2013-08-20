@@ -32,8 +32,8 @@ function mouseDown(event) {
 				inputMan.mode = 1;
 			}
 		}
-		mediaMan.draw = true;
 	}
+	mediaMan.draw = true;
 }
 
 function mouseMove(event) {
