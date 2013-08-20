@@ -72,6 +72,7 @@ function mouseUp(event) {
 		if (movePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
 			inputMan.time = 0;	// reset so next click is not double click
 			inputMan.mode = 0;	// after move always get out of selection mode
+			useAction();
 		}
 	}
 	mediaMan.draw = true;

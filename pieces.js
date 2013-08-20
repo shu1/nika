@@ -5,7 +5,7 @@ function getPiece(row, col) {
 	inputMan.pCol = -1;
 	inputMan.pRot = -1;
 
-	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player >= 0) {
+	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player == gameMan.player) {
 		inputMan.pRow = row;
 		inputMan.pCol = col;
 		inputMan.pRot = grid[row][col].rot;

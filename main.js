@@ -227,8 +227,9 @@ function drawHud() {
 	hudMan.fpsCount++;
 	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + mediaMan.scale + "x ";
 	hudMan.phalanxText = inputMan.mode == 0 ? "" : " SELECTION";
+	hudMan.gameText = " Player:"+gameMan.player+" Actions Left:"+gameMan.actions;
 	context.clearRect(0, 0, canvas.width, 20);
-	context.fillText(hudMan.fpsText + hudMan.drawText + hudMan.gameText + hudMan.inputText + hudMan.soundText + hudMan.phalanxText, 120, 14);
+	context.fillText(hudMan.fpsText + " | " + hudMan.drawText + " | " + hudMan.gameText + " | " + hudMan.inputText + " | " + hudMan.soundText + " | " + hudMan.phalanxText, 120, 14);
 }
 
 // browser compatibility

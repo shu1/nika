@@ -38,6 +38,11 @@ var inputMan = {
 	y:0
 }
 
+var gameMan = {
+	player:0,
+	actions:2
+}
+
 var ascii = [
 	".........kkklll......",
 	".........kkklll......",
