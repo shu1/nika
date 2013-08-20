@@ -5,22 +5,17 @@ function ai(row, col) {
 
 	if (row == 12 && col >= 6 && col <= 8) {
 		player = 0;
-		hudMan.gameText = "Athens ";
 	}
 	else if (col == 2 && row >= 3 && row <= 5) {
 		player = 1;
-		hudMan.gameText = "Sparta ";
 	}
 	else if (row == 2 && col >= 12 && col <= 14) {
 		player = 2;
-		hudMan.gameText = "Messene ";
 	}
 	else if (col == 18 && row >= 9 && row <= 11) {
 		player = 3;
-		hudMan.gameText = "Thebes ";
 	}
 	else {
-		hudMan.gameText = "";
 		return false;
 	}
 

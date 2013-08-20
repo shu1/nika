@@ -1,3 +1,5 @@
+"use strict";
+
 function useAction(n) {
 	n = typeof n !== 'undefined' ? n : 1;
 	gameMan.actions -= n;

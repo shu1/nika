@@ -20,7 +20,7 @@ function playSound(name) {
 			break;
 		}
 
-		hudMan.soundText = " " + name;
+		hudMan.soundText = name;
 		mediaMan.play = false;
 	}
 }
@@ -153,9 +153,7 @@ function draw() {
 		mediaMan.draw = false;
 	}
 
-	if (debug) {
-		drawHud();
-	}
+	drawHud();
 
 	window.requestAnimationFrame(draw);
 }
@@ -220,16 +218,16 @@ function drawPieces() {
 function drawHud() {
 	var time = Date.now();
 	if (time - hudMan.fpsTime > 984) {
-		hudMan.fpsText = hudMan.fpsCount + "fps ";
+		hudMan.fpsText = hudMan.fpsCount + "fps";
 		hudMan.fpsTime = time;
 		hudMan.fpsCount = 0;
 	}
 	hudMan.fpsCount++;
-	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + mediaMan.scale + "x ";
-	hudMan.phalanxText = inputMan.mode == 0 ? "" : " SELECTION";
-	hudMan.gameText = " Player:"+gameMan.player+" Actions Left:"+gameMan.actions;
+	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + mediaMan.scale + "x";
+	hudMan.gameText = "player:" + gameMan.player + " actions:" + gameMan.actions;
+	hudMan.pieceText = inputMan.mode == 0 ? "" : "SELECTION";
 	context.clearRect(0, 0, canvas.width, 20);
-	context.fillText(hudMan.fpsText + " | " + hudMan.drawText + " | " + hudMan.gameText + " | " + hudMan.inputText + " | " + hudMan.soundText + " | " + hudMan.phalanxText, 120, 14);
+	context.fillText(hudMan.fpsText + " | " + hudMan.drawText + " | " + hudMan.gameText + " | " + hudMan.soundText + " | " + hudMan.inputText + " | " + hudMan.pieceText, 120, 14);
 }
 
 // browser compatibility

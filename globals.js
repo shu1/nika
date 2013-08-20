@@ -1,6 +1,6 @@
 "use strict";
 
-var canvas, context, images, sounds, grid, pieces=[], phalanx=[], debug=true;
+var canvas, context, images, sounds, grid, pieces=[], phalanx=[];
 
 var mediaMan = {
 	play:true,
@@ -20,7 +20,7 @@ var	hudMan = {
 	gameText:"",
 	soundText:"",
 	inputText:"",
-	phalanxText:""
+	pieceText:""
 }
 
 var inputMan = {
