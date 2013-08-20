@@ -58,6 +58,7 @@ function movePiece(pRow, pCol, row, col) {
 
 		if (grid[pRow][pCol].rot != inputMan.pRot) {
 			playSound("rotate");
+			phalanx.length = 0;
 			return true;
 		}
 	}
