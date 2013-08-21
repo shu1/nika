@@ -246,14 +246,14 @@ function getPhalanx(row, col) {
 }
 
 function rotatePhalanx(pRow, pCol, rot) {
-	if (inputMan.mode == 0) {
+	// if (inputMan.mode == 0) {
 		for (var i = phalanx.length - 1; i >= 0; --i) {
 			grid[phalanx[i].row][phalanx[i].col].rot = rot;
 		}
-	}
-	else {
-		grid[pRow][pCol].rot = rot;
-	}
+	// }
+	// else {
+		// grid[pRow][pCol].rot = rot;
+	// }
 }
 
 function movePhalanx(pRow, pCol, row, col) {
