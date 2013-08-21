@@ -16,7 +16,6 @@ function getXYRowCol(event) {
 
 function mouseDown(event) {
 	mediaMan.play = true;
-
 	getXYRowCol(event);
 	inputMan.pX = inputMan.x;
 	inputMan.pY = inputMan.y;
@@ -86,6 +85,8 @@ function dblClick(event) {
 
 		if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {	// if there's a piece, toggle selection mode
 			inputMan.mode = 1 - inputMan.mode;
+			phalanx.length = 0;
+			phalanx.push({row:inputMan.pRow, col:inputMan.pCol});
 		}
 		else {
 			zoom();

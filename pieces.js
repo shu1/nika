@@ -5,14 +5,21 @@ function getPiece(row, col) {
 	inputMan.pCol = -1;
 	inputMan.pRot = -1;
 
-	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player == gameMan.player) {
+	//if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player == gameMan.player) { // Is it your turn? Commented out for debugging
+	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player >= 0) {
 		inputMan.pRow = row;
 		inputMan.pCol = col;
 		inputMan.pRot = grid[row][col].rot;
 
-		phalanx.length = 0;
-		getPhalanx(row, col);
-		clearChecked();
+		if (inputMan.mode == 0) {
+			phalanx.length = 0;
+			getPhalanx(row, col);
+			clearChecked();	
+		} 
+		else {
+			togglePieceInPhalanx(row,col);
+		}
+		
 	}
 }
 
@@ -211,7 +218,7 @@ function getPhalanx(row, col) {
 	me.checked = true;
 	phalanx.push({row:row, col:col});
 
-	if (me.kind != 3) {
+	if (me.kind != 3) { // check adjacent if not-routed-square
 		if (row-1 >= 0) {
 			var up = grid[row-1][col];
 			if (up.player == me.player && up.rot == me.rot && !up.checked && up.kind != 3) {
@@ -361,4 +368,37 @@ function checkMovePhalanx(pRow, pCol, row, col) {
 	}
 
 	return true;
+}
+
+function togglePieceInPhalanx(row,col) {
+	if (inPhalanx(row,col)) {	// if in phalanx, find and remove
+		for (var i=phalanx.length-1; i>=0; --i) {
+			if (phalanx[i].row == row && phalanx[i].col == col) {
+				phalanx.splice(i,1);
+				return;
+			}
+		}
+	}
+
+	else {	// if not in phalanx, add if it can be added
+		for (var i=phalanx.length-1; i>=0; --i) {
+			if (Math.abs(phalanx[i].row-row) + Math.abs(phalanx[i].col-col) == 1 				// adjacent cell
+					&& grid[phalanx[i].row][phalanx[i].col].player == grid[row][col].player		// same player
+					&& grid[phalanx[i].row][phalanx[i].col].rot == grid[row][col].rot 			// same rotation
+					&& grid[row][col].kind != 3) { 												// not routed cell
+
+				phalanx.push({row:row, col:col});
+				return;
+			}
+		}
+	}
+}
+
+function removeFromPhalanx(row,col) {
+	for (var i=phalanx.length-1; i>=0; --i) {
+		if (phalanx[i].row == row && phalanx[i].col == col) {
+			phalanx.splice(i,1);
+			return;
+		}
+	}
 }
