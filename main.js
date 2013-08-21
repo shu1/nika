@@ -164,7 +164,7 @@ function setRings() {
 	}
 
 	if (inputMan.click) {
-		if (inputMan.mode == 0) {
+		if (phalanx.length > 1) {
 			if (checkMovePhalanx(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
 				var dRow = inputMan.row - inputMan.pRow;
 				var dCol = inputMan.col - inputMan.pCol;
