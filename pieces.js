@@ -16,10 +16,6 @@ function getPiece(row, col) {
 			getPhalanx(row, col);
 			clearChecked();	
 		} 
-		else {
-			togglePieceInPhalanx(row,col);
-		}
-		
 	}
 }
 
@@ -42,26 +38,26 @@ function rotatePiece(pRow, pCol, row, col) {
 
 function movePiece(pRow, pCol, row, col) {
 	if (pRow >= 0 && pCol >= 0) {
-		if (inputMan.mode == 0) {
+		// if (inputMan.mode == 0) {
 			if (movePhalanx(pRow, pCol, row, col)) {
 				playSound("move");
 				phalanx.length = 0;
 				return true;
 			}
-		}
-		else if (checkMove(pRow, pCol, row, col) && pushPiece(pRow, pCol, row, col, grid[pRow][pCol].player, 1)) {
-			moveOnePiece(pRow, pCol, row, col);
-			phalanx.length = 0;
+		// }
+		// else if (checkMove(pRow, pCol, row, col) && pushPiece(pRow, pCol, row, col, grid[pRow][pCol].player, 1)) {
+		// 	moveOnePiece(pRow, pCol, row, col);
+		// 	phalanx.length = 0;
 
-			if (grid[pRow][pCol].kind == 3 && grid[row][col].kind == 2) {	// rally
-				grid[row][col].rot = grid[row][col].player;	// set rotation toward center of board
-				playSound("rally");
-			}
-			else {
-				playSound("move");
-			}
-			return true;	// return if a piece was moved so it can be redrawn
-		}
+		// 	if (grid[pRow][pCol].kind == 3 && grid[row][col].kind == 2) {	// rally
+		// 		grid[row][col].rot = grid[row][col].player;	// set rotation toward center of board
+		// 		playSound("rally");
+		// 	}
+		// 	else {
+		// 		playSound("move");
+		// 	}
+		// 	return true;	// return if a piece was moved so it can be redrawn
+		// }
 
 		if (grid[pRow][pCol].rot != inputMan.pRot) {
 			playSound("rotate");
@@ -379,8 +375,12 @@ function togglePieceInPhalanx(row,col) {
 			}
 		}
 	}
+	else {	// else add to phalanx if you can
+		if (phalanx.length == 0) {
+			phalanx.push({row:row, col:col});
+			return;
+		}
 
-	else {	// if not in phalanx, add if it can be added
 		for (var i=phalanx.length-1; i>=0; --i) {
 			if (Math.abs(phalanx[i].row-row) + Math.abs(phalanx[i].col-col) == 1 				// adjacent cell
 					&& grid[phalanx[i].row][phalanx[i].col].player == grid[row][col].player		// same player
@@ -394,11 +394,4 @@ function togglePieceInPhalanx(row,col) {
 	}
 }
 
-function removeFromPhalanx(row,col) {
-	for (var i=phalanx.length-1; i>=0; --i) {
-		if (phalanx[i].row == row && phalanx[i].col == col) {
-			phalanx.splice(i,1);
-			return;
-		}
-	}
-}
+

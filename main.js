@@ -159,14 +159,9 @@ function draw() {
 }
 
 function setRings() {
-	//if (inputMan.mode == 0) {
-		for (var i = phalanx.length-1; i >= 0; --i) {
-			grid[phalanx[i].row][phalanx[i].col].ring = 0;
-		}
-	//}
-	//else if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {
-//			grid[inputMan.pRow][inputMan.pCol].ring = 0;
-//	}
+	for (var i = phalanx.length-1; i >= 0; --i) {
+		grid[phalanx[i].row][phalanx[i].col].ring = 0;
+	}
 
 	if (inputMan.click) {
 		if (inputMan.mode == 0) {

@@ -68,6 +68,10 @@ function mouseUp(event) {
 	hudMan.inputText += " up";
 
 	if (!dblClick(event)) {
+		if (inputMan.mode == 1 && inputMan.pRow == inputMan.row && inputMan.pCol == inputMan.col) { // remove from phalanx in 
+			togglePieceInPhalanx(inputMan.row, inputMan.col);
+		}
+
 		if (movePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
 			inputMan.time = 0;	// reset so next click is not double click
 			inputMan.mode = 0;	// after move always get out of selection mode
