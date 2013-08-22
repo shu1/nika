@@ -222,7 +222,7 @@ function drawHud() {
 	hudMan.gameText = "player:" + gameMan.player + " actions:" + gameMan.actions;
 	hudMan.pieceText = inputMan.mode == 0 ? "" : "SELECTION";
 	context.clearRect(0, 0, canvas.width, 20);
-	context.fillText(hudMan.fpsText + " | " + hudMan.drawText + " | " + hudMan.gameText + " | " + hudMan.soundText + " | " + hudMan.inputText + " | " + hudMan.pieceText, 120, 14);
+	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  " + hudMan.soundText + "  |  " + hudMan.inputText + "  |  " + hudMan.pieceText, 120, 14);
 }
 
 // browser compatibility
