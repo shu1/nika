@@ -386,6 +386,9 @@ function togglePieceInPhalanx(row,col) {
 				return;
 			}
 		}
+
+		phalanx.length = 0;
+		phalanx.push({row:row, col:col});
 	}
 }
 
