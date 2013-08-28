@@ -70,7 +70,19 @@ function movePiece(pRow, pCol, row, col) {
 
 function moveOnePiece(pRow, pCol, row, col) {
 	grid[row][col].player = grid[pRow][pCol].player;
-	grid[row][col].rot = grid[pRow][pCol].rot;
+	if (row < pRow) {		// up
+		grid[row][col].rot = 0;
+	}
+	else if (col > pCol) {	// right
+		grid[row][col].rot = 1;
+	}
+	else if (row > pRow) {	// down
+		grid[row][col].rot = 2;
+	}
+	else if (col < pCol) {	// left
+		grid[row][col].rot = 3;
+	}
+
 	grid[pRow][pCol].player = -1;
 	grid[pRow][pCol].rot = -1;
 }
@@ -362,7 +374,7 @@ function checkMovePhalanx(pRow, pCol, row, col) {
 }
 
 function togglePieceInPhalanx(row,col) {
-	if (inPhalanx(row,col)) {	// if in phalanx, find and remove
+	if (inPhalanx(row,col) && phalanx.length > 1) {	// if in phalanx, find and remove
 		for (var i=phalanx.length-1; i>=0; --i) {
 			if (phalanx[i].row == row && phalanx[i].col == col) {
 				phalanx.splice(i,1);
