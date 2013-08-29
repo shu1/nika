@@ -28,7 +28,6 @@ var inputMan = {
 	mode:0,
 	pRow:-1,
 	pCol:-1,
-	pRot:-1,
 	row:-1,
 	col:-1,
 	time:0,
@@ -40,7 +39,8 @@ var inputMan = {
 
 var gameMan = {
 	player:0,
-	actions:2
+	actions:2,
+	pRot:-1
 }
 
 var ascii = [

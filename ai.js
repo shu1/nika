@@ -33,6 +33,7 @@ function ai(row, col) {
 		var i = Math.floor(Math.random()*6);
 		var row = pieces[i].row;
 		var col = pieces[i].col;
+		gameMan.pRot = grid[row][col].rot;
 
 		var rot = Math.floor(Math.random()*4);
 		if (rot == 0) {

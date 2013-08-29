@@ -3,13 +3,13 @@
 function getPiece(row, col) {
 	inputMan.pRow = -1;
 	inputMan.pCol = -1;
-	inputMan.pRot = -1;
+	gameMan.pRot = -1;
 
 	//if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player == gameMan.player) { // Is it your turn? Commented out for debugging
 	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player >= 0) {
 		inputMan.pRow = row;
 		inputMan.pCol = col;
-		inputMan.pRot = grid[row][col].rot;
+		gameMan.pRot = grid[row][col].rot;
 
 		if (inputMan.mode == 0) {
 			phalanx.length = 0;
@@ -59,7 +59,8 @@ function movePiece(pRow, pCol, row, col) {
 			return true;	// return if a piece was moved so it can be redrawn
 		}
 
-		if (grid[pRow][pCol].rot != inputMan.pRot) {
+		if (grid[pRow][pCol].rot != gameMan.pRot) {
+			console.log("Rotation business");
 			playSound("rotate");
 			phalanx.length = 0;
 			return true;
@@ -270,7 +271,7 @@ function movePhalanx(pRow, pCol, row, col) {
 		var moved = false;
 		
 		// find the back of each row/col
-		switch (inputMan.pRot) {
+		switch (gameMan.pRot) {
 		case 0:
 			for (var iCol = 0; iCol < 21; ++iCol) {
 				for (var iRow = 14; iRow >= 0; --iRow) {
@@ -351,7 +352,7 @@ function checkMovePhalanx(pRow, pCol, row, col) {
 
 	var eRow = 0;
 	var eCol = 0;
-	switch (inputMan.pRot) {	// move one step forward only
+	switch (gameMan.pRot) {	// move one step forward only
 		case 0:
 			eRow = -1;
 			break;
