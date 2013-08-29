@@ -27,9 +27,6 @@ function mouseDown(event) {
 	getPiece(inputMan.row, inputMan.col);
 	if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {
 		event.preventDefault();
-		if (phalanx.length == 1) {	// if piece is single, automatically set to selection mode
-			inputMan.mode = 1;
-		}
 	}
 	
 	mediaMan.draw = true;
