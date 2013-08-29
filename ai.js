@@ -19,8 +19,6 @@ function ai(row, col) {
 		return false;
 	}
 
-
-
 	pieces.length = 0;
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
@@ -35,7 +33,9 @@ function ai(row, col) {
 		var i = Math.floor(Math.random()*6);
 		var row = pieces[i].row;
 		var col = pieces[i].col;
-		
+
+		phalanx.length = 0;
+		phalanx.push({row:row, col:col});
 		gameMan.pRot = grid[row][col].rot;	// Only single pieces
 		// getPiece(row,col);				// Only phalanxes
 
@@ -53,7 +53,7 @@ function ai(row, col) {
 			--col;
 		}
 
-		var action = Math.floor(Math.random()*2);
+		var action = Math.floor(Math.random()*1.5);
 		if (action == 0) {
 			done = movePiece(pieces[i].row, pieces[i].col, row, col);
 		}
