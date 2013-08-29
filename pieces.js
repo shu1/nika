@@ -37,12 +37,15 @@ function rotatePiece(pRow, pCol, row, col) {
 }
 
 function movePiece(pRow, pCol, row, col) {
+
+	var moveSuccess = false;
+
 	if (pRow >= 0 && pCol >= 0) {
 		if (phalanx.length > 1) {
 			if (movePhalanx(pRow, pCol, row, col)) {
 				playSound("move");
 				phalanx.length = 0;
-				return true;
+				moveSuccess = true;
 			}
 		}
 		else if (checkMove(pRow, pCol, row, col) && pushPiece(pRow, pCol, row, col, grid[pRow][pCol].player, 1)) {
@@ -56,17 +59,23 @@ function movePiece(pRow, pCol, row, col) {
 			else {
 				playSound("move");
 			}
-			return true;	// return if a piece was moved so it can be redrawn
+			moveSuccess = true;	// return if a piece was moved so it can be redrawn
 		}
 
 		if (grid[pRow][pCol].rot != gameMan.pRot) {
 			console.log("Rotation business");
 			playSound("rotate");
 			phalanx.length = 0;
-			return true;
+			moveSuccess = true;
 		}
 	}
-	return false;
+	if (moveSuccess) {
+		useAction();
+	}
+	return moveSuccess;
+
+
+
 }
 
 function moveOnePiece(pRow, pCol, row, col) {

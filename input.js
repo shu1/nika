@@ -22,16 +22,16 @@ function mouseDown(event) {
 	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
 	hudMan.soundText = "";
 
-	if (!ai(inputMan.row, inputMan.col)) {
-		inputMan.click = true;
-		getPiece(inputMan.row, inputMan.col);
-		if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {
-			event.preventDefault();
-			if (phalanx.length == 1) {	// if piece is single, automatically set to selection mode
-				inputMan.mode = 1;
-			}
+	
+	inputMan.click = true;
+	getPiece(inputMan.row, inputMan.col);
+	if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {
+		event.preventDefault();
+		if (phalanx.length == 1) {	// if piece is single, automatically set to selection mode
+			inputMan.mode = 1;
 		}
 	}
+	
 	mediaMan.draw = true;
 }
 
@@ -67,15 +67,16 @@ function mouseUp(event) {
 	mediaMan.play = true;
 	hudMan.inputText += " up";
 
-	if (!dblClick(event)) {
-		if (inputMan.mode == 1 && inputMan.pRow == inputMan.row && inputMan.pCol == inputMan.col) { // remove from phalanx in 
-			togglePieceInPhalanx(inputMan.row, inputMan.col);
-		}
+	if (!ai(inputMan.row, inputMan.col)) {
+		if (!dblClick(event)) {
+			if (inputMan.mode == 1 && inputMan.pRow == inputMan.row && inputMan.pCol == inputMan.col) { // remove from phalanx in 
+				togglePieceInPhalanx(inputMan.row, inputMan.col);
+			}
 
-		if (movePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
-			inputMan.time = 0;	// reset so next click is not double click
-			inputMan.mode = 0;	// after move always get out of selection mode
-			useAction();
+			if (movePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
+				inputMan.time = 0;	// reset so next click is not double click
+				inputMan.mode = 0;	// after move always get out of selection mode
+			}
 		}
 	}
 	mediaMan.draw = true;

@@ -4,20 +4,22 @@ function ai(row, col) {
 	var player;
 
 	if (row == 12 && col >= 6 && col <= 8) {
-		player = 0;
+		player = gameMan.player;
 	}
 	else if (col == 2 && row >= 3 && row <= 5) {
-		player = 1;
+		player = gameMan.player;
 	}
 	else if (row == 2 && col >= 12 && col <= 14) {
-		player = 2;
+		player = gameMan.player;
 	}
 	else if (col == 18 && row >= 9 && row <= 11) {
-		player = 3;
+		player = gameMan.player;
 	}
 	else {
 		return false;
 	}
+
+
 
 	pieces.length = 0;
 	for (var row = 0; row < 15; ++row) {
@@ -33,7 +35,9 @@ function ai(row, col) {
 		var i = Math.floor(Math.random()*6);
 		var row = pieces[i].row;
 		var col = pieces[i].col;
-		gameMan.pRot = grid[row][col].rot;
+		
+		gameMan.pRot = grid[row][col].rot;	// Only single pieces
+		// getPiece(row,col);				// Only phalanxes
 
 		var rot = Math.floor(Math.random()*4);
 		if (rot == 0) {
@@ -49,12 +53,13 @@ function ai(row, col) {
 			--col;
 		}
 
-		var action = Math.floor(Math.random());
+		var action = Math.floor(Math.random()*2);
 		if (action == 0) {
 			done = movePiece(pieces[i].row, pieces[i].col, row, col);
 		}
 		else if (action == 1) {
-			done = rotatePiece(pieces[i].row, pieces[i].col, row, col);
+			rotatePiece(pieces[i].row, pieces[i].col, row, col);
+			done = movePiece(pieces[i].row, pieces[i].col, pieces[i].row, pieces[i].col);
 		}
 
 		console.log(i + " " + pieces[i].row + "," + pieces[i].col + " " + rot + " " + row + "," + col + " " + action);
