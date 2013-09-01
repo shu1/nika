@@ -80,32 +80,35 @@ function reSize() {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;	// reduce height to remove scrollbars on some browsers
 
-		if (canvas.width / boardWidth > zoomLevel) {
-			zoomLevel = canvas.width / boardWidth;
+		if (canvas.width / boardWidth > maxScale) {
+			maxScale = canvas.width / boardWidth;
 		}
-	}
+
+/*		if (canvas.height / boardHeight > minScale) {
+			minScale = canvas.height / boardHeight;
+		}
+*/	}
 
 	context.font = "14px sans-serif";
 	context.fillStyle = "white";
 
-	mediaMan.offsetX = (canvas.width - boardWidth)/2;
-	mediaMan.offsetY = (canvas.height - boardHeight)/2;
-	mediaMan.x = mediaMan.offsetX;
-	mediaMan.y = mediaMan.offsetY;
+	mediaMan.scale = minScale;
+	mediaMan.x = (canvas.width - boardWidth * mediaMan.scale)/2;
+	mediaMan.y = (canvas.height - boardHeight * mediaMan.scale)/2;
 	mediaMan.draw = true;
 }
 
 function zoom() {
-	if (mediaMan.scale == 1) {
-		mediaMan.scale = zoomLevel;	// declared in html file
+	if (mediaMan.scale == minScale) {
+		mediaMan.scale = maxScale;	// declared in html file
 	}
 	else {
-		mediaMan.scale = 1;
+		mediaMan.scale = minScale;
 		context.clearRect(0, 0, canvas.width, canvas.height);
 	}
 
-	mediaMan.x = -(inputMan.col * cellSize + cellSize/2) * (mediaMan.scale-1) + mediaMan.offsetX;
-	mediaMan.y = -(inputMan.row * cellSize + cellSize/2) * (mediaMan.scale-1) + mediaMan.offsetY;
+	mediaMan.x = (canvas.width - boardWidth)/2 - (inputMan.col * cellSize + cellSize/2) * (mediaMan.scale-1);
+	mediaMan.y = (canvas.height - boardHeight)/2 - (inputMan.row * cellSize + cellSize/2) * (mediaMan.scale-1);
 
 	pan(0, 0);	// hack to fix if tapped outside board
 }
@@ -114,7 +117,7 @@ function pan(dX, dY) {
 	var panned = false;
 
 	if (boardWidth * mediaMan.scale >= canvas.width) {
-		var width = -boardWidth * (mediaMan.scale-1) + mediaMan.offsetX*2;
+		var width = canvas.width - boardWidth * mediaMan.scale;
 
 		if (mediaMan.x + dX < width) {
 			mediaMan.x = width;
@@ -129,7 +132,7 @@ function pan(dX, dY) {
 	}
 
 	if (boardHeight * mediaMan.scale >= canvas.height) {
-		var height = -boardHeight * (mediaMan.scale-1) + mediaMan.offsetY*2;
+		var height = canvas.height - boardHeight * mediaMan.scale;
 
 		if (mediaMan.y + dY < height) {
 			mediaMan.y = height;

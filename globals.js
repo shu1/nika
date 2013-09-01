@@ -6,8 +6,6 @@ var mediaMan = {
 	play:true,
 	draw:true,
 	scale:1,
-	offsetX:0,
-	offsetY:0,
 	x:0,
 	y:0
 }
