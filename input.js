@@ -22,7 +22,6 @@ function mouseDown(event) {
 	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
 	hudMan.soundText = "";
 
-	
 	inputMan.click = true;
 	getPiece(inputMan.row, inputMan.col);
 	if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {
@@ -43,7 +42,7 @@ function mouseMove(event) {
 			rotatePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col);
 			event.preventDefault();
 		}
-		else if (boardWidth * mediaMan.scale > canvas.width || boardHeight * mediaMan.scale > canvas.height) {	// else pan
+		else {	// pan
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
 

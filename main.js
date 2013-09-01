@@ -77,8 +77,12 @@ function init() {
 
 function reSize() {
 	if (fullScreen) {
-		canvas.width = window.innerWidth-6;
-		canvas.height = window.innerHeight-6;	// reduce height because otherwise scrollbars show up on some devices..
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;	// reduce height to remove scrollbars on some browsers
+
+		if (canvas.width / boardWidth > zoomLevel) {
+			zoomLevel = canvas.width / boardWidth;
+		}
 	}
 
 	context.font = "14px sans-serif";
@@ -103,36 +107,40 @@ function zoom() {
 	mediaMan.x = -(inputMan.col * cellSize + cellSize/2) * (mediaMan.scale-1) + mediaMan.offsetX;
 	mediaMan.y = -(inputMan.row * cellSize + cellSize/2) * (mediaMan.scale-1) + mediaMan.offsetY;
 
-	if (mediaMan.scale > 1) {
-		pan(0, 0);	// hack to fix if outside board
-	}
+	pan(0, 0);	// hack to fix if tapped outside board
 }
 
 function pan(dX, dY) {
-	var width = -boardWidth * (mediaMan.scale-1) + mediaMan.offsetX*2;
-	var height = -boardHeight * (mediaMan.scale-1) + mediaMan.offsetY*2;
 	var panned = false;
 
-	if (mediaMan.x + dX < width) {
-		mediaMan.x = width;
-	}
-	else if (mediaMan.x + dX > 0) {
-		mediaMan.x = 0;
-	}
-	else {
-		mediaMan.x += dX;
-		panned = true;
+	if (boardWidth * mediaMan.scale >= canvas.width) {
+		var width = -boardWidth * (mediaMan.scale-1) + mediaMan.offsetX*2;
+
+		if (mediaMan.x + dX < width) {
+			mediaMan.x = width;
+		}
+		else if (mediaMan.x + dX > 0) {
+			mediaMan.x = 0;
+		}
+		else {
+			mediaMan.x += dX;
+			panned = true;
+		}
 	}
 
-	if (mediaMan.y + dY < height) {
-		mediaMan.y = height;
-	}
-	else if (mediaMan.y + dY > 0) {
-		mediaMan.y = 0;
-	}
-	else {
-		mediaMan.y += dY;
-		panned = true;
+	if (boardHeight * mediaMan.scale >= canvas.height) {
+		var height = -boardHeight * (mediaMan.scale-1) + mediaMan.offsetY*2;
+
+		if (mediaMan.y + dY < height) {
+			mediaMan.y = height;
+		}
+		else if (mediaMan.y + dY > 0) {
+			mediaMan.y = 0;
+		}
+		else {
+			mediaMan.y += dY;
+			panned = true;
+		}
 	}
 
 	return panned;
@@ -218,11 +226,11 @@ function drawHud() {
 		hudMan.fpsCount = 0;
 	}
 	hudMan.fpsCount++;
-	hudMan.drawText = window.innerWidth + "x" + window.innerHeight + " " + mediaMan.scale + "x";
+	hudMan.drawText = canvas.width + "x" + canvas.height + " " + mediaMan.scale + "x";
 	hudMan.gameText = "player:" + gameMan.player + " actions:" + gameMan.actions;
 	hudMan.pieceText = inputMan.mode == 0 ? "" : "SELECTION";
 	context.clearRect(0, 0, canvas.width, 20);
-	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  " + hudMan.soundText + "  |  " + hudMan.inputText + "  |  " + hudMan.pieceText, 120, 14);
+	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  " + hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, 14);
 }
 
 // browser compatibility
