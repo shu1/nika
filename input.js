@@ -12,20 +12,27 @@ function getXYRowCol(event) {
 
 	inputMan.col = Math.floor((inputMan.x - mediaMan.x) / (cellSize * mediaMan.scale));
 	inputMan.row = Math.floor((inputMan.y - mediaMan.y) / (cellSize * mediaMan.scale));
+	inputMan.rot = -1;
 }
 
 function getRot(dX, dY) {
-	if (dX > dY && dX < -dY) {
-		return 0;	// up
+	inputMan.row = gameMan.pRow;
+	inputMan.col = gameMan.pCol;
+	if (dX >= dY && dX <= -dY) {	// up
+		inputMan.rot = 0;
+		inputMan.row--;
 	}
-	else if (dX > dY && dX > -dY) {
-		return 1;	// right
+	else if (dX >= dY && dX >= -dY) {	// right
+		inputMan.rot = 1;
+		inputMan.col++;
 	}
-	else if (dX < dY && dX > -dY) {
-		return 2;	// down
+	else if (dX <= dY && dX >= -dY) {	// down
+		inputMan.rot = 2;
+		inputMan.row++;
 	}
-	else {
-		return 3;	// left
+	else {	// left
+		inputMan.rot = 3;
+		inputMan.col--;
 	}
 }
 
@@ -59,7 +66,7 @@ function mouseMove(event) {
 		var dY = inputMan.y - inputMan.pY;
 		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
 			if (Math.abs(dX) > cellSize/2 || Math.abs(dY) > cellSize/2) {	// inside cell is deadzone
-				inputMan.rot = getRot(dX, dY);
+				getRot(dX, dY);
 				rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 			}
 
@@ -83,15 +90,14 @@ function mouseUp(event) {
 	hudMan.inputText += " up";
 
 	if (ai(inputMan.row, inputMan.col)) {
-		inputMan.time = 0;	// reset so next click is not double click
+		inputMan.time = 0;
 	}
 	else if (!dblClick(event)) {
 		if (gameMan.mode == 1 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
 			togglePhalanxPiece(inputMan.row, inputMan.col);
 		}
-
-		if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
-			inputMan.time = 0;	// reset so next click is not double click
+		else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
+			inputMan.time = 0;
 			gameMan.mode = 0;	// after move always get out of selection mode
 		}
 	}

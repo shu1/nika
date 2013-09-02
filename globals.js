@@ -26,6 +26,7 @@ var inputMan = {
 	time:0,
 	row:-1,
 	col:-1,
+	rot:-1,
 	pX:0,
 	pY:0,
 	x:0,
