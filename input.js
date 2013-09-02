@@ -15,13 +15,13 @@ function getXYRowCol(event) {
 }
 
 function getRot(dX, dY) {
-	if (dX > dY && dX + dY < 0) {
+	if (dX > dY && dX < -dY) {
 		return 0;	// up
 	}
-	else if (dX > dY && dX + dY > 0) {
+	else if (dX > dY && dX > -dY) {
 		return 1;	// right
 	}
-	else if (dX < dY && dX + dY > 0) {
+	else if (dX < dY && dX > -dY) {
 		return 2;	// down
 	}
 	else {
@@ -31,17 +31,18 @@ function getRot(dX, dY) {
 
 function mouseDown(event) {
 	getXYRowCol(event);
-	inputMan.pX = inputMan.x;
-	inputMan.pY = inputMan.y;
-
 	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
 	hudMan.soundText = "";
 
 	getPiece(inputMan.row, inputMan.col);
 	if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {
+		inputMan.pX = mediaMan.x + gameMan.pCol * cellSize + cellSize/2;
+		inputMan.pY = mediaMan.y + gameMan.pRow * cellSize + cellSize/2;
 		event.preventDefault();
 	}
 	else {
+		inputMan.pX = inputMan.x;
+		inputMan.pY = inputMan.y;
 		phalanx.length = 0;
 	}
 
@@ -54,11 +55,10 @@ function mouseMove(event) {
 		getXYRowCol(event);
 		hudMan.inputText = inputMan.row + "," + inputMan.col;
 
+		var dX = inputMan.x - inputMan.pX;
+		var dY = inputMan.y - inputMan.pY;
 		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-			var dX = inputMan.x - mediaMan.x - gameMan.pCol * cellSize - cellSize/2;
-			var dY = inputMan.y - mediaMan.y - gameMan.pRow * cellSize - cellSize/2;
-
-			if (Math.abs(dX) > cellSize/2 || Math.abs(dY) > cellSize/2) {	// allow a deadzone
+			if (Math.abs(dX) > cellSize/2 || Math.abs(dY) > cellSize/2) {	// inside cell is deadzone
 				inputMan.rot = getRot(dX, dY);
 				rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 			}
@@ -67,9 +67,6 @@ function mouseMove(event) {
 			mediaMan.draw = true;
 		}
 		else {	// pan
-			var dX = inputMan.x - inputMan.pX;
-			var dY = inputMan.y - inputMan.pY;
-
 			if (pan(dX, dY)) {
 				hudMan.inputText = -mediaMan.x + "," + -mediaMan.y;
 				event.preventDefault();
