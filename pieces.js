@@ -1,17 +1,17 @@
 "use strict";
 
 function getPiece(row, col) {
-	inputMan.pRow = -1;
-	inputMan.pCol = -1;
+	gameMan.pRow = -1;
+	gameMan.pCol = -1;
 	gameMan.pRot = -1;
 
-	//if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player == gameMan.player) { // Is it your turn? Commented out for debugging
+//	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player == gameMan.player) { // Is it your turn? Commented out for debugging
 	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player >= 0) {
-		inputMan.pRow = row;
-		inputMan.pCol = col;
+		gameMan.pRow = row;
+		gameMan.pCol = col;
 		gameMan.pRot = grid[row][col].rot;
 
-		if (inputMan.mode == 0) {
+		if (gameMan.mode == 0) {
 			phalanx.length = 0;
 			getPhalanx(row, col);
 			clearChecked();	
@@ -377,11 +377,11 @@ function checkMovePhalanx(pRow, pCol, row, col) {
 	return true;
 }
 
-function togglePieceInPhalanx(row,col) {
-	if (inPhalanx(row,col) && phalanx.length > 1) {	// if in phalanx, find and remove
-		for (var i=phalanx.length-1; i>=0; --i) {
+function togglePhalanxPiece(row, col) {
+	if (inPhalanx(row, col) && phalanx.length > 1) {	// if in phalanx, find and remove
+		for (var i = phalanx.length-1; i >= 0; --i) {
 			if (phalanx[i].row == row && phalanx[i].col == col) {
-				phalanx.splice(i,1);
+				phalanx.splice(i, 1);
 				return;
 			}
 		}
@@ -392,12 +392,11 @@ function togglePieceInPhalanx(row,col) {
 			return;
 		}
 
-		for (var i=phalanx.length-1; i>=0; --i) {
-			if (Math.abs(phalanx[i].row-row) + Math.abs(phalanx[i].col-col) == 1 				// adjacent cell
-					&& grid[phalanx[i].row][phalanx[i].col].player == grid[row][col].player		// same player
-					&& grid[phalanx[i].row][phalanx[i].col].rot == grid[row][col].rot 			// same rotation
-					&& grid[row][col].kind != 3) { 												// not routed cell
-
+		for (var i = phalanx.length-1; i >= 0; --i) {
+			if (Math.abs(phalanx[i].row-row) + Math.abs(phalanx[i].col-col) == 1 	// adjacent cell
+			&& grid[phalanx[i].row][phalanx[i].col].player == grid[row][col].player	// same player
+			&& grid[phalanx[i].row][phalanx[i].col].rot == grid[row][col].rot 		// same rotation
+			&& grid[row][col].kind != 3) { 											// not routed cell
 				phalanx.push({row:row, col:col});
 				return;
 			}
@@ -407,5 +406,3 @@ function togglePieceInPhalanx(row,col) {
 		phalanx.push({row:row, col:col});
 	}
 }
-
-

@@ -176,16 +176,16 @@ function setRings() {
 
 	if (inputMan.click) {
 		if (phalanx.length > 1) {
-			if (checkMovePhalanx(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
-				var dRow = inputMan.row - inputMan.pRow;
-				var dCol = inputMan.col - inputMan.pCol;
+			if (checkMovePhalanx(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
+				var dRow = inputMan.row - gameMan.pRow;
+				var dCol = inputMan.col - gameMan.pCol;
 
 				for (var i = phalanx.length-1; i >= 0; --i) {
 					grid[phalanx[i].row + dRow][phalanx[i].col + dCol].ring = 1;
 				}
 			}
 		}
-		else if (checkMove(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
+		else if (checkMove(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 			grid[inputMan.row][inputMan.col].ring = 1;
 		}
 	}
@@ -231,7 +231,7 @@ function drawHud() {
 	hudMan.fpsCount++;
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + mediaMan.scale + "x";
 	hudMan.gameText = "player:" + gameMan.player + " actions:" + gameMan.actions;
-	hudMan.pieceText = inputMan.mode == 0 ? "" : "SELECTION";
+	hudMan.pieceText = gameMan.mode == 0 ? "" : "SELECTION";
 	context.clearRect(0, 0, canvas.width, 20);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  " + hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, 14);
 }

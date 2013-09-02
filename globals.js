@@ -16,19 +16,16 @@ var	hudMan = {
 	fpsText:"",
 	drawText:"",
 	gameText:"",
-	soundText:"",
 	inputText:"",
+	soundText:"",
 	pieceText:""
 }
 
 var inputMan = {
 	click:false,
-	mode:0,
-	pRow:-1,
-	pCol:-1,
+	time:0,
 	row:-1,
 	col:-1,
-	time:0,
 	pX:0,
 	pY:0,
 	x:0,
@@ -38,7 +35,10 @@ var inputMan = {
 var gameMan = {
 	player:0,
 	actions:2,
-	pRot:-1
+	pRow:-1,
+	pCol:-1,
+	pRot:-1,
+	mode:0
 }
 
 var ascii = [

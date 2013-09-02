@@ -15,32 +15,34 @@ function getXYRowCol(event) {
 }
 
 function mouseDown(event) {
-	mediaMan.play = true;
 	getXYRowCol(event);
 	inputMan.pX = inputMan.x;
 	inputMan.pY = inputMan.y;
+
 	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
 	hudMan.soundText = "";
 
-	inputMan.click = true;
 	getPiece(inputMan.row, inputMan.col);
-	if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {
+	if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {
 		event.preventDefault();
 	}
-	
+	else {
+		phalanx.length = 0;
+	}
+
+	inputMan.click = true;
 	mediaMan.draw = true;
 }
 
 function mouseMove(event) {
 	if (inputMan.click) {
-		mediaMan.play = true;
-
 		getXYRowCol(event);
 		hudMan.inputText = inputMan.row + "," + inputMan.col;
 
-		if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {	// if there's a piece, rotate it
-			rotatePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col);
+		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
+			rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col);
 			event.preventDefault();
+			mediaMan.draw = true;
 		}
 		else {	// pan
 			var dX = inputMan.x - inputMan.pX;
@@ -49,32 +51,34 @@ function mouseMove(event) {
 			if (pan(dX, dY)) {
 				hudMan.inputText = -mediaMan.x + "," + -mediaMan.y;
 				event.preventDefault();
+				mediaMan.draw = true;
 			}
 
 			inputMan.pX = inputMan.x;
 			inputMan.pY = inputMan.y;
 		}
-		mediaMan.draw = true;
 	}
 }
 
 function mouseUp(event) {
-	inputMan.click = false;
-	mediaMan.play = true;
 	hudMan.inputText += " up";
 
-	if (!ai(inputMan.row, inputMan.col)) {
-		if (!dblClick(event)) {
-			if (inputMan.mode == 1 && inputMan.pRow == inputMan.row && inputMan.pCol == inputMan.col) { // remove from phalanx in 
-				togglePieceInPhalanx(inputMan.row, inputMan.col);
-			}
+	if (ai(inputMan.row, inputMan.col)) {
+		inputMan.time = 0;	// reset so next click is not double click
+	}
+	else if (!dblClick(event)) {
+		if (gameMan.mode == 1 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
+			togglePhalanxPiece(inputMan.row, inputMan.col);
+		}
 
-			if (movePiece(inputMan.pRow, inputMan.pCol, inputMan.row, inputMan.col)) {
-				inputMan.time = 0;	// reset so next click is not double click
-				inputMan.mode = 0;	// after move always get out of selection mode
-			}
+		if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
+			inputMan.time = 0;	// reset so next click is not double click
+			gameMan.mode = 0;	// after move always get out of selection mode
 		}
 	}
+
+	inputMan.click = false;
+	mediaMan.play = true;
 	mediaMan.draw = true;
 }
 
@@ -84,10 +88,10 @@ function dblClick(event) {
 		hudMan.inputText += " " + (time - inputMan.time) + "ms";
 		event.preventDefault();
 
-		if (inputMan.pRow >= 0 && inputMan.pCol >= 0) {	// if there's a piece, toggle selection mode
-			inputMan.mode = 1 - inputMan.mode;
+		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, toggle selection mode
+			gameMan.mode = 1 - gameMan.mode;
 			phalanx.length = 0;
-			phalanx.push({row:inputMan.pRow, col:inputMan.pCol});
+			phalanx.push({row:gameMan.pRow, col:gameMan.pCol});
 		}
 		else {
 			zoom();
