@@ -14,6 +14,21 @@ function getXYRowCol(event) {
 	inputMan.row = Math.floor((inputMan.y - mediaMan.y) / (cellSize * mediaMan.scale));
 }
 
+function getRot(dX, dY) {
+	if (dX > dY && dX + dY < 0) {
+		return 0;	// up
+	}
+	else if (dX > dY && dX + dY > 0) {
+		return 1;	// right
+	}
+	else if (dX < dY && dX + dY > 0) {
+		return 2;	// down
+	}
+	else {
+		return 3;	// left
+	}
+}
+
 function mouseDown(event) {
 	getXYRowCol(event);
 	inputMan.pX = inputMan.x;
@@ -40,7 +55,14 @@ function mouseMove(event) {
 		hudMan.inputText = inputMan.row + "," + inputMan.col;
 
 		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-			rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col);
+			var dX = inputMan.x - mediaMan.x - gameMan.pCol * cellSize - cellSize/2;
+			var dY = inputMan.y - mediaMan.y - gameMan.pRow * cellSize - cellSize/2;
+
+			if (Math.abs(dX) > cellSize/2 || Math.abs(dY) > cellSize/2) {	// allow a deadzone
+				inputMan.rot = getRot(dX, dY);
+				rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
+			}
+
 			event.preventDefault();
 			mediaMan.draw = true;
 		}

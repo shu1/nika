@@ -19,19 +19,10 @@ function getPiece(row, col) {
 	}
 }
 
-function rotatePiece(pRow, pCol, row, col) {
+function rotatePiece(pRow, pCol, rot) {
 	if (grid[pRow][pCol].kind != 3) {
-		if (row < pRow) {		// up
-			rotatePhalanx(pRow, pCol, 0);
-		}
-		else if (col > pCol) {	// right
-			rotatePhalanx(pRow, pCol, 1);
-		}
-		else if (row > pRow) {	// down
-			rotatePhalanx(pRow, pCol, 2);
-		}
-		else if (col < pCol) {	// left
-			rotatePhalanx(pRow, pCol, 3);
+		for (var i = phalanx.length-1; i >= 0; --i) {
+			grid[phalanx[i].row][phalanx[i].col].rot = rot;
 		}
 	}
 }
@@ -258,12 +249,6 @@ function getPhalanx(row, col) {
 				getPhalanx(row, col+1);
 			}
 		}
-	}
-}
-
-function rotatePhalanx(pRow, pCol, rot) {
-	for (var i = phalanx.length - 1; i >= 0; --i) {
-		grid[phalanx[i].row][phalanx[i].col].rot = rot;
 	}
 }
 
