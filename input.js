@@ -22,8 +22,8 @@ function mouseDown(event) {
 
 	getPiece(inputMan.row, inputMan.col);
 	if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {
-		inputMan.pX = mediaMan.x + gameMan.pCol * cellSize + cellSize/2;
-		inputMan.pY = mediaMan.y + gameMan.pRow * cellSize + cellSize/2;
+		inputMan.pX = mediaMan.x + (gameMan.pCol * cellSize + cellSize/2) * mediaMan.scale;
+		inputMan.pY = mediaMan.y + (gameMan.pRow * cellSize + cellSize/2) * mediaMan.scale;
 		event.preventDefault();
 	}
 	else {
@@ -44,7 +44,8 @@ function mouseMove(event) {
 		var dX = inputMan.x - inputMan.pX;
 		var dY = inputMan.y - inputMan.pY;
 		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-			if (grid[gameMan.pRow][gameMan.pCol].kind != 3 && (Math.abs(dX) > cellSize/2 || Math.abs(dY) > cellSize/2)) {	// inside cell is deadzone
+			if (grid[gameMan.pRow][gameMan.pCol].kind != 3
+			&& (Math.abs(dX) > cellSize/2 * mediaMan.scale || Math.abs(dY) > cellSize/2 * mediaMan.scale)) {	// inside cell is deadzone
 				inputMan.row = gameMan.pRow;
 				inputMan.col = gameMan.pCol;
 				if (dX >= dY && dX <= -dY) {	// up
