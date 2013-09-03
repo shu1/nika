@@ -38,11 +38,10 @@ function pushGameState() {
 	if (moveHistory.length > moveMemory) {
 		moveHistory.splice(0, moveHistory.length - moveMemory);
 	}
-	console.log(moveHistory);
 }
 
 function inputUndo(row, col) {
-	if (row >= 6 && row <= 8 && col >= 6 && col <= 14) { // in mural
+	if (row >= 13 && row <= 14 && col >= 0 && col <= 1) { // 2x2 at bottom left
 		undo();
 		return true;
 	}
@@ -54,7 +53,7 @@ function inputUndo(row, col) {
 function undo() {
 	if (moveHistory.length > 1) {
 		moveHistory.pop();
-		grid = moveHistory[moveHistory.length - 1];
+		gridCopy(grid, moveHistory[moveHistory.length - 1]);
 		mediaMan.draw = true;
 	}
 }
