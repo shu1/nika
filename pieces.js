@@ -59,6 +59,7 @@ function movePiece(pRow, pCol, row, col) {
 	}
 	if (moved) {
 		useAction();
+		pushGameState();
 	}
 	return moved;
 }

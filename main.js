@@ -28,6 +28,7 @@ function playSound(name) {
 window.onload = init;
 function init() {
 	generateGrid();
+	moveHistory.push(grid);
 
 	images = new Array(8);
 	images[0] = document.getElementById("athens");

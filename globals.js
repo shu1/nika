@@ -60,7 +60,8 @@ var ascii = [
 	"......dddccc........."
 ]
 
-var moveHistory = []
+var moveHistory = [];
+var moveMemory = 10;
 var rotationHolder = -1;
 var actionType = {
 	pieceMove : 0,
