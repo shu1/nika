@@ -87,7 +87,11 @@ function mouseMove(event) {
 function mouseUp(event) {
 	hudMan.inputText += " up";
 
-	if (ai(inputMan.row, inputMan.col)) {
+	if (inputUndo(inputMan.row, inputMan.col)) {
+		console.log("Input undo executed.");
+		inputMan.time = 0;
+	}
+	else if (ai(inputMan.row, inputMan.col)) {
 		inputMan.time = 0;
 	}
 	else if (!dblClick(event)) {

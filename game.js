@@ -41,6 +41,16 @@ function pushGameState() {
 	console.log(moveHistory);
 }
 
+function inputUndo(row, col) {
+	if (row >= 6 && row <= 8 && col >= 6 && col <= 14) { // in mural
+		undo();
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 function undo() {
 	if (moveHistory.length > 1) {
 		moveHistory.pop();
