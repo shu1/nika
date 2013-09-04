@@ -23,18 +23,18 @@ function pushGameState() {
 		for (var col = 0; col < 21; ++col) {
 			var cell = {
 				checked: grid[row][col].checked,
-				player:  grid[row][col].player,
-				kind:    grid[row][col].kind,
-				city:    grid[row][col].city,
-				rot:     grid[row][col].rot,
-				ring:    grid[row][col].ring
+				player : grid[row][col].player,
+				kind   : grid[row][col].kind,
+				city   : grid[row][col].city,
+				rot    : grid[row][col].rot,
+				ring   : grid[row][col].ring
 			}
 			pGrid[row][col] = cell;
 		}
 	}
 
 	gameStates.push(pGrid);
-	if (gameStates.length > 10) {	// number of undos to hold
+	if (gameStates.length > 16) {	// number of undos to hold
 		gameStates.shift();
 	}
 }
