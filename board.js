@@ -77,7 +77,7 @@ function debugGrid() {
 		var str = "";
 		for (var col = 0; col < 21; ++col) {
 			var a = grid[row][col].kind; 
-			str += a == -1 ? '.' : a;
+			str += (a == -1) ? '.' : a;
 		}
 		console.log(str);
 	}

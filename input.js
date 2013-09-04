@@ -15,6 +15,30 @@ function getXYRowCol(event) {
 	inputMan.rot = -1;
 }
 
+function getRot(dX, dY) {
+	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {
+		inputMan.row = gameMan.pRow;
+		inputMan.col = gameMan.pCol;
+
+		if (dX >= dY && dX <= -dY) {	// up
+			inputMan.row--;
+			inputMan.rot = 0;
+		}
+		else if (dX >= dY && dX >= -dY) {	// right
+			inputMan.col++;
+			inputMan.rot = 1;
+		}
+		else if (dX <= dY && dX >= -dY) {	// down
+			inputMan.row++;
+			inputMan.rot = 2;
+		}
+		else {	// left
+			inputMan.col--;
+			inputMan.rot = 3;
+		}
+	}
+}
+
 function mouseDown(event) {
 	getXYRowCol(event);
 	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
@@ -44,27 +68,8 @@ function mouseMove(event) {
 		var dX = inputMan.x - inputMan.pX;
 		var dY = inputMan.y - inputMan.pY;
 		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-			if (grid[gameMan.pRow][gameMan.pCol].kind != 3
-			&& (Math.abs(dX) > cellSize/2 * mediaMan.scale || Math.abs(dY) > cellSize/2 * mediaMan.scale)) {	// inside cell is deadzone
-				inputMan.row = gameMan.pRow;
-				inputMan.col = gameMan.pCol;
-				if (dX >= dY && dX <= -dY) {	// up
-					inputMan.row--;
-					inputMan.rot = 0;
-				}
-				else if (dX >= dY && dX >= -dY) {	// right
-					inputMan.col++;
-					inputMan.rot = 1;
-				}
-				else if (dX <= dY && dX >= -dY) {	// down
-					inputMan.row++;
-					inputMan.rot = 2;
-				}
-				else {	// left
-					inputMan.col--;
-					inputMan.rot = 3;
-				}
-
+			if (Math.abs(dX) > cellSize/2 * mediaMan.scale || Math.abs(dY) > cellSize/2 * mediaMan.scale) {	// inside cell is deadzone
+				getRot(dX, dY);
 				rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 			}
 
@@ -87,10 +92,7 @@ function mouseMove(event) {
 function mouseUp(event) {
 	hudMan.inputText += " up";
 
-	if (inputUndo(inputMan.row, inputMan.col)) {
-		inputMan.time = 0;
-	}
-	else if (ai(inputMan.row, inputMan.col)) {
+	if (undo(inputMan.row, inputMan.col) || ai(inputMan.row, inputMan.col)) {
 		inputMan.time = 0;
 	}
 	else if (!dblClick(event)) {

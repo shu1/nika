@@ -111,7 +111,7 @@ function zoom() {
 	mediaMan.x = (canvas.width - boardWidth)/2 - (inputMan.col * cellSize + cellSize/2) * (mediaMan.scale-1);
 	mediaMan.y = (canvas.height - boardHeight)/2 - (inputMan.row * cellSize + cellSize/2) * (mediaMan.scale-1);
 
-	pan(0, 0);	// hack to fix if tapped outside board
+	pan(0, 0);	// hack to fix if clicked outside board
 }
 
 function pan(dX, dY) {
@@ -232,9 +232,10 @@ function drawHud() {
 	hudMan.fpsCount++;
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + mediaMan.scale + "x";
 	hudMan.gameText = "player:" + gameMan.player + " actions:" + gameMan.actions;
-	hudMan.pieceText = gameMan.mode == 0 ? "" : "SELECTION";
+	hudMan.pieceText = (gameMan.mode == 0) ? "" : "SELECTION";
 	context.clearRect(0, 0, canvas.width, 20);
-	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  " + hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, 14);
+	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  "
+	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, 14);
 }
 
 // browser compatibility

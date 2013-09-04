@@ -1,6 +1,6 @@
 "use strict";
 
-var canvas, context, images, sounds, grid, pieces=[], phalanx=[];
+var canvas, context, images, sounds, grid, gameStates=[], pieces=[], phalanx=[];
 
 var mediaMan = {
 	play:true,
@@ -59,16 +59,3 @@ var ascii = [
 	"......dddccc.........",
 	"......dddccc........."
 ]
-
-var moveHistory = [];
-var moveMemory = 10;
-var rotationHolder = -1;
-var actionType = {
-	pieceMove : 0,
-	pieceRotate : 1,
-	piecePush : 2,
-	pieceRout : 3,
-	pieceRally : 4,
-	phalanxMove : 5,
-	phalanxRotate : 6,
-}

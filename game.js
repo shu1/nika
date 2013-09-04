@@ -1,72 +1,61 @@
 "use strict";
 
 function useAction(n) {
-	n = typeof n !== 'undefined' ? n : 1;
-	gameMan.actions -= n;
-	if (gameMan.actions == 0) {
-		nextPlayer();
-		gameMan.actions = 2;
+	if (typeof n == 'undefined') {
+		n = 1;
 	}
-}
 
-function nextPlayer() {
-	gameMan.player++;
-	if (gameMan.player >= 4) {
-		gameMan.player = 0;
+	gameMan.actions -= n;
+	if (gameMan.actions <= 0) {
+		gameMan.actions = 2;
+
+		gameMan.player++;
+		if (gameMan.player >= 4) {
+			gameMan.player = 0;
+		}
 	}
 }
 
 function pushGameState() {
-	var tempGrid = new Array(15);
+	var pGrid = new Array(15);
 	for (var row = 0; row < 15; ++row) {
-		tempGrid[row] = new Array(21);
+		pGrid[row] = new Array(21);
 		for (var col = 0; col < 21; ++col) {
 			var cell = {
-				checked:false,
-				player:-1,
-				kind:-1,
-				city:-1,
-				rot:-1,
-				ring:-1
+				checked: grid[row][col].checked,
+				player:  grid[row][col].player,
+				kind:    grid[row][col].kind,
+				city:    grid[row][col].city,
+				rot:     grid[row][col].rot,
+				ring:    grid[row][col].ring
 			}
-			tempGrid[row][col] = cell;
+			pGrid[row][col] = cell;
 		}
 	}
 
-	gridCopy(tempGrid, grid);
-	moveHistory.push(tempGrid);
-	if (moveHistory.length > moveMemory) {
-		moveHistory.splice(0, moveHistory.length - moveMemory);
+	gameStates.push(pGrid);
+	if (gameStates.length > 10) {	// number of undos to hold
+		gameStates.shift();
 	}
 }
 
-function inputUndo(row, col) {
-	if (row >= 13 && row <= 14 && col >= 0 && col <= 1) { // 2x2 at bottom left
-		undo();
+function undo(row, col) {
+	if (gameStates.length > 1 && row >= 13 && row <= 14 && col >= 0 && col <= 1) {	// 2x2 at bottom left
+		gameStates.pop();
+
+		var pGrid = gameStates[gameStates.length - 1];
+		for (var row = 0; row < 15; ++row) {
+			for (var col = 0; col < 21; ++col) {
+				grid[row][col].checked = pGrid[row][col].checked;
+				grid[row][col].player  = pGrid[row][col].player;
+				grid[row][col].kind    = pGrid[row][col].kind;
+				grid[row][col].city    = pGrid[row][col].city;
+				grid[row][col].rot     = pGrid[row][col].rot;
+				grid[row][col].ring    = pGrid[row][col].ring;
+			}
+		}
+
 		return true;
 	}
-	else {
-		return false;
-	}
+	return false;
 }
-
-function undo() {
-	if (moveHistory.length > 1) {
-		moveHistory.pop();
-		gridCopy(grid, moveHistory[moveHistory.length - 1]);
-		mediaMan.draw = true;
-	}
-}
-
-function gridCopy(targetGrid, sourceGrid) {
-	for (var row = 0; row < 15; ++row) {
-		for (var col = 0; col < 21; ++col) {
-			targetGrid[row][col].checked = sourceGrid[row][col].checked;
-			targetGrid[row][col].player  = sourceGrid[row][col].player;
-			targetGrid[row][col].kind    = sourceGrid[row][col].kind;
-			targetGrid[row][col].city    = sourceGrid[row][col].city;
-			targetGrid[row][col].rot     = sourceGrid[row][col].rot;
-			targetGrid[row][col].ring    = sourceGrid[row][col].ring;
-		}
-	}
-}			
