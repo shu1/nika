@@ -55,6 +55,7 @@ function undo(row, col) {
 			}
 		}
 
+		hudMan.soundText = "UNDO";
 		return true;
 	}
 	return false;

@@ -2,7 +2,7 @@
 
 function ai(row, col) {
 	var player;
-	if (row >= 13 && row <= 14 && col >= 20 && col <= 21) {	// 2x2 at bottom right
+	if (row >= 13 && row <= 14 && col >= 19 && col <= 20) {	// 2x2 at bottom right
 		player = gameMan.player;
 	}
 	else {
