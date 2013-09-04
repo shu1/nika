@@ -29,7 +29,7 @@ window.onload = init;
 function init() {
 	generateGrid();
 	pushGameState();
-	useAction(0);
+	useAction(0);	// init debug text
 
 	images = new Array(8);
 	images[0] = document.getElementById("athens");
@@ -102,17 +102,41 @@ function reSize() {
 
 function zoom() {
 	if (mediaMan.scale == minScale) {
-		mediaMan.scale = maxScale;	// declared in html file
+		mediaMan.zoom = 1;
 	}
 	else {
-		mediaMan.scale = minScale;
-		context.clearRect(0, 0, canvas.width, canvas.height);
+		mediaMan.zoom = -1;
 	}
+}
 
-	mediaMan.x = (canvas.width - boardWidth)/2 - (inputMan.col * cellSize + cellSize/2) * (mediaMan.scale-1);
-	mediaMan.y = (canvas.height - boardHeight)/2 - (inputMan.row * cellSize + cellSize/2) * (mediaMan.scale-1);
+function zooming(dTime) {
+	var factor = (maxScale - minScale)/200 * dTime;	// animation speed
 
-	pan(0, 0);	// hack to fix if clicked outside board
+	if (mediaMan.zoom != 0) {
+		if (mediaMan.zoom > 0) {
+			if (mediaMan.scale + factor < maxScale) {
+				mediaMan.scale += factor;
+			}
+			else {
+				mediaMan.scale = maxScale;
+				mediaMan.zoom = 0;
+			}
+		}
+		else {
+			if (mediaMan.scale - factor > minScale) {
+				mediaMan.scale -= factor;
+			}
+			else {
+				mediaMan.scale = minScale;
+				mediaMan.zoom = 0;
+			}
+			context.clearRect(0, 0, canvas.width, canvas.height);
+		}
+		mediaMan.x = (canvas.width - boardWidth)/2 - (inputMan.col * cellSize + cellSize/2) * (mediaMan.scale-1);
+		mediaMan.y = (canvas.height - boardHeight)/2 - (inputMan.row * cellSize + cellSize/2) * (mediaMan.scale-1);
+		pan(0, 0);	// hack to fix if clicked outside board
+		mediaMan.draw = true;
+	}
 }
 
 function pan(dX, dY) {
@@ -151,7 +175,9 @@ function pan(dX, dY) {
 	return panned;
 }
 
-function draw() {
+function draw(time) {
+	zooming(time - mediaMan.time);
+
 	if (mediaMan.draw) {
 		setRings();
 
@@ -166,8 +192,8 @@ function draw() {
 		mediaMan.draw = false;
 	}
 
-	drawHud();
-
+	drawHud(time);
+	mediaMan.time = time;
 	window.requestAnimationFrame(draw);
 }
 
@@ -223,8 +249,7 @@ function drawPieces() {
 	}
 }
 
-function drawHud() {
-	var time = Date.now();
+function drawHud(time) {
 	if (time - hudMan.fpsTime > 984) {
 		hudMan.fpsText = hudMan.fpsCount + "fps";
 		hudMan.fpsTime = time;
