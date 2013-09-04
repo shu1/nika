@@ -2,17 +2,7 @@
 
 function ai(row, col) {
 	var player;
-
-	if (row == 12 && col >= 6 && col <= 8) {
-		player = gameMan.player;
-	}
-	else if (col == 2 && row >= 3 && row <= 5) {
-		player = gameMan.player;
-	}
-	else if (row == 2 && col >= 12 && col <= 14) {
-		player = gameMan.player;
-	}
-	else if (col == 18 && row >= 9 && row <= 11) {
+	if (row >= 13 && row <= 14 && col >= 20 && col <= 21) {	// 2x2 at bottom right
 		player = gameMan.player;
 	}
 	else {
@@ -37,7 +27,7 @@ function ai(row, col) {
 		phalanx.length = 0;
 		phalanx.push({row:row, col:col});
 		gameMan.pRot = grid[row][col].rot;	// Only single pieces
-		// getPiece(row,col);				// Only phalanxes
+//		getPiece(row, col);					// Only phalanxes
 
 		var rot = Math.floor(Math.random()*4);
 		if (rot == 0) {
@@ -49,7 +39,7 @@ function ai(row, col) {
 		else if (rot == 2) {
 			++row;
 		}
-		else if (rot == 3) {
+		else {
 			--col;
 		}
 
