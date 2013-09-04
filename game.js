@@ -14,6 +14,22 @@ function useAction(n) {
 			gameMan.player = 0;
 		}
 	}
+
+	switch (gameMan.player) {
+	case 0:
+		hudMan.gameText = "Athens: ";
+		break;
+	case 1:
+		hudMan.gameText = "Sparta: ";
+		break;
+	case 2:
+		hudMan.gameText = "Mesene: ";
+		break;
+	case 3:
+		hudMan.gameText = "Thebes: ";
+		break;
+	}
+	hudMan.gameText += gameMan.actions + " moves left";
 }
 
 function pushGameState() {

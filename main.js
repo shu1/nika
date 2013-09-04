@@ -29,6 +29,7 @@ window.onload = init;
 function init() {
 	generateGrid();
 	pushGameState();
+	useAction(0);
 
 	images = new Array(8);
 	images[0] = document.getElementById("athens");
@@ -231,7 +232,6 @@ function drawHud() {
 	}
 	hudMan.fpsCount++;
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + mediaMan.scale + "x";
-	hudMan.gameText = "player:" + gameMan.player + " actions:" + gameMan.actions;
 	hudMan.pieceText = (gameMan.mode == 0) ? "" : "SELECTION";
 	context.clearRect(0, 0, canvas.width, 20);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  "
