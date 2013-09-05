@@ -58,19 +58,7 @@ function pushGameState() {
 function undo(row, col) {
 	if (gameStates.length > 1 && row >= 13 && row <= 14 && col >= 0 && col <= 1) {	// 2x2 at bottom left
 		gameStates.pop();
-
 		revertGrid();
-		// var pGrid = gameStates[gameStates.length - 1];
-		// for (var row = 0; row < 15; ++row) {
-		// 	for (var col = 0; col < 21; ++col) {
-		// 		grid[row][col].checked = pGrid[row][col].checked;
-		// 		grid[row][col].player  = pGrid[row][col].player;
-		// 		grid[row][col].kind    = pGrid[row][col].kind;
-		// 		grid[row][col].city    = pGrid[row][col].city;
-		// 		grid[row][col].rot     = pGrid[row][col].rot;
-		// 		grid[row][col].ring    = pGrid[row][col].ring;
-		// 	}
-		// }
 
 		hudMan.soundText = "UNDO";
 		return true;

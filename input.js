@@ -105,6 +105,11 @@ function mouseUp(event) {
 		}
 	}
 
+	if (gameMan.pRow == -1 && gameMan.pCol == -1) {
+		gameMan.mode = 0;	// back to default selection if you deselect pieces
+	}
+
+
 	inputMan.click = false;
 	mediaMan.play = true;
 	mediaMan.draw = true;
