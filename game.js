@@ -79,3 +79,13 @@ function revertGrid() {
 		}
 	}
 }
+
+function checkWin() {
+	for (var row=0; row<15; ++row) {
+		for (var col=0; col<21; ++col) {
+			if (grid[row][col].kind == 1 && grid[row][col].player >= 0 && grid[row][col].player != grid[row][col].city) {
+				hudMan.pieceText = "Player " + grid[row][col].player + " wins!";
+			}
+		}
+	}
+}

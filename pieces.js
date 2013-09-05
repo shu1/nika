@@ -61,6 +61,9 @@ function movePiece(pRow, pCol, row, col) {
 		useAction();
 		pushGameState();
 	}
+
+	checkWin();
+
 	return moved;
 }
 
