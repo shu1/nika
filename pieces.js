@@ -40,6 +40,7 @@ function movePiece(pRow, pCol, row, col) {
 		else if (checkMove(pRow, pCol, row, col) && pushPiece(pRow, pCol, row, col, grid[pRow][pCol].player, 1)) {
 			moveOnePiece(pRow, pCol, row, col);
 			phalanx.length = 0;
+			moved = true;	// return if a piece was moved so it can be redrawn
 
 			if (grid[pRow][pCol].kind == 3 && grid[row][col].kind == 2) {	// rally
 				grid[row][col].rot = grid[row][col].player;	// set rotation toward center of board
@@ -48,7 +49,6 @@ function movePiece(pRow, pCol, row, col) {
 			else {
 				playSound("move");
 			}
-			moved = true;	// return if a piece was moved so it can be redrawn
 		}
 
 		if (grid[pRow][pCol].rot != gameMan.pRot) {
@@ -56,13 +56,12 @@ function movePiece(pRow, pCol, row, col) {
 			phalanx.length = 0;
 			moved = true;
 		}
-	}
-	if (moved) {
-		useAction();
-		pushGameState();
-	}
 
-	checkWin();
+		if (moved) {
+			useAction();
+			pushGameState();
+		}
+	}
 
 	return moved;
 }

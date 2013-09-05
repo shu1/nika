@@ -53,6 +53,7 @@ function mouseDown(event) {
 	else {
 		inputMan.pX = inputMan.x;
 		inputMan.pY = inputMan.y;
+		gameMan.mode = 0;	// back to default selection if you deselect pieces
 		phalanx.length = 0;
 	}
 
@@ -104,11 +105,6 @@ function mouseUp(event) {
 			gameMan.mode = 0;	// after move always get out of selection mode
 		}
 	}
-
-	if (gameMan.pRow == -1 && gameMan.pCol == -1) {
-		gameMan.mode = 0;	// back to default selection if you deselect pieces
-	}
-
 
 	inputMan.click = false;
 	mediaMan.play = true;

@@ -15,21 +15,34 @@ function useAction(n) {
 		}
 	}
 
-	switch (gameMan.player) {
+	hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
+	checkWin();
+}
+
+function getCity(player) {
+	switch (player) {
 	case 0:
-		hudMan.gameText = "Athens: ";
-		break;
+		return "Athens ";
 	case 1:
-		hudMan.gameText = "Sparta: ";
-		break;
+		return "Sparta ";
 	case 2:
-		hudMan.gameText = "Mesene: ";
-		break;
+		return "Mesene ";
 	case 3:
-		hudMan.gameText = "Thebes: ";
-		break;
+		return "Thebes ";
 	}
-	hudMan.gameText += gameMan.actions + " moves left";
+}
+
+function getPartner(player) {
+	switch (player) {
+	case 0:
+		return 2;
+	case 1:
+		return 3;
+	case 2:
+		return 0;
+	case 3:
+		return 1;
+	}
 }
 
 function pushGameState() {
@@ -81,10 +94,11 @@ function revertGrid() {
 }
 
 function checkWin() {
-	for (var row=0; row<15; ++row) {
-		for (var col=0; col<21; ++col) {
+	for (var row = 0; row < 15; ++row) {
+		for (var col = 0; col < 21; ++col) {
 			if (grid[row][col].kind == 1 && grid[row][col].player >= 0 && grid[row][col].player != grid[row][col].city) {
-				hudMan.pieceText = "Player " + grid[row][col].player + " wins!";
+				hudMan.pieceText = getCity(grid[row][col].player) + "and " + getCity(getPartner(grid[row][col].player)) + "Wins!";
+				alert(hudMan.pieceText);
 			}
 		}
 	}
