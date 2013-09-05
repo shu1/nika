@@ -258,16 +258,22 @@ function movePhalanx(pRow, pCol, row, col) {
 		var dRow = row - pRow;
 		var dCol = col - pCol;
 		var moved = false;
+		var flag = true;
 		
 		// find the back of each row/col
 		switch (gameMan.pRot) {
 		case 0:
-			for (var iCol = 0; iCol < 21; ++iCol) {
+			for (var iCol = 0; iCol < 21 && flag; ++iCol) {
 				for (var iRow = 14; iRow >= 0; --iRow) {
 					if (inPhalanx(iRow, iCol)) {
 						if (pushPiece(iRow, iCol, iRow + dRow, iCol + dCol, grid[iRow][iCol].player, 1)) {
 							moveOnePiece(iRow, iCol, iRow + dRow, iCol + dCol);
 							moved = true;
+						}
+						else {
+							revertGrid();
+							moved = false;
+							flag = false;
 						}
 						break;
 					}
@@ -275,12 +281,17 @@ function movePhalanx(pRow, pCol, row, col) {
 			}
 			break;
 		case 1:
-			for (var iRow = 0; iRow < 15; ++iRow) {
+			for (var iRow = 0; iRow < 15 && flag; ++iRow) {
 				for (var iCol = 0; iCol < 21; ++iCol) {
 					if (inPhalanx(iRow, iCol)) {
 						if (pushPiece(iRow, iCol, iRow + dRow, iCol + dCol, grid[iRow][iCol].player, 1)) {
 							moveOnePiece(iRow, iCol, iRow + dRow, iCol + dCol);
 							moved = true;
+						}
+						else {
+							revertGrid();
+							moved = false;
+							flag = false;
 						}
 						break;
 					}
@@ -288,12 +299,17 @@ function movePhalanx(pRow, pCol, row, col) {
 			}
 			break;
 		case 2:
-			for (var iCol = 0; iCol < 21; ++iCol) {
+			for (var iCol = 0; iCol < 21 && flag; ++iCol) {
 				for (var iRow = 0; iRow < 15; ++iRow) {
 					if (inPhalanx(iRow, iCol)) {
 						if (pushPiece(iRow, iCol, iRow + dRow, iCol + dCol, grid[iRow][iCol].player, 1)) {
 							moveOnePiece(iRow, iCol, iRow + dRow, iCol + dCol);
 							moved = true;
+						}
+						else {
+							revertGrid();
+							moved = false;
+							flag = false;
 						}
 						break;
 					}
@@ -301,12 +317,17 @@ function movePhalanx(pRow, pCol, row, col) {
 			}
 			break;
 		case 3:
-			for (var iRow = 0; iRow < 15; ++iRow) {
+			for (var iRow = 0; iRow < 15 && flag; ++iRow) {
 				for (var iCol = 20; iCol >= 0; --iCol) {
 					if (inPhalanx(iRow, iCol)) {
 						if (pushPiece(iRow, iCol, iRow + dRow, iCol + dCol, grid[iRow][iCol].player, 1)) {
 							moveOnePiece(iRow, iCol, iRow + dRow, iCol + dCol);
 							moved = true;
+						}
+						else {
+							revertGrid();
+							moved = false;
+							flag = false;
 						}
 						break;
 					}
