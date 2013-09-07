@@ -19,7 +19,6 @@ function playSound(name) {
 			sounds[4].play();
 			break;
 		}
-
 		hudMan.soundText = name;
 		mediaMan.play = false;
 	}
@@ -72,6 +71,12 @@ function init() {
 	if (fullScreen) {
 		window.addEventListener("resize", reSize);
 	}
+	else {
+		menuMan.rows = 2;
+	}
+	menuMan.cols = Math.ceil(buttons.length / menuMan.rows);
+	menuMan.bWidth = cellSize*2;
+	menuMan.bHeight = cellSize*2/menuMan.rows;
 
 	reSize();
 	draw();
@@ -90,9 +95,7 @@ function reSize() {
 			minScale = canvas.height / boardHeight;
 		}
 */	}
-
 	context.font = "14px sans-serif";
-	context.fillStyle = "white";
 
 	mediaMan.scale = minScale;
 	mediaMan.x = (canvas.width - boardWidth * mediaMan.scale)/2;
@@ -107,6 +110,7 @@ function zoom() {
 	else {
 		mediaMan.zoom = -1;
 	}
+	mediaMan.draw = true;
 }
 
 function zooming(dTime) {
@@ -135,8 +139,9 @@ function zooming(dTime) {
 		mediaMan.x = (canvas.width - boardWidth)/2 - (inputMan.col * cellSize + cellSize/2) * (mediaMan.scale-1);
 		mediaMan.y = (canvas.height - boardHeight)/2 - (inputMan.row * cellSize + cellSize/2) * (mediaMan.scale-1);
 		pan(0, 0);	// hack to fix if clicked outside board
-		mediaMan.draw = true;
+		return true;
 	}
+	return false;
 }
 
 function pan(dX, dY) {
@@ -176,25 +181,27 @@ function pan(dX, dY) {
 }
 
 function draw(time) {
-	zooming(time - mediaMan.time);
-
 	if (mediaMan.draw) {
-		setRings();
+		mediaMan.draw = zooming(time - mediaMan.time);
 
 		context.save();
 		context.translate(mediaMan.x, mediaMan.y);
 		context.scale(mediaMan.scale, mediaMan.scale);
 		
 		drawBoard();
+		setRings();
 		drawPieces();
 
 		context.restore();
-		mediaMan.draw = false;
+		drawMenu();
 	}
-
 	drawHud(time);
 	mediaMan.time = time;
 	window.requestAnimationFrame(draw);
+}
+
+function drawBoard() {
+	context.drawImage(images[7], 0, 0, boardWidth, boardHeight);
 }
 
 function setRings() {
@@ -219,10 +226,6 @@ function setRings() {
 	}
 }
 
-function drawBoard() {
-	context.drawImage(images[7], 0, 0, boardWidth, boardHeight);
-}
-
 function drawPieces() {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
@@ -233,17 +236,37 @@ function drawPieces() {
 
 				if (cell.player >= 0) {
 					context.rotate(cell.rot * Math.PI/2);
-					context.drawImage(images[cell.player], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);
+					context.drawImage(images[cell.player], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);	// piece
 					context.rotate(cell.rot * Math.PI/-2);	// rotate back
-					context.drawImage(images[4], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);
+					context.drawImage(images[4], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);	// shadow
 				}
 
 				if (cell.ring >= 0) {
-					context.drawImage(images[5 + cell.ring], -cellSize/2, -cellSize/2, cellSize, cellSize);
+					context.drawImage(images[5 + cell.ring], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
 				}
 				cell.ring = -1;	// clear for next time
 
 				context.restore();
+			}
+		}
+	}
+}
+
+function drawMenu() {
+	context.fillStyle = "#073c50";
+	context.fillRect(canvas.width - menuMan.bWidth * menuMan.cols, canvas.height - menuMan.bHeight * menuMan.rows,
+		menuMan.bWidth * menuMan.cols, menuMan.bHeight * menuMan.rows);
+
+	var padding = 4;
+	for (var row = 0; row < menuMan.rows; ++row) {
+		for (var col = 0; col < menuMan.cols; ++col) {
+			var button = row * menuMan.cols + col;
+			if (button < buttons.length) {
+				context.fillStyle = "black";
+				context.fillRect(canvas.width - menuMan.bWidth * (col+1) + padding, canvas.height - menuMan.bHeight * (row+1) + padding,
+					menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
+				context.fillStyle = "white";
+				context.fillText(buttons[button], canvas.width - menuMan.bWidth * (col+0.7), canvas.height - menuMan.bHeight * (row+0.5)+7);
 			}
 		}
 	}
@@ -258,6 +281,7 @@ function drawHud(time) {
 	hudMan.fpsCount++;
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + mediaMan.scale + "x";
 	hudMan.pieceText = (gameMan.mode == 0) ? "" : "SELECTION";
+	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, 20);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  "
 	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, 14);

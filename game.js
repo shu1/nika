@@ -61,22 +61,17 @@ function pushGameState() {
 			pGrid[row][col] = cell;
 		}
 	}
-
 	gameStates.push(pGrid);
 	if (gameStates.length > 16) {	// number of undos to hold
 		gameStates.shift();
 	}
 }
 
-function undo(row, col) {
-	if (gameStates.length > 1 && row >= 13 && row <= 14 && col >= 0 && col <= 1) {	// 2x2 at bottom left
+function undo() {
+	if (gameStates.length > 1) {
 		gameStates.pop();
 		revertGrid();
-
-		hudMan.soundText = "UNDO";
-		return true;
 	}
-	return false;
 }
 
 function revertGrid() {
@@ -97,7 +92,7 @@ function checkWin() {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			if (grid[row][col].kind == 1 && grid[row][col].player >= 0 && grid[row][col].player != grid[row][col].city) {
-				hudMan.pieceText = getCity(grid[row][col].player) + "and " + getCity(getPartner(grid[row][col].player)) + "Wins!";
+				hudMan.pieceText = getCity(grid[row][col].player) + "and " + getCity(getPartner(grid[row][col].player)) + "wins!";
 				alert(hudMan.pieceText);
 			}
 		}

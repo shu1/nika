@@ -13,10 +13,11 @@ function getXYRowCol(event) {
 	inputMan.col = Math.floor((inputMan.x - mediaMan.x) / (cellSize * mediaMan.scale));
 	inputMan.row = Math.floor((inputMan.y - mediaMan.y) / (cellSize * mediaMan.scale));
 	inputMan.rot = -1;
+	hudMan.inputText = inputMan.row + "," + inputMan.col;
 }
 
 function getRot(dX, dY) {
-	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {
+	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {	// not for routed pieces
 		inputMan.row = gameMan.pRow;
 		inputMan.col = gameMan.pCol;
 
@@ -39,32 +40,57 @@ function getRot(dX, dY) {
 	}
 }
 
+function checkMenu(x, y) {
+	for (var row = 0; row < menuMan.rows; ++row) {
+		for (var col = 0; col < menuMan.cols; ++col) {
+			if (x > canvas.width - menuMan.bWidth * (col+1) && y > canvas.height - menuMan.bHeight * (row+1)) {
+				var button = row * menuMan.cols + col;
+				if (button < buttons.length) {
+					hudMan.inputText = buttons[button];
+					switch(button) {
+					case 2:
+						ai();
+						break;
+					case 3:
+						undo();
+						break;
+					}
+				}
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 function mouseDown(event) {
-	getXYRowCol(event);
-	hudMan.inputText = inputMan.row + "," + inputMan.col + " down";
 	hudMan.soundText = "";
+	getXYRowCol(event);
 
-	getPiece(inputMan.row, inputMan.col);
-	if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {
-		inputMan.pX = mediaMan.x + (gameMan.pCol * cellSize + cellSize/2) * mediaMan.scale;
-		inputMan.pY = mediaMan.y + (gameMan.pRow * cellSize + cellSize/2) * mediaMan.scale;
-		event.preventDefault();
-	}
-	else {
-		inputMan.pX = inputMan.x;
-		inputMan.pY = inputMan.y;
-		gameMan.mode = 0;	// back to default selection if you deselect pieces
-		phalanx.length = 0;
+	if (!checkMenu(inputMan.x, inputMan.y)) {
+		inputMan.click = true;
+
+		getPiece(inputMan.row, inputMan.col);
+		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {
+			inputMan.pX = mediaMan.x + (gameMan.pCol * cellSize + cellSize/2) * mediaMan.scale;
+			inputMan.pY = mediaMan.y + (gameMan.pRow * cellSize + cellSize/2) * mediaMan.scale;
+			event.preventDefault();
+		}
+		else {
+			inputMan.pX = inputMan.x;
+			inputMan.pY = inputMan.y;
+			gameMan.mode = 0;	// back to normal selection if you deselect pieces
+			phalanx.length = 0;
+		}
 	}
 
-	inputMan.click = true;
+	hudMan.inputText += " down";
 	mediaMan.draw = true;
 }
 
 function mouseMove(event) {
 	if (inputMan.click) {
 		getXYRowCol(event);
-		hudMan.inputText = inputMan.row + "," + inputMan.col;
 
 		var dX = inputMan.x - inputMan.pX;
 		var dY = inputMan.y - inputMan.pY;
@@ -93,10 +119,7 @@ function mouseMove(event) {
 function mouseUp(event) {
 	hudMan.inputText += " up";
 
-	if (undo(inputMan.row, inputMan.col) || ai(inputMan.row, inputMan.col)) {
-		inputMan.time = 0;
-	}
-	else if (!dblClick(event)) {
+	if (inputMan.click && !dblClick(event)) {
 		if (gameMan.mode == 1 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
 			togglePhalanxPiece(inputMan.row, inputMan.col);
 		}

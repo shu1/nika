@@ -1,18 +1,10 @@
 "use strict";
 
-function ai(row, col) {
-	var player;
-	if (row >= 13 && row <= 14 && col >= 19 && col <= 20) {	// 2x2 at bottom right
-		player = gameMan.player;
-	}
-	else {
-		return false;
-	}
-
+function ai() {
 	pieces.length = 0;
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
-			if (grid[row][col].player == player) {
+			if (grid[row][col].player == gameMan.player) {
 				pieces.push({row:row, col:col});
 			}
 		}
@@ -48,13 +40,8 @@ function ai(row, col) {
 			done = movePiece(pieces[i].row, pieces[i].col, row, col);
 		}
 		else if (action == 1) {
-			rotatePiece(pieces[i].row, pieces[i].col, row, col);
+			rotatePiece(pieces[i].row, pieces[i].col, rot);
 			done = movePiece(pieces[i].row, pieces[i].col, pieces[i].row, pieces[i].col);
 		}
-
-		console.log(i + " " + pieces[i].row + "," + pieces[i].col + " " + rot + " " + row + "," + col + " " + action);
 	}
-	console.log("");
-
-	return true;
 }

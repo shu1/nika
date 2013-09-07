@@ -44,6 +44,20 @@ var gameMan = {
 	mode:0
 }
 
+var menuMan = {
+	rows:1,
+	cols:1,
+	bWidth:0,
+	bHeight:0
+}
+
+var buttons = [
+	"Close",
+	"Debug",
+	"AI",
+	"Undo"
+]
+
 var ascii = [
 	".........kkklll......",
 	".........kkklll......",
