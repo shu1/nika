@@ -4,6 +4,7 @@ var canvas, context, images, sounds, grid, gameStates=[], pieces=[], phalanx=[];
 
 var mediaMan = {
 	play:true,
+	menu:false,
 	draw:true,
 	scale:1,
 	zoom:0,
@@ -45,8 +46,11 @@ var gameMan = {
 }
 
 var menuMan = {
+	show:false,
 	rows:1,
 	cols:1,
+	width:0,
+	height:0,
 	bWidth:0,
 	bHeight:0
 }

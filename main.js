@@ -77,6 +77,8 @@ function init() {
 	menuMan.cols = Math.ceil(buttons.length / menuMan.rows);
 	menuMan.bWidth = cellSize*2;
 	menuMan.bHeight = cellSize*2/menuMan.rows;
+	menuMan.width = menuMan.bWidth * menuMan.cols;
+	menuMan.height = menuMan.bHeight * menuMan.rows;
 
 	reSize();
 	draw();
@@ -96,7 +98,6 @@ function reSize() {
 		}
 */	}
 	context.font = "14px sans-serif";
-
 	mediaMan.scale = minScale;
 	mediaMan.x = (canvas.width - boardWidth * mediaMan.scale)/2;
 	mediaMan.y = (canvas.height - boardHeight * mediaMan.scale)/2;
@@ -114,12 +115,11 @@ function zoom() {
 }
 
 function zooming(dTime) {
-	var factor = (maxScale - minScale)/200 * dTime;	// animation speed
-
 	if (mediaMan.zoom != 0) {
+		var speed = (maxScale - minScale)/200 * dTime;	// animation speed
 		if (mediaMan.zoom > 0) {
-			if (mediaMan.scale + factor < maxScale) {
-				mediaMan.scale += factor;
+			if (mediaMan.scale + speed < maxScale) {
+				mediaMan.scale += speed;
 			}
 			else {
 				mediaMan.scale = maxScale;
@@ -127,21 +127,18 @@ function zooming(dTime) {
 			}
 		}
 		else {
-			if (mediaMan.scale - factor > minScale) {
-				mediaMan.scale -= factor;
+			if (mediaMan.scale - speed > minScale) {
+				mediaMan.scale -= speed;
 			}
 			else {
 				mediaMan.scale = minScale;
 				mediaMan.zoom = 0;
 			}
-			context.clearRect(0, 0, canvas.width, canvas.height);
 		}
 		mediaMan.x = (canvas.width - boardWidth)/2 - (inputMan.col * cellSize + cellSize/2) * (mediaMan.scale-1);
 		mediaMan.y = (canvas.height - boardHeight)/2 - (inputMan.row * cellSize + cellSize/2) * (mediaMan.scale-1);
 		pan(0, 0);	// hack to fix if clicked outside board
-		return true;
 	}
-	return false;
 }
 
 function pan(dX, dY) {
@@ -182,7 +179,9 @@ function pan(dX, dY) {
 
 function draw(time) {
 	if (mediaMan.draw) {
-		mediaMan.draw = zooming(time - mediaMan.time);
+		context.clearRect(0, 0, canvas.width, canvas.height);
+		var dTime = time - mediaMan.time;
+		zooming(dTime);
 
 		context.save();
 		context.translate(mediaMan.x, mediaMan.y);
@@ -193,7 +192,8 @@ function draw(time) {
 		drawPieces();
 
 		context.restore();
-		drawMenu();
+		drawMenu(dTime);
+		mediaMan.draw = mediaMan.zoom != 0 || mediaMan.menu;
 	}
 	drawHud(time);
 	mediaMan.time = time;
@@ -252,24 +252,76 @@ function drawPieces() {
 	}
 }
 
-function drawMenu() {
-	context.fillStyle = "#073c50";
-	context.fillRect(canvas.width - menuMan.bWidth * menuMan.cols, canvas.height - menuMan.bHeight * menuMan.rows,
-		menuMan.bWidth * menuMan.cols, menuMan.bHeight * menuMan.rows);
+function drawMenu(dTime) {
+	mediaMan.menu = false;
+	var factor = 200;
 
-	var padding = 4;
-	for (var row = 0; row < menuMan.rows; ++row) {
-		for (var col = 0; col < menuMan.cols; ++col) {
-			var button = row * menuMan.cols + col;
-			if (button < buttons.length) {
-				context.fillStyle = "black";
-				context.fillRect(canvas.width - menuMan.bWidth * (col+1) + padding, canvas.height - menuMan.bHeight * (row+1) + padding,
-					menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
-				context.fillStyle = "white";
-				context.fillText(buttons[button], canvas.width - menuMan.bWidth * (col+0.7), canvas.height - menuMan.bHeight * (row+0.5)+7);
+	if (menuMan.show && (menuMan.width < menuMan.bWidth * menuMan.cols || menuMan.height < menuMan.bHeight * menuMan.rows)) {
+		var speed = menuMan.bWidth * (menuMan.cols-1) / factor * dTime;
+		if (menuMan.width + speed < menuMan.bWidth * menuMan.cols) {
+			menuMan.width += speed;
+			mediaMan.menu = true;
+		}
+		else {
+			menuMan.width = menuMan.bWidth * menuMan.cols;
+		}
+
+		speed = menuMan.bHeight * (menuMan.rows-1) / factor * dTime;
+		if (menuMan.height + speed < menuMan.bHeight * menuMan.rows) {
+			menuMan.height += speed;
+			mediaMan.menu = true;
+		}
+		else {
+			menuMan.height = menuMan.bHeight * menuMan.rows;
+		}
+	}
+	else if (!menuMan.show && (menuMan.width > menuMan.bWidth || menuMan.height > menuMan.bHeight)) {
+		var speed = menuMan.bWidth * (menuMan.cols-1) / factor * dTime;
+		if (menuMan.width - speed > menuMan.bWidth) {
+			menuMan.width -= speed;
+			mediaMan.menu = true;
+		}
+		else {
+			menuMan.width = menuMan.bWidth;
+		}
+
+		speed = menuMan.bHeight * (menuMan.rows-1) / factor * dTime;
+		if (menuMan.height - speed > menuMan.bHeight) {
+			menuMan.height -= speed;
+			mediaMan.menu = true;
+		}
+		else {
+			menuMan.height = menuMan.bHeight;
+		}
+	}
+
+	context.fillStyle = "#073c50";
+	context.fillRect(canvas.width - menuMan.width, canvas.height - menuMan.height, menuMan.width, menuMan.height);
+
+	if (menuMan.show && !mediaMan.menu) {
+		for (var row = 0; row < menuMan.rows; ++row) {
+			for (var col = 0; col < menuMan.cols; ++col) {
+				var button = row * menuMan.cols + col;
+				if (button < buttons.length) {
+					drawButton(row, col, buttons[button], "white", "black");
+				}
 			}
 		}
 	}
+	else {
+		drawButton(0, 0, "Menu", "white");
+	}
+}
+
+function drawButton(row, col, text, textColor, bgColor) {
+	var padding = 4;
+	if (bgColor) {
+		context.fillStyle = bgColor;
+		context.fillRect(canvas.width - menuMan.bWidth * (col+1) + padding, canvas.height - menuMan.bHeight * (row+1) + padding,
+			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
+	}
+	context.fillStyle = textColor;
+	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.7), canvas.height - menuMan.bHeight * (row+0.5)+7);	
 }
 
 function drawHud(time) {

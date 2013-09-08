@@ -45,18 +45,25 @@ function checkMenu(x, y) {
 		for (var col = 0; col < menuMan.cols; ++col) {
 			if (x > canvas.width - menuMan.bWidth * (col+1) && y > canvas.height - menuMan.bHeight * (row+1)) {
 				var button = row * menuMan.cols + col;
-				if (button < buttons.length) {
+				if (button == 0) {
+					menuMan.show = !menuMan.show;
+					hudMan.inputText = menuMan.show ? "Menu" : buttons[button];
+					mediaMan.draw = true;
+					return true;
+				}
+				else if (menuMan.show && button < buttons.length) {
 					hudMan.inputText = buttons[button];
 					switch(button) {
+					case 1:	// TODO: doesn't do anything yet
+						return true;
 					case 2:
 						ai();
-						break;
+						return true;
 					case 3:
 						undo();
-						break;
+						return true;
 					}
 				}
-				return true;
 			}
 		}
 	}
@@ -64,8 +71,8 @@ function checkMenu(x, y) {
 }
 
 function mouseDown(event) {
-	hudMan.soundText = "";
 	getXYRowCol(event);
+	hudMan.soundText = "";
 
 	if (!checkMenu(inputMan.x, inputMan.y)) {
 		inputMan.click = true;
