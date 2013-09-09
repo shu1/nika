@@ -391,7 +391,10 @@ function togglePhalanxPiece(row, col) {
 	if (inPhalanx(row, col) && phalanx.length > 1) {	// if in phalanx, find and remove
 		for (var i = phalanx.length-1; i >= 0; --i) {
 			if (phalanx[i].row == row && phalanx[i].col == col) {
-				phalanx.splice(i, 1);
+				var removed = phalanx.splice(i, 1);
+				if (!isPhalanx()) {
+					phalanx.splice(i,0,removed[0]);
+				}
 				return;
 			}
 		}
@@ -415,4 +418,42 @@ function togglePhalanxPiece(row, col) {
 		phalanx.length = 0;
 		phalanx.push({row:row, col:col});
 	}
+}
+
+function isPhalanx() {
+	for (var i=phalanx.length-1; i>=0; --i) {
+		for (var j=i-1; j>=0; --j) {
+			if (!findMember(phalanx[i].row, phalanx[i].col, phalanx[j].row, phalanx[j].col)) {
+				clearChecked();
+				return false;
+			}
+			clearChecked();
+		}
+	}
+	return true;
+}
+
+function findMember(sRow, sCol, eRow, eCol) {
+	
+	if (sRow == eRow && sCol == eCol) {
+		return true;
+	}
+
+	grid[sRow][sCol].checked = true;
+	var found = false;
+
+	if (inPhalanx(sRow, sCol+1) && !grid[sRow][sCol+1].checked) {
+		found = found || findMember(sRow, sCol+1, eRow, eCol);
+	}
+	if (inPhalanx(sRow, sCol-1) && !grid[sRow][sCol-1].checked) {
+		found = found || findMember(sRow, sCol-1, eRow, eCol);
+	}
+	if (inPhalanx(sRow+1, sCol) && !grid[sRow+1][sCol].checked) {
+		found = found || findMember(sRow+1, sCol, eRow, eCol);
+	}
+	if (inPhalanx(sRow-1, sCol) && !grid[sRow-1][sCol].checked) {
+		found = found || findMember(sRow-1, sCol, eRow, eCol);
+	}
+
+	return found;
 }
