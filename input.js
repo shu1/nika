@@ -127,12 +127,13 @@ function mouseUp(event) {
 	hudMan.inputText += " up";
 
 	if (inputMan.click && !dblClick(event)) {
-		if (gameMan.mode == 1 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
-			togglePhalanxPiece(inputMan.row, inputMan.col);
-		}
-		else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
+		
+		if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 			inputMan.time = 0;
 			gameMan.mode = 0;	// after move always get out of selection mode
+		}
+		else if (gameMan.mode == 1 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
+			togglePhalanxPiece(inputMan.row, inputMan.col);
 		}
 	}
 
