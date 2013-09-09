@@ -13,8 +13,10 @@ function useAction(n) {
 		if (gameMan.player >= 4) {
 			gameMan.player = 0;
 		}
+		gameMan.turn++;
 	}
 
+	console.log("Player:" + getCity(gameMan.player) +", Action:" + gameMan.actions + ", Turn:" + gameMan.turn);
 	hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	checkWin();
 }
@@ -71,6 +73,23 @@ function undo() {
 	if (gameStates.length > 1) {
 		gameStates.pop();
 		revertGrid();
+
+		//reverting gameMan state
+		if (gameMan.actions >= 2){
+			if(gameMan.player <= 0){
+				gameMan.player = 3;
+			}
+			else{
+				gameMan.player--;
+			}
+			gameMan.turn--;
+			gameMan.actions = 1;
+		}
+		else{
+			gameMan.actions++;
+		}
+		console.log("Player:" + getCity(gameMan.player) +", Action:" + gameMan.actions + ", Turn:" + gameMan.turn);
+		hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	}
 }
 

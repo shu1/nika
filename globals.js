@@ -43,8 +43,9 @@ var gameMan = {
 	pRow:-1,
 	pCol:-1,
 	pRot:-1,
-	mode:0
-}
+	mode:0,
+	turn:1
+}	//Turn = amount of turns played + 1
 
 var menuMan = {
 	show:false,
@@ -80,3 +81,13 @@ var ascii = [
 	"......dddccc.........",
 	"......dddccc........."
 ]
+
+var moveHistory = []
+
+var moveTypes = {
+	move:0,
+	rotate:1,
+	rout:2,
+	push:3,
+	rally:4
+}
