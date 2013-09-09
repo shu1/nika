@@ -47,14 +47,14 @@ function checkMenu(x, y) {
 				var button = row * menuMan.cols + col;
 				if (button == 0) {
 					menuMan.show = !menuMan.show;
-					hudMan.inputText = menuMan.show ? "Menu" : buttons[button];
-					mediaMan.draw = true;
+					hudMan.inputText = (menuMan.show) ? "Menu" : buttons[button];
 					return true;
 				}
 				else if (menuMan.show && button < buttons.length) {
 					hudMan.inputText = buttons[button];
 					switch(button) {
-					case 1:	// TODO: doesn't do anything yet
+					case 1:
+						gameMan.debug = !gameMan.debug;
 						return true;
 					case 2:
 						ai();

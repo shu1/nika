@@ -5,8 +5,7 @@ function getPiece(row, col) {
 	gameMan.pCol = -1;
 	gameMan.pRot = -1;
 
-//	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player == gameMan.player) { // Is it your turn? Commented out for debugging
-	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player >= 0) {
+	if (row >= 0 && row < 15 && col >= 0 && col < 21 && grid[row][col].player >= 0 && (gameMan.debug || grid[row][col].player == gameMan.player)) {
 		gameMan.pRow = row;
 		gameMan.pCol = col;
 		gameMan.pRot = grid[row][col].rot;

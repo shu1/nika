@@ -303,7 +303,12 @@ function drawMenu(dTime) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length) {
-					drawButton(row, col, buttons[button], "white", "black");
+					if (button == 1 && gameMan.debug) {
+						drawButton(row, col, buttons[button], "black", "white");
+					}
+					else {
+						drawButton(row, col, buttons[button], "white", "black");
+					}
 				}
 			}
 		}
