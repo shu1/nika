@@ -19,7 +19,7 @@ function getPiece(row, col) {
 }
 
 function rotatePiece(pRow, pCol, rot) {
-	if (grid[pRow][pCol].kind != 3) {
+	if (grid[pRow][pCol].kind != 3 && inPhalanx(pRow,pCol)) {
 		for (var i = phalanx.length-1; i >= 0; --i) {
 			grid[phalanx[i].row][phalanx[i].col].rot = rot;
 		}
@@ -90,7 +90,8 @@ function checkMove(pRow, pCol, row, col) {
 	|| (grid[pRow][pCol].kind != 3 && Math.abs(row - pRow) + Math.abs(col - pCol) > 1)								// adjacent cell
 	|| (grid[row][col].kind == 1 && (grid[row][col].city - grid[pRow][pCol].player)%2 != 0 )						// opponent win cell
 	|| (grid[pRow][pCol].kind == 3 && (grid[row][col].kind != 2 || grid[pRow][pCol].player != grid[row][col].city))	// routed to respawn
-	|| (grid[row][col].player >= 0 && (grid[row][col].player - grid[pRow][pCol].player)%2 == 0)) {					// same team
+	|| (grid[row][col].player >= 0 && (grid[row][col].player - grid[pRow][pCol].player)%2 == 0)						// same team
+	|| !inPhalanx(pRow,pCol)) {																						// didn't click current phalanx
 		return false;
 	}
 	return true;
@@ -356,7 +357,8 @@ function checkMovePhalanx(pRow, pCol, row, col) {
 		||  grid[iRow + dRow][iCol + dCol].kind < 0 || grid[iRow + dRow][iCol + dCol].kind == 3										// invalid cell
 		|| (grid[iRow + dRow][iCol + dCol].kind == 1 && (grid[iRow + dRow][iCol + dCol].city - grid[iRow][iCol].player)%2 != 0 )	// opponent win cell
 		|| (grid[iRow + dRow][iCol + dCol].player >= 0 && !inPhalanx(iRow + dRow, iCol + dCol)
-		&& (grid[iRow + dRow][iCol + dCol].player - grid[iRow][iCol].player)%2 == 0)) {	// same team, not part of phalanx
+		&& (grid[iRow + dRow][iCol + dCol].player - grid[iRow][iCol].player)%2 == 0)			// same team, not part of phalanx
+		|| !inPhalanx(pRow,pCol)) {																// didn't click current phalanx
 			return false;
 		}
 	}
