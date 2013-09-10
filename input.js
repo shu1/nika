@@ -44,20 +44,20 @@ function checkMenu(x, y) {
 	for (var row = 0; row < menuMan.rows; ++row) {
 		for (var col = 0; col < menuMan.cols; ++col) {
 			if (x > canvas.width - menuMan.bWidth * (col+1) && y > canvas.height - menuMan.bHeight * (row+1)) {
-				var button = row * menuMan.cols + col;
-				if (button == 0) {
+				menuMan.button = row * menuMan.cols + col;
+				if (menuMan.button == 0) {
 					menuMan.show = !menuMan.show;
-					hudMan.inputText = (menuMan.show) ? "Menu" : buttons[button];
+					hudMan.inputText = (menuMan.show) ? "Menu" : buttons[menuMan.button];
 					return true;
 				}
-				else if (menuMan.show && button < buttons.length) {
-					hudMan.inputText = buttons[button];
-					switch(button) {
+				else if (menuMan.show && menuMan.button < buttons.length) {
+					hudMan.inputText = buttons[menuMan.button];
+					switch(menuMan.button) {
 					case 1:
 						gameMan.debug = !gameMan.debug;
 						return true;
 					case 2:
-						ai();
+						useAction(2);	// pass
 						return true;
 					case 3:
 						undo();
@@ -67,6 +67,7 @@ function checkMenu(x, y) {
 			}
 		}
 	}
+	menuMan.button = -1;
 	return false;
 }
 
@@ -127,7 +128,6 @@ function mouseUp(event) {
 	hudMan.inputText += " up";
 
 	if (inputMan.click && !dblClick(event)) {
-		
 		if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 			inputMan.time = 0;
 			gameMan.mode = 0;	// after move always get out of selection mode
@@ -137,6 +137,7 @@ function mouseUp(event) {
 		}
 	}
 
+	menuMan.button = -1;
 	inputMan.click = false;
 	mediaMan.play = true;
 	mediaMan.draw = true;

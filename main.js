@@ -87,7 +87,7 @@ function init() {
 function reSize() {
 	if (fullScreen) {
 		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;	// reduce height to remove scrollbars on some browsers
+		canvas.height = window.innerHeight;	// height-5 to remove scrollbars on some browsers
 
 		if (canvas.width / boardWidth > maxScale) {
 			maxScale = canvas.width / boardWidth;
@@ -97,7 +97,7 @@ function reSize() {
 			minScale = canvas.height / boardHeight;
 		}
 */	}
-	context.font = "14px sans-serif";
+	context.font = "16px sans-serif";
 	mediaMan.scale = minScale;
 	mediaMan.x = (canvas.width - boardWidth * mediaMan.scale)/2;
 	mediaMan.y = (canvas.height - boardHeight * mediaMan.scale)/2;
@@ -303,11 +303,11 @@ function drawMenu(dTime) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length) {
-					if (button == 1 && gameMan.debug) {
-						drawButton(row, col, buttons[button], "black", "white");
+					if (button == 1 && gameMan.debug || menuMan.button >= 0 && button == menuMan.button && button != 1) {
+						drawButton(row, col, buttons[button], "#00495e", "white");
 					}
 					else {
-						drawButton(row, col, buttons[button], "white", "black");
+						drawButton(row, col, buttons[button], "white", "#00495e");
 					}
 				}
 			}
@@ -326,7 +326,7 @@ function drawButton(row, col, text, textColor, bgColor) {
 			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
 	}
 	context.fillStyle = textColor;
-	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.7), canvas.height - menuMan.bHeight * (row+0.5)+7);	
+	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.75), canvas.height - menuMan.bHeight * (row+0.5)+6);
 }
 
 function drawHud(time) {
@@ -339,9 +339,9 @@ function drawHud(time) {
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + mediaMan.scale + "x";
 	hudMan.pieceText = (gameMan.mode == 0) ? "" : "SELECTION";
 	context.fillStyle = "white";
-	context.clearRect(0, 0, canvas.width, 20);
+	context.clearRect(0, 0, canvas.width, 22);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  "
-	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, 14);
+	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, 16);
 }
 
 // browser compatibility

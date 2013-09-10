@@ -3,8 +3,8 @@
 var canvas, context, images, sounds, grid, gameStates=[], pieces=[], phalanx=[];
 
 var mediaMan = {
-	play:true,
 	menu:false,
+	play:true,
 	draw:true,
 	scale:1,
 	zoom:0,
@@ -43,9 +43,8 @@ var gameMan = {
 	pRow:-1,
 	pCol:-1,
 	pRot:-1,
-	mode:0,
-	turn:1
-}	//Turn = amount of turns played + 1
+	mode:0
+}
 
 var menuMan = {
 	show:false,
@@ -54,13 +53,14 @@ var menuMan = {
 	width:0,
 	height:0,
 	bWidth:0,
-	bHeight:0
+	bHeight:0,
+	button:-1
 }
 
 var buttons = [
 	"Close",
 	"Debug",
-	"AI",
+	"Pass",
 	"Undo"
 ]
 
@@ -81,13 +81,3 @@ var ascii = [
 	"......dddccc.........",
 	"......dddccc........."
 ]
-
-var moveHistory = []
-
-var moveTypes = {
-	move:0,
-	rotate:1,
-	rout:2,
-	push:3,
-	rally:4
-}
