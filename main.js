@@ -190,6 +190,7 @@ function draw(time) {
 		drawBoard();
 		setRings();
 		drawPieces();
+		drawTurnUI();
 
 		context.restore();
 		drawMenu(dTime);
@@ -249,6 +250,46 @@ function drawPieces() {
 				context.restore();
 			}
 		}
+	}
+}
+
+//TODO: Temporary, will most likely be replaced by any central mural UI/animation. ALSO THIS IS TERRIBLE CODE. I can't figure out how to position these. Maybe because I'm a bit tired.
+function drawTurnUI(){ 
+	var fillColor;
+	var lineColor;
+	switch (gameMan.player) {
+		case 0:
+			fillColor = "#D1CBAD";
+			lineColor = "#84BBCB";
+			break;
+		case 1:
+			fillColor = "#C56828";
+			lineColor = "#292526";
+			break;
+		case 2:
+			fillColor = "#84BBCB";
+			lineColor = "#D1CBAD";
+			break;
+		case 3:
+			fillColor = "#292526";
+			lineColor = "#C56828";
+			break;
+		}
+	context.beginPath();
+		context.rect((canvas.width/2)-(cellSize/1.5), (canvas.height/2)-(cellSize*2), cellSize, cellSize);
+		context.fillStyle = fillColor;
+		context.fill();
+		context.lineWidth = 4;
+		context.strokeStyle = lineColor;
+	context.stroke();
+	if(gameMan.actions == 2){
+		context.beginPath();
+			context.rect((canvas.width/2)-(cellSize/1.5), (canvas.height/2)+(cellSize*0.01), cellSize, cellSize);
+			context.fillStyle = fillColor;
+			context.fill();
+			context.lineWidth = 4;
+			context.strokeStyle = lineColor;
+		context.stroke();
 	}
 }
 
