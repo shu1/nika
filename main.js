@@ -294,8 +294,8 @@ function drawTurnUI(){
 }
 
 function drawMenu(dTime) {
-	mediaMan.menu = false;
 	var factor = 200;
+	mediaMan.menu = false;	// whether menu is animating
 
 	if (menuMan.show && (menuMan.width < menuMan.bWidth * menuMan.cols || menuMan.height < menuMan.bHeight * menuMan.rows)) {
 		var speed = menuMan.bWidth * (menuMan.cols-1) / factor * dTime;
@@ -336,7 +336,7 @@ function drawMenu(dTime) {
 		}
 	}
 
-	context.fillStyle = "#073c50";
+	context.fillStyle = "#073c50";	// board bgcolor
 	context.fillRect(canvas.width - menuMan.width, canvas.height - menuMan.height, menuMan.width, menuMan.height);
 
 	if (menuMan.show && !mediaMan.menu) {
@@ -344,15 +344,18 @@ function drawMenu(dTime) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length) {
-					if (button == 1 && gameMan.debug || menuMan.button >= 0 && button == menuMan.button && button != 1) {
-						drawButton(row, col, buttons[button], "#00495e", "white");
+					if (inputMan.menu && button == menuMan.button || gameMan.debug && button == 1) {
+						drawButton(row, col, buttons[button], "#13485d", "white");
 					}
 					else {
-						drawButton(row, col, buttons[button], "white", "#00495e");
+						drawButton(row, col, buttons[button], "white", "#13485d");
 					}
 				}
 			}
 		}
+	}
+	else if (inputMan.menu && menuMan.button == 0) {
+		drawButton(0, 0, "Menu", "#073c50", "white");
 	}
 	else {
 		drawButton(0, 0, "Menu", "white");

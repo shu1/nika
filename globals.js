@@ -26,6 +26,7 @@ var	hudMan = {
 
 var inputMan = {
 	click:false,
+	menu:false,
 	time:0,
 	row:-1,
 	col:-1,
@@ -60,8 +61,8 @@ var menuMan = {
 var buttons = [
 	"Close",
 	"Debug",
-	"Pass",
-	"Undo"
+	"Undo",
+	"AI"
 ]
 
 var ascii = [

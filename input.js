@@ -1,6 +1,25 @@
 "use strict";
 
-function getXYRowCol(event) {
+function menuButton(button) {
+	if (button == 0) {
+		menuMan.show = !menuMan.show;
+	}
+	else if (menuMan.show) {
+		switch(button) {
+		case 1:
+			gameMan.debug = !gameMan.debug;
+			break;
+		case 2:
+			undo();
+			break;
+		case 3:
+			ai();
+			break;
+		}
+	}
+}
+
+function getXY(event) {
 	if (event.touches) {
 		inputMan.x = event.touches[0].pageX;
 		inputMan.y = event.touches[0].pageY;
@@ -10,10 +29,28 @@ function getXYRowCol(event) {
 		inputMan.y = event.layerY;
 	}
 
+	// check menu
+	if (inputMan.x < canvas.width && inputMan.x > canvas.width - menuMan.width
+	&& inputMan.y < canvas.height && inputMan.y > canvas.height - menuMan.height) {
+		for (var row = 0; row < menuMan.rows; ++row) {
+			for (var col = 0; col < menuMan.cols; ++col) {
+				if (inputMan.x > canvas.width - menuMan.bWidth * (col+1) && inputMan.y > canvas.height - menuMan.bHeight * (row+1)) {
+					menuMan.button = row * menuMan.cols + col;
+					if (menuMan.button < buttons.length) {
+						hudMan.inputText = buttons[menuMan.button];
+					}
+					return true;
+				}
+			}
+		}
+	}
+
+	// no menu, so grid
 	inputMan.col = Math.floor((inputMan.x - mediaMan.x) / (cellSize * mediaMan.scale));
 	inputMan.row = Math.floor((inputMan.y - mediaMan.y) / (cellSize * mediaMan.scale));
 	inputMan.rot = -1;
 	hudMan.inputText = inputMan.row + "," + inputMan.col;
+	return false;
 }
 
 function getRot(dX, dY) {
@@ -40,44 +77,9 @@ function getRot(dX, dY) {
 	}
 }
 
-function checkMenu(x, y) {
-	for (var row = 0; row < menuMan.rows; ++row) {
-		for (var col = 0; col < menuMan.cols; ++col) {
-			if (x > canvas.width - menuMan.bWidth * (col+1) && y > canvas.height - menuMan.bHeight * (row+1)) {
-				menuMan.button = row * menuMan.cols + col;
-				if (menuMan.button == 0) {
-					menuMan.show = !menuMan.show;
-					hudMan.inputText = (menuMan.show) ? "Menu" : buttons[menuMan.button];
-					return true;
-				}
-				else if (menuMan.show && menuMan.button < buttons.length) {
-					hudMan.inputText = buttons[menuMan.button];
-					switch(menuMan.button) {
-					case 1:
-						gameMan.debug = !gameMan.debug;
-						return true;
-					case 2:
-						useAction(2);	// pass
-						return true;
-					case 3:
-						undo();
-						return true;
-					}
-				}
-			}
-		}
-	}
-	menuMan.button = -1;
-	return false;
-}
-
 function mouseDown(event) {
-	getXYRowCol(event);
-	hudMan.soundText = "";
-
-	if (!checkMenu(inputMan.x, inputMan.y)) {
-		inputMan.click = true;
-
+	inputMan.menu = getXY(event);
+	if (!inputMan.menu) {
 		getPiece(inputMan.row, inputMan.col);
 		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {
 			inputMan.pX = mediaMan.x + (gameMan.pCol * cellSize + cellSize/2) * mediaMan.scale;
@@ -91,43 +93,45 @@ function mouseDown(event) {
 			phalanx.length = 0;
 		}
 	}
-
+	hudMan.soundText = "";
 	hudMan.inputText += " down";
+	inputMan.click = true;
 	mediaMan.draw = true;
 }
 
 function mouseMove(event) {
 	if (inputMan.click) {
-		getXYRowCol(event);
-
-		var dX = inputMan.x - inputMan.pX;
-		var dY = inputMan.y - inputMan.pY;
-		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-			if (Math.abs(dX) > cellSize/2 * mediaMan.scale || Math.abs(dY) > cellSize/2 * mediaMan.scale) {	// inside cell is deadzone
-				getRot(dX, dY);
-				rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
-			}
-
-			event.preventDefault();
-			mediaMan.draw = true;
-		}
-		else {	// pan
-			if (pan(dX, dY)) {
-				hudMan.inputText = -mediaMan.x + "," + -mediaMan.y;
+		getXY(event);
+		if (!inputMan.menu) {
+			var dX = inputMan.x - inputMan.pX;
+			var dY = inputMan.y - inputMan.pY;
+			if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
+				if (Math.abs(dX) > cellSize/2 * mediaMan.scale || Math.abs(dY) > cellSize/2 * mediaMan.scale) {	// inside cell is deadzone
+					getRot(dX, dY);
+					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
+				}
 				event.preventDefault();
-				mediaMan.draw = true;
 			}
-
-			inputMan.pX = inputMan.x;
-			inputMan.pY = inputMan.y;
+			else {	// pan
+				if (pan(dX, dY)) {
+					hudMan.inputText = -mediaMan.x + "," + -mediaMan.y;
+					event.preventDefault();
+				}
+				inputMan.pX = inputMan.x;
+				inputMan.pY = inputMan.y;
+			}
 		}
+		mediaMan.draw = true;
 	}
 }
 
 function mouseUp(event) {
 	hudMan.inputText += " up";
 
-	if (inputMan.click && !dblClick(event)) {
+	if (inputMan.menu) {
+		menuButton(menuMan.button);
+	}
+	else if (!dblClick(event)) {
 		if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 			inputMan.time = 0;
 			gameMan.mode = 0;	// after move always get out of selection mode
@@ -136,8 +140,7 @@ function mouseUp(event) {
 			togglePhalanxPiece(inputMan.row, inputMan.col);
 		}
 	}
-
-	menuMan.button = -1;
+	inputMan.menu = false;
 	inputMan.click = false;
 	mediaMan.play = true;
 	mediaMan.draw = true;
@@ -157,7 +160,6 @@ function dblClick(event) {
 		else {
 			zoom();
 		}
-
 		inputMan.time = 0;	// reset so next click is not double click
 		return true;
 	}
