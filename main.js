@@ -255,44 +255,44 @@ function drawPieces() {
 	}
 }
 
-//TODO: Temporary, will most likely be replaced by any central mural UI/animation. ALSO THIS IS TERRIBLE CODE. I can't figure out how to position these. Maybe because I'm a bit tired.
-function drawTurnUI(){ 
-	var fillColor;
-	var lineColor;
+//TODO: Temporary, will most likely be replaced by any central mural UI/animation
+function drawTurnUI() {
+	var x, y;
 	switch (gameMan.player) {
-		case 0:
-			fillColor = "#D1CBAD";
-			lineColor = "#84BBCB";
-			break;
-		case 1:
-			fillColor = "#C56828";
-			lineColor = "#292526";
-			break;
-		case 2:
-			fillColor = "#84BBCB";
-			lineColor = "#D1CBAD";
-			break;
-		case 3:
-			fillColor = "#292526";
-			lineColor = "#C56828";
-			break;
-		}
-	context.beginPath();
-		context.rect((canvas.width/2)-(cellSize/1.5), (canvas.height/2)-(cellSize*2), cellSize, cellSize);
-		context.fillStyle = fillColor;
-		context.fill();
-		context.lineWidth = 4;
-		context.strokeStyle = lineColor;
-	context.stroke();
-	if(gameMan.actions == 2){
-		context.beginPath();
-			context.rect((canvas.width/2)-(cellSize/1.5), (canvas.height/2)+(cellSize*0.01), cellSize, cellSize);
-			context.fillStyle = fillColor;
-			context.fill();
-			context.lineWidth = 4;
-			context.strokeStyle = lineColor;
-		context.stroke();
+	case 0:
+		x = cellSize * 13.5;
+		y = cellSize * 14;
+		context.fillStyle   = "#D1CBAD";
+		context.strokeStyle = "#84BBCB";
+		break;
+	case 1:
+		x = cellSize;
+		y = cellSize * 10.5;
+		context.fillStyle   = "#C56828";
+		context.strokeStyle = "#292526";
+		break;
+	case 2:
+		x = cellSize *  7.5;
+		y = cellSize;
+		context.fillStyle   = "#84BBCB";
+		context.strokeStyle = "#D1CBAD";
+		break;
+	case 3:
+		x = cellSize * 20;
+		y = cellSize *  4.5;
+		context.fillStyle   = "#292526";
+		context.strokeStyle = "#C56828";
+		break;
 	}
+	context.lineWidth = 2;
+	context.beginPath();
+	context.arc(x, y, cellSize*0.85, (gameMan.player+1)*Math.PI/2, (gameMan.player+1+gameMan.actions*2)*Math.PI/2);
+	context.closePath();
+	context.fill();
+	context.stroke();
+	context.beginPath();
+	context.arc(x, y, cellSize*0.7, (gameMan.player+1)*Math.PI/2, (gameMan.player+1+gameMan.actions*2)*Math.PI/2);
+	context.stroke();
 }
 
 function drawMenu(dTime) {
