@@ -196,7 +196,9 @@ function draw(time) {
 		drawMenu(dTime);
 		mediaMan.draw = mediaMan.zoom != 0 || mediaMan.menu;
 	}
-	drawHud(time);
+	if (gameMan.debug) {
+		drawHud(time);
+	}
 	mediaMan.time = time;
 	window.requestAnimationFrame(draw);
 }
@@ -336,8 +338,7 @@ function drawMenu(dTime) {
 		}
 	}
 
-	context.fillStyle = "#073c50";	// board bgcolor
-	context.fillRect(canvas.width - menuMan.width, canvas.height - menuMan.height, menuMan.width, menuMan.height);
+	context.clearRect(canvas.width - menuMan.width, canvas.height - menuMan.height, menuMan.width, menuMan.height);
 
 	if (menuMan.show && !mediaMan.menu) {
 		for (var row = 0; row < menuMan.rows; ++row) {

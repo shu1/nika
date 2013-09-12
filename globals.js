@@ -1,6 +1,6 @@
 "use strict";
 
-var canvas, context, images, sounds, grid, gameStates=[], pieces=[], phalanx=[];
+var canvas, context, images, sounds, grid, gameStates=[], phalanx=[];
 
 var mediaMan = {
 	menu:false,
@@ -38,9 +38,9 @@ var inputMan = {
 }
 
 var gameMan = {
-	debug:false,
-	player:0,
+	debug:true,
 	actions:2,
+	player:0,
 	pRow:-1,
 	pCol:-1,
 	pRot:-1,

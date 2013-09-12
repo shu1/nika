@@ -72,6 +72,17 @@ function generateGrid() {
 	}
 }
 
+function debugGrid() {
+	for (var row = 0; row < 15; ++row) {
+		var str = "";
+		for (var col = 0; col < 21; ++col) {
+			var a = grid[row][col].city; 
+			str += (a == -1) ? '.' : a;
+		}
+		console.log(str);
+	}
+}
+
 function clearChecked() {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
