@@ -258,89 +258,36 @@ function getPhalanx(row, col) {
 }
 
 function movePhalanx(pRow, pCol, row, col) {
+
+	var phalanxIndex = [];
+
 	if (checkMovePhalanx(pRow, pCol, row, col)) {
 		var dRow = row - pRow;
 		var dCol = col - pCol;
 		var moved = false;
 		var flag = true;
 		
-		// find the back of each row/col
-		switch (gameMan.pRot) {
-		case 0:
-			for (var iCol = 0; iCol < 21 && flag; ++iCol) {
-				for (var iRow = 14; iRow >= 0; --iRow) {
-					if (inPhalanx(iRow, iCol)) {
-						if (pushPiece(iRow, iCol, iRow + dRow, iCol + dCol, grid[iRow][iCol].player, 1)) {
-							moveOnePiece(iRow, iCol, iRow + dRow, iCol + dCol);
-							moved = true;
-						}
-						else {
-							revertGrid();
-							moved = false;
-							flag = false;
-						}
-						break;
-					}
-				}
+		// find all pieces to push
+		for (var i=phalanx.length-1; i>=0; --i) {
+			if(!inPhalanx(phalanx[i].row-dRow, phalanx[i].col-dCol)) {
+				phalanxIndex.push(i);
 			}
-			break;
-		case 1:
-			for (var iRow = 0; iRow < 15 && flag; ++iRow) {
-				for (var iCol = 0; iCol < 21; ++iCol) {
-					if (inPhalanx(iRow, iCol)) {
-						if (pushPiece(iRow, iCol, iRow + dRow, iCol + dCol, grid[iRow][iCol].player, 1)) {
-							moveOnePiece(iRow, iCol, iRow + dRow, iCol + dCol);
-							moved = true;
-						}
-						else {
-							revertGrid();
-							moved = false;
-							flag = false;
-						}
-						break;
-					}
-				}
-			}
-			break;
-		case 2:
-			for (var iCol = 0; iCol < 21 && flag; ++iCol) {
-				for (var iRow = 0; iRow < 15; ++iRow) {
-					if (inPhalanx(iRow, iCol)) {
-						if (pushPiece(iRow, iCol, iRow + dRow, iCol + dCol, grid[iRow][iCol].player, 1)) {
-							moveOnePiece(iRow, iCol, iRow + dRow, iCol + dCol);
-							moved = true;
-						}
-						else {
-							revertGrid();
-							moved = false;
-							flag = false;
-						}
-						break;
-					}
-				}
-			}
-			break;
-		case 3:
-			for (var iRow = 0; iRow < 15 && flag; ++iRow) {
-				for (var iCol = 20; iCol >= 0; --iCol) {
-					if (inPhalanx(iRow, iCol)) {
-						if (pushPiece(iRow, iCol, iRow + dRow, iCol + dCol, grid[iRow][iCol].player, 1)) {
-							moveOnePiece(iRow, iCol, iRow + dRow, iCol + dCol);
-							moved = true;
-						}
-						else {
-							revertGrid();
-							moved = false;
-							flag = false;
-						}
-						break;
-					}
-				}
-			}
-			break;
 		}
-	}
 
+		// push them
+		for (var i=phalanxIndex.length-1; i>=0 && flag; --i) {
+			if (pushPiece(phalanx[phalanxIndex[i]].row, phalanx[phalanxIndex[i]].col, phalanx[phalanxIndex[i]].row + dRow, phalanx[phalanxIndex[i]].col + dCol, grid[phalanx[phalanxIndex[i]].row][phalanx[phalanxIndex[i]].col].player, 1)) {
+				moveOnePiece(phalanx[phalanxIndex[i]].row, phalanx[phalanxIndex[i]].col, phalanx[phalanxIndex[i]].row + dRow, phalanx[phalanxIndex[i]].col + dCol);
+				moved = true;
+			}
+			else {
+				revertGrid();
+				moved = false;
+				flag = false;
+			}	
+		}
+		clearChecked();
+	}
 	return moved;
 }
 
