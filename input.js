@@ -81,6 +81,8 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
+	hudMan.soundText = "";
+	hudMan.inputText = "";
 	inputMan.menu = getXY(event);
 	if (!inputMan.menu) {
 		getPiece(inputMan.row, inputMan.col);
@@ -96,7 +98,6 @@ function mouseDown(event) {
 			phalanx.length = 0;
 		}
 	}
-	hudMan.soundText = "";
 	hudMan.inputText += " down";
 	inputMan.click = true;
 	mediaMan.draw = true;
@@ -129,24 +130,26 @@ function mouseMove(event) {
 }
 
 function mouseUp(event) {
-	hudMan.inputText += " up";
+	if (inputMan.click) {
+		hudMan.inputText += " up";
 
-	if (inputMan.menu) {
-		menuButton(menuMan.button);
-	}
-	else if (!dblClick(event)) {
-		if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
-			inputMan.time = 0;
-			gameMan.mode = 0;	// after move always get out of selection mode
+		if (inputMan.menu) {
+			menuButton(menuMan.button);
 		}
-		else if (gameMan.mode == 1 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
-			togglePhalanxPiece(inputMan.row, inputMan.col);
+		else if (!dblClick(event)) {
+			if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
+				inputMan.time = 0;
+				gameMan.mode = 0;	// after move always get out of selection mode
+			}
+			else if (gameMan.mode == 1 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
+				togglePhalanxPiece(inputMan.row, inputMan.col);
+			}
 		}
+		inputMan.menu = false;
+		inputMan.click = false;
+		mediaMan.play = true;
+		mediaMan.draw = true;
 	}
-	inputMan.menu = false;
-	inputMan.click = false;
-	mediaMan.play = true;
-	mediaMan.draw = true;
 }
 
 function dblClick(event) {
