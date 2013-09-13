@@ -61,8 +61,9 @@ var menuMan = {
 var buttons = [
 	"Close",
 	"Debug",
-	" Undo",
-	"   AI"
+	"   AI",
+	" Pass",
+	" Undo"
 ]
 
 var ascii = [

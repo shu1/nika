@@ -57,7 +57,9 @@ function movePiece(pRow, pCol, row, col) {
 		}
 
 		if (moved) {
-			useAction();
+			if (!gameMan.debug) {
+				useAction();
+			}
 			pushGameState();
 		}
 	}

@@ -10,10 +10,13 @@ function menuButton(button) {
 			gameMan.debug = !gameMan.debug;
 			break;
 		case 2:
-			undo();
+			ai();
 			break;
 		case 3:
-			ai();
+			useAction(2);
+			break;
+		case 4:
+			undo();
 			break;
 		}
 	}
