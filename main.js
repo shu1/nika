@@ -88,6 +88,13 @@ function reSize() {
 	if (fullScreen) {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;	// height-5 to remove scrollbars on some browsers
+		
+		if (canvas.height >= 1536) {
+			mediaMan.retina = 2;
+		}
+		else {
+			mediaMan.retina = 1;
+		}
 
 		if (canvas.width / boardWidth > maxScale) {
 			maxScale = canvas.width / boardWidth;
@@ -97,7 +104,7 @@ function reSize() {
 			minScale = canvas.height / boardHeight;
 		}
 */	}
-	context.font = "16px sans-serif";
+	context.font = mediaMan.retina*16 + "px sans-serif";
 	mediaMan.scale = minScale;
 	mediaMan.x = (canvas.width - boardWidth * mediaMan.scale)/2;
 	mediaMan.y = (canvas.height - boardHeight * mediaMan.scale)/2;
@@ -384,9 +391,9 @@ function drawHud(time) {
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + mediaMan.scale + "x";
 	hudMan.pieceText = (gameMan.mode == 0) ? "" : "SELECTION";
 	context.fillStyle = "white";
-	context.clearRect(0, 0, canvas.width, 22);
+	context.clearRect(0, 0, canvas.width, mediaMan.retina*22);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  "
-	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, 16);
+	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 60, mediaMan.retina*16);
 }
 
 // browser compatibility
