@@ -96,14 +96,13 @@ function reSize() {
 			mediaMan.retina = 1;
 		}
 
-		if (canvas.width / boardWidth > maxScale) {
+		if (canvas.width / (1024*mediaMan.retina) > maxScale) {
 			maxScale = canvas.width / boardWidth;
 		}
-
-/*		if (canvas.height / boardHeight > minScale) {
-			minScale = canvas.height / boardHeight;
+		else if (canvas.width / (1024*mediaMan.retina) > minScale) {
+			minScale = canvas.width / boardWidth;
 		}
-*/	}
+	}
 	context.font = mediaMan.retina*16 + "px sans-serif";
 	mediaMan.scale = minScale;
 	mediaMan.x = (canvas.width - boardWidth * mediaMan.scale)/2;
@@ -393,7 +392,7 @@ function drawHud(time) {
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, mediaMan.retina*22);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  "
-	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 60, mediaMan.retina*16);
+	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 64, mediaMan.retina*16);
 }
 
 // browser compatibility
