@@ -26,7 +26,7 @@ function playSound(name) {
 
 window.onload = init;
 function init() {
-	generateGrid();
+	generateGrid(gameStartAscii);
 	pushGameState();
 	useAction(0);	// init debug text
 

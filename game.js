@@ -1,6 +1,6 @@
 "use strict";
 
-function generateGrid() {
+function generateGrid(ascii) {
 	grid = new Array(15);
 	for (var row = 0; row < 15; ++row) {
 		grid[row] = new Array(21);
@@ -70,6 +70,7 @@ function generateGrid() {
 			grid[row][col] = cell;
 		}
 	}
+	mediaMan.draw = true;
 }
 
 function debugGrid() {

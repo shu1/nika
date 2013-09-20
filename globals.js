@@ -67,7 +67,7 @@ var buttons = [
 	" Undo"
 ]
 
-var ascii = [
+var gameStartAscii = [
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
