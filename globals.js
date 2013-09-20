@@ -45,7 +45,8 @@ var gameMan = {
 	pRow:-1,
 	pCol:-1,
 	pRot:-1,
-	mode:0
+	mode:0,
+	tut:0
 }
 
 var menuMan = {

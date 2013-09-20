@@ -8,14 +8,26 @@ var tutBoard = [
 	"ggfeee.........mmmnoo",
 	"ggfeee.........mmmnoo",
 	"ggfeee.........mmmnoo",
-	"...eeeaaaDaaaaammm.pp",
-	"...eeeaaaDAaaaammm.pp",
-	"...eeeaaaDABaaammm.pp",
+	"...eeeaaaaaaaaammm.pp",
+	"...eeeaaaaAaaaammm.pp",
+	"...eeeaaaaaaaaammm.pp",
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
 ]
 
-function Tutorial() {
+function tutorial() {
 	generateGrid(tutBoard);
+	pushGameState();
+	gameMan.tut = 1;
+}
+
+function isTutorialSuccess () {
+	if (grid[9][10].player == 0) {
+		console.log("Hooray! You win the tutorial!!");
+		generateGrid(gameStartAscii);
+		gameMan.tut = 0;
+		return true;
+	}
+	return false;
 }

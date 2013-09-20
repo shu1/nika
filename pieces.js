@@ -64,6 +64,13 @@ function movePiece(pRow, pCol, row, col) {
 		}
 	}
 
+	if (gameMan.tut > 0 && !isTutorialSuccess()) {
+		console.log("Hey");
+		undo();
+		mediaMan.draw=true;
+		moved=false;
+	}
+
 	return moved;
 }
 
