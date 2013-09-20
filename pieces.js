@@ -56,6 +56,13 @@ function movePiece(pRow, pCol, row, col) {
 			moved = true;
 		}
 
+		if (gameMan.tut > -1 && !isTutorialSuccess()) {
+			console.log("Hey");
+			revertGrid();
+			mediaMan.draw=true;
+			moved=false;
+		}
+
 		if (moved) {
 			if (!gameMan.debug) {
 				useAction();
@@ -64,12 +71,7 @@ function movePiece(pRow, pCol, row, col) {
 		}
 	}
 
-	if (gameMan.tut > 0 && !isTutorialSuccess()) {
-		console.log("Hey");
-		undo();
-		mediaMan.draw=true;
-		moved=false;
-	}
+	
 
 	return moved;
 }
