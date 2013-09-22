@@ -50,40 +50,45 @@ function tutAllowed() {
 		return true;
 	}
 
-	if (gameMan.tut == 0) {
-		if (grid[9][5].player != -1 || grid[10][5].player != -1 || grid[11][5].player != -1 ||
-			grid[9][15].player != -1 || grid[10][15].player != -1 || grid[11][15].player != -1) {
-			return false;
-		}
-	}
+	switch (gameMan.tut) {
+		case 0:
+			if (grid[9][5].player != -1 || grid[10][5].player != -1 || grid[11][5].player != -1 ||
+				grid[9][15].player != -1 || grid[10][15].player != -1 || grid[11][15].player != -1) {
+				return false;
+			}
+			break;
 
-	if (gameMan.tut == 1) {
-		if (grid[3][5].player != -1 || grid[4][5].player != -1 || grid[5][5].player != -1 || 
-			grid[3][15].player != -1 || grid[4][15].player != -1 || grid[5][15].player != -1) {
-			return false;
-		}
+		case 1:
+			if (grid[3][5].player != -1 || grid[4][5].player != -1 || grid[5][5].player != -1 || 
+				grid[3][15].player != -1 || grid[4][15].player != -1 || grid[5][15].player != -1) {
+				return false;
+			}
+			break;
 	}
-
 	return true;
 }
 
 function tutCompleted () {
-	if (gameMan.tut == 0) {
-		if (grid[9][10].player == 0) {
-			console.log("Hooray! You win the tutorial!!");
-			generateGrid(gameStartAscii);
-			gameMan.tut = -1;
-			return true;
-		}
-	}
+	switch (gameMan.tut) {
+		case 0:
+			if (grid[9][10].player == 0) {
+				endTutorial();
+				return true;
+			}
+			break;
 
-	if (gameMan.tut == 1) {
-		if (grid[5][10].player == 2) {
-			console.log("Hooray! You win the tutorial!!");
-			generateGrid(gameStartAscii);
-			gameMan.tut = -1;
-			return true;
-		}	
+		case 1:
+			if (grid[5][10].player == 2) {
+				endTutorial();
+				return true;
+			}
+			break;
 	}
 	return false;
+}
+
+function endTutorial () {
+	console.log("Hooray! You win the tutorial!!");
+	generateGrid(gameStartAscii);
+	gameMan.tut = -1;
 }
