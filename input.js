@@ -161,7 +161,13 @@ function dblClick(event) {
 		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, toggle selection mode
 			gameMan.mode = 1 - gameMan.mode;
 			phalanx.length = 0;
-			phalanx.push({row:gameMan.pRow, col:gameMan.pCol});
+			if (gameMan.mode == 1) {
+				phalanx.push({row:gameMan.pRow, col:gameMan.pCol});	
+			}
+			else {
+				getPiece(gameMan.pRow, gameMan.pCol);
+			}
+			
 		}
 		else {
 			zoom();
