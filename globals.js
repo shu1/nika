@@ -65,7 +65,8 @@ var buttons = [
 	"Debug",
 	"   AI",
 	" Pass",
-	" Undo"
+	" Undo",
+	"Tutorial"
 ]
 
 var gameStartAscii = [

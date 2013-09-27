@@ -64,14 +64,14 @@ function tutCompleted () {
 	switch (gameMan.tut) {
 		case 0:
 			if (grid[2][10].player == 0) {
-				endTutorial();
+				nextTutorial();
 				return true;
 			}
 			break;
 
 		case 1:
 			if (grid[12][10].player == 2) {
-				endTutorial();
+				nextTutorial();
 				return true;
 			}
 			break;
@@ -79,8 +79,24 @@ function tutCompleted () {
 	return false;
 }
 
+function nextTutorial() {
+	gameMan.tut = gameMan.tut + 1;
+	
+	if (gameMan.tut >= tutBoards.length) {
+		alert("Tutorial completed. Time to play.");
+		endTutorial();
+	}
+	
+	else {
+		alert("Tutorial "+(gameMan.tut+1));
+		buttons[5] = "Skip";
+		tutorial(gameMan.tut);
+	}
+}
+
 function endTutorial () {
 	console.log("Hooray! You win the tutorial!!");
 	generateGrid(gameStartAscii);
+	buttons[5] = "Tutorial";
 	gameMan.tut = -1;
 }

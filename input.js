@@ -18,6 +18,9 @@ function menuButton(button) {
 		case 4:
 			undo();
 			break;
+		
+		case 5:
+			nextTutorial();
 		}
 	}
 }
