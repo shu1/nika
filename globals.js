@@ -39,13 +39,13 @@ var inputMan = {
 }
 
 var gameMan = {
+	selection:false,
 	debug:true,
 	actions:2,
 	player:0,
 	pRow:-1,
 	pCol:-1,
 	pRot:-1,
-	mode:0,
 	tut:-1
 }
 

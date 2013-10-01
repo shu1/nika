@@ -388,7 +388,7 @@ function drawHud(time) {
 	}
 	hudMan.fpsCount++;
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + mediaMan.scale + "x";
-	hudMan.pieceText = (gameMan.mode == 0) ? "" : "SELECTION";
+	hudMan.pieceText = (!gameMan.selection) ? "" : "SELECTION";
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, mediaMan.retina*22);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  "

@@ -97,7 +97,7 @@ function mouseDown(event) {
 		else {
 			inputMan.pX = inputMan.x;
 			inputMan.pY = inputMan.y;
-			gameMan.mode = 0;	// back to normal selection if you deselect pieces
+			gameMan.selection = false;	// back to normal selection if you deselect pieces
 			phalanx.length = 0;
 		}
 	}
@@ -142,9 +142,9 @@ function mouseUp(event) {
 		else if (!dblClick(event)) {
 			if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 				inputMan.time = 0;
-				gameMan.mode = 0;	// after move always get out of selection mode
+				gameMan.selection = false;	// after move always get out of selection mode
 			}
-			else if (gameMan.mode == 1 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
+			else if (gameMan.selection && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
 				togglePhalanxPiece(inputMan.row, inputMan.col);
 			}
 		}
@@ -162,9 +162,9 @@ function dblClick(event) {
 		event.preventDefault();
 
 		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, toggle selection mode
-			gameMan.mode = 1 - gameMan.mode;
+			gameMan.selection = !gameMan.selection;
 			phalanx.length = 0;
-			if (gameMan.mode == 1) {
+			if (gameMan.selection) {
 				phalanx.push({row:gameMan.pRow, col:gameMan.pCol});	
 			}
 			else {

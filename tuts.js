@@ -88,9 +88,9 @@ function nextTutorial() {
 	}
 	
 	else {
-		alert("Tutorial "+(gameMan.tut+1));
 		buttons[5] = "Skip";
 		tutorial(gameMan.tut);
+		TutMessage();
 	}
 }
 
@@ -99,4 +99,15 @@ function endTutorial () {
 	generateGrid(gameStartAscii);
 	buttons[5] = "Tutorial";
 	gameMan.tut = -1;
+}
+
+function TutMessage() {
+	switch (gameMan.tut) {
+		case 0:
+			alert("Athens and Messene are near victory! Help Athens win by moving into the win square!");
+			break;
+		case 1:
+			alert("Athens and Messene are near victory again! This time, move Messene's piece to win!");
+			break;
+	}
 }

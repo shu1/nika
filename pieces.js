@@ -10,7 +10,7 @@ function getPiece(row, col) {
 		gameMan.pCol = col;
 		gameMan.pRot = grid[row][col].rot;
 
-		if (gameMan.mode == 0) {
+		if (!gameMan.selection) {
 			phalanx.length = 0;
 			getPhalanx(row, col);
 			clearChecked();	
