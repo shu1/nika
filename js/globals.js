@@ -63,10 +63,10 @@ var menuMan = {
 var buttons = [
 	"Close",
 	"Debug",
+	"Tutorial",
 	"   AI",
 	" Pass",
 	" Undo",
-	"Tutorial"
 ]
 
 var mainBoard = [

@@ -10,17 +10,17 @@ function menuButton(button) {
 			gameMan.debug = !gameMan.debug;
 			break;
 		case 2:
-			ai();
+			nextTutorial();
 			break;
 		case 3:
-			useAction(2);
+			ai();
 			break;
 		case 4:
+			useAction(2);
+			break;
+		case 5:
 			undo();
 			break;
-		
-		case 5:
-			nextTutorial();
 		}
 	}
 }
@@ -170,7 +170,6 @@ function dblClick(event) {
 			else {
 				getPiece(gameMan.pRow, gameMan.pCol);
 			}
-			
 		}
 		else {
 			zoom();

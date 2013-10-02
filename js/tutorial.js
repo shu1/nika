@@ -44,7 +44,7 @@ function nextTutorial() {
 		endTutorial();
 	}
 	else {
-		buttons[5] = "  Skip";
+		buttons[2] = "  Skip";
 		tutorial(gameMan.tut);
 		tutMessage();
 	}
@@ -53,7 +53,7 @@ function nextTutorial() {
 function endTutorial () {
 	console.log("Hooray! You win the tutorial!!");
 	generateGrid(mainBoard);
-	buttons[5] = "Tutorial";
+	buttons[2] = "Tutorial";
 	gameMan.tut = -1;
 }
 

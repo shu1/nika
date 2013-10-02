@@ -263,7 +263,6 @@ function getPhalanx(row, col) {
 			}
 		}
 	}
-	
 }
 
 function movePhalanx(pRow, pCol, row, col) {
