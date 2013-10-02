@@ -1,44 +1,3 @@
-var tutBoards = new Array();
-tutBoards.push(
-	[
-	".........kkklll......",
-	".........kkklll......",
-	".........jjj.........",
-	"hh.eeeiiiiAiiiimmm...",
-	"hh.eeeiiiiiiiiimmm...",
-	"hh.eeeiiiiiiiiimmm...",
-	"ggfeee.........mmmnoo",
-	"ggfeee.........mmmnoo",
-	"ggfeee.........mmmnoo",
-	"...eeeaaaaaaaaammm.pp",
-	"...eeeaaaaaaaaammm.pp",
-	"...eeeaaaaaaaaammm.pp",
-	".........bbb.........",
-	"......dddccc.........",
-	"......dddccc........."
-	]
-);
-
-tutBoards.push(
-	[
-	".........kkklll......",
-	".........kkklll......",
-	".........jjj.........",
-	"hh.eeeiiiiiiiiimmm...",
-	"hh.eeeiiiiiiiiimmm...",
-	"hh.eeeiiiiiiiiimmm...",
-	"ggfeee.........mmmnoo",
-	"ggfeee.........mmmnoo",
-	"ggfeee.........mmmnoo",
-	"...eeeaaaaaaaaammm.pp",
-	"...eeeaaaaaaaaammm.pp",
-	"...eeeaaaaKaaaammm.pp",
-	".........bbb.........",
-	"......dddccc.........",
-	"......dddccc........."
-	]
-);
-
 function tutorial(n) {
 	generateGrid(tutBoards[n]);
 	pushGameState();
@@ -53,7 +12,6 @@ function tutAllowed() {
 	switch (gameMan.tut) {
 		case 0:
 			return false;
-
 		case 1:
 			return false;
 	}
@@ -68,7 +26,6 @@ function tutCompleted () {
 				return true;
 			}
 			break;
-
 		case 1:
 			if (grid[12][10].player == 2) {
 				nextTutorial();
@@ -80,28 +37,27 @@ function tutCompleted () {
 }
 
 function nextTutorial() {
-	gameMan.tut = gameMan.tut + 1;
-	
+	gameMan.tut++;
+
 	if (gameMan.tut >= tutBoards.length) {
 		alert("Tutorial completed. Time to play.");
 		endTutorial();
 	}
-	
 	else {
-		buttons[5] = "Skip";
+		buttons[5] = "  Skip";
 		tutorial(gameMan.tut);
-		TutMessage();
+		tutMessage();
 	}
 }
 
 function endTutorial () {
 	console.log("Hooray! You win the tutorial!!");
-	generateGrid(gameStartAscii);
+	generateGrid(mainBoard);
 	buttons[5] = "Tutorial";
 	gameMan.tut = -1;
 }
 
-function TutMessage() {
+function tutMessage() {
 	switch (gameMan.tut) {
 		case 0:
 			alert("Athens and Messene are near victory! Help Athens win by moving into the win square!");

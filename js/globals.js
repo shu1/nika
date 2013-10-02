@@ -69,7 +69,7 @@ var buttons = [
 	"Tutorial"
 ]
 
-var gameStartAscii = [
+var mainBoard = [
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -86,3 +86,37 @@ var gameStartAscii = [
 	"......dddccc.........",
 	"......dddccc........."
 ]
+
+var tutBoards = [[
+	".........kkklll......",
+	".........kkklll......",
+	".........jjj.........",
+	"hh.eeeiiiiAiiiimmm...",
+	"hh.eeeiiiiiiiiimmm...",
+	"hh.eeeiiiiiiiiimmm...",
+	"ggfeee.........mmmnoo",
+	"ggfeee.........mmmnoo",
+	"ggfeee.........mmmnoo",
+	"...eeeaaaaaaaaammm.pp",
+	"...eeeaaaaaaaaammm.pp",
+	"...eeeaaaaaaaaammm.pp",
+	".........bbb.........",
+	"......dddccc.........",
+	"......dddccc........."
+],[
+	".........kkklll......",
+	".........kkklll......",
+	".........jjj.........",
+	"hh.eeeiiiiiiiiimmm...",
+	"hh.eeeiiiiiiiiimmm...",
+	"hh.eeeiiiiiiiiimmm...",
+	"ggfeee.........mmmnoo",
+	"ggfeee.........mmmnoo",
+	"ggfeee.........mmmnoo",
+	"...eeeaaaaaaaaammm.pp",
+	"...eeeaaaaaaaaammm.pp",
+	"...eeeaaaaKaaaammm.pp",
+	".........bbb.........",
+	"......dddccc.........",
+	"......dddccc........."
+]]
