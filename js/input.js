@@ -84,23 +84,32 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
+	inputMan.menu = getXY(event);
+
+	switch (gameMan.mode) {
+		case 0:
+			menuAction(inputMan.row,inputMan.col)
+			break;
+		case 1:
+			if (!inputMan.menu) {
+				getPiece(inputMan.row, inputMan.col);
+				if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {
+					inputMan.pX = mediaMan.x + (gameMan.pCol * cellSize + cellSize/2) * mediaMan.scale;
+					inputMan.pY = mediaMan.y + (gameMan.pRow * cellSize + cellSize/2) * mediaMan.scale;
+					event.preventDefault();
+				}
+				else {
+					inputMan.pX = inputMan.x;
+					inputMan.pY = inputMan.y;
+					gameMan.selection = false;	// back to normal selection if you deselect pieces
+					phalanx.length = 0;
+					event.preventDefault();
+				}
+			}
+			break;
+	}
 	hudMan.soundText = "";
 	hudMan.inputText = "";
-	inputMan.menu = getXY(event);
-	if (!inputMan.menu) {
-		getPiece(inputMan.row, inputMan.col);
-		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {
-			inputMan.pX = mediaMan.x + (gameMan.pCol * cellSize + cellSize/2) * mediaMan.scale;
-			inputMan.pY = mediaMan.y + (gameMan.pRow * cellSize + cellSize/2) * mediaMan.scale;
-			event.preventDefault();
-		}
-		else {
-			inputMan.pX = inputMan.x;
-			inputMan.pY = inputMan.y;
-			gameMan.selection = false;	// back to normal selection if you deselect pieces
-			phalanx.length = 0;
-		}
-	}
 	hudMan.inputText += " down";
 	inputMan.click = true;
 	mediaMan.draw = true;

@@ -39,6 +39,7 @@ function init() {
 	images[5] = document.getElementById("golden");
 	images[6] = document.getElementById("silver");
 	images[7] = document.getElementById("board");
+	images[8] = document.getElementById("mainmenu");
 
 	sounds = new Array(6);
 	sounds[0] = document.getElementById("pick");
@@ -193,10 +194,17 @@ function draw(time) {
 		context.translate(mediaMan.x, mediaMan.y);
 		context.scale(mediaMan.scale, mediaMan.scale);
 		
-		drawBoard();
-		setRings();
-		drawPieces();
-		drawTurnUI();
+		switch (gameMan.mode) {
+			case 0:
+				drawMainMenu();
+				break;
+			case 1:
+				drawBoard();
+				setRings();
+				drawPieces();
+				drawTurnUI();	
+				break;	
+		}
 
 		context.restore();
 		drawMenu(dTime);
@@ -207,6 +215,10 @@ function draw(time) {
 	}
 	mediaMan.time = time;
 	window.requestAnimationFrame(draw);
+}
+
+function drawMainMenu() {
+	context.drawImage(images[8], 0, 0, boardWidth, boardHeight);
 }
 
 function drawBoard() {

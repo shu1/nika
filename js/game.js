@@ -84,6 +84,12 @@ function debugGrid() {
 	}
 }
 
+function menuAction(row, col) {
+	if (row > -1 && col > -1) {
+		gameMan.mode = 1;
+	}
+}
+
 function clearChecked() {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {

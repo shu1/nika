@@ -39,6 +39,7 @@ var inputMan = {
 }
 
 var gameMan = {
+	mode:0,
 	selection:false,
 	debug:true,
 	actions:2,
