@@ -84,7 +84,7 @@ function debugGrid() {
 	}
 }
 
-function menuAction(row, col) {
+function mainMenu(row, col) {
 	if (row > -1 && col > -1) {
 		gameMan.mode = 1;
 	}

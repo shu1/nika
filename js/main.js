@@ -197,17 +197,17 @@ function draw(time) {
 		switch (gameMan.mode) {
 			case 0:
 				drawMainMenu();
+				context.restore();
 				break;
 			case 1:
 				drawBoard();
 				setRings();
 				drawPieces();
 				drawTurnUI();	
+				context.restore();
+				drawMenu(dTime);
 				break;	
 		}
-
-		context.restore();
-		drawMenu(dTime);
 		mediaMan.draw = mediaMan.zoom != 0 || mediaMan.menu;
 	}
 	if (gameMan.debug) {
