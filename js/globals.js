@@ -81,11 +81,11 @@ var mainMenuMan = {
 }
 
 var mainButtons = [
-	"  Start",
-	" Tutorial",
-	" Settings",
-	"  Pass",
-	"  Undo",
+	"  Play Now",
+	"  Tutorial",
+	"  Settings",
+	"  Credits",
+	"   Quit",
 ]
 
 var mainBoard = [

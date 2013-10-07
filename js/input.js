@@ -33,7 +33,7 @@ function getXY(event) {
 	else {
 		inputMan.x = event.layerX;
 		inputMan.y = event.layerY;
-	}
+	};;;;
 
 	// check menu
 	if (inputMan.x < canvas.width && inputMan.x > canvas.width - menuMan.width

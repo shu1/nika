@@ -85,10 +85,37 @@ function debugGrid() {
 }
 
 function mainMenu(row, col) {
-	if (row > -1 && col > -1) {
-		gameMan.mode = 1;
+	// if (row > -1 && col > -1) {
+	// 	gameMan.mode = 1;
+	// 	return true;
+	// }
+
+	if (row < mainMenuMan.rows * mainMenuMan.bHeight / cellSize && col < mainMenuMan.cols * mainMenuMan.bWidth / cellSize) {
+		var button = Math.ceil( cellSize*(col+1)/mainMenuMan.bWidth ) + Math.ceil( mainMenuMan.cols * cellSize*row/mainMenuMan.bHeight );
+		
+		switch (button) {
+			case 1:
+				gameMan.mode = 1;
+				break;
+			case 2:
+				gameMan.mode = 1;
+				nextTutorial();
+				break;
+			case 3:
+				alert("Settings menu is under construction!");
+				break;
+			case 4:
+				alert("A Studio Mercato Game - www.studio-mercato.com");
+				break;
+			case 5:
+				alert("Please exit this application manually. Thank you.");
+				break;
+		}
 		return true;
 	}
+
+	return false;
+
 }
 
 function clearChecked() {
