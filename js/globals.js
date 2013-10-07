@@ -70,6 +70,24 @@ var buttons = [
 	" Undo",
 ]
 
+var mainMenuMan = {
+	rows:1,
+	cols:1,
+	width:0,
+	height:0,
+	bWidth:0,
+	bHeight:0,
+	button:-1
+}
+
+var mainButtons = [
+	"  Start",
+	" Tutorial",
+	" Settings",
+	"  Pass",
+	"  Undo",
+]
+
 var mainBoard = [
 	".........kkklll......",
 	".........kkklll......",

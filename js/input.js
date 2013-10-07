@@ -89,7 +89,7 @@ function mouseDown(event) {
 
 	switch (gameMan.mode) {
 		case 0:
-			mainMenu(inputMan.row,inputMan.col);
+			
 			break;
 		case 1:
 			if (!inputMan.menu) {
@@ -159,7 +159,9 @@ function mouseUp(event) {
 
 		switch (gameMan.mode) {
 		case 0:
-			
+			if (mainMenu(inputMan.row,inputMan.col)) {
+				inputMan.time = 0;
+			}
 			break;
 		case 1:
 			if (inputMan.menu) {

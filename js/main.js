@@ -81,6 +81,12 @@ function init() {
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
+	mainMenuMan.cols = Math.ceil(mainButtons.length / mainMenuMan.rows);
+	mainMenuMan.bWidth = cellSize*3;
+	mainMenuMan.bHeight = cellSize;
+	mainMenuMan.width = mainMenuMan.bWidth * mainMenuMan.cols;
+	mainMenuMan.height = mainMenuMan.bHeight * mainMenuMan.rows;
+
 	reSize();
 	draw();
 }
@@ -219,6 +225,26 @@ function draw(time) {
 
 function drawMainMenu() {
 	context.drawImage(images[8], 0, 0, boardWidth, boardHeight);
+
+	for (var row = 0; row < mainMenuMan.rows; ++row) {
+		for (var col = 0; col < mainMenuMan.cols; ++col) {
+			var button = row * mainMenuMan.cols + col;
+			if (button < mainButtons.length) {
+				drawMainButton(row, col, mainButtons[button], "white", "#13485d");
+			}
+		}
+	}
+}
+
+function drawMainButton(row, col, text, textColor, bgColor) {
+	var padding = 4;
+	if (bgColor) {
+		context.fillStyle = bgColor;
+		context.fillRect(mainMenuMan.bWidth * col + padding, mainMenuMan.bHeight * row + padding,
+			mainMenuMan.bWidth - padding*2, mainMenuMan.bHeight - padding*2);
+	}
+	context.fillStyle = textColor;
+	context.fillText(text, mainMenuMan.bWidth * (col+0.25), mainMenuMan.bHeight * (row+0.5)+6);
 }
 
 function drawBoard() {
