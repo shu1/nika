@@ -46,6 +46,7 @@ function nextTutorial() {
 	else {
 		buttons[2] = "  Skip";
 		tutorial(gameMan.tut);
+		draw();
 		tutMessage();
 	}
 }
