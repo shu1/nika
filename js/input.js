@@ -38,7 +38,7 @@ function getXY(event) {
 	// check menu
 	if (inputMan.x < canvas.width && inputMan.x > canvas.width - menuMan.width
 	&& inputMan.y < canvas.height && inputMan.y > canvas.height - menuMan.height
-	&& gameMan.mode == 1) {
+	&& gameMan.mode == 0) {
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				if (inputMan.x > canvas.width - menuMan.bWidth * (col+1) && inputMan.y > canvas.height - menuMan.bHeight * (row+1)) {
@@ -89,9 +89,6 @@ function mouseDown(event) {
 
 	switch (gameMan.mode) {
 		case 0:
-			
-			break;
-		case 1:
 			if (!inputMan.menu) {
 				getPiece(inputMan.row, inputMan.col);
 				if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {
@@ -107,6 +104,9 @@ function mouseDown(event) {
 				}
 				
 			}
+			break;
+
+		case 1:
 			break;
 	}
 
@@ -124,9 +124,6 @@ function mouseMove(event) {
 
 		switch (gameMan.mode) {
 		case 0:
-			
-			break;
-		case 1:
 			if (!inputMan.menu) {
 				var dX = inputMan.x - inputMan.pX;
 				var dY = inputMan.y - inputMan.pY;
@@ -147,6 +144,9 @@ function mouseMove(event) {
 				}
 			}
 			break;
+		case 1:
+			
+			break;
 		}
 		event.preventDefault();
 		mediaMan.draw = true;
@@ -159,11 +159,7 @@ function mouseUp(event) {
 
 		switch (gameMan.mode) {
 		case 0:
-			if (mainMenu(inputMan.row,inputMan.col)) {
-				inputMan.time = 0;
-			}
-			break;
-		case 1:
+			
 			if (inputMan.menu) {
 				menuButton(menuMan.button);
 			}
@@ -177,6 +173,25 @@ function mouseUp(event) {
 				}
 			}
 			break;
+
+		case 1:
+			if (mainMenu(inputMan.row,inputMan.col)) {
+				inputMan.time = 0;
+			}
+			break;
+
+		case 2:
+			if (settingsMenu(inputMan.row,inputMan.col)) {
+				inputMan.time = 0;
+			}
+			break;
+
+		case 3:
+			if (creditsMenu(inputMan.row,inputMan.col)) {
+				inputMan.time = 0;
+			}
+			break;		
+
 		}
 
 		inputMan.menu = false;

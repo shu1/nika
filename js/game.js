@@ -85,27 +85,23 @@ function debugGrid() {
 }
 
 function mainMenu(row, col) {
-	// if (row > -1 && col > -1) {
-	// 	gameMan.mode = 1;
-	// 	return true;
-	// }
 
 	if (row < mainMenuMan.rows * mainMenuMan.bHeight / cellSize && col < mainMenuMan.cols * mainMenuMan.bWidth / cellSize) {
 		var button = Math.ceil( cellSize*(col+1)/mainMenuMan.bWidth ) + Math.ceil( mainMenuMan.cols * cellSize*row/mainMenuMan.bHeight );
 		
 		switch (button) {
 			case 1:
-				gameMan.mode = 1;
+				gameMan.mode = 0;
 				break;
 			case 2:
-				gameMan.mode = 1;
+				gameMan.mode = 0;
 				nextTutorial();
 				break;
 			case 3:
-				alert("Settings menu is under construction!");
+				gameMan.mode = 2;
 				break;
 			case 4:
-				alert("A Studio Mercato Game - www.studio-mercato.com");
+				gameMan.mode = 3;
 				break;
 			case 5:
 				alert("Please exit this application manually. Thank you.");
@@ -115,7 +111,30 @@ function mainMenu(row, col) {
 	}
 
 	return false;
+}
 
+function settingsMenu(row,col) {
+	if (row < mainMenuMan.rows * mainMenuMan.bHeight / cellSize && col < mainMenuMan.cols * mainMenuMan.bWidth / cellSize) {
+		var button = Math.ceil( cellSize*(col+1)/mainMenuMan.bWidth ) + Math.ceil( mainMenuMan.cols * cellSize*row/mainMenuMan.bHeight );
+
+		switch (button) {
+			case 1:
+				gameMan.mode = 1;
+				break;
+		}
+	}
+}
+
+function creditsMenu(row,col) {
+	if (row < mainMenuMan.rows * mainMenuMan.bHeight / cellSize && col < mainMenuMan.cols * mainMenuMan.bWidth / cellSize) {
+		var button = Math.ceil( cellSize*(col+1)/mainMenuMan.bWidth ) + Math.ceil( mainMenuMan.cols * cellSize*row/mainMenuMan.bHeight );
+
+		switch (button) {
+			case 1:
+				gameMan.mode = 1;
+				break;
+		}
+	}
 }
 
 function clearChecked() {

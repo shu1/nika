@@ -202,17 +202,28 @@ function draw(time) {
 		
 		switch (gameMan.mode) {
 			case 0:
-				drawMainMenu();
-				context.restore();
-				break;
-			case 1:
 				drawBoard();
 				setRings();
 				drawPieces();
 				drawTurnUI();	
 				context.restore();
 				drawMenu(dTime);
-				break;	
+				break;
+
+			case 1:
+				drawMainMenu();
+				context.restore();
+				break;
+
+			case 2:
+				drawSettingsMenu();
+				context.restore();
+				break;
+
+			case 3:
+				drawCreditsMenu();
+				context.restore();
+				break;
 		}
 		mediaMan.draw = mediaMan.zoom != 0 || mediaMan.menu;
 	}
@@ -226,6 +237,7 @@ function draw(time) {
 function drawMainMenu() {
 	context.drawImage(images[8], 0, 0, boardWidth, boardHeight);
 
+	mainMenuMan.cols = Math.ceil(mainButtons.length / mainMenuMan.rows);
 	for (var row = 0; row < mainMenuMan.rows; ++row) {
 		for (var col = 0; col < mainMenuMan.cols; ++col) {
 			var button = row * mainMenuMan.cols + col;
@@ -234,6 +246,49 @@ function drawMainMenu() {
 			}
 		}
 	}
+}
+
+function drawSubmenuBg() {
+	context.save();
+	context.fillStyle = "#073c50";
+	context.rect(0, 0, boardWidth, boardHeight);
+	context.fill();
+	context.restore();
+}
+
+function drawSettingsMenu() {
+	drawSubmenuBg();
+
+	mainMenuMan.cols = Math.ceil(settingsButtons.length / mainMenuMan.rows);
+	for (var row = 0; row < mainMenuMan.rows; ++row) {
+		for (var col = 0; col < mainMenuMan.cols; ++col) {
+			var button = row * mainMenuMan.cols + col;
+			if (button < mainButtons.length) {
+				drawMainButton(row, col, settingsButtons[button], "white", "#13485d");
+			}
+		}
+	}
+	context.fillText("Settings Menu", (boardWidth - mainMenuMan.bWidth)/2, (boardHeight - mainMenuMan.bHeight)/2);
+}
+
+function drawCreditsMenu() {
+	context.save();
+	context.fillStyle = "#073c50";
+	context.rect(0, 0, boardWidth, boardHeight);
+	context.fill();
+	context.restore();
+
+	mainMenuMan.cols = Math.ceil(settingsButtons.length / mainMenuMan.rows);
+	for (var row = 0; row < mainMenuMan.rows; ++row) {
+		for (var col = 0; col < mainMenuMan.cols; ++col) {
+			var button = row * mainMenuMan.cols + col;
+			if (button < mainButtons.length) {
+				drawMainButton(row, col, creditsButtons[button], "white", "#13485d");
+			}
+		}
+	}
+	context.fillText("A Studio Mercato Game", (boardWidth - mainMenuMan.bWidth)/2, (boardHeight - mainMenuMan.bHeight)/2);
+	context.fillText("www.studio-mercato.com", (boardWidth - mainMenuMan.bWidth)/2, (boardHeight + mainMenuMan.bHeight)/2);
 }
 
 function drawMainButton(row, col, text, textColor, bgColor) {
