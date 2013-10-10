@@ -295,11 +295,11 @@ function drawMainButton(row, col, text, textColor, bgColor) {
 	var padding = 4;
 	if (bgColor) {
 		context.fillStyle = bgColor;
-		context.fillRect(mainMenuMan.bWidth * col + padding, mainMenuMan.bHeight * row + padding,
+		context.fillRect(mainMenuMan.bWidth * col + padding, canvas.height - mainMenuMan.bHeight * (row+2) + padding,
 			mainMenuMan.bWidth - padding*2, mainMenuMan.bHeight - padding*2);
 	}
 	context.fillStyle = textColor;
-	context.fillText(text, mainMenuMan.bWidth * (col+0.25), mainMenuMan.bHeight * (row+0.5)+6);
+	context.fillText(text, mainMenuMan.bWidth * (col+0.25), canvas.height - mainMenuMan.bHeight * (row+1.5)+6);
 }
 
 function drawBoard() {

@@ -86,9 +86,9 @@ function debugGrid() {
 
 function mainMenu(row, col) {
 
-	if (row < mainMenuMan.rows * mainMenuMan.bHeight / cellSize && col < mainMenuMan.cols * mainMenuMan.bWidth / cellSize) {
-		var button = Math.ceil( cellSize*(col+1)/mainMenuMan.bWidth ) + Math.ceil( mainMenuMan.cols * cellSize*row/mainMenuMan.bHeight );
-		
+	if (14-row < mainMenuMan.rows * mainMenuMan.bHeight / cellSize && col < mainMenuMan.cols * mainMenuMan.bWidth / cellSize) {
+		var button = Math.ceil( cellSize*(col+1)/mainMenuMan.bWidth ) + Math.ceil( mainMenuMan.cols * cellSize*(14-row)/mainMenuMan.bHeight );
+		console.log("switch button");
 		switch (button) {
 			case 1:
 				gameMan.mode = 0;
@@ -104,7 +104,7 @@ function mainMenu(row, col) {
 				gameMan.mode = 3;
 				break;
 			case 5:
-				alert("Please exit this application manually. Thank you.");
+				alert("We don't know how to close this game yet. You should try yourself.");
 				break;
 		}
 		return true;
@@ -114,8 +114,8 @@ function mainMenu(row, col) {
 }
 
 function settingsMenu(row,col) {
-	if (row < mainMenuMan.rows * mainMenuMan.bHeight / cellSize && col < mainMenuMan.cols * mainMenuMan.bWidth / cellSize) {
-		var button = Math.ceil( cellSize*(col+1)/mainMenuMan.bWidth ) + Math.ceil( mainMenuMan.cols * cellSize*row/mainMenuMan.bHeight );
+	if (14-row < mainMenuMan.rows * mainMenuMan.bHeight / cellSize && col < mainMenuMan.cols * mainMenuMan.bWidth / cellSize) {
+		var button = Math.ceil( cellSize*(col+1)/mainMenuMan.bWidth ) + Math.ceil( mainMenuMan.cols * cellSize*(14-row)/mainMenuMan.bHeight );
 
 		switch (button) {
 			case 1:
@@ -126,8 +126,8 @@ function settingsMenu(row,col) {
 }
 
 function creditsMenu(row,col) {
-	if (row < mainMenuMan.rows * mainMenuMan.bHeight / cellSize && col < mainMenuMan.cols * mainMenuMan.bWidth / cellSize) {
-		var button = Math.ceil( cellSize*(col+1)/mainMenuMan.bWidth ) + Math.ceil( mainMenuMan.cols * cellSize*row/mainMenuMan.bHeight );
+	if (14-row < mainMenuMan.rows * mainMenuMan.bHeight / cellSize && col < mainMenuMan.cols * mainMenuMan.bWidth / cellSize) {
+		var button = Math.ceil( cellSize*(col+1)/mainMenuMan.bWidth ) + Math.ceil( mainMenuMan.cols * cellSize*(14-row)/mainMenuMan.bHeight );
 
 		switch (button) {
 			case 1:
