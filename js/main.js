@@ -39,7 +39,6 @@ function init() {
 	images[5] = document.getElementById("golden");
 	images[6] = document.getElementById("silver");
 	images[7] = document.getElementById("board");
-	images[8] = document.getElementById("mainmenu");
 
 	sounds = new Array(6);
 	sounds[0] = document.getElementById("pick");
@@ -80,12 +79,6 @@ function init() {
 	menuMan.bHeight = cellSize*2/menuMan.rows;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
-
-	mainMenuMan.cols = Math.ceil(mainButtons.length / mainMenuMan.rows);
-	mainMenuMan.bWidth = cellSize*3;
-	mainMenuMan.bHeight = cellSize;
-	mainMenuMan.width = mainMenuMan.bWidth * mainMenuMan.cols;
-	mainMenuMan.height = mainMenuMan.bHeight * mainMenuMan.rows;
 
 	reSize();
 	draw();
@@ -200,31 +193,13 @@ function draw(time) {
 		context.translate(mediaMan.x, mediaMan.y);
 		context.scale(mediaMan.scale, mediaMan.scale);
 		
-		switch (gameMan.mode) {
-			case 0:
-				drawBoard();
-				setRings();
-				drawPieces();
-				drawTurnUI();	
-				context.restore();
-				drawMenu(dTime);
-				break;
+		drawBoard();
+		setRings();
+		drawPieces();
+		drawTurnUI();
 
-			case 1:
-				context.restore();
-				drawMainMenu();
-				break;
-
-			case 2:
-				context.restore();
-				drawSettingsMenu();
-				break;
-
-			case 3:
-				context.restore();
-				drawCreditsMenu();
-				break;
-		}
+		context.restore();
+		drawMenu(dTime);
 		mediaMan.draw = mediaMan.zoom != 0 || mediaMan.menu;
 	}
 	if (gameMan.debug) {
@@ -232,74 +207,6 @@ function draw(time) {
 	}
 	mediaMan.time = time;
 	window.requestAnimationFrame(draw);
-}
-
-function drawMainMenu() {
-	drawSubmenuBg();
-
-	mainMenuMan.cols = Math.ceil(mainButtons.length / mainMenuMan.rows);
-	for (var row = 0; row < mainMenuMan.rows; ++row) {
-		for (var col = 0; col < mainMenuMan.cols; ++col) {
-			var button = row * mainMenuMan.cols + col;
-			if (button < mainButtons.length) {
-				drawMainButton(row, col, mainButtons[button], "white", "#13485d");
-			}
-		}
-	}
-}
-
-function drawSubmenuBg() {
-	context.save();
-	context.fillStyle = "#073c50";
-	context.rect(0, 0, boardWidth, boardHeight);
-	context.fill();
-	context.restore();
-}
-
-function drawSettingsMenu() {
-	drawSubmenuBg();
-
-	mainMenuMan.cols = Math.ceil(settingsButtons.length / mainMenuMan.rows);
-	for (var row = 0; row < mainMenuMan.rows; ++row) {
-		for (var col = 0; col < mainMenuMan.cols; ++col) {
-			var button = row * mainMenuMan.cols + col;
-			if (button < mainButtons.length) {
-				drawMainButton(row, col, settingsButtons[button], "white", "#13485d");
-			}
-		}
-	}
-	context.fillText("Settings Menu", (boardWidth - mainMenuMan.bWidth)/2, (boardHeight - mainMenuMan.bHeight)/2);
-}
-
-function drawCreditsMenu() {
-	context.save();
-	context.fillStyle = "#073c50";
-	context.rect(0, 0, boardWidth, boardHeight);
-	context.fill();
-	context.restore();
-
-	mainMenuMan.cols = Math.ceil(settingsButtons.length / mainMenuMan.rows);
-	for (var row = 0; row < mainMenuMan.rows; ++row) {
-		for (var col = 0; col < mainMenuMan.cols; ++col) {
-			var button = row * mainMenuMan.cols + col;
-			if (button < mainButtons.length) {
-				drawMainButton(row, col, creditsButtons[button], "white", "#13485d");
-			}
-		}
-	}
-	context.fillText("A Studio Mercato Game", (boardWidth - mainMenuMan.bWidth)/2, (boardHeight - mainMenuMan.bHeight)/2);
-	context.fillText("www.studio-mercato.com", (boardWidth - mainMenuMan.bWidth)/2, (boardHeight + mainMenuMan.bHeight)/2);
-}
-
-function drawMainButton(row, col, text, textColor, bgColor) {
-	var padding = 4;
-	if (bgColor) {
-		context.fillStyle = bgColor;
-		context.fillRect(mainMenuMan.bWidth * col + padding, canvas.height - mainMenuMan.bHeight,
-			mainMenuMan.bWidth - padding*2, mainMenuMan.bHeight - padding*2);
-	}
-	context.fillStyle = textColor;
-	context.fillText(text, mainMenuMan.bWidth * (col+0.25), canvas.height - mainMenuMan.bHeight * (row+0.5)+6);
 }
 
 function drawBoard() {

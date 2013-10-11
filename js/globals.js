@@ -39,7 +39,6 @@ var inputMan = {
 }
 
 var gameMan = {
-	mode:1,
 	selection:false,
 	debug:true,
 	actions:2,
@@ -68,32 +67,6 @@ var buttons = [
 	"   AI",
 	" Pass",
 	" Undo",
-]
-
-var mainMenuMan = {
-	rows:1,
-	cols:1,
-	width:0,
-	height:0,
-	bWidth:0,
-	bHeight:0,
-	button:-1
-}
-
-var mainButtons = [
-	"  Play Now",
-	"  Tutorial",
-	"  Settings",
-	"  Credits",
-	"   Quit",
-]
-
-var settingsButtons = [
-	"Main Menu",
-]
-
-var creditsButtons = [
-	"Main Menu",
 ]
 
 var mainBoard = [

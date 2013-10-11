@@ -33,12 +33,11 @@ function getXY(event) {
 	else {
 		inputMan.x = event.layerX;
 		inputMan.y = event.layerY;
-	};;;;
+	}
 
 	// check menu
 	if (inputMan.x < canvas.width && inputMan.x > canvas.width - menuMan.width
-	&& inputMan.y < canvas.height && inputMan.y > canvas.height - menuMan.height
-	&& gameMan.mode == 0) {
+	&& inputMan.y < canvas.height && inputMan.y > canvas.height - menuMan.height) {
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				if (inputMan.x > canvas.width - menuMan.bWidth * (col+1) && inputMan.y > canvas.height - menuMan.bHeight * (row+1)) {
@@ -85,34 +84,23 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
-	inputMan.menu = getXY(event);
-
-	switch (gameMan.mode) {
-		case 0:
-			if (!inputMan.menu) {
-				getPiece(inputMan.row, inputMan.col);
-				if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {
-					inputMan.pX = mediaMan.x + (gameMan.pCol * cellSize + cellSize/2) * mediaMan.scale;
-					inputMan.pY = mediaMan.y + (gameMan.pRow * cellSize + cellSize/2) * mediaMan.scale;
-				}
-				else {
-					inputMan.pX = inputMan.x;
-					inputMan.pY = inputMan.y;
-					gameMan.selection = false;	// back to normal selection if you deselect pieces
-					phalanx.length = 0;
-					
-				}
-				
-			}
-			break;
-
-		case 1:
-			break;
-	}
-
-	event.preventDefault();
 	hudMan.soundText = "";
 	hudMan.inputText = "";
+	inputMan.menu = getXY(event);
+	if (!inputMan.menu) {
+		getPiece(inputMan.row, inputMan.col);
+		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {
+			inputMan.pX = mediaMan.x + (gameMan.pCol * cellSize + cellSize/2) * mediaMan.scale;
+			inputMan.pY = mediaMan.y + (gameMan.pRow * cellSize + cellSize/2) * mediaMan.scale;
+			event.preventDefault();
+		}
+		else {
+			inputMan.pX = inputMan.x;
+			inputMan.pY = inputMan.y;
+			gameMan.selection = false;	// back to normal selection if you deselect pieces
+			phalanx.length = 0;
+		}
+	}
 	hudMan.inputText += " down";
 	inputMan.click = true;
 	mediaMan.draw = true;
@@ -121,34 +109,25 @@ function mouseDown(event) {
 function mouseMove(event) {
 	if (inputMan.click) {
 		getXY(event);
-
-		switch (gameMan.mode) {
-		case 0:
-			if (!inputMan.menu) {
-				var dX = inputMan.x - inputMan.pX;
-				var dY = inputMan.y - inputMan.pY;
-				if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-					if (Math.abs(dX) > cellSize/2 * mediaMan.scale || Math.abs(dY) > cellSize/2 * mediaMan.scale) {	// inside cell is deadzone
-						getRot(dX, dY);
-						rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
-					}
+		if (!inputMan.menu) {
+			var dX = inputMan.x - inputMan.pX;
+			var dY = inputMan.y - inputMan.pY;
+			if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
+				if (Math.abs(dX) > cellSize/2 * mediaMan.scale || Math.abs(dY) > cellSize/2 * mediaMan.scale) {	// inside cell is deadzone
+					getRot(dX, dY);
+					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
+				}
+				event.preventDefault();
+			}
+			else {	// pan
+				if (pan(dX, dY)) {
+					hudMan.inputText = -mediaMan.x + "," + -mediaMan.y;
 					event.preventDefault();
 				}
-				else {	// pan
-					if (pan(dX, dY)) {
-						hudMan.inputText = -mediaMan.x + "," + -mediaMan.y;
-						
-					}
-					inputMan.pX = inputMan.x;
-					inputMan.pY = inputMan.y;
-				}
+				inputMan.pX = inputMan.x;
+				inputMan.pY = inputMan.y;
 			}
-			break;
-		case 1:
-			
-			break;
 		}
-		event.preventDefault();
 		mediaMan.draw = true;
 	}
 }
@@ -157,43 +136,18 @@ function mouseUp(event) {
 	if (inputMan.click) {
 		hudMan.inputText += " up";
 
-		switch (gameMan.mode) {
-		case 0:
-			
-			if (inputMan.menu) {
-				menuButton(menuMan.button);
-			}
-			else if (!dblClick(event)) {
-				if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
-					inputMan.time = 0;
-					gameMan.selection = false;	// after move always get out of selection mode
-				}
-				else if (gameMan.selection && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
-					togglePhalanxPiece(inputMan.row, inputMan.col);
-				}
-			}
-			break;
-
-		case 1:
-			if (mainMenu(inputMan.row,inputMan.col)) {
-				inputMan.time = 0;
-			}
-			break;
-
-		case 2:
-			if (settingsMenu(inputMan.row,inputMan.col)) {
-				inputMan.time = 0;
-			}
-			break;
-
-		case 3:
-			if (creditsMenu(inputMan.row,inputMan.col)) {
-				inputMan.time = 0;
-			}
-			break;		
-
+		if (inputMan.menu) {
+			menuButton(menuMan.button);
 		}
-
+		else if (!dblClick(event)) {
+			if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
+				inputMan.time = 0;
+				gameMan.selection = false;	// after move always get out of selection mode
+			}
+			else if (gameMan.selection && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
+				togglePhalanxPiece(inputMan.row, inputMan.col);
+			}
+		}
 		inputMan.menu = false;
 		inputMan.click = false;
 		mediaMan.play = true;

@@ -84,59 +84,6 @@ function debugGrid() {
 	}
 }
 
-function mainMenu(row, col) {
-
-	if (14-row < mainMenuMan.rows * mainMenuMan.bHeight / cellSize && col < mainMenuMan.cols * mainMenuMan.bWidth / cellSize) {
-		var button = Math.ceil( cellSize*(col+1)/mainMenuMan.bWidth ) + Math.ceil( mainMenuMan.cols * cellSize*(14-row)/mainMenuMan.bHeight );
-		console.log("switch button");
-		switch (button) {
-			case 1:
-				gameMan.mode = 0;
-				break;
-			case 2:
-				gameMan.mode = 0;
-				nextTutorial();
-				break;
-			case 3:
-				gameMan.mode = 2;
-				break;
-			case 4:
-				gameMan.mode = 3;
-				break;
-			case 5:
-				alert("We don't know how to close this game yet. You should try yourself.");
-				break;
-		}
-		return true;
-	}
-
-	return false;
-}
-
-function settingsMenu(row,col) {
-	if (14-row < mainMenuMan.rows * mainMenuMan.bHeight / cellSize && col < mainMenuMan.cols * mainMenuMan.bWidth / cellSize) {
-		var button = Math.ceil( cellSize*(col+1)/mainMenuMan.bWidth ) + Math.ceil( mainMenuMan.cols * cellSize*(14-row)/mainMenuMan.bHeight );
-
-		switch (button) {
-			case 1:
-				gameMan.mode = 1;
-				break;
-		}
-	}
-}
-
-function creditsMenu(row,col) {
-	if (14-row < mainMenuMan.rows * mainMenuMan.bHeight / cellSize && col < mainMenuMan.cols * mainMenuMan.bWidth / cellSize) {
-		var button = Math.ceil( cellSize*(col+1)/mainMenuMan.bWidth ) + Math.ceil( mainMenuMan.cols * cellSize*(14-row)/mainMenuMan.bHeight );
-
-		switch (button) {
-			case 1:
-				gameMan.mode = 1;
-				break;
-		}
-	}
-}
-
 function clearChecked() {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
