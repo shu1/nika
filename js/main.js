@@ -211,18 +211,18 @@ function draw(time) {
 				break;
 
 			case 1:
-				drawMainMenu();
 				context.restore();
+				drawMainMenu();
 				break;
 
 			case 2:
-				drawSettingsMenu();
 				context.restore();
+				drawSettingsMenu();
 				break;
 
 			case 3:
-				drawCreditsMenu();
 				context.restore();
+				drawCreditsMenu();
 				break;
 		}
 		mediaMan.draw = mediaMan.zoom != 0 || mediaMan.menu;
@@ -235,7 +235,7 @@ function draw(time) {
 }
 
 function drawMainMenu() {
-	context.drawImage(images[8], 0, 0, boardWidth, boardHeight);
+	drawSubmenuBg();
 
 	mainMenuMan.cols = Math.ceil(mainButtons.length / mainMenuMan.rows);
 	for (var row = 0; row < mainMenuMan.rows; ++row) {
@@ -295,11 +295,11 @@ function drawMainButton(row, col, text, textColor, bgColor) {
 	var padding = 4;
 	if (bgColor) {
 		context.fillStyle = bgColor;
-		context.fillRect(mainMenuMan.bWidth * col + padding, canvas.height - mainMenuMan.bHeight * (row+2) + padding,
+		context.fillRect(mainMenuMan.bWidth * col + padding, canvas.height - mainMenuMan.bHeight,
 			mainMenuMan.bWidth - padding*2, mainMenuMan.bHeight - padding*2);
 	}
 	context.fillStyle = textColor;
-	context.fillText(text, mainMenuMan.bWidth * (col+0.25), canvas.height - mainMenuMan.bHeight * (row+1.5)+6);
+	context.fillText(text, mainMenuMan.bWidth * (col+0.25), canvas.height - mainMenuMan.bHeight * (row+0.5)+6);
 }
 
 function drawBoard() {
