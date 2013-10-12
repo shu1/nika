@@ -1,6 +1,15 @@
 "use strict";
 
+// TODO: should refactor so this isn't necessary in AI code
+function resetPieces(row, col) {
+		phalanx.length = 0;
+		phalanx.push({row:row, col:col});
+		gameMan.pRot = grid[row][col].rot;	// Only single pieces
+//		getPiece(row, col);					// Only phalanxes
+}
+
 function ai() {
+	// find all pieces of current player
 	var pieces = [];
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
@@ -10,6 +19,18 @@ function ai() {
 		}
 	}
 
+	// try AI methods in order
+	var success = false;
+	if (!success) {
+		success = moveTowardsGoal(pieces);
+	}
+	if (!success) {
+		success = randomMove(pieces);
+	}
+}
+
+// move a random piece around the board towards the goal (like an ocean current), regardless of other pieces
+function moveTowardsGoal(pieces) {
 	var tries = 12;
 	while (tries > 0) {
 		var i = Math.floor(Math.random()*6);
@@ -17,6 +38,9 @@ function ai() {
 		var col = pieces[i].col;
 		var rots;
 
+		resetPieces(row, col);
+
+		// put the possible movement directions into a list
 		switch (gameMan.player) {
 		case 0:
 			if (row < 7 && col > 8 && col < 12 || row > 5 && (col < 6 || col > 14)) {
@@ -76,11 +100,7 @@ function ai() {
 			break;
 		}
 
-		phalanx.length = 0;
-		phalanx.push({row:row, col:col});
-		gameMan.pRot = grid[row][col].rot;	// Only single pieces
-//		getPiece(row, col);					// Only phalanxes
-
+		// choose a random direction from the previously made list
 		var rot = rots[Math.floor(Math.random()*rots.length)];
 		if (rot == 0) {
 			--row;
@@ -96,11 +116,55 @@ function ai() {
 		}
 
 		if (movePiece(pieces[i].row, pieces[i].col, row, col)) {
-			tries = 0;
+			return true;	// success!
 		}
-		else if (--tries <= 0) {
-			console.log(getCity(gameMan.player) + "AI gives up");
-			useAction(2);
-		}
+		--tries;	// use up a try
 	}
+
+	useAction(2);
+	return false;	// failed to find a valid move within n tries
+}
+
+// when all else fails, totally random move or rotation
+function randomMove(pieces) {
+	var tries = 12;
+	while (tries > 0) {
+		var i = Math.floor(Math.random()*6);
+		var row = pieces[i].row;
+		var col = pieces[i].col;
+
+		resetPieces(row, col);
+
+		var rot = Math.floor(Math.random()*4);
+		if (rot == 0) {
+			--row;
+		}
+		else if (rot == 1) {
+			++col;
+		}
+		else if (rot == 2) {
+			++row;
+		}
+		else {
+			--col;
+		}
+
+		var success = false;
+		var action = Math.floor(Math.random()*1.5);
+		if (action == 0) {
+			success = movePiece(pieces[i].row, pieces[i].col, row, col);
+		}
+		else if (action == 1) {
+			rotatePiece(pieces[i].row, pieces[i].col, rot);
+			success = movePiece(pieces[i].row, pieces[i].col, pieces[i].row, pieces[i].col);
+		}
+
+		if (success) {
+			return true;	// success!
+		}
+		--tries;	// use up a try
+	}
+
+	useAction(2);
+	return false;	// failed to find a valid move within n tries
 }
