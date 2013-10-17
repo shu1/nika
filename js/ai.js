@@ -24,6 +24,9 @@ function ai() {
 	if (!success) {
 		success = checkWinNextAction(pieces);
 	}
+	if (!success && gameMan.actions == 2) {
+		success = checkWinTwoActions(pieces);
+	}
 	if (!success) {
 		success = moveTowardsGoal(pieces);
 	}
@@ -32,6 +35,74 @@ function ai() {
 	}
 }
 
+// see if you can win in 2 actions
+function checkWinTwoActions(pieces) {
+
+	for (var i = 0; i < 6; i++) {
+		var row = pieces[i].row;
+		var col = pieces[i].col;
+		resetPieces(row, col);
+
+		if (checkMove(row, col, row-1, col) && isAdjacentToGoal(row-1, col)) {
+			return movePiece(row, col, row-1, col);
+		}
+		else if (checkMove(row, col, row, col+1) && isAdjacentToGoal(row, col+1)) {
+			return movePiece(row, col, row, col+1);
+		}
+		else if (checkMove(row, col, row+1, col) && isAdjacentToGoal(row+1, col)) {
+			return movePiece(row, col, row+1, col);
+		}
+		else if (checkMove(row, col, row, col-1) && isAdjacentToGoal(row, col-1)) {
+			return movePiece(row, col, row, col-1);
+		}
+
+	}
+
+}
+
+// moves a piece into the goal. ONLY CALL after isAdjacentToGoal
+function moveIntoGoal(row, col) {
+	switch (gameMan.player) {
+	case 0:
+		return (movePiece(row, col, row-1, col));
+		break;
+	case 1:
+		return (movePiece(row, col, row, col+1));
+		break;
+	case 2:
+		return (movePiece(row, col, row+1, col));
+		break;
+	case 3:
+		return (movePiece(row, col, row, col-1));
+		break;
+	}	
+
+	return false;
+}
+
+// check if given square is adjacent to current player's goal
+function isAdjacentToGoal(row, col) {
+	switch (gameMan.player) {
+	case 0:
+		row--;
+		break;
+	case 1:
+		col++;
+		break;
+	case 2:
+		row--;
+		break;
+	case 3:
+		col--;
+		break;
+	}	
+
+	return (grid[row][col].kind == 1 && grid[row][col].city == getPartner(gameMan.player));
+
+}
+
+
+
 // check if you can win in 1 action
 function checkWinNextAction(pieces) {
 	for (var i = 0; i < 6; i++) {
@@ -39,23 +110,8 @@ function checkWinNextAction(pieces) {
 		var col = pieces[i].col;
 		resetPieces(row, col);
 
-		switch (gameMan.player) {
-		case 0:
-			row--;
-			break;
-		case 1:
-			col++;
-			break;
-		case 2:
-			row--;
-			break;
-		case 3:
-			col--;
-			break;
-		}
-
-		if (grid[row][col].kind == 1 && grid[row][col].city == getPartner(gameMan.player)) {
-			if (movePiece(pieces[i].row, pieces[i].col, row, col)) {
+		if (isAdjacentToGoal(row, col)) {
+			if (moveIntoGoal(pieces[i].row, pieces[i].col)) {
 				return true;	// success!
 			}
 		}
