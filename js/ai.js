@@ -22,11 +22,46 @@ function ai() {
 	// try AI methods in order
 	var success = false;
 	if (!success) {
+		success = checkWinNextAction(pieces);
+	}
+	if (!success) {
 		success = moveTowardsGoal(pieces);
 	}
 	if (!success) {
 		success = randomMove(pieces);
 	}
+}
+
+// check if you can win in 1 action
+function checkWinNextAction(pieces) {
+	for (var i = 0; i < 6; i++) {
+		var row = pieces[i].row;
+		var col = pieces[i].col;
+		resetPieces(row, col);
+
+		switch (gameMan.player) {
+		case 0:
+			row--;
+			break;
+		case 1:
+			col++;
+			break;
+		case 2:
+			row--;
+			break;
+		case 3:
+			col--;
+			break;
+		}
+
+		if (grid[row][col].kind == 1 && grid[row][col].city == getPartner(gameMan.player)) {
+			if (movePiece(pieces[i].row, pieces[i].col, row, col)) {
+				return true;	// success!
+			}
+		}
+	}
+
+	return false;
 }
 
 // move a random piece around the board towards the goal (like an ocean current), regardless of other pieces
