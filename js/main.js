@@ -27,7 +27,7 @@ function playSound(name) {
 window.onload = init;
 function init() {
 	console.log("GET THIS YO!")
-	httpGet("http:///agile-eyrie-5416.herokuapp.com?func=test")
+	//httpGet("http:///agile-eyrie-5416.herokuapp.com?func=test")
 	generateGrid(mainBoard);
 	pushGameState();
 	useAction(0);	// init debug text

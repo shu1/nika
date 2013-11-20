@@ -13,10 +13,12 @@ function menuButton(button) {
 			nextTutorial();
 			break;
 		case 3:
-			ai();
+			//ai();
+			startNetGame(22,"NikaTheGame")
 			break;
 		case 4:
-			useAction(2);
+			//useAction(2);
+			getNetGame(22)
 			break;
 		case 5:
 			undo();

@@ -49,6 +49,12 @@ var gameMan = {
 	tut:-1
 }
 
+var netGameMan = {
+	id:-1,
+	name:'',
+	grid:{}
+}
+
 var menuMan = {
 	show:false,
 	rows:1,
