@@ -19,6 +19,13 @@ function ai() {
 		}
 	}
 
+
+	for (var i = 0; i < 6; ++i) {
+		var row = pieces[i].row;
+		var col = pieces[i].col;
+		console.log(canBePushed(row, col));
+	}
+
 	// try AI methods in order
 	var success = false;
 	if (!success) {
@@ -33,6 +40,181 @@ function ai() {
 	if (!success) {
 		success = randomMove(pieces);
 	}
+}
+
+// check if this piece can be pushed in 1 action
+// TODO - include "back" pieces (i.e. check friends in front of and behind you)
+function canBePushed(row, col) {
+
+	resetPieces(row, col);
+
+	var enemies = 0;
+	var foundAllEnemies = false;
+	var friends = 0;
+	var foundAllFriends = false;
+
+	switch(grid[row][col].rot) {
+	case 0:
+		if(isEnemy(row-1, col) && grid[row-1][col].rot == 2) {
+
+			enemies = 1;			//figure out how many enemies on the same team in a row are in front of this piece and facing it
+			for (var i = 2; !foundAllEnemies; i++) {
+				if (grid[row-i][col].player >= 0 && grid[row-i][col].player == grid[row-1][col].player && grid[row-i][col].rot == 2) {
+					enemies++;
+				}
+				else {
+					foundAllEnemies = true;
+				}
+			}
+
+			friends = 1;			//figure out how many friends (i.e. own and allied pieces) are behind this piece
+			for (var i = 1; !foundAllFriends; i++) {
+				if(grid[row+i][col].player >= 0 && Math.abs(grid[row+i][col].player - gameMan.player)%2 == 0) {
+					friends++;
+				}
+				else {
+					foundAllFriends = true;
+				}
+			}
+
+			return enemies > friends;
+			break;
+		}
+
+		else {
+			return false;
+			break;
+		}
+
+	case 1:
+		if(isEnemy(row, col+1) && grid[row][col+1].rot == 3) {
+
+			enemies = 1;			//figure out how many enemies on the same team in a row are in front of this piece and facing it
+			for (var i = 2; !foundAllEnemies; i++) {
+				if (grid[row][col+i].player >= 0 && grid[row][col+i].player == grid[row][col+i].player && grid[row][col+i].rot == 3) {
+					enemies++;
+				}
+				else {
+					foundAllEnemies = true;
+				}
+			}
+
+			friends = 1;			//figure out how many friends (i.e. own and allied pieces) are behind this piece
+			for (var i = 1; !foundAllFriends; i++) {
+				if(grid[row][col-i].player >= 0 && Math.abs(grid[row][col-i].player - gameMan.player)%2 == 0) {
+					friends++;
+				}
+				else {
+					foundAllFriends = true;
+				}
+			}
+
+			return enemies > friends;
+			break;
+		}
+
+		else {
+			return false;
+			break;
+		}		
+
+	case 2:
+		if(isEnemy(row+1, col) && grid[row+1][col].rot == 0) {
+
+			enemies = 1;			//figure out how many enemies on the same team in a row are in front of this piece and facing it
+			for (var i = 2; !foundAllEnemies; i++) {
+				if (grid[row+i][col].player >= 0 && grid[row+i][col].player == grid[row+1][col].player && grid[row+i][col].rot == 0) {
+					enemies++;
+				}
+				else {
+					foundAllEnemies = true;
+				}
+			}
+
+			friends = 1;			//figure out how many friends (i.e. own and allied pieces) are behind this piece
+			for (var i = 1; !foundAllFriends; i++) {
+				if(grid[row-i][col].player >= 0 && Math.abs(grid[row-i][col].player - gameMan.player)%2 == 0) {
+					friends++;
+				}
+				else {
+					foundAllFriends = true;
+				}
+			}
+
+			return enemies > friends;
+			break;
+		}
+
+		else {
+			return false;
+			break;
+		}
+
+	case 3:
+		if(isEnemy(row, col-1) && grid[row][col-1].rot == 1) {
+
+			enemies = 1;			//figure out how many enemies on the same team in a row are in front of this piece and facing it
+			for (var i = 2; !foundAllEnemies; i++) {
+				if (grid[row][col-i].player >= 0 && grid[row][col-i].player == grid[row][col-i].player && grid[row][col-i].rot == 1) {
+					enemies++;
+				}
+				else {
+					foundAllEnemies = true;
+				}
+			}
+
+			friends = 1;			//figure out how many friends (i.e. own and allied pieces) are behind this piece
+			for (var i = 1; !foundAllFriends; i++) {
+				if(grid[row][col+i].player >= 0 && Math.abs(grid[row][col+i].player - gameMan.player)%2 == 0) {
+					friends++;
+				}
+				else {
+					foundAllFriends = true;
+				}
+			}
+
+			return enemies > friends;
+			break;
+		}
+
+		else {
+			return false;
+			break;
+		}		
+	}
+
+}
+
+
+// check if this piece can be routed in 1 action
+// TODO (maybe?) - check if you can be routed via pushing
+// will probably also want something to check if you can be routed in 2 actions (and maybe take into account player turn order too)
+function canBeRouted(row, col) {
+
+	resetPieces(row, col); //?
+
+	switch (grid[row][col].rot) {
+	case 0:
+		return (isEnemy(row+1, col) || isEnemy(row, col-1) || isEnemy(row, col+1));
+		break;
+	case 1:
+		return (isEnemy(row-1, col) || isEnemy(row+1, col) || isEnemy(row, col-1));
+		break;
+	case 2:
+		return (isEnemy(row-1, col) || isEnemy(row, col-1) || isEnemy(row, col+1));
+		break;
+	case 3:
+		return (isEnemy(row+1, col) || isEnemy(row-1, col) || isEnemy(row, col+1));
+		break;
+
+	}
+
+}
+
+// check if the given cell contains an enemy piece
+// this seems like it should already exist and would be useful elsewhere, but I didn't see anything so I made one
+function isEnemy(row, col) {
+	return (grid[row][col].player >= 0 && Math.abs(grid[row][col].player - gameMan.player)%2 == 1);
 }
 
 // see if you can win in 2 actions
