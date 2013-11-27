@@ -392,7 +392,7 @@ function drawHud(time) {
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, mediaMan.retina*22);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  "
-	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 64, mediaMan.retina*16);
+	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, mediaMan.retina*16);
 }
 
 // browser compatibility

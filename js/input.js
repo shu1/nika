@@ -171,7 +171,7 @@ function dblClick(event) {
 				getPiece(gameMan.pRow, gameMan.pCol);
 			}
 		}
-		else {
+		else if (minScale != maxScale) {	// zoom enabled
 			zoom();
 		}
 		inputMan.time = 0;	// reset so next click is not double click
