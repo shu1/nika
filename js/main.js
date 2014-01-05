@@ -96,11 +96,16 @@ function reSize() {
 			mediaMan.retina = 1;
 		}
 
-		if (canvas.width / (1024*mediaMan.retina) > maxScale) {
-			maxScale = canvas.width / boardWidth;
+		if (minScale == maxScale) {	// special case, fit to large screens
+			minScale = maxScale = canvas.height / boardHeight;
 		}
-		else if (canvas.width / (1024*mediaMan.retina) > minScale) {
-			minScale = canvas.width / boardWidth;
+		else {
+			if (canvas.width / (1024*mediaMan.retina) > maxScale) {
+				maxScale = canvas.width / boardWidth;
+			}
+			else if (canvas.width / (1024*mediaMan.retina) > minScale) {
+				minScale = canvas.width / boardWidth;
+			}
 		}
 	}
 	context.font = mediaMan.retina*16 + "px sans-serif";

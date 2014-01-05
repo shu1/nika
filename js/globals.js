@@ -40,7 +40,7 @@ var inputMan = {
 
 var gameMan = {
 	selection:false,
-	debug:true,
+	debug:false,
 	actions:2,
 	player:0,
 	pRow:-1,
