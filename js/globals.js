@@ -39,6 +39,8 @@ var inputMan = {
 }
 
 var gameMan = {
+	instructions:false,
+	instructionPage:0,
 	selection:false,
 	debug:false,
 	actions:2,
@@ -61,12 +63,12 @@ var menuMan = {
 }
 
 var buttons = [
-	"Close",
-	"Debug",
-	"Tutorial",
-	"   AI",
-	" Pass",
-	" Undo",
+	"    Close",
+	"    Debug",
+	"Instructions",
+	"       AI",
+	"     Pass",
+	"     Undo",
 ]
 
 var mainBoard = [

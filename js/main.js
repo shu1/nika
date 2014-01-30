@@ -40,6 +40,10 @@ function init() {
 	images[6] = document.getElementById("silver");
 	images[7] = document.getElementById("board");
 
+	for (var i = 0; i < 7; ++i) {
+		images[8+i] = document.getElementById("instruction" + i);
+	}
+
 	sounds = new Array(6);
 	sounds[0] = document.getElementById("pick");
 	sounds[1] = document.getElementById("drop");
@@ -203,6 +207,10 @@ function draw(time) {
 		drawPieces();
 		drawTurnUI();
 
+		if (gameMan.instructions) {
+			drawInstructions();
+		}
+
 		context.restore();
 		drawMenu(dTime);
 		mediaMan.draw = mediaMan.zoom != 0 || mediaMan.menu;
@@ -212,6 +220,13 @@ function draw(time) {
 	}
 	mediaMan.time = time;
 	window.requestAnimationFrame(draw);
+}
+
+function drawInstructions() {
+	var width = boardHeight * 2550/3301;
+	context.fillStyle = "rgba(255, 255, 255, 0.9)";
+	context.fillRect((boardWidth - width)/2, 0, width, boardHeight);
+	context.drawImage(images[8 + gameMan.instructionPage], (boardWidth - width)/2, 0, width, boardHeight);
 }
 
 function drawBoard() {
@@ -356,7 +371,7 @@ function drawMenu(dTime) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length) {
-					if (inputMan.menu && button == menuMan.button || gameMan.debug && button == 1) {
+					if (inputMan.menu && button == menuMan.button || gameMan.debug && button == 1 || gameMan.instructions && button == 2) {
 						drawButton(row, col, buttons[button], "#13485d", "white");
 					}
 					else {
@@ -367,10 +382,10 @@ function drawMenu(dTime) {
 		}
 	}
 	else if (inputMan.menu && menuMan.button == 0) {
-		drawButton(0, 0, "Menu", "#073c50", "white");
+		drawButton(0, 0, "    Menu", "#073c50", "white");
 	}
 	else {
-		drawButton(0, 0, "Menu", "white");
+		drawButton(0, 0, "    Menu", "white");
 	}
 }
 
@@ -382,7 +397,7 @@ function drawButton(row, col, text, textColor, bgColor) {
 			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
 	}
 	context.fillStyle = textColor;
-	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.75), canvas.height - menuMan.bHeight * (row+0.5)+6);
+	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.9), canvas.height - menuMan.bHeight * (row+0.5)+6);
 }
 
 function drawHud(time) {

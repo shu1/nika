@@ -10,7 +10,7 @@ function menuButton(button) {
 			gameMan.debug = !gameMan.debug;
 			break;
 		case 2:
-			nextTutorial();
+			gameMan.instructions = !gameMan.instructions;
 			break;
 		case 3:
 			ai();
@@ -89,7 +89,7 @@ function mouseDown(event) {
 	inputMan.menu = getXY(event);
 	if (!inputMan.menu) {
 		getPiece(inputMan.row, inputMan.col);
-		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {
+		if (!gameMan.instructions && gameMan.pRow >= 0 && gameMan.pCol >= 0) {
 			inputMan.pX = mediaMan.x + (gameMan.pCol * cellSize + cellSize/2) * mediaMan.scale;
 			inputMan.pY = mediaMan.y + (gameMan.pRow * cellSize + cellSize/2) * mediaMan.scale;
 			event.preventDefault();
@@ -112,7 +112,7 @@ function mouseMove(event) {
 		if (!inputMan.menu) {
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
-			if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
+			if (!gameMan.instructions && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
 				if (Math.abs(dX) > cellSize/2 * mediaMan.scale || Math.abs(dY) > cellSize/2 * mediaMan.scale) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
@@ -140,7 +140,13 @@ function mouseUp(event) {
 			menuButton(menuMan.button);
 		}
 		else if (!dblClick(event)) {
-			if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
+			if (gameMan.instructions) {
+				gameMan.instructionPage++;
+				if (gameMan.instructionPage >= 7) {
+					gameMan.instructionPage = 0;
+				}
+			}
+			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 				inputMan.time = 0;
 				gameMan.selection = false;	// after move always get out of selection mode
 			}
