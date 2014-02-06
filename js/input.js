@@ -10,7 +10,7 @@ function menuButton(button) {
 			gameMan.debug = !gameMan.debug;
 			break;
 		case 2:
-			gameMan.instructions = !gameMan.instructions;
+			gameMan.scene = !gameMan.scene;
 			break;
 		case 3:
 			ai();
@@ -42,8 +42,8 @@ function getXY(event) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				if (inputMan.x > canvas.width - menuMan.bWidth * (col+1) && inputMan.y > canvas.height - menuMan.bHeight * (row+1)) {
 					menuMan.button = row * menuMan.cols + col;
-					if (menuMan.button < buttons.length) {
-						hudMan.inputText = buttons[menuMan.button];
+					if (menuMan.button < buttons.length-1) {
+						hudMan.inputText = buttons[menuMan.button+1];
 					}
 					return true;
 				}
@@ -89,7 +89,7 @@ function mouseDown(event) {
 	inputMan.menu = getXY(event);
 	if (!inputMan.menu) {
 		getPiece(inputMan.row, inputMan.col);
-		if (!gameMan.instructions && gameMan.pRow >= 0 && gameMan.pCol >= 0) {
+		if (!gameMan.scene && gameMan.pRow >= 0 && gameMan.pCol >= 0) {
 			inputMan.pX = mediaMan.x + (gameMan.pCol * cellSize + cellSize/2) * mediaMan.scale;
 			inputMan.pY = mediaMan.y + (gameMan.pRow * cellSize + cellSize/2) * mediaMan.scale;
 			event.preventDefault();
@@ -112,7 +112,7 @@ function mouseMove(event) {
 		if (!inputMan.menu) {
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
-			if (!gameMan.instructions && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
+			if (!gameMan.scene && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
 				if (Math.abs(dX) > cellSize/2 * mediaMan.scale || Math.abs(dY) > cellSize/2 * mediaMan.scale) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
@@ -140,10 +140,10 @@ function mouseUp(event) {
 			menuButton(menuMan.button);
 		}
 		else if (!dblClick(event)) {
-			if (gameMan.instructions) {
-				gameMan.instructionPage++;
-				if (gameMan.instructionPage >= 7) {
-					gameMan.instructionPage = 0;
+			if (gameMan.scene) {
+				gameMan.manual++;
+				if (gameMan.manual >= 7) {
+					gameMan.manual = 0;
 				}
 			}
 			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {

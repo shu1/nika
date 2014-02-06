@@ -3,10 +3,10 @@
 var canvas, context, images, sounds, grid, gameStates=[], phalanx=[];
 
 var mediaMan = {
-	retina:1,
 	menu:false,
 	play:true,
 	draw:true,
+	retina:1,
 	scale:1,
 	zoom:0,
 	time:0,
@@ -39,16 +39,16 @@ var inputMan = {
 }
 
 var gameMan = {
-	instructions:false,
-	instructionPage:0,
 	selection:false,
 	debug:false,
+	tutorial:-1,
 	actions:2,
 	player:0,
+	manual:0,
+	scene:0,
 	pRow:-1,
 	pCol:-1,
-	pRot:-1,
-	tut:-1
+	pRot:-1
 }
 
 var menuMan = {
@@ -63,12 +63,13 @@ var menuMan = {
 }
 
 var buttons = [
-	"    Close",
-	"    Debug",
-	"Instructions",
-	"       AI",
-	"     Pass",
-	"     Undo",
+	" Menu",
+	" Close",
+	" Debug",
+	"Manual",
+	"    AI",
+	"  Pass",
+	"  Undo"
 ]
 
 var mainBoard = [

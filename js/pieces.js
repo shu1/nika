@@ -56,7 +56,7 @@ function movePiece(pRow, pCol, row, col) {
 			moved = true;
 		}
 
-		if (gameMan.tut > -1 && !tutAllowed()) {
+		if (gameMan.tutorial > -1 && !tutAllowed()) {
 			revertGrid();
 			mediaMan.draw=true;
 			moved=false;

@@ -1,7 +1,7 @@
 function tutorial(n) {
 	generateGrid(tutBoards[n]);
 	pushGameState();
-	gameMan.tut = n;
+	gameMan.tutorial = n;
 }
 
 function tutAllowed() {
@@ -9,7 +9,7 @@ function tutAllowed() {
 		return true;
 	}
 
-	switch (gameMan.tut) {
+	switch (gameMan.tutorial) {
 		case 0:
 			return false;
 		case 1:
@@ -19,7 +19,7 @@ function tutAllowed() {
 }
 
 function tutCompleted () {
-	switch (gameMan.tut) {
+	switch (gameMan.tutorial) {
 		case 0:
 			if (grid[2][10].player == 0) {
 				nextTutorial();
@@ -37,15 +37,15 @@ function tutCompleted () {
 }
 
 function nextTutorial() {
-	gameMan.tut++;
+	gameMan.tutorial++;
 
-	if (gameMan.tut >= tutBoards.length) {
+	if (gameMan.tutorial >= tutBoards.length) {
 		alert("Tutorial completed. Time to play.");
 		endTutorial();
 	}
 	else {
 		buttons[2] = "  Skip";
-		tutorial(gameMan.tut);
+		tutorial(gameMan.tutorial);
 		tutMessage();
 	}
 }
@@ -54,11 +54,11 @@ function endTutorial () {
 	console.log("Hooray! You win the tutorial!!");
 	generateGrid(mainBoard);
 	buttons[2] = "Tutorial";
-	gameMan.tut = -1;
+	gameMan.tutorial = -1;
 }
 
 function tutMessage() {
-	switch (gameMan.tut) {
+	switch (gameMan.tutorial) {
 		case 0:
 			alert("Athens and Messene are near victory! Help Athens win by moving into the win square!");
 			break;

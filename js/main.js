@@ -78,7 +78,7 @@ function init() {
 	else {
 		menuMan.rows = 2;
 	}
-	menuMan.cols = Math.ceil(buttons.length / menuMan.rows);
+	menuMan.cols = Math.ceil((buttons.length-1) / menuMan.rows);
 	menuMan.bWidth = cellSize*2;
 	menuMan.bHeight = cellSize*2/menuMan.rows;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
@@ -207,8 +207,8 @@ function draw(time) {
 		drawPieces();
 		drawTurnUI();
 
-		if (gameMan.instructions) {
-			drawInstructions();
+		if (gameMan.scene) {
+			drawscene();
 		}
 
 		context.restore();
@@ -222,11 +222,11 @@ function draw(time) {
 	window.requestAnimationFrame(draw);
 }
 
-function drawInstructions() {
+function drawscene() {
 	var width = boardHeight * 2550/3301;
 	context.fillStyle = "rgba(255, 255, 255, 0.9)";
 	context.fillRect((boardWidth - width)/2, 0, width, boardHeight);
-	context.drawImage(images[8 + gameMan.instructionPage], (boardWidth - width)/2, 0, width, boardHeight);
+	context.drawImage(images[8 + gameMan.manual], (boardWidth - width)/2, 0, width, boardHeight);
 }
 
 function drawBoard() {
@@ -370,22 +370,22 @@ function drawMenu(dTime) {
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
-				if (button < buttons.length) {
-					if (inputMan.menu && button == menuMan.button || gameMan.debug && button == 1 || gameMan.instructions && button == 2) {
-						drawButton(row, col, buttons[button], "#13485d", "white");
+				if (button < buttons.length-1) {
+					if (inputMan.menu && button == menuMan.button || gameMan.debug && button == 1 || gameMan.scene && button == 2) {
+						drawButton(row, col, buttons[button+1], "#13485d", "white");
 					}
 					else {
-						drawButton(row, col, buttons[button], "white", "#13485d");
+						drawButton(row, col, buttons[button+1], "white", "#13485d");
 					}
 				}
 			}
 		}
 	}
 	else if (inputMan.menu && menuMan.button == 0) {
-		drawButton(0, 0, "    Menu", "#073c50", "white");
+		drawButton(0, 0, buttons[0], "#073c50", "white");
 	}
 	else {
-		drawButton(0, 0, "    Menu", "white");
+		drawButton(0, 0, buttons[0], "white");
 	}
 }
 
@@ -397,7 +397,7 @@ function drawButton(row, col, text, textColor, bgColor) {
 			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
 	}
 	context.fillStyle = textColor;
-	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.9), canvas.height - menuMan.bHeight * (row+0.5)+6);
+	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.77), canvas.height - menuMan.bHeight * (row+0.5)+6);
 }
 
 function drawHud(time) {
