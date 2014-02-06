@@ -207,8 +207,8 @@ function draw(time) {
 		drawPieces();
 		drawTurnUI();
 
-		if (gameMan.scene) {
-			drawscene();
+		if (gameMan.scene == 1) {
+			drawManual();
 		}
 
 		context.restore();
@@ -220,13 +220,6 @@ function draw(time) {
 	}
 	mediaMan.time = time;
 	window.requestAnimationFrame(draw);
-}
-
-function drawscene() {
-	var width = boardHeight * 2550/3301;
-	context.fillStyle = "rgba(255, 255, 255, 0.9)";
-	context.fillRect((boardWidth - width)/2, 0, width, boardHeight);
-	context.drawImage(images[8 + gameMan.manual], (boardWidth - width)/2, 0, width, boardHeight);
 }
 
 function drawBoard() {
@@ -321,6 +314,13 @@ function drawTurnUI() {
 	context.stroke();
 }
 
+function drawManual() {
+	var width = boardHeight * 2550/3301;
+	context.fillStyle = "rgba(255, 255, 255, 0.9)";
+	context.fillRect((boardWidth - width)/2, 0, width, boardHeight);
+	context.drawImage(images[8 + gameMan.manual], (boardWidth - width)/2, 0, width, boardHeight);
+}
+
 function drawMenu(dTime) {
 	var factor = 200;
 	mediaMan.menu = false;	// whether menu is animating
@@ -371,7 +371,7 @@ function drawMenu(dTime) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length-1) {
-					if (inputMan.menu && button == menuMan.button || gameMan.debug && button == 1 || gameMan.scene && button == 2) {
+					if (inputMan.menu && button == menuMan.button || gameMan.debug && button == 1 || gameMan.scene == 1 && button == 2) {
 						drawButton(row, col, buttons[button+1], "#13485d", "white");
 					}
 					else {
