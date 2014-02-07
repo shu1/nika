@@ -146,9 +146,9 @@ function mouseUp(event) {
 		}
 		else if (!dblClick(event)) {
 			if (gameMan.scene == 1) {
-				gameMan.manual++;
-				if (gameMan.manual >= 7) {
-					gameMan.manual = 0;
+				gameMan.rules++;
+				if (gameMan.rules >= 7) {
+					gameMan.rules = 0;
 				}
 			}
 			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {

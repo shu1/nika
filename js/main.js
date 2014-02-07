@@ -129,7 +129,7 @@ function setScene(scene) {
 			mediaMan.maxScale = maxScale;
 			mediaMan.minScale = minScale;
 			break;
-		case 1:	// manual
+		case 1:	// rules
 			mediaMan.sceneWidth = 2550;
 			mediaMan.sceneHeight = 3001;
 			mediaMan.maxScale = 1;
@@ -232,7 +232,7 @@ function draw(time) {
 		drawTurnUI();
 
 		if (gameMan.scene == 1) {
-			drawManual();
+			drawRules();
 		}
 
 		context.restore();
@@ -338,11 +338,11 @@ function drawTurnUI() {
 	context.stroke();
 }
 
-function drawManual() {
+function drawRules() {
 	var width = mediaMan.sceneHeight * 2550/3301;
 	context.fillStyle = "rgba(255, 255, 255, 0.9)";
 	context.fillRect((mediaMan.sceneWidth - width)/2, 0, width, mediaMan.sceneHeight);
-	context.drawImage(images[8 + gameMan.manual], (mediaMan.sceneWidth - width)/2, 0, width, mediaMan.sceneHeight);
+	context.drawImage(images[8 + gameMan.rules], (mediaMan.sceneWidth - width)/2, 0, width, mediaMan.sceneHeight);
 }
 
 function drawMenu(dTime) {
@@ -421,7 +421,7 @@ function drawButton(row, col, text, textColor, bgColor) {
 			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
 	}
 	context.fillStyle = textColor;
-	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.77), canvas.height - menuMan.bHeight * (row+0.5)+6);
+	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.75), canvas.height - menuMan.bHeight * (row+0.5)+6);
 }
 
 function drawHud(time) {

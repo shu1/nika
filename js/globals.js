@@ -48,8 +48,8 @@ var gameMan = {
 	tutorial:-1,
 	actions:2,
 	player:0,
-	manual:0,
 	scene:0,
+	rules:0,
 	pRow:-1,
 	pCol:-1,
 	pRot:-1
@@ -68,12 +68,12 @@ var menuMan = {
 
 var buttons = [
 	" Menu",
-	" Close",
-	" Debug",
-	"Manual",
-	"    AI",
-	"  Pass",
-	"  Undo"
+	"Close",
+	"Debug",
+	"Rules",
+	"   AI",
+	" Pass",
+	" Undo"
 ]
 
 var mainBoard = [
