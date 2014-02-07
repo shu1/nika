@@ -92,7 +92,7 @@ function reSize() {
 	if (fullScreen) {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;	// height-5 to remove scrollbars on some browsers
-		
+
 		if (canvas.height >= 1536) {
 			mediaMan.retina = 2;
 		}
@@ -100,8 +100,8 @@ function reSize() {
 			mediaMan.retina = 1;
 		}
 
-		if (minScale == maxScale) {	// special case, fit to large screens
-			minScale = maxScale = canvas.height / boardHeight;
+		if (maxScale == minScale) {	// special case, fit to large screens
+			maxScale = minScale = canvas.height / boardHeight;
 		}
 		else {
 			if (canvas.width / (1024*mediaMan.retina) > maxScale) {
@@ -112,15 +112,39 @@ function reSize() {
 			}
 		}
 	}
+
+	setScene();
 	context.font = mediaMan.retina*16 + "px sans-serif";
-	mediaMan.scale = minScale;
-	mediaMan.x = (canvas.width - boardWidth * mediaMan.scale)/2;
-	mediaMan.y = (canvas.height - boardHeight * mediaMan.scale)/2;
+}
+
+function setScene(scene) {
+	if (scene >= 0) {
+		gameMan.scene = scene;
+	}
+
+	switch(gameMan.scene) {
+		case 0:	// actual game
+			mediaMan.sceneWidth = boardWidth;
+			mediaMan.sceneHeight = boardHeight;
+			mediaMan.maxScale = maxScale;
+			mediaMan.minScale = minScale;
+			break;
+		case 1:	// manual
+			mediaMan.sceneWidth = 2550;
+			mediaMan.sceneHeight = 3001;
+			mediaMan.maxScale = 1;
+			mediaMan.minScale = canvas.width / mediaMan.sceneWidth;
+			break;
+	}
+
+	mediaMan.scale = mediaMan.minScale;
+	mediaMan.x = (canvas.width - mediaMan.sceneWidth * mediaMan.scale)/2;
+	mediaMan.y = (canvas.height - mediaMan.sceneHeight * mediaMan.scale)/2;
 	mediaMan.draw = true;
 }
 
 function zoom() {
-	if (mediaMan.scale == minScale) {
+	if (mediaMan.scale == mediaMan.minScale) {
 		mediaMan.zoom = 1;
 	}
 	else {
@@ -131,27 +155,27 @@ function zoom() {
 
 function zooming(dTime) {
 	if (mediaMan.zoom != 0) {
-		var speed = (maxScale - minScale)/200 * dTime;	// animation speed
+		var speed = (mediaMan.maxScale - mediaMan.minScale)/200 * dTime;	// animation speed
 		if (mediaMan.zoom > 0) {
-			if (mediaMan.scale + speed < maxScale) {
+			if (mediaMan.scale + speed < mediaMan.maxScale) {
 				mediaMan.scale += speed;
 			}
 			else {
-				mediaMan.scale = maxScale;
+				mediaMan.scale = mediaMan.maxScale;
 				mediaMan.zoom = 0;
 			}
 		}
 		else {
-			if (mediaMan.scale - speed > minScale) {
+			if (mediaMan.scale - speed > mediaMan.minScale) {
 				mediaMan.scale -= speed;
 			}
 			else {
-				mediaMan.scale = minScale;
+				mediaMan.scale = mediaMan.minScale;
 				mediaMan.zoom = 0;
 			}
 		}
-		mediaMan.x = (canvas.width - boardWidth)/2 - (inputMan.col * cellSize + cellSize/2) * (mediaMan.scale-1);
-		mediaMan.y = (canvas.height - boardHeight)/2 - (inputMan.row * cellSize + cellSize/2) * (mediaMan.scale-1);
+		mediaMan.x = (canvas.width - mediaMan.sceneWidth)/2 - (inputMan.col * cellSize + cellSize/2) * (mediaMan.scale-1);
+		mediaMan.y = (canvas.height - mediaMan.sceneHeight)/2 - (inputMan.row * cellSize + cellSize/2) * (mediaMan.scale-1);
 		pan(0, 0);	// hack to fix if clicked outside board
 	}
 }
@@ -159,8 +183,8 @@ function zooming(dTime) {
 function pan(dX, dY) {
 	var panned = false;
 
-	if (boardWidth * mediaMan.scale >= canvas.width) {
-		var width = canvas.width - boardWidth * mediaMan.scale;
+	if (mediaMan.sceneWidth * mediaMan.scale >= canvas.width) {
+		var width = canvas.width - mediaMan.sceneWidth * mediaMan.scale;
 
 		if (mediaMan.x + dX < width) {
 			mediaMan.x = width;
@@ -174,8 +198,8 @@ function pan(dX, dY) {
 		}
 	}
 
-	if (boardHeight * mediaMan.scale >= canvas.height) {
-		var height = canvas.height - boardHeight * mediaMan.scale;
+	if (mediaMan.sceneHeight * mediaMan.scale >= canvas.height) {
+		var height = canvas.height - mediaMan.sceneHeight * mediaMan.scale;
 
 		if (mediaMan.y + dY < height) {
 			mediaMan.y = height;
@@ -223,7 +247,7 @@ function draw(time) {
 }
 
 function drawBoard() {
-	context.drawImage(images[7], 0, 0, boardWidth, boardHeight);
+	context.drawImage(images[7], 0, 0, mediaMan.sceneWidth, mediaMan.sceneHeight);
 }
 
 function setRings() {
@@ -315,10 +339,10 @@ function drawTurnUI() {
 }
 
 function drawManual() {
-	var width = boardHeight * 2550/3301;
+	var width = mediaMan.sceneHeight * 2550/3301;
 	context.fillStyle = "rgba(255, 255, 255, 0.9)";
-	context.fillRect((boardWidth - width)/2, 0, width, boardHeight);
-	context.drawImage(images[8 + gameMan.manual], (boardWidth - width)/2, 0, width, boardHeight);
+	context.fillRect((mediaMan.sceneWidth - width)/2, 0, width, mediaMan.sceneHeight);
+	context.drawImage(images[8 + gameMan.manual], (mediaMan.sceneWidth - width)/2, 0, width, mediaMan.sceneHeight);
 }
 
 function drawMenu(dTime) {

@@ -11,10 +11,10 @@ function menuButton(button) {
 			break;
 		case 2:
 			if (gameMan.scene == 0) {
-				gameMan.scene = 1;
+				setScene(1);
 			}
 			else {
-				gameMan.scene = 0;
+				setScene(0);
 			}
 			break;
 		case 3:
@@ -182,7 +182,7 @@ function dblClick(event) {
 				getPiece(gameMan.pRow, gameMan.pCol);
 			}
 		}
-		else if (minScale != maxScale) {	// zoom enabled
+		else if (mediaMan.maxScale != mediaMan.minScale) {	// zoom enabled
 			zoom();
 		}
 		inputMan.time = 0;	// reset so next click is not double click

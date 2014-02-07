@@ -3,6 +3,10 @@
 var canvas, context, images, sounds, grid, gameStates=[], phalanx=[];
 
 var mediaMan = {
+	sceneWidth:1,
+	sceneHeight:1,
+	maxScale:2,
+	minScale:1,
 	menu:false,
 	play:true,
 	draw:true,
