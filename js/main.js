@@ -339,10 +339,9 @@ function drawTurnUI() {
 }
 
 function drawRules() {
-	var width = mediaMan.sceneHeight * 2550/3301;
 	context.fillStyle = "rgba(255, 255, 255, 0.9)";
-	context.fillRect((mediaMan.sceneWidth - width)/2, 0, width, mediaMan.sceneHeight);
-	context.drawImage(images[8 + gameMan.rules], (mediaMan.sceneWidth - width)/2, 0, width, mediaMan.sceneHeight);
+	context.fillRect(0, 0, mediaMan.sceneWidth, mediaMan.sceneHeight);
+	context.drawImage(images[8 + gameMan.rules], 0, 0, mediaMan.sceneWidth, mediaMan.sceneHeight);
 }
 
 function drawMenu(dTime) {
