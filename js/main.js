@@ -132,8 +132,14 @@ function setScene(scene) {
 		case 1:	// rules
 			mediaMan.sceneWidth = 2550;
 			mediaMan.sceneHeight = 3001;
-			mediaMan.maxScale = 1;
-			mediaMan.minScale = canvas.width / mediaMan.sceneWidth;
+			if (maxScale == minScale) {
+				mediaMan.maxScale = canvas.width / mediaMan.sceneWidth;
+				mediaMan.minScale = 0.5;
+			}
+			else {
+				mediaMan.maxScale = 1;
+				mediaMan.minScale = canvas.width / mediaMan.sceneWidth;
+			}
 			break;
 	}
 

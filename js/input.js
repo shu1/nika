@@ -94,7 +94,7 @@ function mouseDown(event) {
 	inputMan.menu = getXY(event);
 	if (!inputMan.menu) {
 		getPiece(inputMan.row, inputMan.col);
-		if (!gameMan.scene == 1 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {
+		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {
 			inputMan.pX = mediaMan.x + (gameMan.pCol * cellSize + cellSize/2) * mediaMan.scale;
 			inputMan.pY = mediaMan.y + (gameMan.pRow * cellSize + cellSize/2) * mediaMan.scale;
 			event.preventDefault();
@@ -117,7 +117,7 @@ function mouseMove(event) {
 		if (!inputMan.menu) {
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
-			if (!gameMan.scene == 1 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
+			if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
 				if (Math.abs(dX) > cellSize/2 * mediaMan.scale || Math.abs(dY) > cellSize/2 * mediaMan.scale) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
@@ -146,9 +146,17 @@ function mouseUp(event) {
 		}
 		else if (!dblClick(event)) {
 			if (gameMan.scene == 1) {
-				gameMan.rules++;
-				if (gameMan.rules >= 7) {
-					gameMan.rules = 0;
+				if (inputMan.x > canvas.width - cellSize*2) {
+					gameMan.rules++;
+					if (gameMan.rules > 6) {
+						gameMan.rules = 0;
+					}
+				}
+				else if (inputMan.x < cellSize*2) {
+					gameMan.rules--;
+					if (gameMan.rules < 0) {
+						gameMan.rules = 6;
+					}
 				}
 			}
 			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
