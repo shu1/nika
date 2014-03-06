@@ -57,8 +57,9 @@ function getXY(event) {
 	}
 
 	// no menu, so grid
-	inputMan.col = Math.floor((inputMan.x - mediaMan.x) / (cellSize * mediaMan.scale));
-	inputMan.row = Math.floor((inputMan.y - mediaMan.y) / (cellSize * mediaMan.scale));
+	var scene = scenes[gameMan.scene];
+	inputMan.col = Math.floor((inputMan.x - scene.x) / (cellSize * scene.scale));
+	inputMan.row = Math.floor((inputMan.y - scene.y) / (cellSize * scene.scale));
 	inputMan.rot = -1;
 	hudMan.inputText = inputMan.row + "," + inputMan.col;
 	return false;
@@ -94,9 +95,10 @@ function mouseDown(event) {
 	inputMan.menu = getXY(event);
 	if (!inputMan.menu) {
 		getPiece(inputMan.row, inputMan.col);
+		var scene = scenes[gameMan.scene];
 		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {
-			inputMan.pX = mediaMan.x + (gameMan.pCol * cellSize + cellSize/2) * mediaMan.scale;
-			inputMan.pY = mediaMan.y + (gameMan.pRow * cellSize + cellSize/2) * mediaMan.scale;
+			inputMan.pX = scene.x + (gameMan.pCol * cellSize + cellSize/2) * scene.scale;
+			inputMan.pY = scene.y + (gameMan.pRow * cellSize + cellSize/2) * scene.scale;
 			event.preventDefault();
 		}
 		else {
@@ -117,8 +119,9 @@ function mouseMove(event) {
 		if (!inputMan.menu) {
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
+			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-				if (Math.abs(dX) > cellSize/2 * mediaMan.scale || Math.abs(dY) > cellSize/2 * mediaMan.scale) {	// inside cell is deadzone
+				if (Math.abs(dX) > cellSize/2 * scene.scale || Math.abs(dY) > cellSize/2 * scene.scale) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 				}
@@ -126,7 +129,7 @@ function mouseMove(event) {
 			}
 			else {	// pan
 				if (pan(dX, dY)) {
-					hudMan.inputText = -mediaMan.x + "," + -mediaMan.y;
+					hudMan.inputText = -scene.x + "," + -scene.y;
 					event.preventDefault();
 				}
 				inputMan.pX = inputMan.x;
@@ -180,6 +183,7 @@ function dblClick(event) {
 		hudMan.inputText += " " + (time - inputMan.time) + "ms";
 		event.preventDefault();
 
+		var scene = scenes[gameMan.scene];
 		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, toggle selection mode
 			gameMan.selection = !gameMan.selection;
 			phalanx.length = 0;
@@ -190,7 +194,7 @@ function dblClick(event) {
 				getPiece(gameMan.pRow, gameMan.pCol);
 			}
 		}
-		else if (mediaMan.maxScale != mediaMan.minScale) {	// zoom enabled
+		else if (scene.maxScale != scene.minScale) {	// zoom enabled
 			zoom();
 		}
 		inputMan.time = 0;	// reset so next click is not double click

@@ -1,45 +1,14 @@
 "use strict";
 
-var canvas, context, images, sounds, grid, gameStates=[], phalanx=[];
+var canvas, context, images, sounds, grid, gameStates=[], phalanx=[], scenes=[];
 
 var mediaMan = {
-	sceneWidth:1,
-	sceneHeight:1,
-	maxScale:2,
-	minScale:1,
 	menu:false,
 	play:true,
 	draw:true,
 	retina:1,
-	scale:1,
 	zoom:0,
-	time:0,
-	x:0,
-	y:0
-}
-
-var	hudMan = {
-	fpsTime:0,
-	fpsCount:0,
-	fpsText:"",
-	drawText:"",
-	gameText:"",
-	inputText:"",
-	soundText:"",
-	pieceText:""
-}
-
-var inputMan = {
-	click:false,
-	menu:false,
-	time:0,
-	row:-1,
-	col:-1,
-	rot:-1,
-	pX:0,
-	pY:0,
-	x:0,
-	y:0
+	time:0
 }
 
 var gameMan = {
@@ -55,6 +24,19 @@ var gameMan = {
 	pRot:-1
 }
 
+var inputMan = {
+	click:false,
+	menu:false,
+	time:0,
+	row:-1,
+	col:-1,
+	rot:-1,
+	pX:0,
+	pY:0,
+	x:0,
+	y:0
+}
+
 var menuMan = {
 	show:false,
 	rows:1,
@@ -64,6 +46,17 @@ var menuMan = {
 	bWidth:0,
 	bHeight:0,
 	button:-1
+}
+
+var	hudMan = {
+	fpsTime:0,
+	fpsCount:0,
+	fpsText:"",
+	drawText:"",
+	gameText:"",
+	inputText:"",
+	soundText:"",
+	pieceText:""
 }
 
 var buttons = [

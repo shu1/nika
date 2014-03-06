@@ -113,44 +113,48 @@ function reSize() {
 		}
 	}
 
+	var scene = {};
+	scene.width = boardWidth;
+	scene.height = boardHeight;
+	scene.maxScale = maxScale;
+	scene.minScale = minScale;
+	scenes[0] = scene;
+
+	scene = {};
+	scene.width = 2550;
+	scene.height = 3001;
+	if (maxScale == minScale) {
+		scene.maxScale = canvas.width / scene.width;
+		scene.minScale = 0.5;
+	}
+	else {
+		scene.maxScale = 1;
+		scene.minScale = canvas.width / scene.width;
+	}
+	scenes[1] = scene;
+
 	setScene();
 	context.font = mediaMan.retina*16 + "px sans-serif";
 }
 
-function setScene(scene) {
-	if (scene >= 0) {
-		gameMan.scene = scene;
+function setScene(sceneIndex) {
+	if (sceneIndex >= 0) {
+		gameMan.scene = sceneIndex;
 	}
 
-	switch(gameMan.scene) {
-		case 0:	// actual game
-			mediaMan.sceneWidth = boardWidth;
-			mediaMan.sceneHeight = boardHeight;
-			mediaMan.maxScale = maxScale;
-			mediaMan.minScale = minScale;
-			break;
-		case 1:	// rules
-			mediaMan.sceneWidth = 2550;
-			mediaMan.sceneHeight = 3001;
-			if (maxScale == minScale) {
-				mediaMan.maxScale = canvas.width / mediaMan.sceneWidth;
-				mediaMan.minScale = 0.5;
-			}
-			else {
-				mediaMan.maxScale = 1;
-				mediaMan.minScale = canvas.width / mediaMan.sceneWidth;
-			}
-			break;
-	}
+	var scene = scenes[gameMan.scene];
+	scene.scale = scene.minScale;
+	scene.x = (canvas.width - scene.width * scene.scale)/2;
+	scene.y = (canvas.height - scene.height * scene.scale)/2;
 
-	mediaMan.scale = mediaMan.minScale;
-	mediaMan.x = (canvas.width - mediaMan.sceneWidth * mediaMan.scale)/2;
-	mediaMan.y = (canvas.height - mediaMan.sceneHeight * mediaMan.scale)/2;
+	mediaMan.zoom = 0;
 	mediaMan.draw = true;
 }
 
 function zoom() {
-	if (mediaMan.scale == mediaMan.minScale) {
+	var scene = scenes[gameMan.scene];
+
+	if (scene.scale == scene.minScale) {
 		mediaMan.zoom = 1;
 	}
 	else {
@@ -161,60 +165,62 @@ function zoom() {
 
 function zooming(dTime) {
 	if (mediaMan.zoom != 0) {
-		var speed = (mediaMan.maxScale - mediaMan.minScale)/200 * dTime;	// animation speed
+		var scene = scenes[gameMan.scene];
+		var speed = (scene.maxScale - scene.minScale)/200 * dTime;	// animation speed
 		if (mediaMan.zoom > 0) {
-			if (mediaMan.scale + speed < mediaMan.maxScale) {
-				mediaMan.scale += speed;
+			if (scene.scale + speed < scene.maxScale) {
+				scene.scale += speed;
 			}
 			else {
-				mediaMan.scale = mediaMan.maxScale;
+				scene.scale = scene.maxScale;
 				mediaMan.zoom = 0;
 			}
 		}
 		else {
-			if (mediaMan.scale - speed > mediaMan.minScale) {
-				mediaMan.scale -= speed;
+			if (scene.scale - speed > scene.minScale) {
+				scene.scale -= speed;
 			}
 			else {
-				mediaMan.scale = mediaMan.minScale;
+				scene.scale = scene.minScale;
 				mediaMan.zoom = 0;
 			}
 		}
-		mediaMan.x = (canvas.width - mediaMan.sceneWidth)/2 - (inputMan.col * cellSize + cellSize/2) * (mediaMan.scale-1);
-		mediaMan.y = (canvas.height - mediaMan.sceneHeight)/2 - (inputMan.row * cellSize + cellSize/2) * (mediaMan.scale-1);
+		scene.x = (canvas.width - scene.width)/2 - (inputMan.col * cellSize + cellSize/2) * (scene.scale-1);
+		scene.y = (canvas.height - scene.height)/2 - (inputMan.row * cellSize + cellSize/2) * (scene.scale-1);
 		pan(0, 0);	// hack to fix if clicked outside board
 	}
 }
 
 function pan(dX, dY) {
 	var panned = false;
+	var scene = scenes[gameMan.scene];
 
-	if (mediaMan.sceneWidth * mediaMan.scale >= canvas.width) {
-		var width = canvas.width - mediaMan.sceneWidth * mediaMan.scale;
+	if (scene.width * scene.scale >= canvas.width) {
+		var width = canvas.width - scene.width * scene.scale;
 
-		if (mediaMan.x + dX < width) {
-			mediaMan.x = width;
+		if (scene.x + dX < width) {
+			scene.x = width;
 		}
-		else if (mediaMan.x + dX > 0) {
-			mediaMan.x = 0;
+		else if (scene.x + dX > 0) {
+			scene.x = 0;
 		}
 		else {
-			mediaMan.x += dX;
+			scene.x += dX;
 			panned = true;
 		}
 	}
 
-	if (mediaMan.sceneHeight * mediaMan.scale >= canvas.height) {
-		var height = canvas.height - mediaMan.sceneHeight * mediaMan.scale;
+	if (scene.height * scene.scale >= canvas.height) {
+		var height = canvas.height - scene.height * scene.scale;
 
-		if (mediaMan.y + dY < height) {
-			mediaMan.y = height;
+		if (scene.y + dY < height) {
+			scene.y = height;
 		}
-		else if (mediaMan.y + dY > 0) {
-			mediaMan.y = 0;
+		else if (scene.y + dY > 0) {
+			scene.y = 0;
 		}
 		else {
-			mediaMan.y += dY;
+			scene.y += dY;
 			panned = true;
 		}
 	}
@@ -228,20 +234,27 @@ function draw(time) {
 		var dTime = time - mediaMan.time;
 		zooming(dTime);
 
+		var scene = scenes[0];
 		context.save();
-		context.translate(mediaMan.x, mediaMan.y);
-		context.scale(mediaMan.scale, mediaMan.scale);
+		context.translate(scene.x, scene.y);
+		context.scale(scene.scale, scene.scale);
 		
-		drawBoard();
+		drawBoard(scene);
 		setRings();
 		drawPieces();
 		drawTurnUI();
 
+		context.restore();
+
 		if (gameMan.scene == 1) {
-			drawRules();
+			scene = scenes[1];
+			context.save();
+			context.translate(scene.x, scene.y);
+			context.scale(scene.scale, scene.scale);
+			drawRules(scene);
+			context.restore();
 		}
 
-		context.restore();
 		drawMenu(dTime);
 		mediaMan.draw = mediaMan.zoom != 0 || mediaMan.menu;
 	}
@@ -252,8 +265,8 @@ function draw(time) {
 	window.requestAnimationFrame(draw);
 }
 
-function drawBoard() {
-	context.drawImage(images[7], 0, 0, mediaMan.sceneWidth, mediaMan.sceneHeight);
+function drawBoard(scene) {
+	context.drawImage(images[7], 0, 0, scene.width, scene.height);
 }
 
 function setRings() {
@@ -344,10 +357,10 @@ function drawTurnUI() {
 	context.stroke();
 }
 
-function drawRules() {
+function drawRules(scene) {
 	context.fillStyle = "rgba(255, 255, 255, 0.9)";
-	context.fillRect(0, 0, mediaMan.sceneWidth, mediaMan.sceneHeight);
-	context.drawImage(images[8 + gameMan.rules], 0, 0, mediaMan.sceneWidth, mediaMan.sceneHeight);
+	context.fillRect(0, 0, scene.width, scene.height);
+	context.drawImage(images[8 + gameMan.rules], 0, 0, scene.width, scene.height);
 }
 
 function drawMenu(dTime) {
@@ -436,7 +449,7 @@ function drawHud(time) {
 		hudMan.fpsCount = 0;
 	}
 	hudMan.fpsCount++;
-	hudMan.drawText = canvas.width + "x" + canvas.height + " " + mediaMan.scale + "x";
+	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[gameMan.scene].scale + "x";
 	hudMan.pieceText = (!gameMan.selection) ? "" : "SELECTION";
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, mediaMan.retina*22);
