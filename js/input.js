@@ -148,31 +148,26 @@ function mouseUp(event) {
 			menuButton(menuMan.button);
 		}
 		else if (!dblClick(event)) {
-			if (gameMan.scene == 1) {
+			if (gameMan.scene == 1) {	// rules
 				if (inputMan.x > canvas.width - cellSize*2) {
 					gameMan.rules++;
-					if (gameMan.rules > 6) {
+					if (gameMan.rules > numRules-1) {
 						gameMan.rules = 0;
 					}
 				}
 				else if (inputMan.x < cellSize*2) {
 					gameMan.rules--;
 					if (gameMan.rules < 0) {
-						gameMan.rules = 6;
+						gameMan.rules = numRules-1;
 					}
 				}
 			}
-			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) {
+			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) {	// one-click selection
 			 	if (!gameMan.selection) {
 			 		phalanx.length = 0;
 			 	}
 			 	gameMan.selection = true;
-			 	if (gameMan.selection) {
-			 		togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
-			 	}
-			 	else {
-			 		getPiece(gameMan.pRow, gameMan.pCol);
-			 	}
+			 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
 			}
 			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 				inputMan.time = 0;

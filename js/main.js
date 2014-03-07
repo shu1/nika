@@ -40,7 +40,7 @@ function init() {
 	images[6] = document.getElementById("silver");
 	images[7] = document.getElementById("board");
 
-	for (var i = 0; i < 7; ++i) {
+	for (var i = 0; i < numRules; ++i) {
 		images[8+i] = document.getElementById("instruction" + i);
 	}
 
@@ -121,8 +121,8 @@ function reSize() {
 	scenes[0] = scene;
 
 	scene = {};
-	scene.width = 2550;
-	scene.height = 3001;
+	scene.width = ruleWidth;
+	scene.height = ruleHeight;
 	if (maxScale == minScale) {
 		scene.maxScale = canvas.width / scene.width;
 		scene.minScale = 0.5;
