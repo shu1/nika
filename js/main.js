@@ -41,7 +41,7 @@ function init() {
 	images[7] = document.getElementById("board");
 
 	for (var i = 0; i < numRules; ++i) {
-		images[8+i] = document.getElementById("instruction" + i);
+		images[8+i] = document.getElementById("rule" + i);
 	}
 
 	sounds = new Array(6);
