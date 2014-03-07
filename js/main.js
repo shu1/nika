@@ -124,12 +124,16 @@ function reSize() {
 	scene.width = ruleWidth;
 	scene.height = ruleHeight;
 	if (maxScale == minScale) {
-		scene.maxScale = canvas.width / scene.width;
-		scene.minScale = 0.5;
-	}
-	else {
 		scene.maxScale = 1;
-		scene.minScale = canvas.width / scene.width;
+		scene.minScale = canvas.height / ruleHeight;
+	}
+	else if (canvas.width > ruleWidth) {
+		scene.maxScale = canvas.width / ruleWidth;
+		scene.minScale = 1;
+	}
+	else{
+		scene.maxScale = 1;
+		scene.minScale = canvas.width / ruleWidth;
 	}
 	scenes[1] = scene;
 
