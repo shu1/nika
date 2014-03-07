@@ -162,6 +162,18 @@ function mouseUp(event) {
 					}
 				}
 			}
+			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) {
+			 	if (!gameMan.selection) {
+			 		phalanx.length = 0;
+			 	}
+			 	gameMan.selection = true;
+			 	if (gameMan.selection) {
+			 		togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
+			 	}
+			 	else {
+			 		getPiece(gameMan.pRow, gameMan.pCol);
+			 	}
+			}
 			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 				inputMan.time = 0;
 				gameMan.selection = false;	// after move always get out of selection mode
@@ -184,17 +196,7 @@ function dblClick(event) {
 		event.preventDefault();
 
 		var scene = scenes[gameMan.scene];
-		if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, toggle selection mode
-			gameMan.selection = !gameMan.selection;
-			phalanx.length = 0;
-			if (gameMan.selection) {
-				phalanx.push({row:gameMan.pRow, col:gameMan.pCol});	
-			}
-			else {
-				getPiece(gameMan.pRow, gameMan.pCol);
-			}
-		}
-		else if (scene.maxScale != scene.minScale) {	// zoom enabled
+		if (scene.maxScale != scene.minScale) {	// zoom enabled
 			zoom();
 		}
 		inputMan.time = 0;	// reset so next click is not double click
