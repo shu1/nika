@@ -40,7 +40,7 @@ function init() {
 	images[6] = document.getElementById("silver");
 	images[7] = document.getElementById("board");
 
-	for (var i = 0; i < numRules; ++i) {
+	for (var i = 0; i < rulePages; ++i) {
 		images[8+i] = document.getElementById("rule" + i);
 	}
 
@@ -100,7 +100,7 @@ function reSize() {
 			mediaMan.retina = 1;
 		}
 
-		if (maxScale == minScale) {	// special case, fit to large screens
+		if (maxScale == 0 && minScale == 0) {	// special case, fit to large screens
 			maxScale = minScale = canvas.height / boardHeight;
 		}
 		else {

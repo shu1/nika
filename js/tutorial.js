@@ -51,7 +51,6 @@ function nextTutorial() {
 }
 
 function endTutorial () {
-	console.log("Hooray! You win the tutorial!!");
 	generateGrid(mainBoard);
 	buttons[2] = "Tutorial";
 	gameMan.tutorial = -1;

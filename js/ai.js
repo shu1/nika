@@ -23,7 +23,6 @@ function ai() {
 	for (var i = 0; i < 6; ++i) {
 		var row = pieces[i].row;
 		var col = pieces[i].col;
-		console.log(canBePushed(row, col));
 	}
 
 	// try AI methods in order

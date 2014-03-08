@@ -151,14 +151,14 @@ function mouseUp(event) {
 			if (gameMan.scene == 1) {	// rules
 				if (inputMan.x > canvas.width - cellSize*2) {
 					gameMan.rules++;
-					if (gameMan.rules > numRules-1) {
+					if (gameMan.rules > rulePages-1) {
 						gameMan.rules = 0;
 					}
 				}
 				else if (inputMan.x < cellSize*2) {
 					gameMan.rules--;
 					if (gameMan.rules < 0) {
-						gameMan.rules = numRules-1;
+						gameMan.rules = rulePages-1;
 					}
 				}
 			}
@@ -190,8 +190,7 @@ function dblClick(event) {
 		hudMan.inputText += " " + (time - inputMan.time) + "ms";
 		event.preventDefault();
 
-		var scene = scenes[gameMan.scene];
-		if (scene.maxScale != scene.minScale) {	// zoom enabled
+		if (maxScale != minScale) {	// zoom not disabled
 			zoom();
 		}
 		inputMan.time = 0;	// reset so next click is not double click
