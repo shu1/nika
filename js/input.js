@@ -97,6 +97,7 @@ function mouseDown(event) {
 		getPiece(inputMan.row, inputMan.col);
 		var scene = scenes[gameMan.scene];
 		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {
+			inputMan.hold = setTimeout(hold, 250);
 			inputMan.pX = scene.x + (gameMan.pCol * cellSize + cellSize/2) * scene.scale;
 			inputMan.pY = scene.y + (gameMan.pRow * cellSize + cellSize/2) * scene.scale;
 			event.preventDefault();
@@ -142,6 +143,7 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	if (inputMan.click) {
+		clearTimeout(inputMan.hold);
 		hudMan.inputText += " up";
 
 		if (inputMan.menu) {
@@ -198,4 +200,8 @@ function dblClick(event) {
 	}
 	inputMan.time = time;
 	return false;
+}
+
+function hold() {
+	console.log("hold");
 }
