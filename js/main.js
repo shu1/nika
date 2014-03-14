@@ -314,7 +314,9 @@ function drawPieces() {
 				if (cell.ring >= 0) {
 					context.drawImage(images[5 + (cell.ring)%2], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
 				}
-				cell.ring = -1;	// clear for next time
+				if (cell.ring < 2) {
+					cell.ring = -1;	// clear for next time
+				}
 
 				context.restore();
 			}

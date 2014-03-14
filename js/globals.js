@@ -89,6 +89,7 @@ var mainBoard = [
 ]
 
 var tutorials;
+var tutorialStarted = false
 var numTutorials;
 var tutorialTurns = [1, 0, 0, 0, 2, 4, 2, 2, 1, 2, 1, 1];
 var tutorialBoards = [[					// Tut 1.2 - 0 - Athens Victory

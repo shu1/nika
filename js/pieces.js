@@ -63,9 +63,10 @@ function movePiece(pRow, pCol, row, col) {
 		}
 
 		if (moved) {
-			if (!gameMan.debug) {
+			if (!gameMan.debug && !tutorialStarted) {
 				useAction();
 			}
+			tutorialStarted = false;
 			pushGameState();
 		}
 	}

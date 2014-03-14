@@ -171,7 +171,7 @@ function mouseUp(event) {
 			 	gameMan.selection = true;
 			 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
 			}
-			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
+			if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 				inputMan.time = 0;
 				gameMan.selection = false;	// after move always get out of selection mode
 			}

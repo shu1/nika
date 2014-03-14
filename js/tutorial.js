@@ -16,9 +16,12 @@ function tutorial(n) {
 	generateGrid(tutorialBoards[n]);
 	pushGameState();
 	gameMan.tutorial = n;
-	draw();
 	tutStartAction();
 	tutCorrectMove();
+	gameMan.player = 0;
+	gameMan.actions = 2;
+	tutorialStarted = true;
+	draw();
 }
 
 function tutStartAction() {
@@ -78,7 +81,7 @@ function tutStartAction() {
 
 			grid[9][11].ring = -1;
 			mediaMan.draw = true;
-			tutMessage("We must protect ourselves! To ROTATE a piece in place, drag it in the direction you want it to face, then end your touch on the same piece. Rotate this piece so that it faces the right.");
+			tutMessage("We must protect ourselves! To ROTATE a piece in place, drag it in the direction you want it to face, then end your touch on the same piece. Rotate this piece so that it faces the right direction.");
 			break;
 		case 6:
 			tutMessage("Like all hoplites, our troops are trained to act in the powerful PHALANX formation. If two or more are adjacent and face the same way, they can move and rotate together.");
@@ -425,7 +428,7 @@ function nextTutorial() {
 		endTutorial();
 	}
 	else {
-		buttons[2] = "  Skip";
+		// buttons[2] = "  Skip";
 		tutorial(gameMan.tutorial);
 	}
 }
