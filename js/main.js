@@ -29,7 +29,6 @@ function init() {
 	generateGrid(mainBoard);
 	pushGameState();
 	useAction(0);	// init debug text
-	initTuts();
 
 	images = new Array(8);
 	images[0] = document.getElementById("athens");
@@ -243,7 +242,7 @@ function draw(time) {
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
-
+		
 		drawBoard(scene);
 		setRings();
 		drawPieces();
@@ -312,11 +311,9 @@ function drawPieces() {
 				}
 
 				if (cell.ring >= 0) {
-					context.drawImage(images[5 + (cell.ring)%2], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
+					context.drawImage(images[5 + cell.ring], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
 				}
-				if (cell.ring < 2) {
-					cell.ring = -1;	// clear for next time
-				}
+				cell.ring = -1;	// clear for next time
 
 				context.restore();
 			}

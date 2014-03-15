@@ -15,29 +15,29 @@ function generateGrid(ascii) {
 				ring:-1
 			}
 
-			if (a == 'A' || a == 'B' || a == 'C' || a == 'D' || a == 'Q') {
+			if (a == 'A' || a == 'B' || a == 'C' || a == 'D') {
 				cell.player = 0;
 			}
-			else if (a == 'E' || a == 'F' || a == 'G' || a == 'H' || a == 'R') {
+			else if (a == 'E' || a == 'F' || a == 'G' || a == 'H') {
 				cell.player = 1;
 			}
-			else if (a == 'I' || a == 'J' || a == 'K' || a == 'L' || a == 'S') {
+			else if (a == 'I' || a == 'J' || a == 'K' || a == 'L') {
 				cell.player = 2;
 			}
-			else if (a == 'M' || a == 'N' || a == 'O' || a == 'P' || a == 'T') {
+			else if (a == 'M' || a == 'N' || a == 'O' || a == 'P') {
 				cell.player = 3;
 			}
 
-			if (a == 'A' || a == 'E' || a == 'I' || a == 'M' || a == 'Q') {
+			if (a == 'A' || a == 'E' || a == 'I' || a == 'M') {
 				cell.rot = 0;
 			}
-			else if (a == 'B' || a == 'F' || a == 'J' || a == 'N' || a == 'R') {
+			else if (a == 'B' || a == 'F' || a == 'J' || a == 'N') {
 				cell.rot = 1;
 			}
-			else if (a == 'C' || a == 'G' || a == 'K' || a == 'O' || a == 'S') {
+			else if (a == 'C' || a == 'G' || a == 'K' || a == 'O') {
 				cell.rot = 2;
 			}
-			else if (a == 'D' || a == 'H' || a == 'L' || a == 'P' || a == 'T') {
+			else if (a == 'D' || a == 'H' || a == 'L' || a == 'P') {
 				cell.rot = 3;
 			}
 
@@ -54,10 +54,7 @@ function generateGrid(ascii) {
 				cell.city = 3;
 			}
 
-			if (a == 'd' || a == 'h' || a == 'l' || a == 'p' || a == 'Q' || a == 'R' || a == 'S' || a == 'T') {
-				cell.kind = 3;	// routed
-			}
-			else if (a == 'a' || a == 'e' || a == 'i' || a == 'm' || cell.player >= 0) {
+			if (a == 'a' || a == 'e' || a == 'i' || a == 'm' || cell.player >= 0) {
 				cell.kind = 0;	// normal
 			}
 			else if (a == 'b' || a == 'f' || a == 'j' || a == 'n') {
@@ -66,6 +63,10 @@ function generateGrid(ascii) {
 			else if (a == 'c' || a == 'g' || a == 'k' || a == 'o') {
 				cell.kind = 2;	// rally
 			}
+			else if (a == 'd' || a == 'h' || a == 'l' || a == 'p') {
+				cell.kind = 3;	// routed
+			}
+
 			grid[row][col] = cell;
 		}
 	}
@@ -76,7 +77,7 @@ function debugGrid() {
 	for (var row = 0; row < 15; ++row) {
 		var str = "";
 		for (var col = 0; col < 21; ++col) {
-			var a = grid[row][col].city;
+			var a = grid[row][col].city; 
 			str += (a == -1) ? '.' : a;
 		}
 		console.log(str);

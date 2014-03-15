@@ -97,7 +97,6 @@ function mouseDown(event) {
 		getPiece(inputMan.row, inputMan.col);
 		var scene = scenes[gameMan.scene];
 		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {
-			inputMan.hold = setTimeout(hold, 250);
 			inputMan.pX = scene.x + (gameMan.pCol * cellSize + cellSize/2) * scene.scale;
 			inputMan.pY = scene.y + (gameMan.pRow * cellSize + cellSize/2) * scene.scale;
 			event.preventDefault();
@@ -143,7 +142,6 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	if (inputMan.click) {
-		clearTimeout(inputMan.hold);
 		hudMan.inputText += " up";
 
 		if (inputMan.menu) {
@@ -171,7 +169,7 @@ function mouseUp(event) {
 			 	gameMan.selection = true;
 			 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
 			}
-			if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
+			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 				inputMan.time = 0;
 				gameMan.selection = false;	// after move always get out of selection mode
 			}
@@ -200,8 +198,4 @@ function dblClick(event) {
 	}
 	inputMan.time = time;
 	return false;
-}
-
-function hold() {
-	console.log("hold");
 }

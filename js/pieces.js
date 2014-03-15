@@ -13,8 +13,8 @@ function getPiece(row, col) {
 		if (!gameMan.selection) {
 			phalanx.length = 0;
 			getPhalanx(row, col);
-			clearChecked();
-		}
+			clearChecked();	
+		} 
 	}
 }
 
@@ -56,22 +56,21 @@ function movePiece(pRow, pCol, row, col) {
 			moved = true;
 		}
 
-		if (gameMan.tutorial > -1 && !tutCorrectMove()) {
+		if (gameMan.tutorial > -1 && !tutAllowed()) {
 			revertGrid();
 			mediaMan.draw=true;
 			moved=false;
 		}
 
 		if (moved) {
-			if (!gameMan.debug && !tutorialStarted) {
+			if (!gameMan.debug) {
 				useAction();
 			}
-			tutorialStarted = false;
 			pushGameState();
 		}
 	}
 
-
+	
 
 	return moved;
 }
@@ -161,9 +160,9 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 
 function pushOnePiece(row, col, fRow, fCol, pusher) {
 	if (Math.abs((grid[row][col].player - pusher)%2) == 1) {
-		playSound("push");
+		playSound("push");	
 	}
-
+	
 	grid[fRow][fCol].player = grid[row][col].player;
 	grid[fRow][fCol].rot = grid[row][col].rot;
 }
@@ -182,7 +181,7 @@ function routPiece(row, col) {
 // find first empty rout cell
 function getRoutCell(player) {
 	switch (player) {
-	case 0:
+	case 0: 
 		for (var row = 14; row >= 0; --row) {
 			for (var col = 0; col < 21; ++col) {
 				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
@@ -191,7 +190,7 @@ function getRoutCell(player) {
 			}
 		}
 		break;
-	case 1:
+	case 1:	
 		for (var col = 0; col < 21; ++col) {
 			for (var row = 0; row < 15; ++row) {
 				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
@@ -218,7 +217,7 @@ function getRoutCell(player) {
 			}
 		}
 		break;
-	}
+	}	
 }
 
 function inPhalanx(row, col) {
@@ -275,7 +274,7 @@ function movePhalanx(pRow, pCol, row, col) {
 		var dCol = col - pCol;
 		var moved = false;
 		var flag = true;
-
+		
 		// find all pieces to push
 		for (var i=phalanx.length-1; i>=0; --i) {
 			if(!inPhalanx(phalanx[i].row-dRow, phalanx[i].col-dCol)) {
@@ -293,7 +292,7 @@ function movePhalanx(pRow, pCol, row, col) {
 				revertGrid();
 				moved = false;
 				flag = false;
-			}
+			}	
 		}
 		clearChecked();
 	}
@@ -392,7 +391,7 @@ function isPhalanx() {
 }
 
 function findMember(sRow, sCol, eRow, eCol) {
-
+	
 	if (sRow == eRow && sCol == eCol) {
 		return true;
 	}
