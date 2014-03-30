@@ -58,11 +58,11 @@ function movePiece(pRow, pCol, row, col) {
 
 		if (gameMan.tutorial > -1 && !tutCorrectMove()) {
 			revertGrid();
-			mediaMan.draw=true;
-			moved=false;
+			mediaMan.draw = true;
+			moved = false;
 		}
 
-		if (moved) {
+		if (moved && !newTut) {
 			if (!gameMan.debug) {
 				useAction();
 			}
@@ -70,8 +70,7 @@ function movePiece(pRow, pCol, row, col) {
 		}
 	}
 
-
-
+	newTut = false;
 	return moved;
 }
 

@@ -425,9 +425,12 @@ function nextTutorial() {
 		endTutorial();
 	}
 	else {
-		buttons[2] = "  Skip";
 		tutorial(gameMan.tutorial);
 	}
+
+	gameMan.player = 0;
+	gameMan.actions = 2;
+	newTut = true;
 }
 
 function endTutorial () {

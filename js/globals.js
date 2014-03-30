@@ -89,9 +89,10 @@ var mainBoard = [
 
 var tuts;
 var numTuts;
+var newTut = false;
 var tutTurns = [1, 0, 0, 0, 2, 4, 2, 2, 1, 2, 1, 1];
 var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
-	".........kkklll......",	
+	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
 	"hh.eeeiiiiAiiiimmm...",
