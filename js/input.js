@@ -162,7 +162,7 @@ function mouseUp(event) {
 					}
 				}
 			}
-			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) {	// one-click selection
+			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol && grid[gameMan.pRow][gameMan.pCol].rot == gameMan.pRot) {	// one-click selection
 			 	if (!gameMan.selection) {
 			 		phalanx.length = 0;
 			 	}
