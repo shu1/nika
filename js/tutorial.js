@@ -1,6 +1,6 @@
 function initTuts() {
-	numTuts = tutTurns.length;
-	tuts = new Array(numTuts);
+	var numTuts = tutTurns.length;
+	var tuts = new Array(numTuts);
 
 	for (var i=0; i<numTuts; ++i) {
 		var tut = {
@@ -10,12 +10,14 @@ function initTuts() {
 		}
 		tuts[i] = tut;
 	}
+	tutorialMan.tuts = tuts;
 }
 
 function tutorial(n) {
 	generateGrid(tutBoards[n]);
 	pushGameState();
 	gameMan.tutorial = n;
+	tutorialMan.tuts[n].turn = 0;
 	draw();
 	tutStartAction();
 	tutCorrectMove();
@@ -152,7 +154,7 @@ function tutCorrectMoveAction() {
 
 		case 4:
 
-			switch (tuts[gameMan.tutorial].turn) {
+			switch (tutorialMan.tuts[gameMan.tutorial].turn) {
 				case 0:
 					grid[9][6].ring = 3;
 					grid[10][6].ring = 2;
@@ -166,7 +168,7 @@ function tutCorrectMoveAction() {
 			break;
 
 		case 5:
-			switch (tuts[gameMan.tutorial].turn) {
+			switch (tutorialMan.tuts[gameMan.tutorial].turn) {
 				case 0:
 					grid[9][11].ring = 2;
 					mediaMan.draw = true;
@@ -208,7 +210,7 @@ function tutCorrectMoveAction() {
 			break;
 
 		case 6:
-			switch (tuts[gameMan.tutorial].turn) {
+			switch (tutorialMan.tuts[gameMan.tutorial].turn) {
 				case 0:
 					grid[9][5].ring = 3;
 					grid[10][5].ring = 3;
@@ -223,7 +225,7 @@ function tutCorrectMoveAction() {
 			break;
 
 		case 7:
-			switch (tuts[gameMan.tutorial].turn) {
+			switch (tutorialMan.tuts[gameMan.tutorial].turn) {
 				case 0:
 					grid[11][16].ring = 2;
 					grid[10][16].ring = 3;
@@ -241,7 +243,7 @@ function tutCorrectMoveAction() {
 			break;
 
 		case 9:
-			switch (tuts[gameMan.tutorial].turn) {
+			switch (tutorialMan.tuts[gameMan.tutorial].turn) {
 				case 0:
 					grid[8][16].ring = 2;
 					grid[8][15].ring = 3;
@@ -289,7 +291,7 @@ function tutCorrectMove() {
 			break;
 
 		case 4:
-			switch (tuts[gameMan.tutorial].turn) {
+			switch (tutorialMan.tuts[gameMan.tutorial].turn) {
 				case 0:
 					if (grid[10][6].player == 0) {
 						correct = true;
@@ -305,7 +307,7 @@ function tutCorrectMove() {
 			break;
 
 		case 5:
-			switch (tuts[gameMan.tutorial].turn) {
+			switch (tutorialMan.tuts[gameMan.tutorial].turn) {
 				case 0:
 					if (grid[10][11].rot == 1) {
 						correct = true;
@@ -332,7 +334,7 @@ function tutCorrectMove() {
 			}
 
 		case 6:
-			switch (tuts[gameMan.tutorial].turn) {
+			switch (tutorialMan.tuts[gameMan.tutorial].turn) {
 				case 0:
 					if (grid[9][5].player == 0 && grid[10][5].player == 0) {
 						correct = true;
@@ -348,7 +350,7 @@ function tutCorrectMove() {
 			break;
 
 		case 7:
-			switch (tuts[gameMan.tutorial].turn) {
+			switch (tutorialMan.tuts[gameMan.tutorial].turn) {
 				case 0:
 					if (grid[10][15].player == 0 && grid[11][15].player == 0 && grid[11][16].player == 0
 						&& grid[9][14].player == 0) {
@@ -370,7 +372,7 @@ function tutCorrectMove() {
 			break;
 
 		case 9:
-			switch (tuts[gameMan.tutorial].turn) {
+			switch (tutorialMan.tuts[gameMan.tutorial].turn) {
 				case 0:
 					if (grid[8][16].player == 0) {
 						correct = true;
@@ -403,8 +405,8 @@ function tutCorrectMove() {
 		mediaMan.draw = true;
 		draw();
 		tutCorrectMoveAction();
-		tuts[gameMan.tutorial].turn += 1;
-		if (tuts[gameMan.tutorial].turn >= tuts[gameMan.tutorial].turns) {
+		tutorialMan.tuts[gameMan.tutorial].turn += 1;
+		if (tutorialMan.tuts[gameMan.tutorial].turn >= tutorialMan.tuts[gameMan.tutorial].turns) {
 			nextTutorial();
 		}
 	}
@@ -414,9 +416,9 @@ function tutCorrectMove() {
 
 function nextTutorial() {
 
-	if (gameMan.tutorial != -1) {
-		tuts[gameMan.tutorial].turn = 0;
-	}
+	// if (gameMan.tutorial != -1) {
+	// 	tutorialMan.tuts[gameMan.tutorial].turn = 0;
+	// }
 
 	gameMan.tutorial++;
 
@@ -430,7 +432,7 @@ function nextTutorial() {
 
 	gameMan.player = 0;
 	gameMan.actions = 2;
-	newTut = true;
+	tutorialMan.bypassAction = true;
 }
 
 function endTutorial () {

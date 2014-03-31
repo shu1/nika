@@ -15,29 +15,29 @@ function generateGrid(ascii) {
 				ring:-1
 			}
 
-			if (a == 'A' || a == 'B' || a == 'C' || a == 'D') {
+			if (a == 'A' || a == 'B' || a == 'C' || a == 'D' || a == 'Q') {
 				cell.player = 0;
 			}
-			else if (a == 'E' || a == 'F' || a == 'G' || a == 'H') {
+			else if (a == 'E' || a == 'F' || a == 'G' || a == 'H' || a == 'R') {
 				cell.player = 1;
 			}
-			else if (a == 'I' || a == 'J' || a == 'K' || a == 'L') {
+			else if (a == 'I' || a == 'J' || a == 'K' || a == 'L' || a == 'S') {
 				cell.player = 2;
 			}
-			else if (a == 'M' || a == 'N' || a == 'O' || a == 'P') {
+			else if (a == 'M' || a == 'N' || a == 'O' || a == 'P' || a == 'T') {
 				cell.player = 3;
 			}
 
-			if (a == 'A' || a == 'E' || a == 'I' || a == 'M') {
+			if (a == 'A' || a == 'E' || a == 'I' || a == 'M' || a == 'Q') {
 				cell.rot = 0;
 			}
-			else if (a == 'B' || a == 'F' || a == 'J' || a == 'N') {
+			else if (a == 'B' || a == 'F' || a == 'J' || a == 'N' || a == 'R') {
 				cell.rot = 1;
 			}
-			else if (a == 'C' || a == 'G' || a == 'K' || a == 'O') {
+			else if (a == 'C' || a == 'G' || a == 'K' || a == 'O' || a == 'S') {
 				cell.rot = 2;
 			}
-			else if (a == 'D' || a == 'H' || a == 'L' || a == 'P') {
+			else if (a == 'D' || a == 'H' || a == 'L' || a == 'P' || a == 'T') {
 				cell.rot = 3;
 			}
 
@@ -67,6 +67,10 @@ function generateGrid(ascii) {
 				cell.kind = 3;	// routed
 			}
 
+			if (a == 'Q' || a == 'R' || a == 'S' || a == 'T') {
+				cell.kind = 3;
+			}
+
 			grid[row][col] = cell;
 		}
 	}
@@ -77,7 +81,7 @@ function debugGrid() {
 	for (var row = 0; row < 15; ++row) {
 		var str = "";
 		for (var col = 0; col < 21; ++col) {
-			var a = grid[row][col].city; 
+			var a = grid[row][col].city;
 			str += (a == -1) ? '.' : a;
 		}
 		console.log(str);

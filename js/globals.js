@@ -87,9 +87,10 @@ var mainBoard = [
 	"......dddccc........."
 ]
 
-var tuts;
-var numTuts;
-var newTut = false;
+var tutorialMan = {
+	bypassAction: false
+}
+
 var tutTurns = [1, 0, 0, 0, 2, 4, 2, 2, 1, 2, 1, 1];
 var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........kkklll......",

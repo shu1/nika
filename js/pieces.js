@@ -62,7 +62,7 @@ function movePiece(pRow, pCol, row, col) {
 			moved = false;
 		}
 
-		if (moved && !newTut) {
+		if (moved && !tutorialMan.bypassAction) {
 			if (!gameMan.debug) {
 				useAction();
 			}
@@ -70,7 +70,7 @@ function movePiece(pRow, pCol, row, col) {
 		}
 	}
 
-	newTut = false;
+	tutorialMan.bypassAction = false;
 	return moved;
 }
 
