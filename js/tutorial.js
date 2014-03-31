@@ -183,14 +183,20 @@ function tutCorrectMoveAction() {
 					mediaMan.draw = true;
 
 					tutMessage("Beware! The accursed Thebans are trying to get around the edge of our line. We must rally!");
+
 					grid[13][8].ring = 2;
 					mediaMan.draw = true;
+
 					tutMessage("Routed pieces are not out of the battle forever. You can rally one routed piece at a time back onto the battlefield into the areas indicated.");
+
 					grid[13][9].ring = 3;
 					grid[13][10].ring = 3;
 					grid[13][11].ring = 3;
 					mediaMan.draw = true;
+
 					tutMessage("To RALLY a piece, drag it into one of your rally spaces. Let’s deploy our man here so he can hurry back to the fight.");
+
+					tutResetActions(0);
 					break;
 
 				case 2:
@@ -416,10 +422,6 @@ function tutCorrectMove() {
 
 function nextTutorial() {
 
-	// if (gameMan.tutorial != -1) {
-	// 	tutorialMan.tuts[gameMan.tutorial].turn = 0;
-	// }
-
 	gameMan.tutorial++;
 
 	if (gameMan.tutorial >= tutBoards.length) {
@@ -430,9 +432,7 @@ function nextTutorial() {
 		tutorial(gameMan.tutorial);
 	}
 
-	gameMan.player = 0;
-	gameMan.actions = 2;
-	tutorialMan.bypassAction = true;
+	tutResetActions(0);
 }
 
 function endTutorial () {
@@ -452,4 +452,10 @@ function tutMessage(text) {
 
 testFunction = function () {
 	alert("This is a test.");
+}
+
+function tutResetActions(player) {
+	gameMan.player = player;
+	gameMan.actions = 2;
+	tutorialMan.bypassAction = true;
 }
