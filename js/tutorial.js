@@ -20,7 +20,9 @@ function tutorial(n) {
 	tutorialMan.tuts[n].turn = 0;
 	draw();
 	tutStartAction();
-	tutCorrectMove();
+	if (tutorialCompleted()) {
+		nextTutorial();
+	}
 }
 
 function tutStartAction() {
@@ -135,7 +137,7 @@ function tutStartAction() {
 			grid[7][15].ring = 2;
 			grid[8][15].ring = 2;
 			mediaMan.draw = true;
-			tutMessage("If we push this piece into our ally, the Theban will be routed, regardless of our ally’s facing. Pushing an enemy into our own piece does the same thing.");
+			tutMessage("If we push this piece into our ally, the Theban will be routed, regardless of our ally's facing. Pushing an enemy into our own piece does the same thing.");
 			tutMessage("So, order the men forward!");
 			break;
 
@@ -194,7 +196,7 @@ function tutCorrectMoveAction() {
 					grid[13][11].ring = 3;
 					mediaMan.draw = true;
 
-					tutMessage("To RALLY a piece, drag it into one of your rally spaces. Let’s deploy our man here so he can hurry back to the fight.");
+					tutMessage("To RALLY a piece, drag it into one of your rally spaces. Let's deploy our man here so he can hurry back to the fight.");
 
 					tutResetActions(0);
 					break;
@@ -206,7 +208,7 @@ function tutCorrectMoveAction() {
 						}
 					}
 					tutMessage("We move through these spaces normally, but our enemies are not allowed to enter them.");
-					tutMessage("Let’s move up our fresh soldier in support.");
+					tutMessage("Let's move up our fresh soldier in support.");
 					break;
 
 				case 3:
@@ -225,7 +227,7 @@ function tutCorrectMoveAction() {
 					break;
 
 				case 1:
-					tutMessage("Good! You’ll notice that pieces in a phalanx can only move forward. Moving in a different direction requires two actions: first rotating the phalanx, then moving it.");
+					tutMessage("Good! You'll notice that pieces in a phalanx can only move forward. Moving in a different direction requires two actions: first rotating the phalanx, then moving it.");
 					break;
 			}
 			break;
@@ -254,21 +256,21 @@ function tutCorrectMoveAction() {
 					grid[8][16].ring = 2;
 					grid[8][15].ring = 3;
 					mediaMan.draw = true;
-					tutMessage("Ha! Now, seize the advantage and destroy that Theban! Double tap to select only this piece so it can move to the left without rotating first - but I’m sure you knew that already. Then attack!");
+					tutMessage("Ha! Now, seize the advantage and destroy that Theban! Double tap to select only this piece so it can move to the left without rotating first - but I'm sure you knew that already. Then attack!");
 					break;
 
 				case 1:
-					tutMessage("This a common tactical maneuver. The Thebans may take the piece that just attacked, but that’s okay - we can counter-attack next turn, leaving our two soldiers masters of the field.");
+					tutMessage("This a common tactical maneuver. The Thebans may take the piece that just attacked, but that's okay - we can counter-attack next turn, leaving our two soldiers masters of the field.");
 					break;
 			}
 			break;
 
 		case 10:
-			tutMessage("Yes! We can rout enemies by pushing them into any invalid space. That includes our and our ally’s victory areas, as well as the center or outside of the board.");
+			tutMessage("Yes! We can rout enemies by pushing them into any invalid space. That includes our and our ally's victory areas, as well as the center or outside of the board.");
 			break;
 
 		case 11:
-			tutMessage("Perfect! At this point, we’ll have to wait for the Messenians to move their soldier out of our way. We are never allowed to push or rout our allies - or our own men.");
+			tutMessage("Perfect! At this point, we'll have to wait for the Messenians to move their soldier out of our way. We are never allowed to push or rout our allies - or our own men.");
 			break;
 	}
 }
@@ -412,12 +414,13 @@ function tutCorrectMove() {
 		draw();
 		tutCorrectMoveAction();
 		tutorialMan.tuts[gameMan.tutorial].turn += 1;
-		if (tutorialMan.tuts[gameMan.tutorial].turn >= tutorialMan.tuts[gameMan.tutorial].turns) {
-			nextTutorial();
-		}
 	}
 
 	return correct;
+}
+
+function tutorialCompleted() {
+	return (tutorialMan.tuts[gameMan.tutorial].turn >= tutorialMan.tuts[gameMan.tutorial].turns)
 }
 
 function nextTutorial() {
@@ -441,7 +444,7 @@ function endTutorial () {
 	gameMan.tutorial = -1;
 	draw();
 	alert("Congratulations! You now know everything you need to play Nika.");
-	alert("Always remember your ultimate goal - get one of your pieces across the board into the victory area on your ally’s side, or help your ally do the same.");
+	alert("Always remember your ultimate goal - get one of your pieces across the board into the victory area on your ally's side, or help your ally do the same.");
 	alert("As you play, take some time to explore the user interface. You can, for example, UNDO an unwanted move, or PASS if you feel you cannot better your position by taking an action.");
 	alert("Though the rules are few, you will find that the strategies are deep and varied. Now then, proserchou kai nika - go forth and conquer!");
 }
@@ -457,5 +460,4 @@ testFunction = function () {
 function tutResetActions(player) {
 	gameMan.player = player;
 	gameMan.actions = 2;
-	tutorialMan.bypassAction = true;
 }

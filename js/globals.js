@@ -1,6 +1,6 @@
 "use strict";
 
-var canvas, context, images, sounds, grid, gameStates=[], phalanx=[], scenes=[];
+var canvas, context, images, sounds, grid, gameStates=[], phalanx=[], scenes=[], tutorialMan = {};
 
 var mediaMan = {
 	menu:false,
@@ -86,10 +86,6 @@ var mainBoard = [
 	"......dddccc.........",
 	"......dddccc........."
 ]
-
-var tutorialMan = {
-	bypassAction: false
-}
 
 var tutTurns = [1, 0, 0, 0, 2, 4, 2, 2, 1, 2, 1, 1];
 var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
