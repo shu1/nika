@@ -63,6 +63,7 @@ var buttons = [
 	" Menu",
 	"Close",
 	"Debug",
+	"Tutorial",
 	"Rules",
 	"   AI",
 	" Pass",

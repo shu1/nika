@@ -77,11 +77,11 @@ function init() {
 		window.addEventListener("resize", reSize);
 	}
 	else {
-		menuMan.rows = 2;
+		menuMan.rows = 3;
 	}
 	menuMan.cols = Math.ceil((buttons.length-1) / menuMan.rows);
 	menuMan.bWidth = cellSize*2;
-	menuMan.bHeight = cellSize*2/menuMan.rows;
+	menuMan.bHeight = menuMan.rows == 1 ? cellSize*2 : cellSize;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 

@@ -10,6 +10,9 @@ function menuButton(button) {
 			gameMan.debug = !gameMan.debug;
 			break;
 		case 2:
+			nextTutorial();
+			break;
+		case 3:
 			if (gameMan.scene == 0) {
 				setScene(1);
 			}
@@ -17,13 +20,13 @@ function menuButton(button) {
 				setScene(0);
 			}
 			break;
-		case 3:
+		case 4:
 			ai();
 			break;
-		case 4:
+		case 5:
 			useAction(2);
 			break;
-		case 5:
+		case 6:
 			undo();
 			break;
 		}
