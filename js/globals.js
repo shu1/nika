@@ -1,6 +1,6 @@
 "use strict";
 
-var canvas, context, images, sounds, grid, gameStates=[], phalanx=[], scenes=[], tutorialMan = {};
+var canvas, context, images, sounds, grid, gameStates=[], phalanx=[], scenes=[], tutorialMan={};
 
 var mediaMan = {
 	menu:false,
@@ -63,9 +63,9 @@ var buttons = [
 	" Menu",
 	"Close",
 	"Debug",
+	"   AI",
 	"Tutorial",
 	"Rules",
-	"   AI",
 	" Pass",
 	" Undo"
 ]
@@ -88,8 +88,9 @@ var mainBoard = [
 	"......dddccc........."
 ]
 
-var tutTurns = [1, 0, 0, 0, 2, 4, 2, 2, 1, 2, 1, 1];
-var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
+var tutorialTurns = [1, 0, 0, 0, 2, 4, 2, 2, 1, 2, 1, 1];
+
+var tutorialBoards = [[			// Tutorial 1.2 - 0 - Athens Victory
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -105,7 +106,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 1.3 - 1 - Messenes Victory
+],[								// Tutorial 1.3 - 1 - Messenes Victory
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -121,7 +122,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 1.4 - 2 - Spartan Victory
+],[								// Tutorial 1.4 - 2 - Spartan Victory
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -137,7 +138,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 1.5 - 3 - Thebes Victory
+],[								// Tutorial 1.5 - 3 - Thebes Victory
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -153,7 +154,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 2.1 - 4 - Basic Movement and Rout
+],[								// Tutorial 2.1 - 4 - Basic Movement and Rout
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -169,7 +170,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 2.2 - 5 - Basic Rotation and Rally
+],[								// Tutorial 2.2 - 5 - Basic Rotation and Rally
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -185,7 +186,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......ddQccc.........",
 	"......dddccc........."
-],[								// Tut 3.1 - 6 - Phalanx Movement and Rotation
+],[								// Tutorial 3.1 - 6 - Phalanx Movement and Rotation
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -201,7 +202,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 3.2 - 7 - Sub-phalanx Movement
+],[								// Tutorial 3.2 - 7 - Sub-phalanx Movement
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -217,7 +218,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 4.1 - 8 - Basic Pushing
+],[								// Tutorial 4.1 - 8 - Basic Pushing
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -233,7 +234,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 4.2 - 9 - Push by Line
+],[								// Tutorial 4.2 - 9 - Push by Line
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -249,7 +250,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 4.3 - 10 - Push Off Board to Rout
+],[								// Tutorial 4.3 - 10 - Push Off Board to Rout
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -265,7 +266,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 4.4 - 11 - Push into Ally to Rout
+],[								// Tutorial 4.4 - 11 - Push into Ally to Rout
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",

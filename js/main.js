@@ -29,7 +29,7 @@ function init() {
 	generateGrid(mainBoard);
 	pushGameState();
 	useAction(0);	// init debug text
-	initTuts();
+	initTutorials();
 
 	images = new Array(8);
 	images[0] = document.getElementById("athens");
@@ -426,7 +426,7 @@ function drawMenu(dTime) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length-1) {
-					if (inputMan.menu && button == menuMan.button || button == 1 && gameMan.debug || button == 2 && gameMan.tutorial >= 0 || button == 3 && gameMan.scene == 1) {
+					if (inputMan.menu && button == menuMan.button || button == 1 && gameMan.debug || button == 3 && gameMan.tutorial >= 0 || button == 4 && gameMan.scene == 1) {
 						drawButton(row, col, buttons[button+1], "#13485d", "white");
 					}
 					else {
