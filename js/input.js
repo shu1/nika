@@ -10,7 +10,12 @@ function menuButton(button) {
 			gameMan.debug = !gameMan.debug;
 			break;
 		case 2:
-			nextTutorial();
+			if (gameMan.tutorial < 0) {
+				nextTutorial();
+			}
+			else {
+				endTutorial();
+			}
 			break;
 		case 3:
 			if (gameMan.scene == 0) {

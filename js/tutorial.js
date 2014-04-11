@@ -438,16 +438,15 @@ function nextTutorial() {
 	tutResetActions(0);
 }
 
-function endTutorial () {
+function endTutorial() {
 	generateGrid(mainBoard);
-	buttons[2] = "Tutorial";
 	gameMan.tutorial = -1;
 	draw();
-	alert("Congratulations! You now know everything you need to play Nika.");
+/*	alert("Congratulations! You now know everything you need to play Nika.");
 	alert("Always remember your ultimate goal - get one of your pieces across the board into the victory area on your ally's side, or help your ally do the same.");
 	alert("As you play, take some time to explore the user interface. You can, for example, UNDO an unwanted move, or PASS if you feel you cannot better your position by taking an action.");
 	alert("Though the rules are few, you will find that the strategies are deep and varied. Now then, proserchou kai nika - go forth and conquer!");
-}
+*/}
 
 function tutMessage(text) {
 	alert(text);
