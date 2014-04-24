@@ -423,6 +423,7 @@ function tutorialCompleted() {
 
 function nextTutorial() {
 	tutorialMan.step++;
+	tutResetActions(0);
 
 	if (tutorialMan.step >= tutorialBoards.length) {
 		alert("Tutorial completed. Time to play.");
@@ -431,8 +432,6 @@ function nextTutorial() {
 	else {
 		tutorial(tutorialMan.step);
 	}
-
-	tutResetActions(0);
 }
 
 function endTutorial() {
