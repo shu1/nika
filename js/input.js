@@ -170,6 +170,9 @@ function mouseUp(event) {
 					}
 				}
 			}
+			else if (tutorialMan.step >= 0 && inputMan.x > dialogMan.x && inputMan.x < dialogMan.x + dialogMan.width && inputMan.y > dialogMan.y && inputMan.y < dialogMan.y + dialogMan.height) {
+				tutorialMan.step++;
+			}
 			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol && grid[gameMan.pRow][gameMan.pCol].rot == gameMan.pRot) {	// one-click selection
 			 	if (!gameMan.selection) {
 			 		phalanx.length = 0;

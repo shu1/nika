@@ -7,6 +7,13 @@ var tutorialMan = {
 	text:""
 }
 
+var dialogMan = {
+	x:0,
+	y:0,
+	width:0,
+	height:0
+}
+
 var mediaMan = {
 	menu:false,
 	play:true,
@@ -286,4 +293,18 @@ var tutorialBoards = [[			// Tutorial 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
+]]
+
+var tutorialTexts = [[
+	"Welcome, strategos! You have been assigned command of our noble",
+	"Athenian troops against the cruel Spartans and the treacherous Thebans."
+],[
+	"Our objective is to reach the camp of the Messenians, our brave allies. If a single",
+	"Athenian piece reaches any part of this area, we win, and so do the Messenians."
+],[
+	"Drag our piece onto the highlighted space to claim victory."
+],[
+	"We can also win by helping any Messenian piece reach our own camp."
+],[
+	"Victory!"
 ]]

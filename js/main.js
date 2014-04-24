@@ -85,6 +85,11 @@ function init() {
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
+	dialogMan.x = cellSize*6;
+	dialogMan.y = cellSize*6;
+	dialogMan.width = cellSize*9;
+	dialogMan.height = cellSize*3;
+
 	reSize();
 	draw();
 }
@@ -250,8 +255,7 @@ function draw(time) {
 		drawTurnUI();
 
 		if (tutorialMan.step >= 0) {
-			context.clearRect(cellSize*6, cellSize*6, cellSize*9, cellSize*3);
-			context.fillText(tutorialMan.text, cellSize*6, cellSize*8, cellSize*9);
+			drawDialog();
 		}
 
 		context.restore();
@@ -373,6 +377,16 @@ function drawTurnUI() {
 	context.beginPath();
 	context.arc(x, y, cellSize*0.7, (gameMan.player+1)*Math.PI/2, (gameMan.player+1+gameMan.actions*2)*Math.PI/2);
 	context.stroke();
+}
+
+function drawDialog() {
+	if (tutorialMan.step < tutorialTexts.length) {
+		context.clearRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
+		var lines = tutorialTexts[tutorialMan.step];
+		for (var i = 0; i < lines.length; ++i) {
+			context.fillText(lines[i], dialogMan.x, dialogMan.y + mediaMan.retina*20*(i+1), dialogMan.width);
+		}
+	}
 }
 
 function drawRules(scene) {
