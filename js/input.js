@@ -13,7 +13,7 @@ function menuButton(button) {
 			ai();
 			break;
 		case 3:
-			if (gameMan.tutorial < 0) {
+			if (tutorialMan.step < 0) {
 				nextTutorial();
 			}
 			else {

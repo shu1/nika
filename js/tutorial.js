@@ -16,7 +16,7 @@ function initTutorials() {
 function tutorial(n) {
 	generateGrid(tutorialBoards[n]);
 	pushGameState();
-	gameMan.tutorial = n;
+	tutorialMan.step = n;
 	tutorialMan.tuts[n].turn = 0;
 	draw();
 	tutStartAction();
@@ -26,7 +26,7 @@ function tutorial(n) {
 }
 
 function tutStartAction() {
-	switch (gameMan.tutorial) {
+	switch (tutorialMan.step) {
 	case 0:
 		tutorialMessage("Welcome, strategos! You have been assigned command of our noble Athenian troops against the cruel Spartans and the treacherous Thebans.");
 		tutorialMessage("Our objective is to reach the camp of the Messenians, our brave allies. If a single Athenian piece reaches any part of this area, we win, and so do the Messenians.");
@@ -144,7 +144,7 @@ function tutStartAction() {
 }
 
 function tutCorrectMoveAction() {
-	switch (gameMan.tutorial) {
+	switch (tutorialMan.step) {
 	case 0:
 		tutorialMessage("Victory!");
 		break;
@@ -154,7 +154,7 @@ function tutCorrectMoveAction() {
 		break;
 */
 	case 4:
-		switch (tutorialMan.tuts[gameMan.tutorial].turn) {
+		switch (tutorialMan.tuts[tutorialMan.step].turn) {
 		case 0:
 			grid[9][6].ring = 3;
 			grid[10][6].ring = 2;
@@ -168,7 +168,7 @@ function tutCorrectMoveAction() {
 		break;
 
 	case 5:
-		switch (tutorialMan.tuts[gameMan.tutorial].turn) {
+		switch (tutorialMan.tuts[tutorialMan.step].turn) {
 		case 0:
 			grid[9][11].ring = 2;
 			mediaMan.draw = true;
@@ -216,7 +216,7 @@ function tutCorrectMoveAction() {
 		break;
 
 	case 6:
-		switch (tutorialMan.tuts[gameMan.tutorial].turn) {
+		switch (tutorialMan.tuts[tutorialMan.step].turn) {
 		case 0:
 			grid[9][5].ring = 3;
 			grid[10][5].ring = 3;
@@ -231,7 +231,7 @@ function tutCorrectMoveAction() {
 		break;
 
 	case 7:
-		switch (tutorialMan.tuts[gameMan.tutorial].turn) {
+		switch (tutorialMan.tuts[tutorialMan.step].turn) {
 		case 0:
 			grid[11][16].ring = 2;
 			grid[10][16].ring = 3;
@@ -249,7 +249,7 @@ function tutCorrectMoveAction() {
 		break;
 
 	case 9:
-		switch (tutorialMan.tuts[gameMan.tutorial].turn) {
+		switch (tutorialMan.tuts[tutorialMan.step].turn) {
 		case 0:
 			grid[8][16].ring = 2;
 			grid[8][15].ring = 3;
@@ -276,7 +276,7 @@ function tutCorrectMoveAction() {
 function tutCorrectMove() {
 	var correct = false;
 
-	switch (gameMan.tutorial) {
+	switch (tutorialMan.step) {
 	case 0:
 		if (grid[2][10].player == 0) {
 			correct = true;
@@ -296,7 +296,7 @@ function tutCorrectMove() {
 		break;
 
 	case 4:
-		switch (tutorialMan.tuts[gameMan.tutorial].turn) {
+		switch (tutorialMan.tuts[tutorialMan.step].turn) {
 		case 0:
 			if (grid[10][6].player == 0) {
 				correct = true;
@@ -312,7 +312,7 @@ function tutCorrectMove() {
 		break;
 
 	case 5:
-		switch (tutorialMan.tuts[gameMan.tutorial].turn) {
+		switch (tutorialMan.tuts[tutorialMan.step].turn) {
 		case 0:
 			if (grid[10][11].rot == 1) {
 				correct = true;
@@ -340,7 +340,7 @@ function tutCorrectMove() {
 		break;
 
 	case 6:
-		switch (tutorialMan.tuts[gameMan.tutorial].turn) {
+		switch (tutorialMan.tuts[tutorialMan.step].turn) {
 		case 0:
 			if (grid[9][5].player == 0 && grid[10][5].player == 0) {
 				correct = true;
@@ -356,7 +356,7 @@ function tutCorrectMove() {
 		break;
 
 	case 7:
-		switch (tutorialMan.tuts[gameMan.tutorial].turn) {
+		switch (tutorialMan.tuts[tutorialMan.step].turn) {
 		case 0:
 			if (grid[10][15].player == 0 && grid[11][15].player == 0 && grid[11][16].player == 0
 				&& grid[9][14].player == 0) {
@@ -378,7 +378,7 @@ function tutCorrectMove() {
 		break;
 
 	case 9:
-		switch (tutorialMan.tuts[gameMan.tutorial].turn) {
+		switch (tutorialMan.tuts[tutorialMan.step].turn) {
 		case 0:
 			if (grid[8][16].player == 0) {
 				correct = true;
@@ -411,25 +411,25 @@ function tutCorrectMove() {
 		mediaMan.draw = true;
 		draw();
 		tutCorrectMoveAction();
-		tutorialMan.tuts[gameMan.tutorial].turn += 1;
+		tutorialMan.tuts[tutorialMan.step].turn += 1;
 	}
 
 	return correct;
 }
 
 function tutorialCompleted() {
-	return (tutorialMan.tuts[gameMan.tutorial].turn >= tutorialMan.tuts[gameMan.tutorial].turns)
+	return (tutorialMan.tuts[tutorialMan.step].turn >= tutorialMan.tuts[tutorialMan.step].turns)
 }
 
 function nextTutorial() {
-	gameMan.tutorial++;
+	tutorialMan.step++;
 
-	if (gameMan.tutorial >= tutorialBoards.length) {
+	if (tutorialMan.step >= tutorialBoards.length) {
 		alert("Tutorial completed. Time to play.");
 		endTutorial();
 	}
 	else {
-		tutorial(gameMan.tutorial);
+		tutorial(tutorialMan.step);
 	}
 
 	tutResetActions(0);
@@ -437,7 +437,7 @@ function nextTutorial() {
 
 function endTutorial() {
 	generateGrid(mainBoard);
-	gameMan.tutorial = -1;
+	tutorialMan.step = -1;
 	draw();
 /*	alert("Congratulations! You now know everything you need to play Nika.");
 	alert("Always remember your ultimate goal - get one of your pieces across the board into the victory area on your ally's side, or help your ally do the same.");

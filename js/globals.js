@@ -3,8 +3,9 @@
 var canvas, context, images, sounds, grid, gameStates=[], phalanx=[], scenes=[];
 
 var tutorialMan = {
+	step:-1,
 	text:""
-};
+}
 
 var mediaMan = {
 	menu:false,
@@ -18,7 +19,6 @@ var mediaMan = {
 var gameMan = {
 	selection:false,
 	debug:false,
-	tutorial:-1,
 	actions:2,
 	player:0,
 	scene:0,	// 0:game, 1:rules

@@ -63,14 +63,14 @@ function movePiece(pRow, pCol, row, col) {
 			pushGameState();
 		}
 
-		if (gameMan.tutorial > -1 && !tutCorrectMove()) {
+		if (tutorialMan.step > -1 && !tutCorrectMove()) {
 			revertGrid();
 			mediaMan.draw = true;
 			moved = false;
 		}
 	}
 
-	if (gameMan.tutorial > -1 && tutorialCompleted()) {
+	if (tutorialMan.step > -1 && tutorialCompleted()) {
 		nextTutorial();
 	}
 

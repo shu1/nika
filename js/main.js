@@ -249,7 +249,7 @@ function draw(time) {
 		drawPieces();
 		drawTurnUI();
 
-		if (gameMan.tutorial >= 0) {
+		if (tutorialMan.step >= 0) {
 			context.clearRect(cellSize*6, cellSize*6, cellSize*9, cellSize*3);
 			context.fillText(tutorialMan.text, cellSize*6, cellSize*8, cellSize*9);
 		}
@@ -431,7 +431,7 @@ function drawMenu(dTime) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length-1) {
-					if (inputMan.menu && button == menuMan.button || button == 1 && gameMan.debug || button == 3 && gameMan.tutorial >= 0 || button == 4 && gameMan.scene == 1) {
+					if (inputMan.menu && button == menuMan.button || button == 1 && gameMan.debug || button == 3 && tutorialMan.step >= 0 || button == 4 && gameMan.scene == 1) {
 						drawButton(row, col, buttons[button+1], "#13485d", "white");
 					}
 					else {
