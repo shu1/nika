@@ -1,6 +1,10 @@
 "use strict";
 
-var canvas, context, images, sounds, grid, gameStates=[], phalanx=[], scenes=[], tutorialMan={};
+var canvas, context, images, sounds, grid, gameStates=[], phalanx=[], scenes=[];
+
+var tutorialMan = {
+	text:""
+};
 
 var mediaMan = {
 	menu:false,
@@ -17,7 +21,7 @@ var gameMan = {
 	tutorial:-1,
 	actions:2,
 	player:0,
-	scene:0,
+	scene:0,	// 0:game, 1:rules
 	rules:0,
 	pRow:-1,
 	pCol:-1,

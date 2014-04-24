@@ -249,6 +249,11 @@ function draw(time) {
 		drawPieces();
 		drawTurnUI();
 
+		if (gameMan.tutorial >= 0) {
+			context.clearRect(cellSize*6, cellSize*6, cellSize*9, cellSize*3);
+			context.fillText(tutorialMan.text, cellSize*6, cellSize*8, cellSize*9);
+		}
+
 		context.restore();
 
 		if (gameMan.scene == 1) {

@@ -446,7 +446,7 @@ function endTutorial() {
 */}
 
 function tutorialMessage(text) {
-	alert(text);
+	tutorialMan.text = text;
 }
 
 testFunction = function () {
