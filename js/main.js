@@ -90,6 +90,15 @@ function init() {
 	dialogMan.width = cellSize*9;
 	dialogMan.height = cellSize*3;
 
+	var lineWidth = 53;
+	for (var i = tutorialTexts.length-1; i >= 0; --i) {
+		var lines = tutorialTexts[i];
+		for (var j = 0; lines[j].length > lineWidth; ++j) {
+			lines.push(lines[j].slice(lineWidth));
+			lines[j] = lines[j].slice(0, lineWidth);
+		}
+	}
+
 	reSize();
 	draw();
 }
@@ -383,7 +392,7 @@ function drawDialog() {
 	if (tutorialMan.step < tutorialTexts.length) {
 		context.clearRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
 		var lines = tutorialTexts[tutorialMan.step];
-		for (var i = 0; i < lines.length; ++i) {
+		for (var i = lines.length-1; i >= 0; --i) {
 			context.fillText(lines[i], dialogMan.x, dialogMan.y + mediaMan.retina*20*(i+1), dialogMan.width);
 		}
 	}

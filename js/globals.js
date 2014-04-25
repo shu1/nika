@@ -296,11 +296,9 @@ var tutorialBoards = [[			// Tutorial 1.2 - 0 - Athens Victory
 ]]
 
 var tutorialTexts = [[
-	"Welcome, strategos! You have been assigned command of our noble",
-	"Athenian troops against the cruel Spartans and the treacherous Thebans."
+	"Welcome, strategos! You have been assigned command of our noble Athenian troops against the cruel Spartans and the treacherous Thebans."
 ],[
-	"Our objective is to reach the camp of the Messenians, our brave allies. If a single",
-	"Athenian piece reaches any part of this area, we win, and so do the Messenians."
+	"Our objective is to reach the camp of the Messenians, our brave allies. If a single Athenian piece reaches any part of this area, we win, and so do the Messenians."
 ],[
 	"Drag our piece onto the highlighted space to claim victory."
 ],[
