@@ -14,15 +14,15 @@ function initTutorials() {
 }
 
 function tutorial(n) {
+	tutorialMan.step = n;
 	generateGrid(tutorialBoards[n]);
 	pushGameState();
-	tutorialMan.step = n;
 	tutorialMan.tuts[n].turn = 0;
-	draw();
 	tutStartAction();
 	if (tutorialCompleted()) {
 		nextTutorial();
 	}
+	mediaMan.draw = true;
 }
 
 function tutStartAction() {
