@@ -90,7 +90,7 @@ function init() {
 	dialogMan.width = cellSize*9;
 	dialogMan.height = cellSize*3;
 
-	var lineWidth = 53;
+	var lineWidth = 44;
 	for (var i = tutorialTexts.length-1; i >= 0; --i) {
 		var lines = tutorialTexts[i];
 		for (var j = 0; lines[j].length > lineWidth; ++j) {
@@ -390,10 +390,12 @@ function drawTurnUI() {
 
 function drawDialog() {
 	if (tutorialMan.step < tutorialTexts.length) {
+		var fontSize = 20;
+		context.font = mediaMan.retina * fontSize + "px sans-serif";
 		context.clearRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
 		var lines = tutorialTexts[tutorialMan.step];
 		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], dialogMan.x, dialogMan.y + mediaMan.retina*20*(i+1), dialogMan.width);
+			context.fillText(lines[i], dialogMan.x, dialogMan.y + mediaMan.retina * fontSize * (i+1));
 		}
 	}
 }

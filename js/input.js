@@ -157,7 +157,7 @@ function mouseUp(event) {
 		}
 		else if (!dblClick(event)) {
 			var scene = scenes[gameMan.scene];
-			if (scene == 1) {	// rules
+			if (gameMan.scene == 1) {	// rules
 				if (inputMan.x > canvas.width - cellSize*2) {
 					gameMan.rules++;
 					if (gameMan.rules > rulePages-1) {
