@@ -156,7 +156,8 @@ function mouseUp(event) {
 			menuButton(menuMan.button);
 		}
 		else if (!dblClick(event)) {
-			if (gameMan.scene == 1) {	// rules
+			var scene = scenes[gameMan.scene];
+			if (scene == 1) {	// rules
 				if (inputMan.x > canvas.width - cellSize*2) {
 					gameMan.rules++;
 					if (gameMan.rules > rulePages-1) {
@@ -170,7 +171,9 @@ function mouseUp(event) {
 					}
 				}
 			}
-			else if (tutorialMan.step >= 0 && inputMan.x > dialogMan.x && inputMan.x < dialogMan.x + dialogMan.width && inputMan.y > dialogMan.y && inputMan.y < dialogMan.y + dialogMan.height) {
+			else if (tutorialMan.step >= 0
+				&& inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
+				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
 				tutorialMan.step++;
 			}
 			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol && grid[gameMan.pRow][gameMan.pCol].rot == gameMan.pRot) {	// one-click selection
