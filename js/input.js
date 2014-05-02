@@ -14,7 +14,7 @@ function menuButton(button) {
 			break;
 		case 3:
 			if (tutorialMan.step < 0) {
-				nextTutorial();
+				nextTutorialStep();
 			}
 			else {
 				endTutorial();
@@ -174,7 +174,7 @@ function mouseUp(event) {
 			else if (tutorialMan.step >= 0
 				&& inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
 				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
-				tutorialMan.step++;
+				nextTutorialStep();
 			}
 			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol && grid[gameMan.pRow][gameMan.pCol].rot == gameMan.pRot) {	// one-click selection
 			 	if (!gameMan.selection) {

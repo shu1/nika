@@ -63,15 +63,9 @@ function movePiece(pRow, pCol, row, col) {
 			pushGameState();
 		}
 
-		if (tutorialMan.step > -1 && !tutCorrectMove()) {
-			undo();
-			mediaMan.draw = true;
-			moved = false;
+		if (tutorialMan.step > -1) {
+			checkTutorialMove();
 		}
-	}
-
-	if (tutorialMan.step > -1 && tutorialCompleted()) {
-		nextTutorial();
 	}
 
 	return moved;

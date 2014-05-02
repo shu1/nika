@@ -29,7 +29,6 @@ function init() {
 	generateGrid(mainBoard);
 	pushGameState();
 	useAction(0);	// init debug text
-	initTutorials();
 
 	images = new Array(8);
 	images[0] = document.getElementById("athens");
