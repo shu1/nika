@@ -96,6 +96,7 @@ function init() {
 			lines.push(lines[j].slice(lineWidth));
 			lines[j] = lines[j].slice(0, lineWidth);
 		}
+		lines.unshift(i + "");
 	}
 
 	reSize();

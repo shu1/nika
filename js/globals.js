@@ -101,7 +101,7 @@ var mainBoard = [
 
 var tutorialTurns = [1, 0, 0, 0, 2, 4, 2, 2, 1, 2, 1, 1];
 
-var tutorialBoards = [[	// 0 Athens Victory
+var tutorialBoards = [[	// 2 Athens Victory
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",

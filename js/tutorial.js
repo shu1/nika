@@ -1,11 +1,12 @@
 function nextTutorialStep() {
 	tutorialMan.step++;
 	setupTutorial(tutorialMan.step);
+	mediaMan.draw = true;
 }
 
 function endTutorial() {
-	generateGrid(mainBoard);
 	tutorialMan.step = -1;
+	generateGrid(mainBoard);
 	mediaMan.draw = true;
 }
 
@@ -23,6 +24,9 @@ function resetActions(player) {
 function setupTutorial() {
 	switch (tutorialMan.step) {
 	case 0:
+		generateGrid(mainBoard);
+		break;
+	case 2:
 		nextTutorialPart(0);
 		break;
 	case 3:
@@ -62,7 +66,6 @@ function setupTutorial() {
 		endTutorial();
 		break;
 	}
-	mediaMan.draw = true;
 }
 
 function checkTutorialMove() {
