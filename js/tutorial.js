@@ -6,6 +6,7 @@ function nextTutorialStep() {
 
 function endTutorial() {
 	tutorialMan.step = -1;
+	resetActions(0);
 	generateGrid(mainBoard);
 	mediaMan.draw = true;
 }
@@ -28,41 +29,135 @@ function setupTutorial() {
 		break;
 	case 2:
 		nextTutorialPart(0);
+		grid[2][10].ring = 3;
 		break;
 	case 3:
 		nextTutorialPart(1);
+		resetActions(2);
+		break;
+	case 4:
+		moveOnePiece(11, 10, 12, 10);
 		break;
 	case 5:
 		nextTutorialPart(2);
+		resetActions(1);
+		break;
+	case 6:
+		moveOnePiece(7, 17, 7, 18);
 		break;
 	case 7:
 		nextTutorialPart(3);
+		resetActions(3);
+		break;
+	case 8:
+		moveOnePiece(7, 3, 7, 2);
 		break;
 	case 9:
 		nextTutorialPart(4);
 		break;
+	case 11:
+		grid[9][7].ring = 2;
+		break;
+	case 12:
+		grid[10][5].ring = 2;
+		grid[10][6].ring = 3;
+		break;
+	case 13:
+		grid[10][6].ring = 2;
+		grid[9][6].ring = 3;
+		break;
 	case 15:
 		nextTutorialPart(5);
+		break;
+	case 16:
+		grid[10][11].ring = 2;
+		break;
+	case 17:
+		grid[9][11].ring = 2;
+		break;
+	case 19:
+		resetActions(0);
+		moveOnePiece(11, 14, 11, 13);
+		moveOnePiece(11, 13, 11, 12);
+		break;
+	case 20:
+		grid[13][9].ring = 3;
+		grid[13][10].ring = 3;
+		grid[13][11].ring = 3;
+		grid[14][9].ring = 3;
+		grid[14][10].ring = 3;
+		grid[14][11].ring = 3;
+		break;
+	case 21:
+		grid[13][8].ring = 2;
+		grid[13][11].ring = 3;
+		break;
+	case 23:
+		grid[13][11].ring = 2;
+		grid[12][11].ring = 3;
 		break;
 	case 25:
 		nextTutorialPart(6);
 		break;
+	case 26:
+		grid[9][6].ring = 2;
+		grid[10][6].ring = 2;
+		grid[9][5].ring = 3;
+		grid[10][5].ring = 3;
+		break;
+	case 27:
+		grid[9][5].ring = 2;
+		grid[10][5].ring = 2;
+		break;
 	case 29:
 		nextTutorialPart(7);
+		break;
+	case 31:
+		grid[11][16].ring = 2;
+		grid[10][16].ring = 3;
 		break;
 	case 33:
 		nextTutorialPart(8);
 		break;
+	case 34:
+		grid[10][5].ring = 2;
+		grid[9][5].ring = 2;
+		grid[8][5].ring = 3;
+		break;
 	case 36:
 		nextTutorialPart(9);
 		break;
-	case 40:
+	case 37:
+		grid[9][15].ring = 2;
+		break;
+	case 38:
+		grid[9][16].ring = 2;
+		grid[10][16].ring = 2;
+		break;
+	case 39:
+		grid[8][16].ring = 2;
+		grid[8][15].ring = 3;
+		break;
+	case 41:
 		nextTutorialPart(10);
 		break;
-	case 43:
+	case 42:
+		grid[5][5].ring = 2;
+		grid[4][5].ring = 2;
+		grid[3][5].ring = 3;
+		break;
+	case 44:
 		nextTutorialPart(11);
 		break;
-	case 51:
+	case 45:
+		grid[6][15].ring = 3;
+		break;
+	case 46:
+		grid[8][15].ring = 2;
+		grid[7][15].ring = 2;
+		grid[6][15].ring = 3;
+		break;
+	case 52:
 		endTutorial();
 		break;
 	}
@@ -96,12 +191,12 @@ function checkTutorialMove() {
 		}
 		break;
 	case 21:
-		if (grid[13][9].player == 0 || grid[13][10].player == 0 || grid[13][11].player == 0) {
+		if (grid[13][11].player == 0) {
 			nextTutorialStep();
 		}
 		break;
 	case 23:
-		if (grid[12][9].player == 0 || grid[12][10].player == 0 || grid[12][11].player == 0) {
+		if (grid[12][11].player == 0) {
 			nextTutorialStep();
 		}
 		break;
@@ -143,12 +238,12 @@ function checkTutorialMove() {
 			nextTutorialStep();
 		}
 		break;
-	case 41:
+	case 42:
 		if (grid[3][5].player == 0) {
 			nextTutorialStep();
 		}
 		break;
-	case 45:
+	case 46:
 		if (grid[6][15].player == 0) {
 			nextTutorialStep();
 		}

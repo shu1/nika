@@ -376,21 +376,23 @@ var tutorialTexts = [[
 ],[
 	"Ha! Now, seize the advantage and destroy that Theban! Tap to select only this piece so it can move to the left without rotating first - but I'm sure you knew that already. Then attack!" // 39
 ],[
-	"Good news, strategos! Our men have trapped a Spartan near the edge of the field." // 40
+	"Excellent!"
 ],[
-	"If we push an enemy piece off the battlefield, that enemy is routed. Push that Spartan to take him out!" // 41
+	"Good news, strategos! Our men have trapped a Spartan near the edge of the field." // 41
+],[
+	"If we push an enemy piece off the battlefield, that enemy is routed. Push that Spartan to take him out!" // 42
 ],[
 	"Yes! We can rout enemies by pushing them into any invalid space. That includes our and our ally's victory areas, as well as the center or outside of the board."
 ],[
-	"We can reap great rewards by coordinating with the Messenians, our allies." // 43
+	"We can reap great rewards by coordinating with the Messenians, our allies." // 44
 ],[
 	"If we push this piece into our ally, the Theban will be routed, regardless of our ally's facing. Pushing an enemy into our own piece does the same thing."
 ],[
-	"So, order the men forward!" // 45
+	"So, order the men forward!" // 46
 ],[
 	"Perfect! At this point, we'll have to wait for the Messenians to move their soldier out of our way. We are never allowed to push or rout our allies - or our own men."
 ],[
-	"Congratulations! You now know everything you need to play Nika." // 47
+	"Congratulations! You now know everything you need to play Nika." // 48
 ],[
 	"Always remember your ultimate goal - get one of your pieces across the board into the victory area on your ally's side, or help your ally do the same."
 ],[
