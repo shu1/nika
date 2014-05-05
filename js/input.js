@@ -101,7 +101,7 @@ function mouseDown(event) {
 	hudMan.soundText = "";
 	hudMan.inputText = "";
 	inputMan.menu = getXY(event);
-	if (!inputMan.menu) {
+	if (!inputMan.menu && tutorialInputs[tutorialMan.step] != 'tap') {
 		getPiece(inputMan.row, inputMan.col);
 		var scene = scenes[gameMan.scene];
 		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {
@@ -171,10 +171,12 @@ function mouseUp(event) {
 					}
 				}
 			}
-			else if (tutorialMan.step >= 0
-				&& inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
+			else if (tutorialMan.step >= 0 && tutorialInputs[tutorialMan.step] == 'tap') {
+				if (inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
 				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
-				nextTutorialStep();
+					inputMan.time = 0;
+					nextTutorialStep();
+				}
 			}
 			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol && grid[gameMan.pRow][gameMan.pCol].rot == gameMan.pRot) {	// one-click selection
 			 	if (!gameMan.selection) {

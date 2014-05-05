@@ -300,7 +300,7 @@ var tutorialTexts = [[
 ],[
 	"Our objective is to reach the camp of the Messenians, our brave allies. If a single Athenian piece reaches any part of this area, we win, and so do the Messenians."
 ],[
-	"Drag our piece onto the highlighted space to claim victory." // 2
+	"Drag our piece onto the highlighted space to claim victory." // 2 Move
 ],[
 	"We can also win by helping any Messenian piece reach our own camp." // 3
 ],[
@@ -320,17 +320,17 @@ var tutorialTexts = [[
 ],[
 	"All hoplites carry shields which protect their front. The Spartan is FACING this piece, so this piece cannot attack."
 ],[
-	"But Athena smiles upon us today - we have him flanked! Let us MOVE our other soldier forward. Drag this piece in the direction you want to move it." // 12
+	"But Athena smiles upon us today - we have him flanked! Let us MOVE our other soldier forward. Drag this piece in the direction you want to move it." // 12 Move
 ],[
-	"We can ROUT an enemy piece by moving into it from the side or back, but not from the front. Take out that Spartan!" // 13
+	"We can ROUT an enemy piece by moving into it from the side or back, but not from the front. Take out that Spartan!" // 13 Move
 ],[
 	"Bravo! Now, listen - this is important. A piece can move forward, left, right, or back in one action. As you saw, it turns to face the direction it moved in."
 ],[
 	"Strategos! While we were dealing with that Spartan, a contingent of Thebans has approached us from behind. Two of our men are in danger!" // 15
 ],[
-	"We must protect ourselves! To ROTATE a piece in place, drag it in the direction you want it to face, then end your touch on the same piece. Rotate this piece so that it faces the right." // 16
+	"We must protect ourselves! To ROTATE a piece in place, drag it in the direction you want it to face, then end your touch on the same piece. Rotate this piece so that it faces the right." // 16 Move
 ],[
-	"Excellent! Now, rotate our other soldier to face the Theban. Since the Theban is blocking movement in that direction, you can just drag our piece toward the Theban." // 17
+	"Excellent! Now, rotate our other soldier to face the Theban. Since the Theban is blocking movement in that direction, you can just drag our piece toward the Theban." // 17 Move
 ],[
 	"Pieces can rotate to face any direction in one action. Well done - the men are safe, for now."
 ],[
@@ -338,17 +338,17 @@ var tutorialTexts = [[
 ],[
 	"Routed pieces are not out of the battle forever. You can rally one routed piece at a time back onto the battlefield into the areas indicated."
 ],[
-	"To RALLY a piece, drag it into one of your rally spaces. Let's deploy our man here so he can hurry back to the fight." // 21
+	"To RALLY a piece, drag it into one of your rally spaces. Let's deploy our man here so he can hurry back to the fight." // 21 Move
 ],[
 	"We move through these spaces normally, but our enemies are not allowed to enter them."
 ],[
-	"Let's move up our fresh soldier in support." // 23
+	"Let's move up our fresh soldier in support." // 23 Move
 ],[
 	"Brilliant!"
 ],[
 	"Like all hoplites, our troops are trained to act in the powerful PHALANX formation. If two or more are adjacent and face the same way, they can move and rotate together." // 25
 ],[
-	"To move in a phalanx, just drag forward any piece that is part of a phalanx formation." // 26
+	"To move in a phalanx, just drag forward any piece that is part of a phalanx formation." // 26 Move
 ],[
 	"Exactly. Now, rotate our phalanx to face the Spartan. Drag any piece in the phalanx in the direction you want it to face." // 27
 ],[
@@ -356,15 +356,15 @@ var tutorialTexts = [[
 ],[
 	"The Thebans have mounted a tough defense. If we move our whole phalanx forward, our piece nearest the main Theban formation will be in danger. Let us proceed with caution." // 29
 ],[
-	"Fortunately, we can split pieces off from a phalanx. Tap the indicated piece to enter phalanx sub-selection mode." // 30
+	"Fortunately, we can split pieces off from a phalanx. Tap the indicated piece to enter phalanx sub-selection mode." // 30 Move
 ],[
-	"Now, to the attack! Select only the forward piece by tapping it, then rout the exposed Theban. Remember - unlike a phalanx, a single piece can move in any direction!" // 31
+	"Now, to the attack! Select only the forward piece by tapping it, then rout the exposed Theban. Remember - unlike a phalanx, a single piece can move in any direction!" // 31 Move
 ],[
 	"We have struck first without leaving our men vulnerable. Masterful!"
 ],[
 	"This Spartan seeks to block our path. Well, the Spartans are known more for their bravery than their intelligence..." // 33
 ],[
-	"Our phalanx cannot rout the Spartan, as he is facing us. But, since we have two pieces lined up against a single enemy, we can PUSH him backward by simply moving our phalanx toward him." // 34
+	"Our phalanx cannot rout the Spartan, as he is facing us. But, since we have two pieces lined up against a single enemy, we can PUSH him backward by simply moving our phalanx toward him." // 34 Move
 ],[
 	"Just so. We can push no further, as there are now two enemies lined up to block our way, even though the farther Spartan is not facing us. Still, it is important to gain ground when we can."
 ],[
@@ -372,15 +372,15 @@ var tutorialTexts = [[
 ],[
 	"We cannot push in this line, as there is only one Athenian facing one Theban. Our soldier here is stuck."
 ],[
-	"However, we have the advantage in this line. Our two pieces can push back the single Theban. Select only them, and move them forward." // 38
+	"However, we have the advantage in this line. Our two pieces can push back the single Theban. Select only them, and move them forward." // 38 Move
 ],[
-	"Ha! Now, seize the advantage and destroy that Theban! Tap to select only this piece so it can move to the left without rotating first - but I'm sure you knew that already. Then attack!" // 39
+	"Ha! Now, seize the advantage and destroy that Theban! Tap to select only this piece so it can move to the left without rotating first - but I'm sure you knew that already. Then attack!" // 39 Move
 ],[
 	"Excellent!"
 ],[
 	"Good news, strategos! Our men have trapped a Spartan near the edge of the field." // 41
 ],[
-	"If we push an enemy piece off the battlefield, that enemy is routed. Push that Spartan to take him out!" // 42
+	"If we push an enemy piece off the battlefield, that enemy is routed. Push that Spartan to take him out!" // 42 Move
 ],[
 	"Yes! We can rout enemies by pushing them into any invalid space. That includes our and our ally's victory areas, as well as the center or outside of the board."
 ],[
@@ -388,7 +388,7 @@ var tutorialTexts = [[
 ],[
 	"If we push this piece into our ally, the Theban will be routed, regardless of our ally's facing. Pushing an enemy into our own piece does the same thing."
 ],[
-	"So, order the men forward!" // 46
+	"So, order the men forward!" // 46 Move
 ],[
 	"Perfect! At this point, we'll have to wait for the Messenians to move their soldier out of our way. We are never allowed to push or rout our allies - or our own men."
 ],[
@@ -400,3 +400,17 @@ var tutorialTexts = [[
 ],[
 	"Though the rules are few, you will find that the strategies are deep and varied. Now then, proserchou kai nika - go forth and conquer!"
 ]]
+
+var tutorialInputs = [
+	'tap',  'tap',  'move', 'tap',  'tap',
+	'tap',  'tap',  'tap',  'tap',  'tap',
+	'tap',  'tap',  'move', 'move', 'tap',
+	'tap',  'move', 'move', 'tap',  'tap',
+	'tap',  'move', 'tap',  'move', 'tap',
+	'tap',  'move', 'tap',  'tap',  'tap',
+	'move', 'move', 'tap',  'tap',  'move',
+	'tap',  'tap',  'tap',  'move', 'move',
+	'tap',  'tap',  'move', 'tap',  'tap',
+	'tap',  'move', 'tap',  'tap',  'tap',
+	'tap',  'tap',
+]

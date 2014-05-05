@@ -26,6 +26,7 @@ function setupTutorial() {
 	switch (tutorialMan.step) {
 	case 0:
 		generateGrid(mainBoard);
+		resetActions(0);
 		break;
 	case 2:
 		nextTutorialPart(0);
