@@ -164,50 +164,51 @@ function setupTutorial() {
 }
 
 function checkTutorialMove() {
+	var correct = false;
 	switch (tutorialMan.step) {
 	case 2:
 		if (grid[2][10].player == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 12:
 		if (grid[10][6].player == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 13:
 		if (grid[9][6].player == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 16:
 		if (grid[10][11].rot == 1) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 17:
 		if (grid[9][11].rot == 1) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 21:
 		if (grid[13][11].player == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 23:
 		if (grid[12][11].player == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 26:
 		if (grid[9][5].player == 0 && grid[10][5].player == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 27:
 		if (grid[9][5].rot == 0 && grid[10][5].rot == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 
@@ -215,38 +216,43 @@ function checkTutorialMove() {
 
 	case 30:
 		if (grid[10][15].player == 0 && grid[11][15].player == 0 && grid[11][16].player == 0 && grid[9][14].player == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 31:
 		if (grid[10][16].player == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 34:
 		if (grid[8][5].player == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 38:
 		if (grid[8][16].player == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 39:
 		if (grid[8][15].player == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 42:
 		if (grid[3][5].player == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
 	case 46:
 		if (grid[6][15].player == 0) {
-			nextTutorialStep();
+			correct = true;
 		}
 		break;
+	}
+	if (correct) {
+		nextTutorialStep();
+	} else {
+		undo();
 	}
 }
