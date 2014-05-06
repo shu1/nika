@@ -104,7 +104,7 @@ function mouseDown(event) {
 	if (!inputMan.menu) {
 		getPiece(inputMan.row, inputMan.col);
 		var scene = scenes[gameMan.scene];
-		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && tutorialInputs[tutorialMan.step] != 'tap') {
+		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[tutorialMan.step]) {
 			inputMan.pX = scene.x + (gameMan.pCol * cellSize + cellSize/2) * scene.scale;
 			inputMan.pY = scene.y + (gameMan.pRow * cellSize + cellSize/2) * scene.scale;
 			event.preventDefault();
@@ -171,14 +171,15 @@ function mouseUp(event) {
 					}
 				}
 			}
-			else if (tutorialMan.step >= 0 && tutorialInputs[tutorialMan.step] == 'tap') {
+			else if (tutorialMan.step >= 0 && (tutorialInputs[tutorialMan.step] || gameMan.debug)) {
 				if (inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
 				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
 					inputMan.time = 0;
 					nextTutorialStep();
 				}
 			}
-			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol && grid[gameMan.pRow][gameMan.pCol].rot == gameMan.pRot) {	// one-click selection
+			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol
+			&& grid[gameMan.pRow][gameMan.pCol].rot == gameMan.pRot) {	// one-click selection
 			 	if (!gameMan.selection) {
 			 		phalanx.length = 0;
 			 	}

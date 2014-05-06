@@ -96,7 +96,7 @@ function init() {
 			lines.push(lines[j].slice(lineWidth));
 			lines[j] = lines[j].slice(0, lineWidth);
 		}
-		lines.unshift(i + "");
+		lines.push("step " + i + (tutorialInputs[i] ? "                              Tap here to continue" : ""));
 	}
 
 	reSize();
@@ -457,7 +457,8 @@ function drawMenu(dTime) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length-1) {
-					if (inputMan.menu && button == menuMan.button || button == 1 && gameMan.debug || button == 3 && tutorialMan.step >= 0 || button == 4 && gameMan.scene == 1) {
+					if (inputMan.menu && button == menuMan.button || button == 1 && gameMan.debug
+					|| button == 3 && tutorialMan.step >= 0 || button == 4 && gameMan.scene == 1) {
 						drawButton(row, col, buttons[button+1], "#13485d", "white");
 					}
 					else {

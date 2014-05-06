@@ -99,8 +99,6 @@ var mainBoard = [
 	"......dddccc........."
 ]
 
-var tutorialTurns = [1, 0, 0, 0, 2, 4, 2, 2, 1, 2, 1, 1];
-
 var tutorialBoards = [[	// 2 Athens Victory
 	".........kkklll......",
 	".........kkklll......",
@@ -295,6 +293,8 @@ var tutorialBoards = [[	// 2 Athens Victory
 	"......dddccc........."
 ]]
 
+var tutorialTurns = [1, 0, 0, 0, 2, 4, 2, 2, 1, 2, 1, 1];
+
 var tutorialTexts = [[
 	"Welcome, strategos! You have been assigned command of our noble Athenian troops against the cruel Spartans and the treacherous Thebans."
 ],[
@@ -402,15 +402,10 @@ var tutorialTexts = [[
 ]]
 
 var tutorialInputs = [
-	'tap',  'tap',  'move', 'tap',  'tap',
-	'tap',  'tap',  'tap',  'tap',  'tap',
-	'tap',  'tap',  'move', 'move', 'tap',
-	'tap',  'move', 'move', 'tap',  'tap',
-	'tap',  'move', 'tap',  'move', 'tap',
-	'tap',  'move', 'tap',  'tap',  'tap',
-	'move', 'move', 'tap',  'tap',  'move',
-	'tap',  'tap',  'tap',  'move', 'move',
-	'tap',  'tap',  'move', 'tap',  'tap',
-	'tap',  'move', 'tap',  'tap',  'tap',
-	'tap',  'tap',
+	true,	true,	false,	true,	true,	true,	true,	true,	true,	true,
+	true,	true,	false,	false,	true,	true,	false,	false,	true,	true,
+	true,	false,	true,	false,	true,	true,	false,	true,	true,	true,
+	false,	false,	true,	true,	false,	true,	true,	true,	false,	false,
+	true,	true,	false,	true,	true,	true,	false,	true,	true,	true,
+	true,	true,
 ]
