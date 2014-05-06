@@ -101,10 +101,10 @@ function mouseDown(event) {
 	hudMan.soundText = "";
 	hudMan.inputText = "";
 	inputMan.menu = getXY(event);
-	if (!inputMan.menu && tutorialInputs[tutorialMan.step] != 'tap') {
+	if (!inputMan.menu) {
 		getPiece(inputMan.row, inputMan.col);
 		var scene = scenes[gameMan.scene];
-		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {
+		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && tutorialInputs[tutorialMan.step] != 'tap') {
 			inputMan.pX = scene.x + (gameMan.pCol * cellSize + cellSize/2) * scene.scale;
 			inputMan.pY = scene.y + (gameMan.pRow * cellSize + cellSize/2) * scene.scale;
 			event.preventDefault();
