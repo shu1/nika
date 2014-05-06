@@ -392,6 +392,7 @@ function drawDialog() {
 	if (tutorialMan.step < tutorialTexts.length) {
 		var fontSize = 20;
 		context.font = mediaMan.retina * fontSize + "px sans-serif";
+		context.fillStyle = "white";
 		context.clearRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
 		var lines = tutorialTexts[tutorialMan.step];
 		for (var i = lines.length-1; i >= 0; --i) {
