@@ -302,7 +302,7 @@ var tutorialTexts = [[
 ],[
 	"Drag our piece onto the highlighted space to claim victory." // 2 Move
 ],[
-	"We can also win by helping any Messenian piece reach our own camp." // 3
+	"We also win if any Messenian piece reaches our own camp." // 3
 ],[
 	"Victory!"
 ],[
