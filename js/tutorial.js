@@ -1,5 +1,6 @@
 function nextTutorialStep() {
 	tutorialMan.step++;
+	clearTutorialRings();
 	setupTutorial(tutorialMan.step);
 	mediaMan.draw = true;
 }
@@ -63,18 +64,15 @@ function setupTutorial() {
 		pushGameState();
 		break;
 	case 11:
-		clearTutorialRings();
 		grid[9][7].prompt = 0;
 		pushGameState();
 		break;
 	case 12:
-		clearTutorialRings();
 		grid[10][5].prompt = 0;
 		grid[10][6].prompt = 1;
 		pushGameState();
 		break;
 	case 13:
-		clearTutorialRings();
 		grid[10][6].prompt = 0;
 		grid[9][6].prompt = 1;
 		pushGameState();
@@ -84,7 +82,6 @@ function setupTutorial() {
 		pushGameState();
 		break;
 	case 16:
-		clearTutorialRings();
 		grid[10][11].prompt = 0;
 		pushGameState();
 		break;
@@ -99,7 +96,6 @@ function setupTutorial() {
 		pushGameState();
 		break;
 	case 20:
-		clearTutorialRings();
 		grid[13][9].prompt = 1;
 		grid[13][10].prompt = 1;
 		grid[13][11].prompt = 1;
@@ -109,13 +105,11 @@ function setupTutorial() {
 		pushGameState();
 		break;
 	case 21:
-		clearTutorialRings();
 		grid[13][8].prompt = 0;
 		grid[13][11].prompt = 1;
 		pushGameState();
 		break;
 	case 23:
-		clearTutorialRings();
 		grid[13][11].prompt = 0;
 		grid[12][11].prompt = 1;
 		pushGameState();
@@ -125,7 +119,6 @@ function setupTutorial() {
 		pushGameState();
 		break;
 	case 26:
-		clearTutorialRings();
 		grid[9][6].prompt = 0;
 		grid[10][6].prompt = 0;
 		grid[9][5].prompt = 1;
@@ -133,7 +126,6 @@ function setupTutorial() {
 		pushGameState();
 		break;
 	case 27:
-		clearTutorialRings();
 		grid[9][5].prompt = 0;
 		grid[10][5].prompt = 0;
 		pushGameState();
@@ -143,26 +135,22 @@ function setupTutorial() {
 		pushGameState();
 		break;
 	case 30:
-		clearTutorialRings();
 		grid[10][14].prompt = 1;
 		pushGameState();
 		break;
 	case 31:
-		clearTutorialRings();
 		grid[10][14].prompt = 1;
 		grid[11][14].prompt = 1;
 		grid[11][15].prompt = 1;
 		pushGameState();
 		break;
 	case 32:
-		clearTutorialRings();
 		grid[10][14].prompt = 1;
 		grid[11][14].prompt = 1;
 		grid[11][15].prompt = 1;
 		pushGameState();
 		break;
 	case 34:
-		clearTutorialRings();
 		grid[11][16].prompt = 0;
 		grid[10][16].prompt = 1;
 		pushGameState();
@@ -171,7 +159,6 @@ function setupTutorial() {
 		nextTutorialPart(8);
 		break;
 	case 37:
-		clearTutorialRings();
 		grid[10][5].prompt = 0;
 		grid[9][5].prompt = 0;
 		grid[8][5].prompt = 1;
@@ -182,18 +169,15 @@ function setupTutorial() {
 		pushGameState();
 		break;
 	case 40:
-		clearTutorialRings();
 		grid[9][15].prompt = 0;
 		pushGameState();
 		break;
 	case 41:
-		clearTutorialRings();
 		grid[9][16].prompt = 0;
 		grid[10][16].prompt = 0;
 		pushGameState();
 		break;
 	case 42:
-		clearTutorialRings();
 		grid[8][16].prompt = 0;
 		grid[8][15].prompt = 1;
 		pushGameState();
@@ -203,7 +187,6 @@ function setupTutorial() {
 		pushGameState();
 		break;
 	case 45:
-		clearTutorialRings();
 		grid[5][5].prompt = 0;
 		grid[4][5].prompt = 0;
 		grid[3][5].prompt = 1;
@@ -214,12 +197,10 @@ function setupTutorial() {
 		pushGameState();
 		break;
 	case 48:
-		clearTutorialRings();
 		grid[6][15].prompt = 1;
 		pushGameState();
 		break;
 	case 49:
-		clearTutorialRings();
 		grid[8][15].prompt = 0;
 		grid[7][15].prompt = 0;
 		grid[6][15].prompt = 1;
