@@ -316,10 +316,12 @@ function setRings() {
 	}
 }
 
-function clearRings() {
+function clearTutorialRings() {
 	for (var row=0; row<15; ++row) {
 		for (var col=0; col<21; ++col) {
-			grid[row][col].ring = -1;
+			if (grid[row][col].ring == 2 || grid[row][col].ring == 3) {
+				grid[row][col].ring = -1;
+			}
 		}
 	}
 }
@@ -342,7 +344,10 @@ function drawPieces() {
 				if (cell.ring >= 0) {
 					context.drawImage(images[5 + cell.ring%2], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
 				}
-				cell.ring = -1;	// clear for next time
+
+				if (cell.ring != 2 && cell.ring != 3) {
+					cell.ring = -1;	// clear for next time
+				}
 
 				context.restore();
 			}

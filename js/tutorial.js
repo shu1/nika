@@ -14,7 +14,6 @@ function endTutorial() {
 function nextTutorialPart(part) {
 	generateGrid(tutorialBoards[part]);
 	resetActions(0);
-	pushGameState();
 }
 
 function resetActions(player) {
@@ -31,17 +30,21 @@ function setupTutorial() {
 	case 2:
 		nextTutorialPart(0);
 		grid[2][10].ring = 3;
+		pushGameState();
 		break;
 	case 3:
 		nextTutorialPart(1);
 		resetActions(2);
+		pushGameState();
 		break;
 	case 4:
 		moveOnePiece(11, 10, 12, 10);
+		pushGameState();
 		break;
 	case 5:
 		nextTutorialPart(2);
 		resetActions(1);
+		pushGameState();
 		break;
 	case 6:
 		moveOnePiece(7, 17, 7, 18);
@@ -49,32 +52,45 @@ function setupTutorial() {
 	case 7:
 		nextTutorialPart(3);
 		resetActions(3);
+		pushGameState();
 		break;
 	case 8:
 		moveOnePiece(7, 3, 7, 2);
+		pushGameState();
 		break;
 	case 9:
 		nextTutorialPart(4);
+		pushGameState();
 		break;
 	case 11:
+		clearTutorialRings();
 		grid[9][7].ring = 2;
+		pushGameState();
 		break;
 	case 12:
+		clearTutorialRings();
 		grid[10][5].ring = 2;
 		grid[10][6].ring = 3;
+		pushGameState();
 		break;
 	case 13:
+		clearTutorialRings();
 		grid[10][6].ring = 2;
 		grid[9][6].ring = 3;
+		pushGameState();
 		break;
 	case 15:
 		nextTutorialPart(5);
+		pushGameState();
 		break;
 	case 16:
+		clearTutorialRings();
 		grid[10][11].ring = 2;
+		pushGameState();
 		break;
 	case 17:
 		grid[9][11].ring = 2;
+		pushGameState();
 		break;
 	case 19:
 		resetActions(0);
@@ -83,94 +99,131 @@ function setupTutorial() {
 		pushGameState();
 		break;
 	case 20:
+		clearTutorialRings();
 		grid[13][9].ring = 3;
 		grid[13][10].ring = 3;
 		grid[13][11].ring = 3;
 		grid[14][9].ring = 3;
 		grid[14][10].ring = 3;
 		grid[14][11].ring = 3;
+		pushGameState();
 		break;
 	case 21:
+		clearTutorialRings();
 		grid[13][8].ring = 2;
 		grid[13][11].ring = 3;
+		pushGameState();
 		break;
 	case 23:
+		clearTutorialRings();
 		grid[13][11].ring = 2;
 		grid[12][11].ring = 3;
+		pushGameState();
 		break;
 	case 25:
 		nextTutorialPart(6);
+		pushGameState();
 		break;
 	case 26:
+		clearTutorialRings();
 		grid[9][6].ring = 2;
 		grid[10][6].ring = 2;
 		grid[9][5].ring = 3;
 		grid[10][5].ring = 3;
+		pushGameState();
 		break;
 	case 27:
+		clearTutorialRings();
 		grid[9][5].ring = 2;
 		grid[10][5].ring = 2;
+		pushGameState();
 		break;
 	case 29:
 		nextTutorialPart(7);
+		pushGameState();
 		break;
 	case 30:
+		clearTutorialRings();
 		grid[10][14].ring = 3;
+		pushGameState();
 		break;
 	case 31:
+		clearTutorialRings();
 		grid[10][14].ring = 3;
 		grid[11][14].ring = 3;
 		grid[11][15].ring = 3;
+		pushGameState();
 		break;
 	case 32:
+		clearTutorialRings();
 		grid[10][14].ring = 3;
 		grid[11][14].ring = 3;
 		grid[11][15].ring = 3;
+		pushGameState();
 		break;
 	case 34:
+		clearTutorialRings();
 		grid[11][16].ring = 2;
 		grid[10][16].ring = 3;
+		pushGameState();
 		break;
 	case 36:
 		nextTutorialPart(8);
 		break;
 	case 37:
+		clearTutorialRings();
 		grid[10][5].ring = 2;
 		grid[9][5].ring = 2;
 		grid[8][5].ring = 3;
+		pushGameState();
 		break;
 	case 39:
 		nextTutorialPart(9);
+		pushGameState();
 		break;
 	case 40:
+		clearTutorialRings();
 		grid[9][15].ring = 2;
+		pushGameState();
 		break;
 	case 41:
+		clearTutorialRings();
 		grid[9][16].ring = 2;
 		grid[10][16].ring = 2;
+		pushGameState();
 		break;
 	case 42:
+		clearTutorialRings();
 		grid[8][16].ring = 2;
 		grid[8][15].ring = 3;
+		pushGameState();
 		break;
 	case 44:
 		nextTutorialPart(10);
+		pushGameState();
 		break;
 	case 45:
+		clearTutorialRings();
 		grid[5][5].ring = 2;
 		grid[4][5].ring = 2;
 		grid[3][5].ring = 3;
+		pushGameState();
 		break;
 	case 47:
 		nextTutorialPart(11);
+		pushGameState();
 		break;
 	case 48:
+		clearTutorialRings();
 		grid[6][15].ring = 3;
+		pushGameState();
 		break;
 	case 49:
+		clearTutorialRings();
 		grid[8][15].ring = 2;
 		grid[7][15].ring = 2;
 		grid[6][15].ring = 3;
+		pushGameState();
 		break;
 	case 55:
 		endTutorial();
