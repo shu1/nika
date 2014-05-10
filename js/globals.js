@@ -356,7 +356,13 @@ var tutorialTexts = [[
 ],[
 	"The Thebans have mounted a tough defense. If we move our whole phalanx forward, our piece nearest the main Theban formation will be in danger. Let us proceed with caution." // 29
 ],[
-	"Fortunately, we can split pieces off from a phalanx. Tap the indicated piece to enter phalanx sub-selection mode." // 30 Move
+	"Fortunately, we can split pieces off from a phalanx. Tap the indicated piece to enter phalanx sub-selection mode."
+],[
+	"Now tap the other pieces indicated, starting with the corner piece. If you try to create an invalid phalanx by tapping the forward piece first, you'll have to start over."
+],[
+	"Now tap the other pieces indicated, starting with the corner piece. If you try to create an invalid phalanx by tapping the forward piece first, you'll have to start over."
+],[
+	"Deftly done! You can now move the smaller phalanx you created by dragging it forward as normal." // 33 Move
 ],[
 	"Now, to the attack! Select only the forward piece by tapping it, then rout the exposed Theban. Remember - unlike a phalanx, a single piece can move in any direction!" // 31 Move
 ],[
@@ -405,7 +411,7 @@ var tutorialInputs = [
 	true,	true,	false,	true,	true,	true,	true,	true,	true,	true,
 	true,	true,	false,	false,	true,	true,	false,	false,	true,	true,
 	true,	false,	true,	false,	true,	true,	false,	false,	true,	true,
-	false,	false,	true,	true,	false,	true,	true,	true,	false,	false,
-	true,	true,	false,	true,	true,	true,	false,	true,	true,	true,
-	true,	true,
+	false, false,	false,	false,	false,	true,	true,	false,	true,	true,
+	true,	false,	false,	true,	true,	false,	true,	true,	true,	false,
+	true,	true,	true,	true,	true,
 ]

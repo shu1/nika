@@ -114,52 +114,65 @@ function setupTutorial() {
 	case 29:
 		nextTutorialPart(7);
 		break;
+	case 30:
+		grid[10][14].ring = 3;
+		break;
 	case 31:
+		grid[10][14].ring = 3;
+		grid[11][14].ring = 3;
+		grid[11][15].ring = 3;
+		break;
+	case 32:
+		grid[10][14].ring = 3;
+		grid[11][14].ring = 3;
+		grid[11][15].ring = 3;
+		break;
+	case 34:
 		grid[11][16].ring = 2;
 		grid[10][16].ring = 3;
 		break;
-	case 33:
+	case 36:
 		nextTutorialPart(8);
 		break;
-	case 34:
+	case 37:
 		grid[10][5].ring = 2;
 		grid[9][5].ring = 2;
 		grid[8][5].ring = 3;
 		break;
-	case 36:
+	case 39:
 		nextTutorialPart(9);
 		break;
-	case 37:
+	case 40:
 		grid[9][15].ring = 2;
 		break;
-	case 38:
+	case 41:
 		grid[9][16].ring = 2;
 		grid[10][16].ring = 2;
 		break;
-	case 39:
+	case 42:
 		grid[8][16].ring = 2;
 		grid[8][15].ring = 3;
 		break;
-	case 41:
+	case 44:
 		nextTutorialPart(10);
 		break;
-	case 42:
+	case 45:
 		grid[5][5].ring = 2;
 		grid[4][5].ring = 2;
 		grid[3][5].ring = 3;
 		break;
-	case 44:
+	case 47:
 		nextTutorialPart(11);
 		break;
-	case 45:
+	case 48:
 		grid[6][15].ring = 3;
 		break;
-	case 46:
+	case 49:
 		grid[8][15].ring = 2;
 		grid[7][15].ring = 2;
 		grid[6][15].ring = 3;
 		break;
-	case 52:
+	case 55:
 		endTutorial();
 		break;
 	}
@@ -214,39 +227,37 @@ function checkTutorialMove() {
 		}
 		break;
 
-	// TODO: Add steps for detection of correct phalanx sub-selection
-
-	case 30:
+	case 33:
 		if (grid[10][15].player == 0 && grid[11][15].player == 0 && grid[11][16].player == 0 && grid[9][14].player == 0) {
 			correct = true;
 		}
 		break;
-	case 31:
+	case 34:
 		if (grid[10][16].player == 0) {
 			correct = true;
 		}
 		break;
-	case 34:
+	case 37:
 		if (grid[8][5].player == 0) {
 			correct = true;
 		}
 		break;
-	case 38:
+	case 41:
 		if (grid[8][16].player == 0) {
 			correct = true;
 		}
 		break;
-	case 39:
+	case 42:
 		if (grid[8][15].player == 0) {
 			correct = true;
 		}
 		break;
-	case 42:
+	case 45:
 		if (grid[3][5].player == 0) {
 			correct = true;
 		}
 		break;
-	case 46:
+	case 49:
 		if (grid[6][15].player == 0) {
 			correct = true;
 		}
@@ -256,5 +267,37 @@ function checkTutorialMove() {
 		nextTutorialStep();
 	} else {
 		undo();
+	}
+}
+
+function checkTutorialSelection() {
+	switch(tutorialMan.step) {
+	case 30:
+		if (inPhalanx(10,14) && !inPhalanx(9,14) && !inPhalanx(11,14)) {
+			nextTutorialStep();
+		}
+		else {
+			phalanx.length = 0;
+		}
+		break;
+	case 31:
+		if (inPhalanx(10, 14) && inPhalanx(11,14) && !inPhalanx(9,14) && !inPhalanx(11,15)) {
+			nextTutorialStep();
+		}
+		else {
+			phalanx.length = 0;
+			togglePhalanxPiece(10, 14);
+		}
+		break;
+	case 32:
+		if (inPhalanx(10,14) && inPhalanx(11,14) && inPhalanx(11,15) && !inPhalanx(9,14)) {
+			nextTutorialStep();
+		}
+		else {
+			phalanx.length = 0;
+			togglePhalanxPiece(10, 14);
+			togglePhalanxPiece(11, 14);
+		}
+		break;
 	}
 }
