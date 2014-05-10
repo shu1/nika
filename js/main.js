@@ -44,13 +44,14 @@ function init() {
 		images[8+i] = document.getElementById("rule" + i);
 	}
 
-	sounds = new Array(6);
+	sounds = new Array(7);
 	sounds[0] = document.getElementById("pick");
 	sounds[1] = document.getElementById("drop");
 	sounds[2] = document.getElementById("move");
 	sounds[3] = document.getElementById("push");
 	sounds[4] = document.getElementById("rout");
 	sounds[5] = document.getElementById("raly");
+	sounds[6] = document.getElementById("music");
 
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
@@ -101,6 +102,7 @@ function init() {
 
 	reSize();
 	draw();
+	sounds[6].play();
 }
 
 function reSize() {
