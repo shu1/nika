@@ -80,6 +80,7 @@ function setupTutorial() {
 		resetActions(0);
 		moveOnePiece(11, 14, 11, 13);
 		moveOnePiece(11, 13, 11, 12);
+		pushGameState();
 		break;
 	case 20:
 		grid[13][9].ring = 3;
