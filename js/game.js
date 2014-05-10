@@ -12,7 +12,8 @@ function generateGrid(ascii) {
 				kind:-1,
 				city:-1,
 				rot:-1,
-				ring:-1
+				ring:-1,
+				prompt:-1
 			}
 
 			if (a == 'A' || a == 'B' || a == 'C' || a == 'D' || a == 'Q') {
