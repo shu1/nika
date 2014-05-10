@@ -178,7 +178,7 @@ function setupTutorial() {
 	}
 }
 
-function checkTutorialMove() {
+function checkTutorialMove(moved) {
 	var correct = false;
 	switch (tutorialMan.step) {
 	case 2:
@@ -265,7 +265,7 @@ function checkTutorialMove() {
 	}
 	if (correct) {
 		nextTutorialStep();
-	} else {
+	} else if (moved) {
 		undo();
 	}
 }

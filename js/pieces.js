@@ -64,7 +64,7 @@ function movePiece(pRow, pCol, row, col) {
 		}
 
 		if (tutorialMan.step > -1) {
-			checkTutorialMove();
+			checkTutorialMove(moved);
 		}
 	}
 
