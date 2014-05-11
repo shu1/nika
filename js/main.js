@@ -30,7 +30,7 @@ function init() {
 	pushGameState();
 	useAction(0);	// init debug text
 
-	images = new Array(8);
+	images = new Array(10);
 	images[0] = document.getElementById("athens");
 	images[1] = document.getElementById("sparta");
 	images[2] = document.getElementById("mesene");
@@ -39,9 +39,11 @@ function init() {
 	images[5] = document.getElementById("golden");
 	images[6] = document.getElementById("silver");
 	images[7] = document.getElementById("board");
+	images[8] = document.getElementById("helmet1");
+	images[9] = document.getElementById("helmet2");
 
 	for (var i = 0; i < rulePages; ++i) {
-		images[8+i] = document.getElementById("rule" + i);
+		images[10+i] = document.getElementById("rule" + i);
 	}
 
 	sounds = new Array(7);
@@ -275,7 +277,7 @@ function draw(time) {
 		drawBoard(scene);
 		setRings();
 		drawPieces();
-		drawTurnUI();
+		drawHelmets();
 
 		if (tutorialMan.step >= 0) {
 			drawDialog();
@@ -376,44 +378,25 @@ function drawPieces() {
 	}
 }
 
-//TODO: Temporary, will most likely be replaced by any central mural UI/animation
-function drawTurnUI() {
-	var x, y;
+function drawHelmets() {
+	context.save();
 	switch (gameMan.player) {
 	case 0:
-		x = cellSize * 13.5;
-		y = cellSize * 14;
-		context.fillStyle   = "#D1CBAD";
-		context.strokeStyle = "#84BBCB";
+		context.translate(cellSize * 13.5, cellSize * 14);
 		break;
 	case 1:
-		x = cellSize;
-		y = cellSize * 10.5;
-		context.fillStyle   = "#C56828";
-		context.strokeStyle = "#292526";
+		context.translate(cellSize, cellSize * 10.5);
 		break;
 	case 2:
-		x = cellSize *  7.5;
-		y = cellSize;
-		context.fillStyle   = "#84BBCB";
-		context.strokeStyle = "#D1CBAD";
+		context.translate(cellSize * 7.5, cellSize);
 		break;
 	case 3:
-		x = cellSize * 20;
-		y = cellSize *  4.5;
-		context.fillStyle   = "#292526";
-		context.strokeStyle = "#C56828";
+		context.translate(cellSize * 20, cellSize * 4.5);
 		break;
 	}
-	context.lineWidth = 2;
-	context.beginPath();
-	context.arc(x, y, cellSize*0.85, (gameMan.player+1)*Math.PI/2, (gameMan.player+1+gameMan.actions*2)*Math.PI/2);
-	context.closePath();
-	context.fill();
-	context.stroke();
-	context.beginPath();
-	context.arc(x, y, cellSize*0.7, (gameMan.player+1)*Math.PI/2, (gameMan.player+1+gameMan.actions*2)*Math.PI/2);
-	context.stroke();
+	context.rotate(gameMan.player * Math.PI/2);
+	context.drawImage(images[7 + gameMan.actions], -helmetSize/2, -helmetSize/2, helmetSize, helmetSize);
+	context.restore();
 }
 
 function drawDialog() {
@@ -433,7 +416,7 @@ function drawRules(scene) {
 	context.fillStyle = "rgba(255, 255, 255, 0.9)";
 	context.fillRect(0, 0, scene.width, scene.height);
 	if (rulePages > 0) {
-		context.drawImage(images[8 + gameMan.rules], 0, 0, scene.width, scene.height);
+		context.drawImage(images[10 + gameMan.rules], 0, 0, scene.width, scene.height);
 	}
 }
 
