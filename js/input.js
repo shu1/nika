@@ -34,6 +34,13 @@ function menuButton(button) {
 		case 6:
 			undo();
 			break;
+		case 7:
+			if (gameMan.scene == 0) {
+				setScene(2);
+			}
+			else {
+				setScene(0);
+			}
 		}
 	}
 }
@@ -203,6 +210,9 @@ function mouseUp(event) {
 }
 
 function dblClick(event) {
+	if (gameMan.scene == 2) {
+		return false;
+	}
 	var time = Date.now();
 	if (time - inputMan.time < 300) {	// double click time in milliseconds
 		hudMan.inputText += " " + (time - inputMan.time) + "ms";

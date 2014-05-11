@@ -14,6 +14,13 @@ var dialogMan = {
 	height:0
 }
 
+var settingsMan = {
+	x:0,
+	y:0,
+	width:0,
+	height:0
+}
+
 var mediaMan = {
 	menu:false,
 	play:true,
@@ -78,7 +85,8 @@ var buttons = [
 	"Tutorial",
 	"Rules",
 	" Pass",
-	" Undo"
+	" Undo",
+	"Settings"
 ]
 
 var mainBoard = [

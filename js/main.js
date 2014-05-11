@@ -90,6 +90,11 @@ function init() {
 	dialogMan.width = cellSize*9;
 	dialogMan.height = cellSize*3;
 
+	settingsMan.x = cellSize*4;
+	settingsMan.y = cellSize*4;
+	settingsMan.width = cellSize*13;
+	settingsMan.height = cellSize*7;
+
 	var lineWidth = 44;
 	for (var i = tutorialTexts.length-1; i >= 0; --i) {
 		var lines = tutorialTexts[i];
@@ -153,6 +158,13 @@ function reSize() {
 		scene.minScale = canvas.width / ruleWidth;
 	}
 	scenes[1] = scene;
+
+	scene = {};
+	scene.width = boardWidth;
+	scene.height = boardHeight;
+	scene.maxScale = maxScale;
+	scene.minScale = minScale;
+	scenes[2] = scene;
 
 	setScene();
 	context.font = mediaMan.retina*16 + "px sans-serif";
@@ -277,6 +289,13 @@ function draw(time) {
 			context.translate(scene.x, scene.y);
 			context.scale(scene.scale, scene.scale);
 			drawRules(scene);
+			context.restore();
+		} else if (gameMan.scene == 2) {
+			scene = scenes[2];
+			context.save();
+			context.translate(scene.x, scene.y);
+			context.scale(scene.scale, scene.scale);
+			drawSettingsScreen();
 			context.restore();
 		}
 
@@ -418,6 +437,14 @@ function drawRules(scene) {
 	}
 }
 
+function drawSettingsScreen() {
+	var fontSize = 20;
+	context.font = mediaMan.retina * fontSize + "px sans-serif";
+	context.fillStyle = "white";
+	context.clearRect(settingsMan.x, settingsMan.y, settingsMan.width, settingsMan.height);
+	context.fillText("Settings", settingsMan.x, settingsMan.y + mediaMan.retina * fontSize);
+}
+
 function drawMenu(dTime) {
 	var factor = 200;
 	mediaMan.menu = false;	// whether menu is animating
@@ -469,7 +496,8 @@ function drawMenu(dTime) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length-1) {
 					if (inputMan.menu && button == menuMan.button || button == 1 && gameMan.debug
-					|| button == 3 && tutorialMan.step >= 0 || button == 4 && gameMan.scene == 1) {
+					|| button == 3 && tutorialMan.step >= 0 || button == 4 && gameMan.scene == 1
+					|| button == 7 && gameMan.scene == 2) {
 						drawButton(row, col, buttons[button+1], "#13485d", "white");
 					}
 					else {
