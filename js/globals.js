@@ -21,6 +21,10 @@ var settingsMan = {
 	height:0
 }
 
+var audioMan = {
+	music: 1
+}
+
 var mediaMan = {
 	menu:false,
 	play:true,

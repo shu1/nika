@@ -177,6 +177,11 @@ function mouseUp(event) {
 						gameMan.rules = rulePages-1;
 					}
 				}
+			} else if (gameMan.scene == 2) {
+				if (inputMan.x - scene.x > settingsMan.x * scene.scale && inputMan.x - scene.x < (settingsMan.x + settingsMan.width) * scene.scale
+				&& inputMan.y - scene.y > settingsMan.y * scene.scale && inputMan.y - scene.y < (settingsMan.y + settingsMan.height) * scene.scale) {
+					sounds[6].volume = 1 - sounds[6].volume;
+				}
 			}
 			else if (tutorialMan.step >= 0 && (tutorialInputs[tutorialMan.step] || gameMan.debug)) {
 				if (inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
