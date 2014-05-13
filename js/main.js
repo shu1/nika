@@ -413,8 +413,6 @@ function drawDialog() {
 }
 
 function drawRules(scene) {
-	context.fillStyle = "rgba(255, 255, 255, 0.9)";
-	context.fillRect(0, 0, scene.width, scene.height);
 	if (rulePages > 0) {
 		context.drawImage(images[10 + gameMan.rules], 0, 0, scene.width, scene.height);
 	}
