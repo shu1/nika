@@ -7,12 +7,9 @@ function menuButton(button) {
 	else if (menuMan.show) {
 		switch(button) {
 		case 1:
-			gameMan.debug = !gameMan.debug;
+			setScene(gameMan.scene ? 0 : 1);
 			break;
 		case 2:
-			ai();
-			break;
-		case 3:
 			if (tutorialMan.step < 0) {
 				nextTutorialStep();
 			}
@@ -20,27 +17,21 @@ function menuButton(button) {
 				endTutorial();
 			}
 			break;
-		case 4:
-			if (gameMan.scene == 0) {
-				setScene(1);
-			}
-			else {
-				setScene(0);
-			}
+		case 3:
+			setScene(gameMan.scene ? 0 : 2);
 			break;
-		case 5:
+		case 4:
 			useAction(2);
 			break;
-		case 6:
+		case 5:
 			undo();
 			break;
+		case 6:
+			ai();
+			break;
 		case 7:
-			if (gameMan.scene == 0) {
-				setScene(2);
-			}
-			else {
-				setScene(0);
-			}
+			gameMan.debug = !gameMan.debug;
+			break;
 		}
 	}
 }

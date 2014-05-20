@@ -115,7 +115,7 @@ function init() {
 function reSize() {
 	if (fullScreen) {
 		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;	// height-5 to remove scrollbars on some browsers
+		canvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 
 		if (canvas.height >= 1536) {
 			mediaMan.retina = 2;
@@ -145,6 +145,13 @@ function reSize() {
 	scenes[0] = scene;
 
 	scene = {};
+	scene.width = boardWidth;
+	scene.height = boardHeight;
+	scene.maxScale = maxScale;
+	scene.minScale = minScale;
+	scenes[1] = scene;
+
+	scene = {};
 	scene.width = ruleWidth;
 	scene.height = ruleHeight;
 	if (maxScale == minScale) {
@@ -159,13 +166,6 @@ function reSize() {
 		scene.maxScale = 1;
 		scene.minScale = canvas.width / ruleWidth;
 	}
-	scenes[1] = scene;
-
-	scene = {};
-	scene.width = boardWidth;
-	scene.height = boardHeight;
-	scene.maxScale = maxScale;
-	scene.minScale = minScale;
 	scenes[2] = scene;
 
 	setScene();
@@ -290,14 +290,15 @@ function draw(time) {
 			context.save();
 			context.translate(scene.x, scene.y);
 			context.scale(scene.scale, scene.scale);
-			drawRules(scene);
+			drawSettings();
 			context.restore();
-		} else if (gameMan.scene == 2) {
+		}
+		else if (gameMan.scene == 2) {
 			scene = scenes[2];
 			context.save();
 			context.translate(scene.x, scene.y);
 			context.scale(scene.scale, scene.scale);
-			drawSettingsScreen();
+			drawRules(scene);
 			context.restore();
 		}
 
@@ -412,18 +413,18 @@ function drawDialog() {
 	}
 }
 
-function drawRules(scene) {
-	if (rulePages > 0) {
-		context.drawImage(images[10 + gameMan.rules], 0, 0, scene.width, scene.height);
-	}
-}
-
-function drawSettingsScreen() {
+function drawSettings() {
 	var fontSize = 20;
 	context.font = mediaMan.retina * fontSize + "px sans-serif";
 	context.fillStyle = "white";
 	context.clearRect(settingsMan.x, settingsMan.y, settingsMan.width, settingsMan.height);
 	context.fillText("Settings", settingsMan.x, settingsMan.y + mediaMan.retina * fontSize);
+}
+
+function drawRules(scene) {
+	if (rulePages > 0) {
+		context.drawImage(images[10 + gameMan.rules], 0, 0, scene.width, scene.height);
+	}
 }
 
 function drawMenu(dTime) {
@@ -476,9 +477,11 @@ function drawMenu(dTime) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length-1) {
-					if (inputMan.menu && button == menuMan.button || button == 1 && gameMan.debug
-					|| button == 3 && tutorialMan.step >= 0 || button == 4 && gameMan.scene == 1
-					|| button == 7 && gameMan.scene == 2) {
+					if (inputMan.menu && button == menuMan.button
+					|| button == 1 && gameMan.scene == 1
+					|| button == 2 && tutorialMan.step >= 0
+					|| button == 3 && gameMan.scene == 2
+					|| button == 7 && gameMan.debug) {
 						drawButton(row, col, buttons[button+1], "#13485d", "white");
 					}
 					else {
@@ -504,7 +507,7 @@ function drawButton(row, col, text, textColor, bgColor) {
 			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
 	}
 	context.fillStyle = textColor;
-	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.75), canvas.height - menuMan.bHeight * (row+0.5)+6);
+	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);
 }
 
 function drawHud(time) {

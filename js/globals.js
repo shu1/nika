@@ -39,7 +39,7 @@ var gameMan = {
 	debug:false,
 	actions:2,
 	player:0,
-	scene:0,	// 0:game, 1:rules
+	scene:0,	// 0:game, 1:settings, 2:rules
 	rules:0,
 	pRow:-1,
 	pCol:-1,
@@ -82,15 +82,15 @@ var	hudMan = {
 }
 
 var buttons = [
-	" Menu",
-	"Close",
-	"Debug",
-	"   AI",
+	"  Menu",
+	"  Close",
+	"Settings",
 	"Tutorial",
-	"Rules",
-	" Pass",
-	" Undo",
-	"Settings"
+	"  Rules",
+	"  Pass",
+	"  Undo",
+	"     AI",
+	" Debug",
 ]
 
 var mainBoard = [
