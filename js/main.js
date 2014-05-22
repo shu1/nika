@@ -279,7 +279,7 @@ function draw(time) {
 		drawPieces();
 		drawHelmets();
 
-		if (tutorialMan.step >= 0) {
+		if (gameMan.tutorialStep >= 0) {
 			drawDialog();
 		}
 
@@ -401,12 +401,12 @@ function drawHelmets() {
 }
 
 function drawDialog() {
-	if (tutorialMan.step < tutorialTexts.length) {
+	if (gameMan.tutorialStep < tutorialTexts.length) {
 		var fontSize = 20;
 		context.font = mediaMan.retina * fontSize + "px sans-serif";
 		context.fillStyle = "white";
 		context.clearRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
-		var lines = tutorialTexts[tutorialMan.step];
+		var lines = tutorialTexts[gameMan.tutorialStep];
 		for (var i = lines.length-1; i >= 0; --i) {
 			context.fillText(lines[i], dialogMan.x, dialogMan.y + mediaMan.retina * fontSize * (i+1));
 		}
@@ -479,7 +479,7 @@ function drawMenu(dTime) {
 				if (button < buttons.length-1) {
 					if (inputMan.menu && button == menuMan.button
 					|| button == 1 && gameMan.scene == 1
-					|| button == 2 && tutorialMan.step >= 0
+					|| button == 2 && gameMan.tutorialStep >= 0
 					|| button == 3 && gameMan.scene == 2
 					|| button == 7 && gameMan.debug) {
 						drawButton(row, col, buttons[button+1], "#13485d", "white");

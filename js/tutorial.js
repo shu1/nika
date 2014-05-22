@@ -1,12 +1,12 @@
 function nextTutorialStep() {
-	tutorialMan.step++;
+	gameMan.tutorialStep++;
 	clearTutorialRings();
-	setupTutorial(tutorialMan.step);
+	setupTutorial(gameMan.tutorialStep);
 	mediaMan.draw = true;
 }
 
 function endTutorial() {
-	tutorialMan.step = -1;
+	gameMan.tutorialStep = -1;
 	resetActions(0);
 	generateGrid(mainBoard);
 	mediaMan.draw = true;
@@ -23,7 +23,7 @@ function resetActions(player) {
 }
 
 function setupTutorial() {
-	switch (tutorialMan.step) {
+	switch (gameMan.tutorialStep) {
 	case 0:
 		generateGrid(mainBoard);
 		resetActions(0);
@@ -214,7 +214,7 @@ function setupTutorial() {
 
 function checkTutorialMove(moved) {
 	var correct = false;
-	switch (tutorialMan.step) {
+	switch (gameMan.tutorialStep) {
 	case 2:
 		if (grid[2][10].player == 0) {
 			correct = true;
@@ -305,7 +305,7 @@ function checkTutorialMove(moved) {
 }
 
 function checkTutorialSelection() {
-	switch(tutorialMan.step) {
+	switch(gameMan.tutorialStep) {
 	case 30:
 		if (inPhalanx(10,14) && !inPhalanx(9,14) && !inPhalanx(11,14)) {
 			nextTutorialStep();

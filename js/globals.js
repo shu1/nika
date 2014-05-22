@@ -2,11 +2,6 @@
 
 var canvas, context, images, sounds, grid, gameStates=[], phalanx=[], scenes=[];
 
-var tutorialMan = {
-	step:-1,
-	text:""
-}
-
 var dialogMan = {
 	x:0,
 	y:0,
@@ -21,10 +16,6 @@ var settingsMan = {
 	height:0
 }
 
-var audioMan = {
-	music: 1
-}
-
 var mediaMan = {
 	menu:false,
 	play:true,
@@ -35,6 +26,7 @@ var mediaMan = {
 }
 
 var gameMan = {
+	tutorialStep:-1,
 	selection:false,
 	debug:false,
 	actions:2,

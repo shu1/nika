@@ -10,7 +10,7 @@ function menuButton(button) {
 			setScene(gameMan.scene ? 0 : 1);
 			break;
 		case 2:
-			if (tutorialMan.step < 0) {
+			if (gameMan.tutorialStep < 0) {
 				nextTutorialStep();
 			}
 			else {
@@ -102,7 +102,7 @@ function mouseDown(event) {
 	if (!inputMan.menu) {
 		getPiece(inputMan.row, inputMan.col);
 		var scene = scenes[gameMan.scene];
-		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[tutorialMan.step]) {
+		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
 			inputMan.pX = scene.x + (gameMan.pCol * cellSize + cellSize/2) * scene.scale;
 			inputMan.pY = scene.y + (gameMan.pRow * cellSize + cellSize/2) * scene.scale;
 			event.preventDefault();
@@ -174,7 +174,7 @@ function mouseUp(event) {
 					sounds[6].volume = 1 - sounds[6].volume;
 				}
 			}
-			else if (tutorialMan.step >= 0 && (tutorialInputs[tutorialMan.step] || gameMan.debug)) {
+			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {
 				if (inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
 				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
 					inputMan.time = 0;

@@ -63,7 +63,7 @@ function movePiece(pRow, pCol, row, col) {
 			pushGameState();
 		}
 
-		if (tutorialMan.step > -1) {
+		if (gameMan.tutorialStep >= 0) {
 			checkTutorialMove(moved);
 		}
 	}
