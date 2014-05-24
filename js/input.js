@@ -36,6 +36,27 @@ function menuButton(button) {
 	}
 }
 
+function getSettingsButton() {
+	var scene = scenes[gameMan.scene];
+	var row = Math.floor((inputMan.y - scene.y - settingsMan.y * scene.scale) / (menuMan.bHeight * scene.scale)) - 1;
+	var col = Math.floor((inputMan.x - scene.x - settingsMan.x * scene.scale) / (menuMan.bWidth * scene.scale)) - 1;
+	return {row: row, col: col}
+}
+
+function settingsButton(row, col) {
+	var button = getSettingsButton();
+	var row = button.row;
+	var col = button.col;
+	if (row == 0) {
+		if (col == 0) {
+			sounds[6].volume = Math.round(Math.max(0, sounds[6].volume - 0.1) * 10) / 10;
+		}
+		else if (col == 1) {
+			sounds[6].volume = Math.round(Math.min(1, sounds[6].volume + 0.1) * 10) / 10;
+		}
+	}
+}
+
 function getXY(event) {
 	if (event.touches) {
 		inputMan.x = event.touches[0].pageX;
@@ -158,7 +179,9 @@ function mouseUp(event) {
 			if (gameMan.scene == 1) {	// settings
 				if (inputMan.x - scene.x > settingsMan.x * scene.scale && inputMan.x - scene.x < (settingsMan.x + settingsMan.width) * scene.scale
 				&& inputMan.y - scene.y > settingsMan.y * scene.scale && inputMan.y - scene.y < (settingsMan.y + settingsMan.height) * scene.scale) {
-					sounds[6].volume = 1 - sounds[6].volume;
+					// sounds[6].volume = 1 - sounds[6].volume;
+					// getSettingsButton();
+					settingsButton(0);
 				}
 			}
 			else if (gameMan.scene == 2) {	// rules
@@ -207,7 +230,7 @@ function mouseUp(event) {
 }
 
 function dblClick(event) {
-	if (gameMan.scene == 2) {
+	if (gameMan.scene == 1 || gameMan.scene == 2) {
 		return false;
 	}
 	var time = Date.now();

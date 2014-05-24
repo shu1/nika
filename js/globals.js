@@ -85,6 +85,10 @@ var buttons = [
 	" Debug",
 ]
 
+var settingsButtons = [
+	["Vol-", "Vol+"]
+]
+
 var mainBoard = [
 	".........kkklll......",
 	".........kkklll......",

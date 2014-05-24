@@ -418,7 +418,16 @@ function drawSettings() {
 	context.font = mediaMan.retina * fontSize + "px sans-serif";
 	context.fillStyle = "white";
 	context.clearRect(settingsMan.x, settingsMan.y, settingsMan.width, settingsMan.height);
-	context.fillText("Settings", settingsMan.x, settingsMan.y + mediaMan.retina * fontSize);
+	context.fillText("Settings", settingsMan.x + 4, settingsMan.y + mediaMan.retina * fontSize + 4);
+	for(var row = 0; row < settingsButtons.length; row++) {
+		var buttonRow = settingsButtons[row];
+		for(var col = 0; col < buttonRow.length; col++) {
+			drawSettingsButton(row, col, settingsButtons[row][col], "white", "#13485d");
+		}
+	}
+
+	drawSettingsButton(0, 2, sounds[6].volume, "white", "#073c50");
+
 }
 
 function drawRules(scene) {
@@ -508,6 +517,17 @@ function drawButton(row, col, text, textColor, bgColor) {
 	}
 	context.fillStyle = textColor;
 	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);
+}
+
+function drawSettingsButton(row, col, text, textColor, bgColor) {
+	var padding = 4;
+	if (bgColor) {
+		context.fillStyle = bgColor;
+		context.fillRect(settingsMan.x + menuMan.bWidth * (col+1) + padding, settingsMan.y + menuMan.bHeight * (row+1) + padding,
+			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
+	}
+	context.fillStyle = textColor;
+	context.fillText(text, settingsMan.x + menuMan.bWidth * (col+1.2), settingsMan.y + menuMan.bHeight * (row+1.5)+6);
 }
 
 function drawHud(time) {
