@@ -155,7 +155,13 @@ function mouseUp(event) {
 		}
 		else if (!dblClick(event)) {
 			var scene = scenes[gameMan.scene];
-			if (gameMan.scene == 1) {	// rules
+			if (gameMan.scene == 1) {	// settings
+				if (inputMan.x - scene.x > settingsMan.x * scene.scale && inputMan.x - scene.x < (settingsMan.x + settingsMan.width) * scene.scale
+				&& inputMan.y - scene.y > settingsMan.y * scene.scale && inputMan.y - scene.y < (settingsMan.y + settingsMan.height) * scene.scale) {
+					sounds[6].volume = 1 - sounds[6].volume;
+				}
+			}
+			else if (gameMan.scene == 2) {	// rules
 				if (inputMan.x > canvas.width - cellSize*2) {
 					gameMan.rules++;
 					if (gameMan.rules > rulePages-1) {
@@ -168,13 +174,8 @@ function mouseUp(event) {
 						gameMan.rules = rulePages-1;
 					}
 				}
-			} else if (gameMan.scene == 2) {
-				if (inputMan.x - scene.x > settingsMan.x * scene.scale && inputMan.x - scene.x < (settingsMan.x + settingsMan.width) * scene.scale
-				&& inputMan.y - scene.y > settingsMan.y * scene.scale && inputMan.y - scene.y < (settingsMan.y + settingsMan.height) * scene.scale) {
-					sounds[6].volume = 1 - sounds[6].volume;
-				}
 			}
-			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {
+			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
 				if (inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
 				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
 					inputMan.time = 0;
