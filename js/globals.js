@@ -86,7 +86,8 @@ var buttons = [
 ]
 
 var settingsButtons = [
-	["Vol-", "Vol+"]
+	["Music", "-", "+"],
+	["Sounds", "-", "+"]
 ]
 
 var mainBoard = [

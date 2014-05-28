@@ -4,18 +4,23 @@ function playSound(name) {
 	if (mediaMan.play) {
 		switch (name) {
 		case "rotate":
+			sounds[5].volume = Math.pow(settingsMan.sound / 10, 2);
 			sounds[5].play();
 			break;
 		case "move":
+			sounds[1].volume = Math.pow(settingsMan.sound / 10, 2);
 			sounds[1].play();
 			break;
 		case "push":
+			sounds[3].volume = Math.pow(settingsMan.sound / 10, 2);
 			sounds[3].play();
 			break;
 		case "rout":
+			sounds[2].volume = Math.pow(settingsMan.sound / 10, 2);
 			sounds[2].play();
 			break;
 		case "rally":
+			sounds[4].volume = Math.pow(settingsMan.sound / 10, 2);
 			sounds[4].play();
 			break;
 		}
@@ -96,7 +101,8 @@ function init() {
 	settingsMan.y = cellSize*4;
 	settingsMan.width = cellSize*13;
 	settingsMan.height = cellSize*7;
-	settingsMan.volume = 10;
+	settingsMan.music = 10;
+	settingsMan.sound = 10;
 
 	var lineWidth = 44;
 	for (var i = tutorialTexts.length-1; i >= 0; --i) {
@@ -422,12 +428,14 @@ function drawSettings() {
 	context.fillText("Settings", settingsMan.x + 4, settingsMan.y + mediaMan.retina * fontSize + 4);
 	for(var row = 0; row < settingsButtons.length; row++) {
 		var buttonRow = settingsButtons[row];
-		for(var col = 0; col < buttonRow.length; col++) {
+		drawSettingsButton(row, 0, settingsButtons[row][0], "white", "#073c50");
+		for(var col = 1; col < buttonRow.length; col++) {
 			drawSettingsButton(row, col, settingsButtons[row][col], "white", "#13485d");
 		}
 	}
 
-	drawSettingsButton(0, 2, settingsMan.volume, "white", "#073c50");
+	drawSettingsButton(0, 3, settingsMan.music, "white", "#073c50");
+	drawSettingsButton(1, 3, settingsMan.sound, "white", "#073c50");
 
 }
 

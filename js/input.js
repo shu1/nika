@@ -48,14 +48,21 @@ function settingsButton(row, col) {
 	var row = button.row;
 	var col = button.col;
 	if (row == 0) {
-		if (col == 0) {
-			settingsMan.volume = Math.max(0, settingsMan.volume - 1);
+		if (col == 1) {
+			settingsMan.music = Math.max(0, settingsMan.music - 1);
 		}
-		else if (col == 1) {
-			settingsMan.volume = Math.min(10, settingsMan.volume + 1);
+		else if (col == 2) {
+			settingsMan.music = Math.min(10, settingsMan.music + 1);
 		}
+		sounds[6].volume = Math.pow(settingsMan.music / 10, 2);
 
-		sounds[6].volume = Math.pow(settingsMan.volume / 10, 2);
+	} else if (row == 1) {
+		if (col == 1) {
+			settingsMan.sound = Math.max(0, settingsMan.sound - 1);
+		}
+		else if (col == 2) {
+			settingsMan.sound = Math.min(10, settingsMan.sound + 1);
+		}
 	}
 }
 
