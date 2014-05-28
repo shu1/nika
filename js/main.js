@@ -96,6 +96,7 @@ function init() {
 	settingsMan.y = cellSize*4;
 	settingsMan.width = cellSize*13;
 	settingsMan.height = cellSize*7;
+	settingsMan.volume = 10;
 
 	var lineWidth = 44;
 	for (var i = tutorialTexts.length-1; i >= 0; --i) {
@@ -426,7 +427,7 @@ function drawSettings() {
 		}
 	}
 
-	drawSettingsButton(0, 2, sounds[6].volume, "white", "#073c50");
+	drawSettingsButton(0, 2, settingsMan.volume, "white", "#073c50");
 
 }
 

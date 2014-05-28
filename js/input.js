@@ -49,11 +49,13 @@ function settingsButton(row, col) {
 	var col = button.col;
 	if (row == 0) {
 		if (col == 0) {
-			sounds[6].volume = Math.round(Math.max(0, sounds[6].volume - 0.1) * 10) / 10;
+			settingsMan.volume = Math.max(0, settingsMan.volume - 1);
 		}
 		else if (col == 1) {
-			sounds[6].volume = Math.round(Math.min(1, sounds[6].volume + 0.1) * 10) / 10;
+			settingsMan.volume = Math.min(10, settingsMan.volume + 1);
 		}
+
+		sounds[6].volume = Math.pow(settingsMan.volume / 10, 2);
 	}
 }
 
