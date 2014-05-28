@@ -8,24 +8,24 @@ function playSound(name) {
 	if (mediaMan.play) {
 		switch (name) {
 		case "rotate":
-			sounds[5].volume = volumeCurve(settingsMan.sound / 10);
-			sounds[5].play();
+			sounds["rally"].volume = volumeCurve(settingsMan.sound / 10);
+			sounds["rally"].play();
 			break;
 		case "move":
-			sounds[1].volume = volumeCurve(settingsMan.sound / 10);
-			sounds[1].play();
+			sounds["drop"].volume = volumeCurve(settingsMan.sound / 10);
+			sounds["drop"].play();
 			break;
 		case "push":
-			sounds[3].volume = volumeCurve(settingsMan.sound / 10);
-			sounds[3].play();
+			sounds["push"].volume = volumeCurve(settingsMan.sound / 10);
+			sounds["push"].play();
 			break;
 		case "rout":
-			sounds[2].volume = volumeCurve(settingsMan.sound / 10);
-			sounds[2].play();
+			sounds["move"].volume = volumeCurve(settingsMan.sound / 10);
+			sounds["move"].play();
 			break;
 		case "rally":
-			sounds[4].volume = volumeCurve(settingsMan.sound / 10);
-			sounds[4].play();
+			sounds["push"].volume = volumeCurve(settingsMan.sound / 10);
+			sounds["push"].play();
 			break;
 		}
 		hudMan.soundText = name;
@@ -44,7 +44,7 @@ function init() {
 	images[1] = document.getElementById("sparta");
 	images[2] = document.getElementById("mesene");
 	images[3] = document.getElementById("thebes");
-	images[4] = document.getElementById("shadow");
+	images[4] = document.getElementById("shading");
 	images[5] = document.getElementById("golden");
 	images[6] = document.getElementById("silver");
 	images[7] = document.getElementById("board");
@@ -55,14 +55,14 @@ function init() {
 		images[10+i] = document.getElementById("rule" + i);
 	}
 
-	sounds = new Array(7);
-	sounds[0] = document.getElementById("pick");
-	sounds[1] = document.getElementById("drop");
-	sounds[2] = document.getElementById("move");
-	sounds[3] = document.getElementById("push");
-	sounds[4] = document.getElementById("rout");
-	sounds[5] = document.getElementById("raly");
-	sounds[6] = document.getElementById("music");
+	sounds = {};
+	sounds["pick"] = document.getElementById("pick");
+	sounds["drop"] = document.getElementById("drop");
+	sounds["move"] = document.getElementById("move");
+	sounds["push"] = document.getElementById("push");
+	sounds["rout"] = document.getElementById("rout");
+	sounds["rally"] = document.getElementById("rally");
+	sounds["music"] = document.getElementById("music");
 
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
@@ -120,7 +120,7 @@ function init() {
 
 	reSize();
 	draw();
-	sounds[6].play();
+	sounds["music"].play();
 }
 
 function reSize() {
