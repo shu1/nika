@@ -54,7 +54,7 @@ function settingsButton(row, col) {
 		else if (col == 2) {
 			settingsMan.music = Math.min(10, settingsMan.music + 1);
 		}
-		sounds[6].volume = Math.pow(settingsMan.music / 10, 2);
+		sounds[6].volume = volumeCurve(settingsMan.music / 10);
 
 	} else if (row == 1) {
 		if (col == 1) {
