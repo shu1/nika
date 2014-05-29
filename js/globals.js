@@ -1,6 +1,20 @@
 "use strict";
 
-var canvas, context, images, sounds, grid, gameStates=[], phalanx=[], scenes=[], tutorialMan = {};
+var canvas, context, images, sounds, grid, gameStates=[], phalanx=[], scenes=[];
+
+var dialogMan = {
+	x:0,
+	y:0,
+	width:0,
+	height:0
+}
+
+var settingsMan = {
+	x:0,
+	y:0,
+	width:0,
+	height:0
+}
 
 var mediaMan = {
 	menu:false,
@@ -12,12 +26,12 @@ var mediaMan = {
 }
 
 var gameMan = {
+	tutorialStep:-1,
 	selection:false,
 	debug:false,
-	tutorial:-1,
 	actions:2,
 	player:0,
-	scene:0,
+	scene:0,	// 0:game, 1:settings, 2:rules
 	rules:0,
 	pRow:-1,
 	pCol:-1,
@@ -60,13 +74,20 @@ var	hudMan = {
 }
 
 var buttons = [
-	" Menu",
-	"Close",
-	"Debug",
-	"Rules",
-	"   AI",
-	" Pass",
-	" Undo"
+	"  Menu",
+	"  Close",
+	"Settings",
+	"Tutorial",
+	"  Rules",
+	"  Pass",
+	"  Undo",
+	"     AI",
+	" Debug",
+]
+
+var settingsButtons = [
+	["Music", "-", "+"],
+	["Sounds", "-", "+"]
 ]
 
 var mainBoard = [
@@ -87,8 +108,7 @@ var mainBoard = [
 	"......dddccc........."
 ]
 
-var tutTurns = [1, 0, 0, 0, 2, 4, 2, 2, 1, 2, 1, 1];
-var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
+var tutorialBoards = [[	// 2 Athens Victory
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -104,7 +124,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 1.3 - 1 - Messenes Victory
+],[	// 3 Messenes Victory
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -120,7 +140,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 1.4 - 2 - Spartan Victory
+],[	// 5 Spartan Victory
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -136,7 +156,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 1.5 - 3 - Thebes Victory
+],[	// 7 Thebes Victory
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -152,7 +172,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 2.1 - 4 - Basic Movement and Rout
+],[	// 9 Basic Movement and Rout
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -168,7 +188,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 2.2 - 5 - Basic Rotation and Rally
+],[	// 15 Basic Rotation and Rally
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -184,7 +204,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......ddQccc.........",
 	"......dddccc........."
-],[								// Tut 3.1 - 6 - Phalanx Movement and Rotation
+],[	// 25 Phalanx Movement and Rotation
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -200,7 +220,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 3.2 - 7 - Sub-phalanx Movement
+],[	// 29 Sub-phalanx Movement
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -216,7 +236,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 4.1 - 8 - Basic Pushing
+],[	// 33 Basic Pushing
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -232,7 +252,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 4.2 - 9 - Push by Line
+],[	// 36 Push by Line
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -248,7 +268,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 4.3 - 10 - Push Off Board to Rout
+],[	// 40 Push Off Board to Rout
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -264,7 +284,7 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	".........bbb.........",
 	"......dddccc.........",
 	"......dddccc........."
-],[								// Tut 4.4 - 11 - Push into Ally to Rout
+],[	// 43 Push into Ally to Rout
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -281,3 +301,126 @@ var tutBoards = [[					// Tut 1.2 - 0 - Athens Victory
 	"......dddccc.........",
 	"......dddccc........."
 ]]
+
+var tutorialTurns = [1, 0, 0, 0, 2, 4, 2, 2, 1, 2, 1, 1];
+
+var tutorialTexts = [[
+	"Welcome, strategos! You have been assigned command of our noble Athenian troops against the cruel Spartans and the treacherous Thebans."
+],[
+	"Our objective is to reach the camp of the Messenians, our brave allies. If a single Athenian piece reaches any part of this area, we win, and so do the Messenians."
+],[
+	"Drag our piece onto the highlighted space to claim victory." // 2 Move
+],[
+	"We also win if any Messenian piece reaches our own camp." // 3
+],[
+	"Victory!"
+],[
+	"Our enemies have allied against us. We must stop them from breaking through our lines at any cost!" // 5
+],[
+	"Defeat!"
+],[
+	"If any Spartan or Theban reaches the opposite camp, we will have failed in our mission, and the battle will be lost." // 7
+],[
+	"Defeat!"
+],[
+	"The Spartans have sent a scout into our territory. We must drive him off!" // 9
+],[
+	"We can take two actions on our turn."
+],[
+	"All hoplites carry shields which protect their front. The Spartan is FACING this piece, so this piece cannot attack."
+],[
+	"But Athena smiles upon us today - we have him flanked! Let us MOVE our other soldier forward. Drag this piece in the direction you want to move it." // 12 Move
+],[
+	"We can ROUT an enemy piece by moving into it from the side or back, but not from the front. Take out that Spartan!" // 13 Move
+],[
+	"Bravo! Now, listen - this is important. A piece can move forward, left, right, or back in one action. As you saw, it turns to face the direction it moved in."
+],[
+	"Strategos! While we were dealing with that Spartan, a contingent of Thebans has approached us from behind. Two of our men are in danger!" // 15
+],[
+	"We must protect ourselves! To ROTATE a piece in place, drag it in the direction you want it to face, then end your touch on the same piece. Rotate this piece so that it faces the right." // 16 Move
+],[
+	"Excellent! Now, rotate our other soldier to face the Theban. Since the Theban is blocking movement in that direction, you can just drag our piece toward the Theban." // 17 Move
+],[
+	"Pieces can rotate to face any direction in one action. Well done - the men are safe, for now."
+],[
+	"Beware! The accursed Thebans are trying to get around the edge of our line. We must rally!"
+],[
+	"Routed pieces are not out of the battle forever. You can rally one routed piece at a time back onto the battlefield into the areas indicated."
+],[
+	"To RALLY a piece, drag it into one of your rally spaces. Let's deploy our man here so he can hurry back to the fight." // 21 Move
+],[
+	"We move through these spaces normally, but our enemies are not allowed to enter them."
+],[
+	"Let's move up our fresh soldier in support." // 23 Move
+],[
+	"Brilliant!"
+],[
+	"Like all hoplites, our troops are trained to act in the powerful PHALANX formation. If two or more are adjacent and face the same way, they can move and rotate together." // 25
+],[
+	"To move in a phalanx, just drag forward any piece that is part of a phalanx formation." // 26 Move
+],[
+	"Exactly. Now, rotate our phalanx to face the Spartan. Drag any piece in the phalanx in the direction you want it to face." // 27
+],[
+	"Good! You'll notice that pieces in a phalanx can only move forward. Moving in a different direction requires two actions: first rotating the phalanx, then moving it."
+],[
+	"The Thebans have mounted a tough defense. If we move our whole phalanx forward, our piece nearest the main Theban formation will be in danger. Let us proceed with caution." // 29
+],[
+	"Fortunately, we can split pieces off from a phalanx. Tap the indicated piece to enter phalanx sub-selection mode."
+],[
+	"Now tap the other pieces indicated, starting with the corner piece. If you try to create an invalid phalanx by tapping the forward piece first, you'll have to start over."
+],[
+	"Now tap the other pieces indicated, starting with the corner piece. If you try to create an invalid phalanx by tapping the forward piece first, you'll have to start over."
+],[
+	"Deftly done! You can now move the smaller phalanx you created by dragging it forward as normal." // 33 Move
+],[
+	"Now, to the attack! Select only the forward piece by tapping it, then rout the exposed Theban. Remember - unlike a phalanx, a single piece can move in any direction!" // 31 Move
+],[
+	"We have struck first without leaving our men vulnerable. Masterful!"
+],[
+	"This Spartan seeks to block our path. Well, the Spartans are known more for their bravery than their intelligence..." // 33
+],[
+	"Our phalanx cannot rout the Spartan, as he is facing us. But, since we have two pieces lined up against a single enemy, we can PUSH him backward by simply moving our phalanx toward him." // 34 Move
+],[
+	"Just so. We can push no further, as there are now two enemies lined up to block our way, even though the farther Spartan is not facing us. Still, it is important to gain ground when we can."
+],[
+	"We have gained an advantage on the Thebans. We have three soldiers against their two. But how best to proceed?" // 36
+],[
+	"We cannot push in this line, as there is only one Athenian facing one Theban. Our soldier here is stuck."
+],[
+	"However, we have the advantage in this line. Our two pieces can push back the single Theban. Select only them, and move them forward." // 38 Move
+],[
+	"Ha! Now, seize the advantage and destroy that Theban! Tap to select only this piece so it can move to the left without rotating first - but I'm sure you knew that already. Then attack!" // 39 Move
+],[
+	"Excellent!"
+],[
+	"Good news, strategos! Our men have trapped a Spartan near the edge of the field." // 41
+],[
+	"If we push an enemy piece off the battlefield, that enemy is routed. Push that Spartan to take him out!" // 42 Move
+],[
+	"Yes! We can rout enemies by pushing them into any invalid space. That includes our and our ally's victory areas, as well as the center or outside of the board."
+],[
+	"We can reap great rewards by coordinating with the Messenians, our allies." // 44
+],[
+	"If we push this piece into our ally, the Theban will be routed, regardless of our ally's facing. Pushing an enemy into our own piece does the same thing."
+],[
+	"So, order the men forward!" // 46 Move
+],[
+	"Perfect! At this point, we'll have to wait for the Messenians to move their soldier out of our way. We are never allowed to push or rout our allies - or our own men."
+],[
+	"Congratulations! You now know everything you need to play Nika." // 48
+],[
+	"Always remember your ultimate goal - get one of your pieces across the board into the victory area on your ally's side, or help your ally do the same."
+],[
+	"As you play, take some time to explore the user interface. You can, for example, UNDO an unwanted move, or PASS if you feel you cannot better your position by taking an action."
+],[
+	"Though the rules are few, you will find that the strategies are deep and varied. Now then, proserchou kai nika - go forth and conquer!"
+]]
+
+var tutorialInputs = [
+	true,	true,	false,	true,	true,	true,	true,	true,	true,	true,
+	true,	true,	false,	false,	true,	true,	false,	false,	true,	true,
+	true,	false,	true,	false,	true,	true,	false,	false,	true,	true,
+	false, false,	false,	false,	false,	true,	true,	false,	true,	true,
+	true,	false,	false,	true,	true,	false,	true,	true,	true,	false,
+	true,	true,	true,	true,	true,
+]

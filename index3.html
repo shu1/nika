@@ -4,8 +4,8 @@
 <head>
 <meta name="application-name" content="Nika Digital"/>
 <meta name="msapplication-TileColor" content="#073c50"/>
-<meta name="msapplication-square150x150logo" content="icon150.png"/>
-<meta name="msapplication-wide310x150logo" content="icon310.png"/>
+<meta name="msapplication-square150x150logo" content="logo150.png"/>
+<meta name="msapplication-wide310x150logo" content="logo310.png"/>
 <title>Nika Digital</title>
 <script type="text/javascript">
 var fullScreen = true;
@@ -13,9 +13,10 @@ var minScale = 0;
 var maxScale = 0;
 var cellSize = 48;
 var pieceSize = 40;
-var rulePages = 7;
-var ruleWidth = 1582;
-var ruleHeight = 2048;
+var helmetSize = 128;
+var rulePages = 10;
+var ruleWidth = 2016;
+var ruleHeight = 1440;
 var boardWidth = 1008;
 var boardHeight = 720;
 </script>
@@ -41,14 +42,19 @@ var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga,s)
 	<img src="images/shadow80.png" id="shadow" style="display:none"/>
 	<img src="images/golden96.png" id="golden" style="display:none"/>
 	<img src="images/silver96.png" id="silver" style="display:none"/>
-	<img src="images/board1440.png" id="board" style="display:none"/>
-	<img src="images/rule2.png" id="rule0" style="display:none"/>
-	<img src="images/rule3.png" id="rule1" style="display:none"/>
-	<img src="images/rule4.png" id="rule2" style="display:none"/>
-	<img src="images/rule5.png" id="rule3" style="display:none"/>
-	<img src="images/rule6.png" id="rule4" style="display:none"/>
-	<img src="images/rule7.png" id="rule5" style="display:none"/>
-	<img src="images/rule8.png" id="rule6" style="display:none"/>
+	<img src="images/board2016.png" id="board" style="display:none"/>
+	<img src="images/helmet1.png" id="helmet1" style="display:none"/>
+	<img src="images/helmet2.png" id="helmet2" style="display:none"/>
+	<img src="images/rule0.png" id="rule0" style="display:none"/>
+	<img src="images/rule1.png" id="rule1" style="display:none"/>
+	<img src="images/rule2.png" id="rule2" style="display:none"/>
+	<img src="images/rule3.png" id="rule3" style="display:none"/>
+	<img src="images/rule4.png" id="rule4" style="display:none"/>
+	<img src="images/rule5.png" id="rule5" style="display:none"/>
+	<img src="images/rule6.png" id="rule6" style="display:none"/>
+	<img src="images/rule7.png" id="rule7" style="display:none"/>
+	<img src="images/rule8.png" id="rule8" style="display:none"/>
+	<img src="images/rule9.png" id="rule9" style="display:none"/>
 	<canvas id="canvas"></canvas>
 	<audio src="audio/pick.mp3" id="pick"></audio>
 	<audio src="audio/drop.mp3" id="drop"></audio>
@@ -56,5 +62,6 @@ var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga,s)
 	<audio src="audio/push.mp3" id="push"></audio>
 	<audio src="audio/rout.mp3" id="rout"></audio>
 	<audio src="audio/raly.mp3" id="raly"></audio>
+	<audio src="audio/nika2.ogg" id="music" loop></audio>
 </body>
 </html>

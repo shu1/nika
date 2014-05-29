@@ -1,21 +1,30 @@
 "use strict";
 
+function volumeCurve(input) {
+	return Math.pow(input, 2);
+}
+
 function playSound(name) {
 	if (mediaMan.play) {
 		switch (name) {
 		case "rotate":
+			sounds[5].volume = volumeCurve(settingsMan.sound / 10);
 			sounds[5].play();
 			break;
 		case "move":
+			sounds[1].volume = volumeCurve(settingsMan.sound / 10);
 			sounds[1].play();
 			break;
 		case "push":
+			sounds[3].volume = volumeCurve(settingsMan.sound / 10);
 			sounds[3].play();
 			break;
 		case "rout":
+			sounds[2].volume = volumeCurve(settingsMan.sound / 10);
 			sounds[2].play();
 			break;
 		case "rally":
+			sounds[4].volume = volumeCurve(settingsMan.sound / 10);
 			sounds[4].play();
 			break;
 		}
@@ -29,9 +38,8 @@ function init() {
 	generateGrid(mainBoard);
 	pushGameState();
 	useAction(0);	// init debug text
-	initTuts();
 
-	images = new Array(8);
+	images = new Array(10);
 	images[0] = document.getElementById("athens");
 	images[1] = document.getElementById("sparta");
 	images[2] = document.getElementById("mesene");
@@ -40,18 +48,21 @@ function init() {
 	images[5] = document.getElementById("golden");
 	images[6] = document.getElementById("silver");
 	images[7] = document.getElementById("board");
+	images[8] = document.getElementById("helmet1");
+	images[9] = document.getElementById("helmet2");
 
 	for (var i = 0; i < rulePages; ++i) {
-		images[8+i] = document.getElementById("rule" + i);
+		images[10+i] = document.getElementById("rule" + i);
 	}
 
-	sounds = new Array(6);
+	sounds = new Array(7);
 	sounds[0] = document.getElementById("pick");
 	sounds[1] = document.getElementById("drop");
 	sounds[2] = document.getElementById("move");
 	sounds[3] = document.getElementById("push");
 	sounds[4] = document.getElementById("rout");
 	sounds[5] = document.getElementById("raly");
+	sounds[6] = document.getElementById("music");
 
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
@@ -77,22 +88,45 @@ function init() {
 		window.addEventListener("resize", reSize);
 	}
 	else {
-		menuMan.rows = 2;
+		menuMan.rows = 3;
 	}
 	menuMan.cols = Math.ceil((buttons.length-1) / menuMan.rows);
 	menuMan.bWidth = cellSize*2;
-	menuMan.bHeight = cellSize*2/menuMan.rows;
+	menuMan.bHeight = menuMan.rows == 1 ? cellSize*2 : cellSize;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
+	dialogMan.x = cellSize*6;
+	dialogMan.y = cellSize*6;
+	dialogMan.width = cellSize*9;
+	dialogMan.height = cellSize*3;
+
+	settingsMan.x = cellSize*4;
+	settingsMan.y = cellSize*4;
+	settingsMan.width = cellSize*13;
+	settingsMan.height = cellSize*7;
+	settingsMan.music = 10;
+	settingsMan.sound = 10;
+
+	var lineWidth = 44;
+	for (var i = tutorialTexts.length-1; i >= 0; --i) {
+		var lines = tutorialTexts[i];
+		for (var j = 0; lines[j].length > lineWidth; ++j) {
+			lines.push(lines[j].slice(lineWidth));
+			lines[j] = lines[j].slice(0, lineWidth);
+		}
+		lines.push("step " + i + (tutorialInputs[i] ? "                              Tap here to continue" : ""));
+	}
+
 	reSize();
 	draw();
+	sounds[6].play();
 }
 
 function reSize() {
 	if (fullScreen) {
 		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;	// height-5 to remove scrollbars on some browsers
+		canvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 
 		if (canvas.height >= 1536) {
 			mediaMan.retina = 2;
@@ -122,6 +156,13 @@ function reSize() {
 	scenes[0] = scene;
 
 	scene = {};
+	scene.width = boardWidth;
+	scene.height = boardHeight;
+	scene.maxScale = maxScale;
+	scene.minScale = minScale;
+	scenes[1] = scene;
+
+	scene = {};
 	scene.width = ruleWidth;
 	scene.height = ruleHeight;
 	if (maxScale == minScale) {
@@ -136,7 +177,7 @@ function reSize() {
 		scene.maxScale = 1;
 		scene.minScale = canvas.width / ruleWidth;
 	}
-	scenes[1] = scene;
+	scenes[2] = scene;
 
 	setScene();
 	context.font = mediaMan.retina*16 + "px sans-serif";
@@ -247,12 +288,24 @@ function draw(time) {
 		drawBoard(scene);
 		setRings();
 		drawPieces();
-		drawTurnUI();
+		drawHelmets();
+
+		if (gameMan.tutorialStep >= 0) {
+			drawDialog();
+		}
 
 		context.restore();
 
 		if (gameMan.scene == 1) {
 			scene = scenes[1];
+			context.save();
+			context.translate(scene.x, scene.y);
+			context.scale(scene.scale, scene.scale);
+			drawSettings();
+			context.restore();
+		}
+		else if (gameMan.scene == 2) {
+			scene = scenes[2];
 			context.save();
 			context.translate(scene.x, scene.y);
 			context.scale(scene.scale, scene.scale);
@@ -296,10 +349,10 @@ function setRings() {
 	}
 }
 
-function clearRings() {
+function clearTutorialRings() {
 	for (var row=0; row<15; ++row) {
 		for (var col=0; col<21; ++col) {
-			grid[row][col].ring = -1;
+			grid[row][col].prompt = -1;
 		}
 	}
 }
@@ -320,60 +373,80 @@ function drawPieces() {
 				}
 
 				if (cell.ring >= 0) {
-					context.drawImage(images[5 + cell.ring%2], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
+					context.drawImage(images[5 + cell.ring], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
 				}
 				cell.ring = -1;	// clear for next time
 
+				context.restore();
+			}
+
+			if (cell.prompt >= 0) {
+				context.save();
+				context.translate(col * cellSize + cellSize/2, row * cellSize + cellSize/2);
+				context.drawImage(images[5 + cell.prompt], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
 				context.restore();
 			}
 		}
 	}
 }
 
-//TODO: Temporary, will most likely be replaced by any central mural UI/animation
-function drawTurnUI() {
-	var x, y;
+function drawHelmets() {
+	context.save();
 	switch (gameMan.player) {
 	case 0:
-		x = cellSize * 13.5;
-		y = cellSize * 14;
-		context.fillStyle   = "#D1CBAD";
-		context.strokeStyle = "#84BBCB";
+		context.translate(cellSize * 13.5, cellSize * 14);
 		break;
 	case 1:
-		x = cellSize;
-		y = cellSize * 10.5;
-		context.fillStyle   = "#C56828";
-		context.strokeStyle = "#292526";
+		context.translate(cellSize, cellSize * 10.5);
 		break;
 	case 2:
-		x = cellSize *  7.5;
-		y = cellSize;
-		context.fillStyle   = "#84BBCB";
-		context.strokeStyle = "#D1CBAD";
+		context.translate(cellSize * 7.5, cellSize);
 		break;
 	case 3:
-		x = cellSize * 20;
-		y = cellSize *  4.5;
-		context.fillStyle   = "#292526";
-		context.strokeStyle = "#C56828";
+		context.translate(cellSize * 20, cellSize * 4.5);
 		break;
 	}
-	context.lineWidth = 2;
-	context.beginPath();
-	context.arc(x, y, cellSize*0.85, (gameMan.player+1)*Math.PI/2, (gameMan.player+1+gameMan.actions*2)*Math.PI/2);
-	context.closePath();
-	context.fill();
-	context.stroke();
-	context.beginPath();
-	context.arc(x, y, cellSize*0.7, (gameMan.player+1)*Math.PI/2, (gameMan.player+1+gameMan.actions*2)*Math.PI/2);
-	context.stroke();
+	context.rotate(gameMan.player * Math.PI/2);
+	context.drawImage(images[7 + gameMan.actions], -helmetSize/2, -helmetSize/2, helmetSize, helmetSize);
+	context.restore();
+}
+
+function drawDialog() {
+	if (gameMan.tutorialStep < tutorialTexts.length) {
+		var fontSize = 20;
+		context.font = mediaMan.retina * fontSize + "px sans-serif";
+		context.fillStyle = "white";
+		context.clearRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
+		var lines = tutorialTexts[gameMan.tutorialStep];
+		for (var i = lines.length-1; i >= 0; --i) {
+			context.fillText(lines[i], dialogMan.x, dialogMan.y + mediaMan.retina * fontSize * (i+1));
+		}
+	}
+}
+
+function drawSettings() {
+	var fontSize = 20;
+	context.font = mediaMan.retina * fontSize + "px sans-serif";
+	context.fillStyle = "white";
+	context.clearRect(settingsMan.x, settingsMan.y, settingsMan.width, settingsMan.height);
+	context.fillText("Settings", settingsMan.x + 4, settingsMan.y + mediaMan.retina * fontSize + 4);
+	for(var row = 0; row < settingsButtons.length; row++) {
+		var buttonRow = settingsButtons[row];
+		drawSettingsButton(row, 0, settingsButtons[row][0], "white", "#073c50");
+		for(var col = 1; col < buttonRow.length; col++) {
+			drawSettingsButton(row, col, settingsButtons[row][col], "white", "#13485d");
+		}
+	}
+
+	drawSettingsButton(0, 3, settingsMan.music, "white", "#073c50");
+	drawSettingsButton(1, 3, settingsMan.sound, "white", "#073c50");
+
 }
 
 function drawRules(scene) {
-	context.fillStyle = "rgba(255, 255, 255, 0.9)";
-	context.fillRect(0, 0, scene.width, scene.height);
-	context.drawImage(images[8 + gameMan.rules], 0, 0, scene.width, scene.height);
+	if (rulePages > 0) {
+		context.drawImage(images[10 + gameMan.rules], 0, 0, scene.width, scene.height);
+	}
 }
 
 function drawMenu(dTime) {
@@ -426,7 +499,11 @@ function drawMenu(dTime) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length-1) {
-					if (inputMan.menu && button == menuMan.button || gameMan.debug && button == 1 || gameMan.scene == 1 && button == 2) {
+					if (inputMan.menu && button == menuMan.button
+					|| button == 1 && gameMan.scene == 1
+					|| button == 2 && gameMan.tutorialStep >= 0
+					|| button == 3 && gameMan.scene == 2
+					|| button == 7 && gameMan.debug) {
 						drawButton(row, col, buttons[button+1], "#13485d", "white");
 					}
 					else {
@@ -452,7 +529,18 @@ function drawButton(row, col, text, textColor, bgColor) {
 			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
 	}
 	context.fillStyle = textColor;
-	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.75), canvas.height - menuMan.bHeight * (row+0.5)+6);
+	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);
+}
+
+function drawSettingsButton(row, col, text, textColor, bgColor) {
+	var padding = 4;
+	if (bgColor) {
+		context.fillStyle = bgColor;
+		context.fillRect(settingsMan.x + menuMan.bWidth * (col+1) + padding, settingsMan.y + menuMan.bHeight * (row+1) + padding,
+			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
+	}
+	context.fillStyle = textColor;
+	context.fillText(text, settingsMan.x + menuMan.bWidth * (col+1.2), settingsMan.y + menuMan.bHeight * (row+1.5)+6);
 }
 
 function drawHud(time) {
