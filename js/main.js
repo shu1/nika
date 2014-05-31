@@ -39,20 +39,21 @@ function init() {
 	pushGameState();
 	useAction(0);	// init debug text
 
-	images = new Array(10);
-	images[0] = document.getElementById("athens");
-	images[1] = document.getElementById("sparta");
-	images[2] = document.getElementById("mesene");
-	images[3] = document.getElementById("thebes");
-	images[4] = document.getElementById("shading");
-	images[5] = document.getElementById("golden");
-	images[6] = document.getElementById("silver");
-	images[7] = document.getElementById("board");
-	images[8] = document.getElementById("helmet1");
-	images[9] = document.getElementById("helmet2");
+	images = {}
+	images["player0"] = document.getElementById("athens");
+	images["player1"] = document.getElementById("sparta");
+	images["player2"] = document.getElementById("mesene");
+	images["player3"] = document.getElementById("thebes");
+	images["shading"] = document.getElementById("shading");
+	images["golden"] = document.getElementById("golden");
+	images["silver"] = document.getElementById("silver");
+	images["shadow"] = document.getElementById("shadow");
+	images["board"] = document.getElementById("board");
+	images["helmet1"] = document.getElementById("helmet1");
+	images["helmet2"] = document.getElementById("helmet2");
 
 	for (var i = 0; i < rulePages; ++i) {
-		images[10+i] = document.getElementById("rule" + i);
+		images["rule" + i] = document.getElementById("rule" + i);
 	}
 
 	sounds = {};
@@ -324,7 +325,7 @@ function draw(time) {
 }
 
 function drawBoard(scene) {
-	context.drawImage(images[7], 0, 0, scene.width, scene.height);
+	context.drawImage(images["board"], 0, 0, scene.width, scene.height);
 }
 
 function setRings() {
@@ -367,23 +368,33 @@ function drawPieces() {
 
 				if (cell.player >= 0) {
 					context.rotate(cell.rot * Math.PI/2);
-					context.drawImage(images[cell.player], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);	// piece
+					context.drawImage(images["player" + cell.player], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);	// piece
 					context.rotate(cell.rot * Math.PI/-2);	// rotate back
-					context.drawImage(images[4], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);	// shadow
+					context.drawImage(images["shading"], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);	// shading
 				}
 
-				if (cell.ring >= 0) {
-					context.drawImage(images[5 + cell.ring], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
+				if (cell.ring == 0) {
+					context.drawImage(images["golden"], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
+				} else if (cell.ring == 1) {
+					var rotation = cell.kind == 2 ? cell.city : inputMan.rot;
+					context.rotate(rotation * Math.PI/2);
+					context.drawImage(images["shadow"], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
+					context.rotate(rotation * Math.PI/-2);	// rotate back
 				}
 				cell.ring = -1;	// clear for next time
 
 				context.restore();
 			}
 
-			if (cell.prompt >= 0) {
+			if (cell.prompt == 0) {
 				context.save();
 				context.translate(col * cellSize + cellSize/2, row * cellSize + cellSize/2);
-				context.drawImage(images[5 + cell.prompt], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
+				context.drawImage(images["golden"], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
+				context.restore();
+			} else if (cell.prompt == 1) {
+				context.save();
+				context.translate(col * cellSize + cellSize/2, row * cellSize + cellSize/2);
+				context.drawImage(images["silver"], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
 				context.restore();
 			}
 		}
@@ -407,7 +418,7 @@ function drawHelmets() {
 		break;
 	}
 	context.rotate(gameMan.player * Math.PI/2);
-	context.drawImage(images[7 + gameMan.actions], -helmetSize/2, -helmetSize/2, helmetSize, helmetSize);
+	context.drawImage(images["helmet" + gameMan.actions], -helmetSize/2, -helmetSize/2, helmetSize, helmetSize);
 	context.restore();
 }
 
@@ -445,7 +456,7 @@ function drawSettings() {
 
 function drawRules(scene) {
 	if (rulePages > 0) {
-		context.drawImage(images[10 + gameMan.rules], 0, 0, scene.width, scene.height);
+		context.drawImage(images["rule" + gameMan.rules], 0, 0, scene.width, scene.height);
 	}
 }
 
