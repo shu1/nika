@@ -178,7 +178,7 @@ function routPiece(row, col) {
 function getRoutCell(player) {
 	switch (player) {
 	case 0:
-		for (var row = 14; row >= 0; --row) {
+		for (var row = 0; row < 15; ++row) {
 			for (var col = 0; col < 21; ++col) {
 				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
 					return {row:row, col:col};
@@ -187,7 +187,7 @@ function getRoutCell(player) {
 		}
 		break;
 	case 1:
-		for (var col = 0; col < 21; ++col) {
+		for (var col = 20; col >= 0; --col) {
 			for (var row = 0; row < 15; ++row) {
 				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
 					return {row:row, col:col};
@@ -196,7 +196,7 @@ function getRoutCell(player) {
 		}
 		break;
 	case 2:
-		for (var row = 0; row < 15; ++row) {
+		for (var row = 14; row >= 0; --row) {
 			for (var col = 20; col >= 0; --col) {
 				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
 					return {row:row, col:col};
@@ -205,7 +205,7 @@ function getRoutCell(player) {
 		}
 		break;
 	case 3:
-		for (var col = 20; col >= 0; --col) {
+		for (var col = 0; col < 21; ++col) {
 			for (var row = 14; row >= 0; --row) {
 				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
 					return {row:row, col:col};
