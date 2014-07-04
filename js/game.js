@@ -68,6 +68,7 @@ function generateGrid(ascii) {
 				cell.kind = 3;	// routed
 			}
 
+			// routed squares with players in them
 			if (a == 'Q' || a == 'R' || a == 'S' || a == 'T') {
 				cell.kind = 3;
 			}
@@ -101,17 +102,11 @@ function useAction(n) {
 	if (typeof n == 'undefined') {
 		n = 1;
 	}
-
 	gameMan.actions -= n;
 	if (gameMan.actions <= 0) {
 		gameMan.actions = 2;
-
-		gameMan.player++;
-		if (gameMan.player >= 4) {
-			gameMan.player = 0;
-		}
+		gameMan.player = (gameMan.player + 1) % 4;
 	}
-
 	hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	checkWin();
 }
@@ -130,16 +125,7 @@ function getCity(player) {
 }
 
 function getPartner(player) {
-	switch (player) {
-	case 0:
-		return 2;
-	case 1:
-		return 3;
-	case 2:
-		return 0;
-	case 3:
-		return 1;
-	}
+	return (player + 2) % 4;
 }
 
 function pushGameState() {
@@ -166,7 +152,7 @@ function pushGameState() {
 	}
 
 	gameStates.push(state);
-	if (gameStates.length > 16) {	// number of undos to hold
+	while (gameStates.length > 16) {	// number of undos to hold
 		gameStates.shift();
 	}
 }

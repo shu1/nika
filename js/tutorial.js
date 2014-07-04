@@ -251,18 +251,23 @@ function checkTutorialMove(moved) {
 		}
 		break;
 	case 26:
-		if (grid[9][5].player == 0 && grid[10][5].player == 0) {
+		if (grid[9][5].player == 0
+				&& grid[10][5].player == 0) {
 			correct = true;
 		}
 		break;
 	case 27:
-		if (grid[9][5].rot == 0 && grid[10][5].rot == 0) {
+		if (grid[9][5].rot == 0
+		 && grid[10][5].rot == 0) {
 			correct = true;
 		}
 		break;
 
 	case 33:
-		if (grid[10][15].player == 0 && grid[11][15].player == 0 && grid[11][16].player == 0 && grid[9][14].player == 0) {
+		if (grid[10][15].player == 0
+		 && grid[11][15].player == 0
+		 && grid[11][16].player == 0
+		 && grid[9][14].player == 0) {
 			correct = true;
 		}
 		break;
@@ -307,7 +312,9 @@ function checkTutorialMove(moved) {
 function checkTutorialSelection() {
 	switch(gameMan.tutorialStep) {
 	case 30:
-		if (inPhalanx(10,14) && !inPhalanx(9,14) && !inPhalanx(11,14)) {
+		if (inPhalanx(10,14)
+		 && !inPhalanx(9,14)
+		 && !inPhalanx(11,14)) {
 			nextTutorialStep();
 		}
 		else {
@@ -315,7 +322,10 @@ function checkTutorialSelection() {
 		}
 		break;
 	case 31:
-		if (inPhalanx(10, 14) && inPhalanx(11,14) && !inPhalanx(9,14) && !inPhalanx(11,15)) {
+		if (inPhalanx(10, 14)
+		 && inPhalanx(11,14)
+		 && !inPhalanx(9,14)
+		 && !inPhalanx(11,15)) {
 			nextTutorialStep();
 		}
 		else {
@@ -324,7 +334,10 @@ function checkTutorialSelection() {
 		}
 		break;
 	case 32:
-		if (inPhalanx(10,14) && inPhalanx(11,14) && inPhalanx(11,15) && !inPhalanx(9,14)) {
+		if (inPhalanx(10,14)
+		 && inPhalanx(11,14)
+		 && inPhalanx(11,15)
+		 && !inPhalanx(9,14)) {
 			nextTutorialStep();
 		}
 		else {

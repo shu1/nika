@@ -56,14 +56,16 @@ function settingsButton(row, col) {
 		}
 		sounds["music"].volume = volumeCurve(settingsMan.music / 10);
 
-	} else if (row == 1) {
+	}
+	else if (row == 1) {
 		if (col == 1) {
 			settingsMan.sound = Math.max(0, settingsMan.sound - 1);
 		}
 		else if (col == 2) {
 			settingsMan.sound = Math.min(10, settingsMan.sound + 1);
 		}
-	} else if (row == 5) {
+	}
+	else if (row == 5) {
 		if (col == 4) {
 			setScene(0);
 		}

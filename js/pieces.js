@@ -91,13 +91,13 @@ function moveOnePiece(pRow, pCol, row, col) {
 }
 
 function checkMove(pRow, pCol, row, col) {
-	if (pRow < 0 || pCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21										// bounds
-	|| grid[row][col].kind < 0 || grid[row][col].kind == 3															// invalid cell
-	|| (grid[pRow][pCol].kind != 3 && Math.abs(row - pRow) + Math.abs(col - pCol) > 1)								// adjacent cell
-	|| (grid[row][col].kind == 1 && (grid[row][col].city - grid[pRow][pCol].player)%2 != 0 )						// opponent win cell
-	|| (grid[pRow][pCol].kind == 3 && (grid[row][col].kind != 2 || grid[pRow][pCol].player != grid[row][col].city))	// routed to respawn
-	|| (grid[row][col].player >= 0 && (grid[row][col].player - grid[pRow][pCol].player)%2 == 0)						// same team
-	|| !inPhalanx(pRow,pCol)) {																						// didn't click current phalanx
+	if (pRow < 0 || pCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21																					// bounds
+	|| grid[row][col].kind < 0 || grid[row][col].kind == 3																														// invalid cell
+	|| (grid[pRow][pCol].kind != 3 && Math.abs(row - pRow) + Math.abs(col - pCol) > 1)																// adjacent cell
+	|| (grid[row][col].kind == 1 && (grid[row][col].city - grid[pRow][pCol].player)%2 != 0 )													// opponent win cell
+	|| (grid[pRow][pCol].kind == 3 && (grid[row][col].kind != 2 || grid[pRow][pCol].player != grid[row][col].city))		// routed to respawn
+	|| (grid[row][col].player >= 0 && (grid[row][col].player - grid[pRow][pCol].player)%2 == 0)												// same team
+	|| !inPhalanx(pRow,pCol)) {																																												// didn't click current phalanx
 		return false;
 	}
 	return true;
