@@ -18,7 +18,7 @@ function menuButton(button) {
 			}
 			break;
 		case 3:
-			setScene(gameMan.scene ? 0 : 2);
+			setScene(gameMan.scene == 0 ? 0 : 2);
 			break;
 		case 4:
 			useAction(2);
@@ -62,6 +62,10 @@ function settingsButton(row, col) {
 		}
 		else if (col == 2) {
 			settingsMan.sound = Math.min(10, settingsMan.sound + 1);
+		}
+	} else if (row == 5) {
+		if (col == 4) {
+			setScene(0);
 		}
 	}
 }

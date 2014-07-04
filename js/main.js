@@ -441,6 +441,7 @@ function drawSettings() {
 	context.fillStyle = "white";
 	context.clearRect(settingsMan.x, settingsMan.y, settingsMan.width, settingsMan.height);
 	context.fillText("Settings", settingsMan.x + 4, settingsMan.y + mediaMan.retina * fontSize + 4);
+
 	for(var row = 0; row < settingsButtons.length; row++) {
 		var buttonRow = settingsButtons[row];
 		drawSettingsButton(row, 0, settingsButtons[row][0], "white", "#073c50");
@@ -451,7 +452,7 @@ function drawSettings() {
 
 	drawSettingsButton(0, 3, settingsMan.music, "white", "#073c50");
 	drawSettingsButton(1, 3, settingsMan.sound, "white", "#073c50");
-
+	drawSettingsButton(5, 4, "Close", "white", "#13485d");
 }
 
 function drawRules(scene) {
