@@ -18,7 +18,7 @@ function menuButton(button) {
 			}
 			break;
 		case 3:
-			setScene(gameMan.scene == 0 ? 0 : 2);
+			setScene(gameMan.scene ? 0 : 2);
 			break;
 		case 4:
 			useAction(2);
