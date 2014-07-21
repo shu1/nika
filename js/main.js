@@ -91,16 +91,19 @@ function init() {
 	else {
 		menuMan.rows = 3;
 	}
+
+	reSize();
+
 	menuMan.cols = Math.ceil((buttons.length-1) / menuMan.rows);
 	menuMan.bWidth = cellSize*2;
 	menuMan.bHeight = menuMan.rows == 1 ? cellSize*2 : cellSize;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
-	dialogMan.x = cellSize*6;
-	dialogMan.y = cellSize*6;
-	dialogMan.width = cellSize*9;
-	dialogMan.height = cellSize*3;
+	dialogMan.x = 393*mediaMan.retina;
+	dialogMan.y = 312*mediaMan.retina;
+	dialogMan.width = 300*mediaMan.retina;
+	dialogMan.height = 96*mediaMan.retina;
 
 	settingsMan.x = cellSize*4;
 	settingsMan.y = cellSize*4;
@@ -109,17 +112,15 @@ function init() {
 	settingsMan.music = 10;
 	settingsMan.sound = 10;
 
-	var lineWidth = 44;
+	var lineWidth = 36;
 	for (var i = tutorialTexts.length-1; i >= 0; --i) {
 		var lines = tutorialTexts[i];
 		for (var j = 0; lines[j].length > lineWidth; ++j) {
 			lines.push(lines[j].slice(lineWidth));
 			lines[j] = lines[j].slice(0, lineWidth);
 		}
-		lines.push("step " + i + (tutorialInputs[i] ? "                              Tap here to continue" : ""));
 	}
 
-	reSize();
 	draw();
 	sounds["music"].play();
 }
@@ -351,14 +352,6 @@ function setRings() {
 	}
 }
 
-function clearTutorialRings() {
-	for (var row=0; row<15; ++row) {
-		for (var col=0; col<21; ++col) {
-			grid[row][col].prompt = -1;
-		}
-	}
-}
-
 function drawPieces() {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
@@ -425,13 +418,15 @@ function drawHelmets() {
 
 function drawDialog() {
 	if (gameMan.tutorialStep < tutorialTexts.length) {
-		var fontSize = 20;
-		context.font = mediaMan.retina * fontSize + "px sans-serif";
-		context.fillStyle = "white";
-		context.clearRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
+		context.fillStyle = "#292526";
+		context.fillRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
+		context.fillStyle = "#d1cbad";
 		var lines = tutorialTexts[gameMan.tutorialStep];
 		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], dialogMan.x, dialogMan.y + mediaMan.retina * fontSize * (i+1));
+			context.fillText(lines[i], dialogMan.x + 1, dialogMan.y - 3 + mediaMan.retina * (i+1) * 16);
+		}
+		if (tutorialInputs[gameMan.tutorialStep]) {
+			context.fillText("Tap here to continue", dialogMan.x + 153*mediaMan.retina, dialogMan.y + dialogMan.height - 5);
 		}
 	}
 }

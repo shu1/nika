@@ -1,3 +1,13 @@
+"use strict";
+
+function clearTutorialRings() {
+	for (var row=0; row<15; ++row) {
+		for (var col=0; col<21; ++col) {
+			grid[row][col].prompt = -1;
+		}
+	}
+}
+
 function nextTutorialStep() {
 	gameMan.tutorialStep++;
 	clearTutorialRings();
