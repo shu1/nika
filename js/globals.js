@@ -353,9 +353,9 @@ var tutorialTexts = [[
 ],[
 	"Brilliant!"
 ],[
-	"Like all hoplites, our troops are trained to","act in the powerful PHALANX formation. If","two or more are adjacent and face the","same way, they can move and rotate","together." // 25
+	"Like all hoplites, our troops are trained to","act in the powerful PHALANX formation.","If two or more are adjacent and face the","same way, they can move and rotate","together." // 25
 ],[
-	"Like all hoplites, our troops are trained to","act in the powerful PHALANX formation. If","two or more are adjacent and face the","same way, they can move and rotate","together." // 25
+	"Like all hoplites, our troops are trained to","act in the powerful PHALANX formation.","If two or more are adjacent and face the","same way, they can move and rotate","together." // 25
 ],[
 	"To move in a phalanx, just drag forward","any piece that is part of a phalanx","formation." // 26 Move
 ],[
@@ -363,7 +363,7 @@ var tutorialTexts = [[
 ],[
 	"Good! You'll notice that pieces in a","phalanx can only move forward. Moving in","a different direction requires two actions:","first rotating the phalanx, then moving it."
 ],[
-	"The Thebans have mounted a tough","defense. If we move our whole phalanx","forward, our piece nearest the main","Theban formation will be in danger. Let us","proceed with caution." // 29
+	"The Thebans have mounted a tough","defense. If we move our whole phalanx","forward, our piece nearest the main","Theban formation will be in danger. Let","us proceed with caution." // 29
 ],[
 	"Fortunately, we can split pieces off from a","phalanx. Tap the indicated piece to enter","phalanx sub-selection mode."
 ],[
@@ -393,7 +393,7 @@ var tutorialTexts = [[
 ],[
 	"Good news, strategos! Our men have","trapped a Spartan near the edge of the","field." // 41
 ],[
-	"If we push an enemy piece off the","battlefield, that enemy is routed. Push that","Spartan to take him out!" // 42 Move
+	"If we push an enemy piece off the","battlefield, that enemy is routed. Push","that Spartan to take him out!" // 42 Move
 ],[
 	"Yes! We can rout enemies by pushing","them into any invalid space. That includes","our and our ally's victory areas, as well as","the center or outside of the board."
 ],[
@@ -409,7 +409,7 @@ var tutorialTexts = [[
 ],[
 	"Always remember your ultimate goal - get","one of your pieces across the board into","the victory area on your ally's side, or help","your ally do the same."
 ],[
-	"As you play, take some time to explore the","user interface. You can, for example,","UNDO an unwanted move, or PASS if you","feel you cannot better your position by","taking an action."
+	"As you play, take some time to explore","the user interface. You can, for example,","UNDO an unwanted move, or PASS if you","feel you cannot better your position by","taking an action."
 ],[
 	"Though the rules are few, you will find that","the strategies are deep and varied. Now","then, proserchou kai nika - go forth and","conquer!"
 ]]
