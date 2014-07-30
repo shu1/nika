@@ -7,7 +7,7 @@ function menuButton(button) {
 	else if (menuMan.show) {
 		switch(button) {
 		case 1:
-			setScene(gameMan.scene ? 0 : 1);
+			gameMan.debug = !gameMan.debug;
 			break;
 		case 2:
 			if (gameMan.tutorialStep < 0) {
@@ -25,12 +25,6 @@ function menuButton(button) {
 			break;
 		case 5:
 			undo();
-			break;
-		case 6:
-			ai();
-			break;
-		case 7:
-			gameMan.debug = !gameMan.debug;
 			break;
 		}
 	}

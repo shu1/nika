@@ -112,15 +112,6 @@ function init() {
 	settingsMan.music = 10;
 	settingsMan.sound = 10;
 
-	var lineWidth = 36;
-	for (var i = tutorialTexts.length-1; i >= 0; --i) {
-		var lines = tutorialTexts[i];
-		for (var j = 0; lines[j].length > lineWidth; ++j) {
-			lines.push(lines[j].slice(lineWidth));
-			lines[j] = lines[j].slice(0, lineWidth);
-		}
-	}
-
 	draw();
 	sounds["music"].play();
 }
@@ -508,10 +499,9 @@ function drawMenu(dTime) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length-1) {
 					if (inputMan.menu && button == menuMan.button
-					|| button == 1 && gameMan.scene == 1
+					|| button == 1 && gameMan.debug
 					|| button == 2 && gameMan.tutorialStep >= 0
-					|| button == 3 && gameMan.scene == 2
-					|| button == 7 && gameMan.debug) {
+					|| button == 3 && gameMan.scene == 2) {
 						drawButton(row, col, buttons[button+1], "#13485d", "white");
 					}
 					else {
