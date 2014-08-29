@@ -18,6 +18,7 @@ function nextTutorialStep() {
 function endTutorial() {
 	gameMan.tutorialStep = -1;
 	resetActions(0);
+	gameStates = [];
 	generateGrid(mainBoard);
 	mediaMan.draw = true;
 }
