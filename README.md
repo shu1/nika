@@ -1,1 +1,1 @@
-Nika Digital by <a href="http://www.studio-mercato.com" target="_blank">Studio Mercato</a>
+Nika Digital by [Studio Mercato](http://www.studio-mercato.com)
