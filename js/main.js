@@ -158,7 +158,7 @@ function reSize() {
 	scene = {};
 	scene.width = ruleWidth;
 	scene.height = ruleHeight;
-	
+
 	if (maxScale == minScale) {
 		scene.maxScale = 1;
 		scene.minScale = canvas.height / ruleHeight;
@@ -412,6 +412,7 @@ function drawDialog() {
 		context.fillStyle = "#292526";
 		context.fillRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
 		context.fillStyle = "#d1cbad";
+		// TODO: context.font = '12pt Georgia'
 		var lines = tutorialTexts[gameMan.tutorialStep];
 		for (var i = lines.length-1; i >= 0; --i) {
 			context.fillText(lines[i], dialogMan.x + 1, dialogMan.y - 3 + mediaMan.retina * (i+1) * 16);

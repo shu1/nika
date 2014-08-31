@@ -355,8 +355,6 @@ var tutorialTexts = [[
 ],[
 	"Like all hoplites, our troops are trained to","act in the powerful PHALANX formation.","If two or more are adjacent and face the","same way, they can move and rotate","together." // 25
 ],[
-	"Like all hoplites, our troops are trained to","act in the powerful PHALANX formation.","If two or more are adjacent and face the","same way, they can move and rotate","together." // 25
-],[
 	"To move in a phalanx, just drag forward","any piece that is part of a phalanx","formation." // 26 Move
 ],[
 	"Exactly. Now, rotate our phalanx to face","the Spartan. Drag any piece in the","phalanx in the direction you want it to face." // 27
@@ -366,6 +364,8 @@ var tutorialTexts = [[
 	"The Thebans have mounted a tough","defense. If we move our whole phalanx","forward, our piece nearest the main","Theban formation will be in danger. Let","us proceed with caution." // 29
 ],[
 	"Fortunately, we can split pieces off from a","phalanx. Tap the indicated piece to enter","phalanx sub-selection mode."
+],[
+	"Now tap the other pieces indicated,","starting with the corner piece. If you try to","create an invalid phalanx by tapping the","forward piece first, you'll have to start over."
 ],[
 	"Now tap the other pieces indicated,","starting with the corner piece. If you try to","create an invalid phalanx by tapping the","forward piece first, you'll have to start over."
 ],[
