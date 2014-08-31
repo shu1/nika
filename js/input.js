@@ -203,6 +203,10 @@ function mouseUp(event) {
 						gameMan.rules = Math.max(gameMan.rules - 1, 0);
 					}
 				}
+
+				if (inputMan.x < cellSize*3.5 && inputMan.y > canvas.height - cellSize*2.5) {
+					setScene(0);
+				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
 				if (inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
