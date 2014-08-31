@@ -194,16 +194,20 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.scene == 2) {	// rules
-				if (inputMan.x > canvas.width - cellSize*2) {
-					gameMan.rules++;
-					if (gameMan.rules > rulePages-1) {
-						gameMan.rules = 0;
+				console.log(inputMan.y, canvas.height);
+				if (inputMan.y > canvas.height / 2 - cellSize * 1.5
+				 && inputMan.y < canvas.height / 2 + cellSize * 1.5) {
+					if (inputMan.x > canvas.width - cellSize*2) {
+						gameMan.rules++;
+						if (gameMan.rules > rulePages-1) {
+							gameMan.rules = rulePages - 1;
+						}
 					}
-				}
-				else if (inputMan.x < cellSize*2) {
-					gameMan.rules--;
-					if (gameMan.rules < 0) {
-						gameMan.rules = rulePages-1;
+					else if (inputMan.x < cellSize*2) {
+						gameMan.rules--;
+						if (gameMan.rules < 0) {
+							gameMan.rules = 0;
+						}
 					}
 				}
 			}
