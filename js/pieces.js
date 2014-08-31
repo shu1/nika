@@ -91,8 +91,8 @@ function moveOnePiece(pRow, pCol, row, col) {
 }
 
 function checkMove(pRow, pCol, row, col) {
-	if (pRow < 0 || pCol < 0 || row < 0 || row >= 15 || col < 0 || col >= 21																					// bounds
-	|| grid[row][col].kind < 0 || grid[row][col].kind == 3																														// invalid cell
+	if (outOfBounds(pRow, pCol) || outOfBounds(row, col)
+	|| invalidCell(row, col)
 	|| (grid[pRow][pCol].kind != 3 && Math.abs(row - pRow) + Math.abs(col - pCol) > 1)																// adjacent cell
 	|| (grid[row][col].kind == 1 && (grid[row][col].city - grid[pRow][pCol].player)%2 != 0 )													// opponent win cell
 	|| (grid[pRow][pCol].kind == 3 && (grid[row][col].kind != 2 || grid[pRow][pCol].player != grid[row][col].city))		// routed to respawn
@@ -104,11 +104,11 @@ function checkMove(pRow, pCol, row, col) {
 }
 
 function pushPiece(pRow, pCol, row, col, pusher, weight) {
-	if (grid[row][col].kind < 0 || grid[row][col].kind == 3) {	// invalid or routed cell
+	if (invalidCell(row, col)) {
 		return false;
 	}
 
-	if (grid[row][col].player < 0) {	// empty cell
+	if (emptyCell(row, col)) {
 		if (grid[row][col].kind == 0	// normal cell
 		|| (grid[row][col].kind > 0 && Math.abs(grid[pRow][pCol].player - grid[row][col].city)%2 == 0)) {	// allied win or rally cell
 			return true;
@@ -138,7 +138,7 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 		}
 
 		if (weight > 1) {	// check line weight
-			if (grid[fRow][fCol].kind < 0 || grid[fRow][fCol].kind == 3												// pushed into invalid or routed cell
+			if (invalidCell(fRow, fCol)
 			|| (grid[fRow][fCol].player >= 0 && Math.abs(grid[fRow][fCol].player - grid[row][col].player)%2 == 1)	// pushed into enemy piece
 			|| (grid[fRow][fCol].kind == 1 && Math.abs(grid[fRow][fCol].city - grid[row][col].player)%2 == 1)) {	// pushed into enemy win cell
 				routPiece(row,col);
@@ -180,7 +180,7 @@ function getRoutCell(player) {
 	case 0:
 		for (var row = 0; row < 15; ++row) {
 			for (var col = 0; col < 21; ++col) {
-				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
+				if (grid[row][col].kind == 3 && grid[row][col].city == player && emptyCell(row, col)) {
 					return {row:row, col:col};
 				}
 			}
@@ -189,7 +189,7 @@ function getRoutCell(player) {
 	case 1:
 		for (var col = 20; col >= 0; --col) {
 			for (var row = 0; row < 15; ++row) {
-				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
+				if (grid[row][col].kind == 3 && grid[row][col].city == player && emptyCell(row, col)) {
 					return {row:row, col:col};
 				}
 			}
@@ -198,7 +198,7 @@ function getRoutCell(player) {
 	case 2:
 		for (var row = 14; row >= 0; --row) {
 			for (var col = 20; col >= 0; --col) {
-				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
+				if (grid[row][col].kind == 3 && grid[row][col].city == player && emptyCell(row, col)) {
 					return {row:row, col:col};
 				}
 			}
@@ -207,7 +207,7 @@ function getRoutCell(player) {
 	case 3:
 		for (var col = 0; col < 21; ++col) {
 			for (var row = 14; row >= 0; --row) {
-				if (grid[row][col].kind == 3 && grid[row][col].city == player && grid[row][col].player < 0) {
+				if (grid[row][col].kind == 3 && grid[row][col].city == player && emptyCell(row, col)) {
 					return {row:row, col:col};
 				}
 			}
@@ -306,12 +306,12 @@ function checkMovePhalanx(pRow, pCol, row, col) {
 		var iRow = phalanx[i].row;
 		var iCol = phalanx[i].col;
 
-		if (iRow < 0 || iCol < 0 || iRow + dRow < 0 || iRow + dRow >= 15 || iCol + dCol < 0 || iCol + dCol >= 21					// bounds
-		||  grid[iRow + dRow][iCol + dCol].kind < 0 || grid[iRow + dRow][iCol + dCol].kind == 3										// invalid cell
+		if (outOfBounds(iRow, iCol) || outOfBounds(iRow + dRow, iCol + dCol)
+		||  invalidCell(iRow+dRow, iCol+dCol)
 		|| (grid[iRow + dRow][iCol + dCol].kind == 1 && (grid[iRow + dRow][iCol + dCol].city - grid[iRow][iCol].player)%2 != 0 )	// opponent win cell
 		|| (grid[iRow + dRow][iCol + dCol].player >= 0 && !inPhalanx(iRow + dRow, iCol + dCol)
-		&& (grid[iRow + dRow][iCol + dCol].player - grid[iRow][iCol].player)%2 == 0)			// same team, not part of phalanx
-		|| !inPhalanx(pRow,pCol)) {																// didn't click current phalanx
+		&& (grid[iRow + dRow][iCol + dCol].player - grid[iRow][iCol].player)%2 == 0)																							// same team, not part of phalanx
+		|| !inPhalanx(pRow,pCol)) {																																																// didn't click current phalanx
 			return false;
 		}
 	}
@@ -359,10 +359,10 @@ function togglePhalanxPiece(row, col) {
 		}
 
 		for (var i = phalanx.length-1; i >= 0; --i) {
-			if (Math.abs(phalanx[i].row-row) + Math.abs(phalanx[i].col-col) == 1 	// adjacent cell
+			if (Math.abs(phalanx[i].row-row) + Math.abs(phalanx[i].col-col) == 1 		// adjacent cell
 			&& grid[phalanx[i].row][phalanx[i].col].player == grid[row][col].player	// same player
-			&& grid[phalanx[i].row][phalanx[i].col].rot == grid[row][col].rot 		// same rotation
-			&& grid[row][col].kind != 3) { 											// not routed cell
+			&& grid[phalanx[i].row][phalanx[i].col].rot == grid[row][col].rot 			// same rotation
+			&& grid[row][col].kind != 3) { 																					// not routed cell
 				phalanx.push({row:row, col:col});
 				return;
 			}
@@ -409,4 +409,17 @@ function findMember(sRow, sCol, eRow, eCol) {
 	}
 
 	return found;
+}
+
+function outOfBounds(row, col) {
+	return row < 0 || col < 0 || row >= 15 || col >= 21;
+}
+
+function emptyCell(row, col) {
+	return grid[row][col].player < 0;
+}
+
+function invalidCell(row, col) {
+	var cell = grid[row][col];
+	return cell.kind < 0 || cell.kind == 3;
 }
