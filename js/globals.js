@@ -357,7 +357,7 @@ var tutorialTexts = [[
 ],[
 	"To move in a phalanx, just drag forward","any piece that is part of a phalanx","formation." // 26 Move
 ],[
-	"Exactly. Now, rotate our phalanx to face","the Spartan. Drag any piece in the","phalanx in the direction you want it to face." // 27
+	"Exactly. Now, rotate our phalanx to face","the Spartan. Drag any piece in the","phalanx in the direction you want it to", "face." // 27
 ],[
 	"Good! You'll notice that pieces in a","phalanx can only move forward. Moving in","a different direction requires two actions:","first rotating the phalanx, then moving it."
 ],[
@@ -365,9 +365,9 @@ var tutorialTexts = [[
 ],[
 	"Fortunately, we can split pieces off from a","phalanx. Tap the indicated piece to enter","phalanx sub-selection mode."
 ],[
-	"Now tap the other pieces indicated,","starting with the corner piece. If you try to","create an invalid phalanx by tapping the","forward piece first, you'll have to start over."
+	"Now tap the other pieces indicated,","starting with the corner piece. If you try to","create an invalid phalanx by tapping the","forward piece first, you'll have to start", "over."
 ],[
-	"Now tap the other pieces indicated,","starting with the corner piece. If you try to","create an invalid phalanx by tapping the","forward piece first, you'll have to start over."
+	"Now tap the other pieces indicated,","starting with the corner piece. If you try to","create an invalid phalanx by tapping the","forward piece first, you'll have to start", "over."
 ],[
 	"Deftly done! You can now move the","smaller phalanx you created by dragging","it forward as normal." // 33 Move
 ],[
@@ -409,9 +409,11 @@ var tutorialTexts = [[
 ],[
 	"Always remember your ultimate goal - get","one of your pieces across the board into","the victory area on your ally's side, or help","your ally do the same."
 ],[
-	"As you play, take some time to explore","the user interface. You can, for example,","UNDO an unwanted move, or PASS if you","feel you cannot better your position by","taking an action."
+	"As you play, take some time to explore","the interface. You can, for example,","UNDO an unwanted move, or PASS if you","feel you cannot better your position by", "taking an action."
 ],[
-	"Though the rules are few, you will find that","the strategies are deep and varied. Now","then, proserchou kai nika - go forth and","conquer!"
+	"You can also zoom in by double-tapping.", "While zoomed in, you can move the view", "around by dragging, or zoom back out by", "double-tapping again."
+],[
+	"Though the rules are few, you will find","that the strategies are deep and varied.","Now then, proserchou kai nika - go forth","and conquer!"
 ]]
 
 var tutorialInputs = [
@@ -420,5 +422,5 @@ var tutorialInputs = [
 	true,	false,	true,	false,	true,	true,	false,	false,	true,	true,
 	false, false,	false,	false,	false,	true,	true,	false,	true,	true,
 	true,	false,	false,	true,	true,	false,	true,	true,	true,	false,
-	true,	true,	true,	true,	true,
+	true,	true,	true,	true,	true, true
 ]
