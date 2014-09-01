@@ -48,6 +48,8 @@ function init() {
 	images["golden"] = document.getElementById("golden");
 	images["silver"] = document.getElementById("silver");
 	images["shadow"] = document.getElementById("shadow");
+	images["green"] = document.getElementById("green");
+	images["greenShadow"] = document.getElementById("greenShadow");
 	images["board"] = document.getElementById("board");
 	images["helmet1"] = document.getElementById("helmet1");
 	images["helmet2"] = document.getElementById("helmet2");
@@ -347,7 +349,7 @@ function drawPieces() {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			var cell = grid[row][col];
-			if (cell.player >= 0 || cell.ring >= 0) {
+			if (cell.player >= 0 || cell.ring >= 0 || cell.prompt >= 0) {
 				context.save();
 				context.translate(col * cellSize + cellSize/2, row * cellSize + cellSize/2);
 
@@ -358,9 +360,17 @@ function drawPieces() {
 					context.drawImage(images["shading"], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);	// shading
 				}
 
+				if (cell.prompt == 0) {
+					context.drawImage(images["green"], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
+				}
+				else if (cell.prompt == 1) {
+					context.drawImage(images["greenShadow"], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);	// ring
+				}
+
 				if (cell.ring == 0) {
 					context.drawImage(images["golden"], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
-				} else if (cell.ring == 1) {
+				}
+				else if (cell.ring == 1) {
 					var rotation = cell.kind == 2 ? cell.city : inputMan.rot;
 					context.rotate(rotation * Math.PI/2);
 					context.drawImage(images["shadow"], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
@@ -368,18 +378,6 @@ function drawPieces() {
 				}
 				cell.ring = -1;	// clear for next time
 
-				context.restore();
-			}
-
-			if (cell.prompt == 0) {
-				context.save();
-				context.translate(col * cellSize + cellSize/2, row * cellSize + cellSize/2);
-				context.drawImage(images["golden"], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
-				context.restore();
-			} else if (cell.prompt == 1) {
-				context.save();
-				context.translate(col * cellSize + cellSize/2, row * cellSize + cellSize/2);
-				context.drawImage(images["silver"], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
 				context.restore();
 			}
 		}
