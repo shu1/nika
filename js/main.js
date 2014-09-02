@@ -1,30 +1,26 @@
 "use strict";
 
-function volumeCurve(input) {
-	return Math.pow(input, 2);
-}
-
 function playSound(name) {
 	if (mediaMan.play) {
 		switch (name) {
 		case "rotate":
-			sounds["rally"].volume = volumeCurve(settingsMan.sound / 10);
+			sounds["rally"].volume = Math.pow(settingsMan.sound / 10, 2);
 			sounds["rally"].play();
 			break;
 		case "move":
-			sounds["drop"].volume = volumeCurve(settingsMan.sound / 10);
+			sounds["drop"].volume = Math.pow(settingsMan.sound / 10, 2);
 			sounds["drop"].play();
 			break;
 		case "push":
-			sounds["push"].volume = volumeCurve(settingsMan.sound / 10);
+			sounds["push"].volume = Math.pow(settingsMan.sound / 10, 2);
 			sounds["push"].play();
 			break;
 		case "rout":
-			sounds["move"].volume = volumeCurve(settingsMan.sound / 10);
+			sounds["move"].volume = Math.pow(settingsMan.sound / 10, 2);
 			sounds["move"].play();
 			break;
 		case "rally":
-			sounds["push"].volume = volumeCurve(settingsMan.sound / 10);
+			sounds["push"].volume = Math.pow(settingsMan.sound / 10, 2);
 			sounds["push"].play();
 			break;
 		}
