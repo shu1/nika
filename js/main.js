@@ -109,12 +109,17 @@ function reSize() {
 
 		if (canvas.width >= 2048) {
 			displayMan.retina = 2;
-		}
+			displayMan.cellSize = 96;
+			displayMan.pieceSize = 80;
+			displayMan.helmetSize = 256;
+			displayMan.boardWidth = 2016;
+			displayMan.boardHeight = 1440;
 
-		dialogMan.x *= displayMan.retina;
-		dialogMan.y *= displayMan.retina;
-		dialogMan.width *= displayMan.retina;
-		dialogMan.height *= displayMan.retina;
+			dialogMan.x = 786;
+			dialogMan.y = 624;
+			dialogMan.width = 600;
+			dialogMan.height = 192;
+		}
 
 		if (maxScale == 0 && minScale == 0) {	// special case, fit to large screens
 			maxScale = minScale = canvas.height / displayMan.boardHeight;
