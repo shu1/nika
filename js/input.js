@@ -43,20 +43,20 @@ function settingsButton(row, col) {
 	var col = button.col;
 	if (row == 0) {
 		if (col == 1) {
-			settingsMan.music = Math.max(0, settingsMan.music - 1);
+			audioMan.music = Math.max(0, audioMan.music - 1);
 		}
 		else if (col == 2) {
-			settingsMan.music = Math.min(10, settingsMan.music + 1);
+			audioMan.music = Math.min(10, audioMan.music + 1);
 		}
-		sounds["music"].volume = volumeCurve(settingsMan.music / 10);
+		sounds["music"].volume = volumeCurve(audioMan.music / 10);
 
 	}
 	else if (row == 1) {
 		if (col == 1) {
-			settingsMan.sound = Math.max(0, settingsMan.sound - 1);
+			audioMan.sound = Math.max(0, audioMan.sound - 1);
 		}
 		else if (col == 2) {
-			settingsMan.sound = Math.min(10, settingsMan.sound + 1);
+			audioMan.sound = Math.min(10, audioMan.sound + 1);
 		}
 	}
 	else if (row == 5) {
@@ -94,8 +94,8 @@ function getXY(event) {
 
 	// no menu, so grid
 	var scene = scenes[gameMan.scene];
-	inputMan.col = Math.floor((inputMan.x - scene.x) / (cellSize * scene.scale));
-	inputMan.row = Math.floor((inputMan.y - scene.y) / (cellSize * scene.scale));
+	inputMan.col = Math.floor((inputMan.x - scene.x) / (displayMan.cellSize * scene.scale));
+	inputMan.row = Math.floor((inputMan.y - scene.y) / (displayMan.cellSize * scene.scale));
 	inputMan.rot = -1;
 	hudMan.inputText = inputMan.row + "," + inputMan.col;
 	return false;
@@ -133,8 +133,8 @@ function mouseDown(event) {
 		getPiece(inputMan.row, inputMan.col);
 		var scene = scenes[gameMan.scene];
 		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
-			inputMan.pX = scene.x + (gameMan.pCol * cellSize + cellSize/2) * scene.scale;
-			inputMan.pY = scene.y + (gameMan.pRow * cellSize + cellSize/2) * scene.scale;
+			inputMan.pX = scene.x + (gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
+			inputMan.pY = scene.y + (gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
 			event.preventDefault();
 		}
 		else {
@@ -146,7 +146,7 @@ function mouseDown(event) {
 	}
 	hudMan.inputText += " down";
 	inputMan.click = true;
-	mediaMan.draw = true;
+	displayMan.draw = true;
 }
 
 function mouseMove(event) {
@@ -157,7 +157,7 @@ function mouseMove(event) {
 			var dY = inputMan.y - inputMan.pY;
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-				if (Math.abs(dX) > cellSize/2 * scene.scale || Math.abs(dY) > cellSize/2 * scene.scale) {	// inside cell is deadzone
+				if (Math.abs(dX) > displayMan.cellSize/2 * scene.scale || Math.abs(dY) > displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 				}
@@ -172,7 +172,7 @@ function mouseMove(event) {
 				inputMan.pY = inputMan.y;
 			}
 		}
-		mediaMan.draw = true;
+		displayMan.draw = true;
 	}
 }
 
@@ -194,17 +194,17 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.scene == 2) {	// rules
-				if (inputMan.y > canvas.height / 2 - cellSize * 1.5
-				 && inputMan.y < canvas.height / 2 + cellSize * 1.5) {
-					if (inputMan.x > canvas.width - cellSize*2) {
+				if (inputMan.y > canvas.height / 2 - displayMan.cellSize * 1.5
+				 && inputMan.y < canvas.height / 2 + displayMan.cellSize * 1.5) {
+					if (inputMan.x > canvas.width - displayMan.cellSize*2) {
 						gameMan.rules = Math.min(gameMan.rules + 1, rulePages - 1);
 					}
-					else if (inputMan.x < cellSize*2) {
+					else if (inputMan.x < displayMan.cellSize*2) {
 						gameMan.rules = Math.max(gameMan.rules - 1, 0);
 					}
 				}
 
-				if (inputMan.x < cellSize*3.5 && inputMan.y > canvas.height - cellSize*2.5) {
+				if (inputMan.x < displayMan.cellSize*3.5 && inputMan.y > canvas.height - displayMan.cellSize*2.5) {
 					setScene(0);
 				}
 			}
@@ -241,8 +241,8 @@ function mouseUp(event) {
 		}
 		inputMan.menu = false;
 		inputMan.click = false;
-		mediaMan.play = true;
-		mediaMan.draw = true;
+		audioMan.play = true;
+		displayMan.draw = true;
 	}
 }
 

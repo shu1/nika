@@ -1,31 +1,31 @@
 "use strict";
 
 function playSound(name) {
-	if (mediaMan.play) {
+	if (audioMan.play) {
 		switch (name) {
 		case "rotate":
-			sounds["rally"].volume = Math.pow(settingsMan.sound / 10, 2);
+			sounds["rally"].volume = Math.pow(audioMan.sound / 10, 2);
 			sounds["rally"].play();
 			break;
 		case "move":
-			sounds["drop"].volume = Math.pow(settingsMan.sound / 10, 2);
+			sounds["drop"].volume = Math.pow(audioMan.sound / 10, 2);
 			sounds["drop"].play();
 			break;
 		case "push":
-			sounds["push"].volume = Math.pow(settingsMan.sound / 10, 2);
+			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
 			sounds["push"].play();
 			break;
 		case "rout":
-			sounds["move"].volume = Math.pow(settingsMan.sound / 10, 2);
+			sounds["move"].volume = Math.pow(audioMan.sound / 10, 2);
 			sounds["move"].play();
 			break;
 		case "rally":
-			sounds["push"].volume = Math.pow(settingsMan.sound / 10, 2);
+			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
 			sounds["push"].play();
 			break;
 		}
 		hudMan.soundText = name;
-		mediaMan.play = false;
+		audioMan.play = false;
 	}
 }
 
@@ -93,22 +93,10 @@ function init() {
 	reSize();
 
 	menuMan.cols = Math.ceil((buttons.length-1) / menuMan.rows);
-	menuMan.bWidth = cellSize*2;
-	menuMan.bHeight = menuMan.rows == 1 ? cellSize*2 : cellSize;
+	menuMan.bWidth = displayMan.cellSize*2;
+	menuMan.bHeight = menuMan.rows == 1 ? displayMan.cellSize*2 : displayMan.cellSize;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
-
-	dialogMan.x = 393*mediaMan.retina;
-	dialogMan.y = 312*mediaMan.retina;
-	dialogMan.width = 300*mediaMan.retina;
-	dialogMan.height = 96*mediaMan.retina;
-
-	settingsMan.x = cellSize*4;
-	settingsMan.y = cellSize*4;
-	settingsMan.width = cellSize*13;
-	settingsMan.height = cellSize*7;
-	settingsMan.music = 10;
-	settingsMan.sound = 10;
 
 	draw();
 	sounds["music"].play();
@@ -119,60 +107,62 @@ function reSize() {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 
-		if (canvas.height >= 1536) {
-			mediaMan.retina = 2;
-		}
-		else {
-			mediaMan.retina = 1;
+		if (canvas.width >= 2048) {
+			displayMan.retina = 2;
 		}
 
+		dialogMan.x *= displayMan.retina;
+		dialogMan.y *= displayMan.retina;
+		dialogMan.width *= displayMan.retina;
+		dialogMan.height *= displayMan.retina;
+
 		if (maxScale == 0 && minScale == 0) {	// special case, fit to large screens
-			maxScale = minScale = canvas.height / boardHeight;
+			maxScale = minScale = canvas.height / displayMan.boardHeight;
 		}
 		else {
-			if (canvas.width / (1024*mediaMan.retina) > maxScale) {
-				maxScale = canvas.width / boardWidth;
+			if (canvas.width / (1024*displayMan.retina) > maxScale) {
+				maxScale = canvas.width / displayMan.boardWidth;
 			}
-			else if (canvas.width / (1024*mediaMan.retina) > minScale) {
-				minScale = canvas.width / boardWidth;
+			else if (canvas.width / (1024*displayMan.retina) > minScale) {
+				minScale = canvas.width / displayMan.boardWidth;
 			}
 		}
 	}
 
 	var scene = {};
-	scene.width = boardWidth;
-	scene.height = boardHeight;
+	scene.width = displayMan.boardWidth;
+	scene.height = displayMan.boardHeight;
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
 	scenes[0] = scene;
 
 	scene = {};
-	scene.width = boardWidth;
-	scene.height = boardHeight;
+	scene.width = displayMan.boardWidth;
+	scene.height = displayMan.boardHeight;
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
 	scenes[1] = scene;
 
 	scene = {};
-	scene.width = ruleWidth;
-	scene.height = ruleHeight;
+	scene.width = displayMan.ruleWidth;
+	scene.height = displayMan.ruleHeight;
 
 	if (maxScale == minScale) {
 		scene.maxScale = 1;
-		scene.minScale = canvas.height / ruleHeight;
+		scene.minScale = canvas.height / displayMan.ruleHeight;
 	}
-	else if (canvas.width > ruleWidth) {
-		scene.maxScale = canvas.width / ruleWidth;
+	else if (canvas.width > displayMan.ruleWidth) {
+		scene.maxScale = canvas.width / displayMan.ruleWidth;
 		scene.minScale = 1;
 	}
 	else{
 		scene.maxScale = 1;
-		scene.minScale = canvas.width / ruleWidth;
+		scene.minScale = canvas.width / displayMan.ruleWidth;
 	}
 	scenes[2] = scene;
 
 	setScene();
-	context.font = mediaMan.retina*16 + "px sans-serif";
+	context.font = displayMan.retina*16 + "px sans-serif";
 }
 
 function setScene(sceneIndex) {
@@ -185,33 +175,33 @@ function setScene(sceneIndex) {
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 
-	mediaMan.zoom = 0;
-	mediaMan.draw = true;
+	displayMan.zoom = 0;
+	displayMan.draw = true;
 }
 
 function zoom() {
 	var scene = scenes[gameMan.scene];
 
 	if (scene.scale == scene.minScale) {
-		mediaMan.zoom = 1;
+		displayMan.zoom = 1;
 	}
 	else {
-		mediaMan.zoom = -1;
+		displayMan.zoom = -1;
 	}
-	mediaMan.draw = true;
+	displayMan.draw = true;
 }
 
 function zooming(dTime) {
-	if (mediaMan.zoom != 0) {
+	if (displayMan.zoom != 0) {
 		var scene = scenes[gameMan.scene];
 		var speed = (scene.maxScale - scene.minScale)/200 * dTime;	// animation speed
-		if (mediaMan.zoom > 0) {
+		if (displayMan.zoom > 0) {
 			if (scene.scale + speed < scene.maxScale) {
 				scene.scale += speed;
 			}
 			else {
 				scene.scale = scene.maxScale;
-				mediaMan.zoom = 0;
+				displayMan.zoom = 0;
 			}
 		}
 		else {
@@ -220,11 +210,11 @@ function zooming(dTime) {
 			}
 			else {
 				scene.scale = scene.minScale;
-				mediaMan.zoom = 0;
+				displayMan.zoom = 0;
 			}
 		}
-		scene.x = (canvas.width - scene.width)/2 - (inputMan.col * cellSize + cellSize/2) * (scene.scale-1);
-		scene.y = (canvas.height - scene.height)/2 - (inputMan.row * cellSize + cellSize/2) * (scene.scale-1);
+		scene.x = (canvas.width - scene.width)/2 - (inputMan.col * displayMan.cellSize + displayMan.cellSize/2) * (scene.scale-1);
+		scene.y = (canvas.height - scene.height)/2 - (inputMan.row * displayMan.cellSize + displayMan.cellSize/2) * (scene.scale-1);
 		pan(0, 0);	// hack to fix if clicked outside board
 	}
 }
@@ -267,9 +257,9 @@ function pan(dX, dY) {
 }
 
 function draw(time) {
-	if (mediaMan.draw) {
+	if (displayMan.draw) {
 		context.clearRect(0, 0, canvas.width, canvas.height);
-		var dTime = time - mediaMan.time;
+		var dTime = time - displayMan.time;
 		zooming(dTime);
 
 		var scene = scenes[0];
@@ -306,12 +296,12 @@ function draw(time) {
 		}
 
 		drawMenu(dTime);
-		mediaMan.draw = mediaMan.zoom != 0 || mediaMan.menu;
+		displayMan.draw = displayMan.zoom != 0 || displayMan.menu;
 	}
 	if (gameMan.debug) {
 		drawHud(time);
 	}
-	mediaMan.time = time;
+	displayMan.time = time;
 	window.requestAnimationFrame(draw);
 }
 
@@ -347,29 +337,29 @@ function drawPieces() {
 			var cell = grid[row][col];
 			if (cell.player >= 0 || cell.ring >= 0 || cell.prompt >= 0) {
 				context.save();
-				context.translate(col * cellSize + cellSize/2, row * cellSize + cellSize/2);
+				context.translate(col * displayMan.cellSize + displayMan.cellSize/2, row * displayMan.cellSize + displayMan.cellSize/2);
 
 				if (cell.player >= 0) {
 					context.rotate(cell.rot * Math.PI/2);
-					context.drawImage(images["player" + cell.player], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);	// piece
+					context.drawImage(images["player" + cell.player], -displayMan.pieceSize/2, -displayMan.pieceSize/2, displayMan.pieceSize, displayMan.pieceSize);	// piece
 					context.rotate(cell.rot * Math.PI/-2);	// rotate back
-					context.drawImage(images["shading"], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);	// shading
+					context.drawImage(images["shading"], -displayMan.pieceSize/2, -displayMan.pieceSize/2, displayMan.pieceSize, displayMan.pieceSize);	// shading
 				}
 
 				if (cell.prompt == 0) {
-					context.drawImage(images["green"], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
+					context.drawImage(images["green"], -displayMan.cellSize/2, -displayMan.cellSize/2, displayMan.cellSize, displayMan.cellSize);	// ring
 				}
 				else if (cell.prompt == 1) {
-					context.drawImage(images["greenShadow"], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);	// ring
+					context.drawImage(images["greenShadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2, displayMan.pieceSize, displayMan.pieceSize);	// ring
 				}
 
 				if (cell.ring == 0) {
-					context.drawImage(images["golden"], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
+					context.drawImage(images["golden"], -displayMan.cellSize/2, -displayMan.cellSize/2, displayMan.cellSize, displayMan.cellSize);	// ring
 				}
 				else if (cell.ring == 1) {
 					var rotation = cell.kind == 2 ? cell.city : inputMan.rot;
 					context.rotate(rotation * Math.PI/2);
-					context.drawImage(images["shadow"], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
+					context.drawImage(images["shadow"], -displayMan.cellSize/2, -displayMan.cellSize/2, displayMan.cellSize, displayMan.cellSize);	// ring
 					context.rotate(rotation * Math.PI/-2);	// rotate back
 				}
 				cell.ring = -1;	// clear for next time
@@ -384,20 +374,20 @@ function drawHelmets() {
 	context.save();
 	switch (gameMan.player) {
 	case 0:
-		context.translate(cellSize * 13.5, cellSize * 14);
+		context.translate(displayMan.cellSize * 13.5, displayMan.cellSize * 14);
 		break;
 	case 1:
-		context.translate(cellSize, cellSize * 10.5);
+		context.translate(displayMan.cellSize, displayMan.cellSize * 10.5);
 		break;
 	case 2:
-		context.translate(cellSize * 7.5, cellSize);
+		context.translate(displayMan.cellSize * 7.5, displayMan.cellSize);
 		break;
 	case 3:
-		context.translate(cellSize * 20, cellSize * 4.5);
+		context.translate(displayMan.cellSize * 20, displayMan.cellSize * 4.5);
 		break;
 	}
 	context.rotate(gameMan.player * Math.PI/2);
-	context.drawImage(images["helmet" + gameMan.actions], -helmetSize/2, -helmetSize/2, helmetSize, helmetSize);
+	context.drawImage(images["helmet" + gameMan.actions], -displayMan.helmetSize/2, -displayMan.helmetSize/2, displayMan.helmetSize, displayMan.helmetSize);
 	context.restore();
 }
 
@@ -407,13 +397,13 @@ function drawDialog() {
 		context.fillStyle = "#292526";
 		context.fillRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
 		context.fillStyle = "#d1cbad";
-		context.font = mediaMan.retina * 12 + 'pt Georgia';
+		context.font = displayMan.retina * 12 + 'pt Georgia';
 		var lines = tutorialTexts[gameMan.tutorialStep];
 		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], dialogMan.x + 1, dialogMan.y - 3 + mediaMan.retina * (i+1) * 16);
+			context.fillText(lines[i], dialogMan.x + 1, dialogMan.y - 3 + displayMan.retina * (i+1) * 16);
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
-			context.fillText("Tap here to continue", dialogMan.x + 153*mediaMan.retina, dialogMan.y + dialogMan.height - 5);
+			context.fillText("Tap here to continue", dialogMan.x + 153*displayMan.retina, dialogMan.y + dialogMan.height - 5);
 		}
 		context.restore();
 	}
@@ -421,10 +411,10 @@ function drawDialog() {
 
 function drawSettings() {
 	var fontSize = 20;
-	context.font = mediaMan.retina * fontSize + "px sans-serif";
+	context.font = displayMan.retina * fontSize + "px sans-serif";
 	context.fillStyle = "white";
 	context.clearRect(settingsMan.x, settingsMan.y, settingsMan.width, settingsMan.height);
-	context.fillText("Settings", settingsMan.x + 4, settingsMan.y + mediaMan.retina * fontSize + 4);
+	context.fillText("Settings", settingsMan.x + 4, settingsMan.y + displayMan.retina * fontSize + 4);
 
 	for(var row = 0; row < settingsButtons.length; row++) {
 		var buttonRow = settingsButtons[row];
@@ -434,8 +424,8 @@ function drawSettings() {
 		}
 	}
 
-	drawSettingsButton(0, 3, settingsMan.music, "white", "#073c50");
-	drawSettingsButton(1, 3, settingsMan.sound, "white", "#073c50");
+	drawSettingsButton(0, 3, audioMan.music, "white", "#073c50");
+	drawSettingsButton(1, 3, audioMan.sound, "white", "#073c50");
 	drawSettingsButton(5, 4, "Close", "white", "#13485d");
 }
 
@@ -447,13 +437,13 @@ function drawRules(scene) {
 
 function drawMenu(dTime) {
 	var factor = 200;
-	mediaMan.menu = false;	// whether menu is animating
+	displayMan.menu = false;	// whether menu is animating
 
 	if (menuMan.show && (menuMan.width < menuMan.bWidth * menuMan.cols || menuMan.height < menuMan.bHeight * menuMan.rows)) {
 		var speed = menuMan.bWidth * (menuMan.cols-1) / factor * dTime;
 		if (menuMan.width + speed < menuMan.bWidth * menuMan.cols) {
 			menuMan.width += speed;
-			mediaMan.menu = true;
+			displayMan.menu = true;
 		}
 		else {
 			menuMan.width = menuMan.bWidth * menuMan.cols;
@@ -462,7 +452,7 @@ function drawMenu(dTime) {
 		speed = menuMan.bHeight * (menuMan.rows-1) / factor * dTime;
 		if (menuMan.height + speed < menuMan.bHeight * menuMan.rows) {
 			menuMan.height += speed;
-			mediaMan.menu = true;
+			displayMan.menu = true;
 		}
 		else {
 			menuMan.height = menuMan.bHeight * menuMan.rows;
@@ -472,7 +462,7 @@ function drawMenu(dTime) {
 		var speed = menuMan.bWidth * (menuMan.cols-1) / factor * dTime;
 		if (menuMan.width - speed > menuMan.bWidth) {
 			menuMan.width -= speed;
-			mediaMan.menu = true;
+			displayMan.menu = true;
 		}
 		else {
 			menuMan.width = menuMan.bWidth;
@@ -481,7 +471,7 @@ function drawMenu(dTime) {
 		speed = menuMan.bHeight * (menuMan.rows-1) / factor * dTime;
 		if (menuMan.height - speed > menuMan.bHeight) {
 			menuMan.height -= speed;
-			mediaMan.menu = true;
+			displayMan.menu = true;
 		}
 		else {
 			menuMan.height = menuMan.bHeight;
@@ -490,7 +480,7 @@ function drawMenu(dTime) {
 
 	context.clearRect(canvas.width - menuMan.width, canvas.height - menuMan.height, menuMan.width, menuMan.height);
 
-	if (menuMan.show && !mediaMan.menu) {
+	if (menuMan.show && !displayMan.menu) {
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
@@ -548,9 +538,9 @@ function drawHud(time) {
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[gameMan.scene].scale + "x";
 	hudMan.pieceText = (!gameMan.selection) ? "" : "SELECTION";
 	context.fillStyle = "white";
-	context.clearRect(0, 0, canvas.width, mediaMan.retina*22);
+	context.clearRect(0, 0, canvas.width, displayMan.retina*22);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  "
-	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, mediaMan.retina*16);
+	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, displayMan.retina*16);
 }
 
 // browser compatibility

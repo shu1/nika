@@ -3,26 +3,38 @@
 var canvas, context, images, sounds, grid, gameStates=[], phalanx=[], scenes=[];
 
 var dialogMan = {
-	x:0,
-	y:0,
-	width:0,
-	height:0
+	x:393,
+	y:312,
+	width:300,
+	height:96
 }
 
 var settingsMan = {
-	x:0,
-	y:0,
-	width:0,
-	height:0
+	x:192,
+	y:192,
+	width:624,
+	height:336
 }
 
-var mediaMan = {
-	menu:false,
-	play:true,
-	draw:true,
+var displayMan = {
+	cellSize:48,
+	pieceSize:40,
+	helmetSize:128,
+	boardWidth:1008,
+	boardHeight:720,
+	ruleWidth:2016,
+	ruleHeight:1440,
 	retina:1,
+	draw:true,
+	menu:false,
 	zoom:0,
 	time:0
+}
+
+var audioMan = {
+	sound:10,
+	music:10,
+	play:true
 }
 
 var gameMan = {
@@ -411,7 +423,7 @@ var tutorialTexts = [[
 ],[
 	"As you play, take some time to explore","the interface. You can, for example,","UNDO an unwanted move, or PASS if you","feel you cannot better your position by", "taking an action."
 ],[
-	"You can also zoom in by double-tapping.", "While zoomed in, you can move the view", "around by dragging, or zoom back out by", "double-tapping again."
+	"You can also zoom in by double-tapping.","While zoomed in, you can move the view","around by dragging, or zoom back out by","double-tapping again."
 ],[
 	"Though the rules are few, you will find","that the strategies are deep and varied.","Now then, proserchou kai nika - go forth","and conquer!"
 ]]
@@ -420,7 +432,7 @@ var tutorialInputs = [
 	true,	true,	false,	true,	true,	true,	true,	true,	true,	true,
 	true,	true,	false,	false,	true,	true,	false,	false,	true,	true,
 	true,	false,	true,	false,	true,	true,	false,	false,	true,	true,
-	false, false,	false,	false,	false,	true,	true,	false,	true,	true,
+	false,	false,	false,	false,	false,	true,	true,	false,	true,	true,
 	true,	false,	false,	true,	true,	false,	true,	true,	true,	false,
-	true,	true,	true,	true,	true, true
+	true,	true,	true,	true,	true,	true
 ]

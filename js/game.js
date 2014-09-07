@@ -76,7 +76,7 @@ function generateGrid(ascii) {
 			grid[row][col] = cell;
 		}
 	}
-	mediaMan.draw = true;
+	displayMan.draw = true;
 }
 
 function debugGrid() {

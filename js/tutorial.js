@@ -12,7 +12,7 @@ function nextTutorialStep() {
 	gameMan.tutorialStep++;
 	clearTutorialRings();
 	setupTutorial(gameMan.tutorialStep);
-	mediaMan.draw = true;
+	displayMan.draw = true;
 }
 
 function endTutorial() {
@@ -20,7 +20,7 @@ function endTutorial() {
 	resetActions(0);
 	gameStates = [];
 	generateGrid(mainBoard);
-	mediaMan.draw = true;
+	displayMan.draw = true;
 }
 
 function nextTutorialPart(part) {
