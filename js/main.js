@@ -36,17 +36,17 @@ function init() {
 	useAction(0);	// init debug text
 
 	images = {}
+	images["board"] = document.getElementById("board");
 	images["player0"] = document.getElementById("athens");
 	images["player1"] = document.getElementById("sparta");
-	images["player2"] = document.getElementById("mesene");
+	images["player2"] = document.getElementById("messene");
 	images["player3"] = document.getElementById("thebes");
-	images["shading"] = document.getElementById("shading");
-	images["golden"] = document.getElementById("golden");
-	images["silver"] = document.getElementById("silver");
+	images["sheen"] = document.getElementById("sheen");
 	images["shadow"] = document.getElementById("shadow");
+	images["gold"] = document.getElementById("gold");
+	images["silver"] = document.getElementById("silver");
 	images["green"] = document.getElementById("green");
 	images["greenShadow"] = document.getElementById("greenShadow");
-	images["board"] = document.getElementById("board");
 	images["helmet1"] = document.getElementById("helmet1");
 	images["helmet2"] = document.getElementById("helmet2");
 
@@ -343,7 +343,7 @@ function drawPieces() {
 					context.rotate(cell.rot * Math.PI/2);
 					context.drawImage(images["player" + cell.player], -displayMan.pieceSize/2, -displayMan.pieceSize/2, displayMan.pieceSize, displayMan.pieceSize);	// piece
 					context.rotate(cell.rot * Math.PI/-2);	// rotate back
-					context.drawImage(images["shading"], -displayMan.pieceSize/2, -displayMan.pieceSize/2, displayMan.pieceSize, displayMan.pieceSize);	// shading
+					context.drawImage(images["sheen"], -displayMan.pieceSize/2, -displayMan.pieceSize/2, displayMan.pieceSize, displayMan.pieceSize);	// sheen
 				}
 
 				if (cell.prompt == 0) {
@@ -354,7 +354,7 @@ function drawPieces() {
 				}
 
 				if (cell.ring == 0) {
-					context.drawImage(images["golden"], -displayMan.cellSize/2, -displayMan.cellSize/2, displayMan.cellSize, displayMan.cellSize);	// ring
+					context.drawImage(images["gold"], -displayMan.cellSize/2, -displayMan.cellSize/2, displayMan.cellSize, displayMan.cellSize);	// ring
 				}
 				else if (cell.ring == 1) {
 					var rotation = cell.kind == 2 ? cell.city : inputMan.rot;
