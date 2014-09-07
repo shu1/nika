@@ -425,7 +425,7 @@ var tutorialTexts = [[
 ],[
 	"You can also zoom in by double-tapping.","While zoomed in, you can move the view","around by dragging, or zoom back out by","double-tapping again."
 ],[
-	"Though the rules are few, you will find","that the strategies are deep and varied.","Now then, proserchou kai nika - go forth","and conquer!"
+	"Though the rules are few, you will find","that the strategies are deep and varied.","Now then, proserkhou kai nika - go forth","and conquer!"
 ]]
 
 var tutorialInputs = [
