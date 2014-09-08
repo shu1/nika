@@ -31,9 +31,7 @@ function playSound(name) {
 
 window.onload = init;
 function init() {
-	generateGrid(mainBoard);
-	pushGameState();
-	useAction(0);	// init debug text
+	newGame();
 
 	images = {}
 	images["board"] = document.getElementById("board");
@@ -277,7 +275,7 @@ function draw(time) {
 		drawPieces();
 		drawHelmets();
 
-		if (gameMan.tutorialStep >= 0) {
+		if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
 			drawDialog();
 		}
 
@@ -397,7 +395,7 @@ function drawHelmets() {
 }
 
 function drawDialog() {
-	if (gameMan.tutorialStep < tutorialTexts.length) {
+	if (gameMan.tutorialStep >= 0 && gameMan.tutorialStep < tutorialTexts.length) {
 		context.save();
 		context.fillStyle = "#292526";
 		context.fillRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
@@ -409,6 +407,18 @@ function drawDialog() {
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
 			context.fillText("Tap here to continue", dialogMan.x + 153*displayMan.retina, dialogMan.y + dialogMan.height - 5);
+		}
+		context.restore();
+	}
+	else if (gameMan.winner >= 0) {
+		context.save();
+		context.fillStyle = "#292526";
+		context.fillRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
+		context.fillStyle = "#d1cbad";
+		context.font = displayMan.retina * 12 + 'pt Georgia';
+		var lines = [getWinnerText(gameMan.winner)];
+		for (var i = lines.length-1; i >= 0; --i) {
+			context.fillText(lines[i], dialogMan.x + 1, dialogMan.y - 3 + displayMan.retina * (i+1) * 16);
 		}
 		context.restore();
 	}

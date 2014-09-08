@@ -79,6 +79,16 @@ function generateGrid(ascii) {
 	displayMan.draw = true;
 }
 
+function newGame() {
+	generateGrid(mainBoard);
+	gameStates = [];
+	pushGameState();
+	gameMan.winner = -1;
+	gameMan.player = 0;
+	gameMan.actions = 2;
+	useAction(0);
+}
+
 function debugGrid() {
 	for (var row = 0; row < 15; ++row) {
 		var str = "";
@@ -126,6 +136,10 @@ function getCity(player) {
 
 function getPartner(player) {
 	return (player + 2) % 4;
+}
+
+function getWinnerText(player) {
+	return getCity(player) + "and " + getCity(getPartner(player)) + "win!";
 }
 
 function pushGameState() {
@@ -185,8 +199,7 @@ function checkWin() {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			if (grid[row][col].kind == 1 && grid[row][col].player >= 0 && grid[row][col].player != grid[row][col].city) {
-				hudMan.pieceText = getCity(grid[row][col].player) + "and " + getCity(getPartner(grid[row][col].player)) + "win!";
-				alert(hudMan.pieceText);
+				gameMan.winner = grid[row][col].player;
 			}
 		}
 	}

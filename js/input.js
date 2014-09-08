@@ -129,7 +129,7 @@ function mouseDown(event) {
 	hudMan.soundText = "";
 	hudMan.inputText = "";
 	inputMan.menu = getXY(event);
-	if (!inputMan.menu) {
+	if (!inputMan.menu && gameMan.winner < 0) {
 		getPiece(inputMan.row, inputMan.col);
 		var scene = scenes[gameMan.scene];
 		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
@@ -152,7 +152,7 @@ function mouseDown(event) {
 function mouseMove(event) {
 	if (inputMan.click) {
 		getXY(event);
-		if (!inputMan.menu) {
+		if (!inputMan.menu && gameMan.winner < 0) {
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
 			var scene = scenes[gameMan.scene];
@@ -213,6 +213,13 @@ function mouseUp(event) {
 				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
 					inputMan.time = 0;
 					nextTutorialStep();
+				}
+			}
+			else if (gameMan.winner >= 0) {	// win screen
+				if (inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
+				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
+					inputMan.time = 0;
+					newGame();
 				}
 			}
 			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol

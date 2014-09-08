@@ -47,7 +47,8 @@ var gameMan = {
 	rules:0,
 	pRow:-1,
 	pCol:-1,
-	pRot:-1
+	pRot:-1,
+	winner: -1
 }
 
 var inputMan = {
