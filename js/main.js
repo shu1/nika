@@ -179,7 +179,6 @@ function setScene(sceneIndex) {
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 
 	displayMan.zoom = 0;
-	displayMan.draw = true;
 }
 
 function zoom() {
@@ -191,7 +190,6 @@ function zoom() {
 	else {
 		displayMan.zoom = -1;
 	}
-	displayMan.draw = true;
 }
 
 function zooming(dTime) {
@@ -260,47 +258,45 @@ function pan(dX, dY) {
 }
 
 function draw(time) {
-	if (displayMan.draw) {
-		context.clearRect(0, 0, canvas.width, canvas.height);
-		var dTime = time - displayMan.time;
-		zooming(dTime);
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	var dTime = time - displayMan.time;
+	zooming(dTime);
 
-		var scene = scenes[0];
+	var scene = scenes[0];
+	context.save();
+	context.translate(scene.x, scene.y);
+	context.scale(scene.scale, scene.scale);
+
+	drawBoard(scene);
+	setRings();
+	drawPieces();
+	drawHelmets();
+
+	if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
+		drawDialog();
+	}
+
+	context.restore();
+
+	if (gameMan.scene == 1) {
+		scene = scenes[1];
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
-
-		drawBoard(scene);
-		setRings();
-		drawPieces();
-		drawHelmets();
-
-		if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
-			drawDialog();
-		}
-
+		drawSettings();
 		context.restore();
-
-		if (gameMan.scene == 1) {
-			scene = scenes[1];
-			context.save();
-			context.translate(scene.x, scene.y);
-			context.scale(scene.scale, scene.scale);
-			drawSettings();
-			context.restore();
-		}
-		else if (gameMan.scene == 2) {
-			scene = scenes[2];
-			context.save();
-			context.translate(scene.x, scene.y);
-			context.scale(scene.scale, scene.scale);
-			drawRules(scene);
-			context.restore();
-		}
-
-		drawMenu(dTime);
-		displayMan.draw = displayMan.zoom != 0 || displayMan.menu;
 	}
+	else if (gameMan.scene == 2) {
+		scene = scenes[2];
+		context.save();
+		context.translate(scene.x, scene.y);
+		context.scale(scene.scale, scene.scale);
+		drawRules(scene);
+		context.restore();
+	}
+
+	drawMenu(dTime);
+
 	if (gameMan.debug) {
 		drawHud(time);
 	}

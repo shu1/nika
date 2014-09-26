@@ -25,7 +25,6 @@ var displayMan = {
 	ruleWidth:2016,
 	ruleHeight:1440,
 	retina:1,
-	draw:true,
 	menu:false,
 	zoom:0,
 	time:0
