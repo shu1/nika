@@ -33,7 +33,6 @@ window.onload = init;
 function init() {
 	newGame();
 
-	images = {}
 	images["board"] = document.getElementById("board");
 	images["player0"] = document.getElementById("athens");
 	images["player1"] = document.getElementById("sparta");
@@ -52,7 +51,6 @@ function init() {
 		images["rule" + i] = document.getElementById("rule" + i);
 	}
 
-	sounds = {};
 	sounds["pick"] = document.getElementById("pick");
 	sounds["drop"] = document.getElementById("drop");
 	sounds["move"] = document.getElementById("move");
@@ -68,69 +66,59 @@ function init() {
 		canvas.style.msTouchAction = "none";
 		canvas.addEventListener("MSPointerDown", mouseDown);
 		canvas.addEventListener("MSPointerMove", mouseMove);
-		window.addEventListener("MSPointerUp",   mouseUp);
+		window.addEventListener("MSPointerUp", mouseUp);
 	}
 	else if ("ontouchstart" in window) {
 		window.addEventListener("touchstart", mouseDown);
-		window.addEventListener("touchmove",  mouseMove);
-		window.addEventListener("touchend",   mouseUp);
+		window.addEventListener("touchmove", mouseMove);
+		window.addEventListener("touchend", mouseUp);
 	}
 	else {
-		canvas.addEventListener("mousedown",  mouseDown);
-		canvas.addEventListener("mousemove",  mouseMove);
-		window.addEventListener("mouseup",    mouseUp);
+		canvas.addEventListener("mousedown", mouseDown);
+		canvas.addEventListener("mousemove", mouseMove);
+		window.addEventListener("mouseup", mouseUp);
 	}
 
-	if (fullScreen) {
+	if (screenType >= 0) {
 		window.addEventListener("resize", reSize);
 	}
 	else {
-		menuMan.rows = 3;
+		menuMan.rows = 2;
 	}
 
 	reSize();
-
-	menuMan.cols = Math.ceil((buttons.length-1) / menuMan.rows);
-	menuMan.bWidth = displayMan.cellSize*2;
-	menuMan.bHeight = menuMan.rows == 1 ? displayMan.cellSize*2 : displayMan.cellSize;
-	menuMan.width = menuMan.bWidth * menuMan.cols;
-	menuMan.height = menuMan.bHeight * menuMan.rows;
-
 	draw();
 	sounds["music"].play();
 }
 
 function reSize() {
-	if (fullScreen) {
+	if (screenType >= 0) {	// fullscreen
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
+	}
 
-		if (canvas.width >= 2048) {
-			displayMan.retina = 2;
-			displayMan.cellSize = 96;
-			displayMan.pieceSize = 80;
-			displayMan.helmetSize = 256;
-			displayMan.boardWidth = 2016;
-			displayMan.boardHeight = 1440;
-
-			dialogMan.x = 786;
-			dialogMan.y = 624;
-			dialogMan.width = 600;
-			dialogMan.height = 192;
+	var minScale = 1/2, maxScale = 2/3;
+	if (screenType == 3) {
+		maxScale = minScale = canvas.height / displayMan.boardHeight;
+	}
+	else if (screenType >= 0) {
+		if (canvas.width / 1024 > maxScale) {
+			maxScale = canvas.width / displayMan.boardWidth;
 		}
-
-		if (maxScale == 0 && minScale == 0) {	// special case, fit to large screens
-			maxScale = minScale = canvas.height / displayMan.boardHeight;
-		}
-		else {
-			if (canvas.width / (1024*displayMan.retina) > maxScale) {
-				maxScale = canvas.width / displayMan.boardWidth;
-			}
-			else if (canvas.width / (1024*displayMan.retina) > minScale) {
-				minScale = canvas.width / displayMan.boardWidth;
-			}
+		else if (canvas.width / 1024 > minScale) {
+			minScale = canvas.width / displayMan.boardWidth;
 		}
 	}
+
+	displayMan.hudHeight = 22 * maxScale * 3/2;
+	displayMan.hudFont = 16 * maxScale * 3/2;
+	context.font = displayMan.hudFont + "px sans-serif";
+
+	menuMan.cols = Math.ceil((buttons.length-1) / menuMan.rows);
+	menuMan.bWidth = displayMan.cellSize * maxScale * 3/2;
+	menuMan.bHeight = menuMan.rows == 1 ? menuMan.bWidth : menuMan.bWidth/2;
+	menuMan.width = menuMan.bWidth * menuMan.cols;
+	menuMan.height = menuMan.bHeight * menuMan.rows;
 
 	var scene = {};
 	scene.width = displayMan.boardWidth;
@@ -149,7 +137,6 @@ function reSize() {
 	scene = {};
 	scene.width = displayMan.ruleWidth;
 	scene.height = displayMan.ruleHeight;
-
 	if (maxScale == minScale) {
 		scene.maxScale = 1;
 		scene.minScale = canvas.height / displayMan.ruleHeight;
@@ -165,7 +152,6 @@ function reSize() {
 	scenes[2] = scene;
 
 	setScene();
-	context.font = displayMan.retina*16 + "px sans-serif";
 }
 
 function setScene(sceneIndex) {
@@ -391,41 +377,44 @@ function drawHelmets() {
 }
 
 function drawDialog() {
-	if (gameMan.tutorialStep >= 0 && gameMan.tutorialStep < tutorialTexts.length) {
+	if (gameMan.tutorialStep >= 0 && gameMan.tutorialStep < tutorialTexts.length
+	|| gameMan.winner >= 0) {
 		context.save();
 		context.fillStyle = "#292526";
-		context.fillRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
+		context.fillRect(displayMan.dialogX, displayMan.dialogY, displayMan.dialogWidth, displayMan.dialogHeight);
 		context.fillStyle = "#d1cbad";
-		context.font = displayMan.retina * 12 + 'pt Georgia';
-		var lines = tutorialTexts[gameMan.tutorialStep];
+		context.font = "24pt Georgia";
+
+		var lines;
+		if (gameMan.winner >= 0) {
+			lines = [getWinnerText(gameMan.winner)];
+		}
+		else {
+			lines = tutorialTexts[gameMan.tutorialStep];
+		}
+
 		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], dialogMan.x + 1, dialogMan.y - 3 + displayMan.retina * (i+1) * 16);
+			context.fillText(lines[i], displayMan.dialogX + 1, displayMan.dialogY - 3 + 32*(i+1));
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
-			context.fillText("Tap here to continue", dialogMan.x + 153*displayMan.retina, dialogMan.y + dialogMan.height - 5);
-		}
-		context.restore();
-	}
-	else if (gameMan.winner >= 0) {
-		context.save();
-		context.fillStyle = "#292526";
-		context.fillRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
-		context.fillStyle = "#d1cbad";
-		context.font = displayMan.retina * 12 + 'pt Georgia';
-		var lines = [getWinnerText(gameMan.winner)];
-		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], dialogMan.x + 1, dialogMan.y - 3 + displayMan.retina * (i+1) * 16);
+			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.dialogButtonX, displayMan.dialogY + displayMan.dialogHeight - 5);
 		}
 		context.restore();
 	}
 }
 
+function drawRules(scene) {
+	if (rulePages > 0) {
+		context.drawImage(images["rule" + gameMan.rules], 0, 0, scene.width, scene.height);
+	}
+}
+
 function drawSettings() {
 	var fontSize = 20;
-	context.font = displayMan.retina * fontSize + "px sans-serif";
+	context.font = fontSize + "px sans-serif";
 	context.fillStyle = "white";
-	context.clearRect(settingsMan.x, settingsMan.y, settingsMan.width, settingsMan.height);
-	context.fillText("Settings", settingsMan.x + 4, settingsMan.y + displayMan.retina * fontSize + 4);
+	context.clearRect(displayMan.settingsX, displayMan.settingsY, displayMan.settingsWidth, displayMan.settingsHeight);
+	context.fillText("Settings", displayMan.settingsX + 4, displayMan.settingsY + fontSize + 4);
 
 	for(var row = 0; row < settingsButtons.length; row++) {
 		var buttonRow = settingsButtons[row];
@@ -440,10 +429,15 @@ function drawSettings() {
 	drawSettingsButton(5, 4, "Close", "white", "#13485d");
 }
 
-function drawRules(scene) {
-	if (rulePages > 0) {
-		context.drawImage(images["rule" + gameMan.rules], 0, 0, scene.width, scene.height);
+function drawSettingsButton(row, col, text, textColor, bgColor) {
+	var padding = 4;
+	if (bgColor) {
+		context.fillStyle = bgColor;
+		context.fillRect(displayMan.settingsX + menuMan.bWidth * (col+1) + padding, displayMan.settingsY + menuMan.bHeight * (row+1) + padding,
+			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
 	}
+	context.fillStyle = textColor;
+	context.fillText(text, displayMan.settingsX + menuMan.bWidth * (col+1.2), displayMan.settingsY + menuMan.bHeight * (row+1.5)+6);
 }
 
 function drawMenu(dTime) {
@@ -528,17 +522,6 @@ function drawButton(row, col, text, textColor, bgColor) {
 	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);
 }
 
-function drawSettingsButton(row, col, text, textColor, bgColor) {
-	var padding = 4;
-	if (bgColor) {
-		context.fillStyle = bgColor;
-		context.fillRect(settingsMan.x + menuMan.bWidth * (col+1) + padding, settingsMan.y + menuMan.bHeight * (row+1) + padding,
-			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
-	}
-	context.fillStyle = textColor;
-	context.fillText(text, settingsMan.x + menuMan.bWidth * (col+1.2), settingsMan.y + menuMan.bHeight * (row+1.5)+6);
-}
-
 function drawHud(time) {
 	if (time - hudMan.fpsTime > 984) {
 		hudMan.fpsText = hudMan.fpsCount + "fps";
@@ -549,9 +532,9 @@ function drawHud(time) {
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[gameMan.scene].scale + "x";
 	hudMan.pieceText = (!gameMan.selection) ? "" : "SELECTION";
 	context.fillStyle = "white";
-	context.clearRect(0, 0, canvas.width, displayMan.retina*22);
+	context.clearRect(0, 0, canvas.width, displayMan.hudHeight);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  "
-	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, displayMan.retina*16);
+	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, displayMan.hudFont);
 }
 
 // browser compatibility

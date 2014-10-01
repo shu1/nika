@@ -1,30 +1,24 @@
 "use strict";
 
-var canvas, context, images, sounds, grid, gameStates=[], phalanx=[], scenes=[];
-
-var dialogMan = {
-	x:393,
-	y:312,
-	width:300,
-	height:96
-}
-
-var settingsMan = {
-	x:192,
-	y:192,
-	width:624,
-	height:336
-}
+var canvas, context, grid, images=[], sounds=[], gameStates=[], phalanx=[], scenes=[];
 
 var displayMan = {
-	cellSize:48,
-	pieceSize:40,
-	helmetSize:128,
-	boardWidth:1008,
-	boardHeight:720,
+	cellSize:96,
+	pieceSize:80,
+	helmetSize:256,
+	boardWidth:2016,
+	boardHeight:1440,
 	ruleWidth:2016,
 	ruleHeight:1440,
-	retina:1,
+	dialogX:786,
+	dialogY:624,
+	dialogWidth:600,
+	dialogHeight:192,
+	dialogButtonX:306,
+	settingsX:384,
+	settingsY:384,
+	settingsWidth:1248,
+	settingsHeight:672,
 	menu:false,
 	zoom:0,
 	time:0

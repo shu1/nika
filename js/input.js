@@ -32,8 +32,8 @@ function menuButton(button) {
 
 function getSettingsButton() {
 	var scene = scenes[gameMan.scene];
-	var row = Math.floor((inputMan.y - scene.y - settingsMan.y * scene.scale) / (menuMan.bHeight * scene.scale)) - 1;
-	var col = Math.floor((inputMan.x - scene.x - settingsMan.x * scene.scale) / (menuMan.bWidth * scene.scale)) - 1;
+	var row = Math.floor((inputMan.y - scene.y - displayMan.settingsY * scene.scale) / (menuMan.bHeight * scene.scale)) - 1;
+	var col = Math.floor((inputMan.x - scene.x - displayMan.settingsX * scene.scale) / (menuMan.bWidth * scene.scale)) - 1;
 	return {row: row, col: col}
 }
 
@@ -184,8 +184,8 @@ function mouseUp(event) {
 		else if (!dblClick(event)) {
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == 1) {	// settings
-				if (inputMan.x - scene.x > settingsMan.x * scene.scale && inputMan.x - scene.x < (settingsMan.x + settingsMan.width) * scene.scale
-				&& inputMan.y - scene.y > settingsMan.y * scene.scale && inputMan.y - scene.y < (settingsMan.y + settingsMan.height) * scene.scale) {
+				if (inputMan.x - scene.x > displayMan.settingsX * scene.scale && inputMan.x - scene.x < (displayMan.settingsX + displayMan.settingsWidth) * scene.scale
+				&& inputMan.y - scene.y > displayMan.settingsY * scene.scale && inputMan.y - scene.y < (displayMan.settingsY + displayMan.settingsHeight) * scene.scale) {
 					// sounds[6].volume = 1 - sounds[6].volume;
 					// getSettingsButton();
 					settingsButton(0);
@@ -207,15 +207,15 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
-				if (inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
-				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
+				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale && inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
+				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale && inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
 					inputMan.time = 0;
 					nextTutorialStep();
 				}
 			}
 			else if (gameMan.winner >= 0) {	// win screen
-				if (inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
-				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
+				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale && inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
+				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale && inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
 					inputMan.time = 0;
 					newGame();
 				}
@@ -259,7 +259,7 @@ function dblClick(event) {
 		hudMan.inputText += " " + (time - inputMan.time) + "ms";
 		event.preventDefault();
 
-		if (maxScale != minScale) {	// zoom not disabled
+		if (screenType != 3) {	// zoom not disabled
 			zoom();
 		}
 		inputMan.time = 0;	// reset so next click is not double click
