@@ -1,15 +1,26 @@
+"use strict";
+
+function clearTutorialRings() {
+	for (var row=0; row<15; ++row) {
+		for (var col=0; col<21; ++col) {
+			grid[row][col].prompt = -1;
+		}
+	}
+}
+
 function nextTutorialStep() {
 	gameMan.tutorialStep++;
 	clearTutorialRings();
 	setupTutorial(gameMan.tutorialStep);
-	mediaMan.draw = true;
+	displayMan.draw = true;
 }
 
 function endTutorial() {
 	gameMan.tutorialStep = -1;
 	resetActions(0);
+	gameStates = [];
 	generateGrid(mainBoard);
-	mediaMan.draw = true;
+	displayMan.draw = true;
 }
 
 function nextTutorialPart(part) {
@@ -30,6 +41,7 @@ function setupTutorial() {
 		break;
 	case 2:
 		nextTutorialPart(0);
+		grid[3][10].prompt = 0;
 		grid[2][10].prompt = 1;
 		pushGameState();
 		break;
@@ -135,19 +147,19 @@ function setupTutorial() {
 		pushGameState();
 		break;
 	case 30:
-		grid[10][14].prompt = 1;
+		grid[10][14].prompt = 0;
 		pushGameState();
 		break;
 	case 31:
-		grid[10][14].prompt = 1;
-		grid[11][14].prompt = 1;
-		grid[11][15].prompt = 1;
+		grid[10][14].prompt = 0;
+		grid[11][14].prompt = 0;
+		grid[11][15].prompt = 0;
 		pushGameState();
 		break;
 	case 32:
-		grid[10][14].prompt = 1;
-		grid[11][14].prompt = 1;
-		grid[11][15].prompt = 1;
+		grid[10][14].prompt = 0;
+		grid[11][14].prompt = 0;
+		grid[11][15].prompt = 0;
 		pushGameState();
 		break;
 	case 34:
@@ -175,6 +187,7 @@ function setupTutorial() {
 	case 41:
 		grid[9][16].prompt = 0;
 		grid[10][16].prompt = 0;
+		grid[8][16].prompt = 1;
 		pushGameState();
 		break;
 	case 42:
@@ -206,7 +219,7 @@ function setupTutorial() {
 		grid[6][15].prompt = 1;
 		pushGameState();
 		break;
-	case 55:
+	case 56:
 		endTutorial();
 		break;
 	}
@@ -251,18 +264,23 @@ function checkTutorialMove(moved) {
 		}
 		break;
 	case 26:
-		if (grid[9][5].player == 0 && grid[10][5].player == 0) {
+		if (grid[9][5].player == 0
+				&& grid[10][5].player == 0) {
 			correct = true;
 		}
 		break;
 	case 27:
-		if (grid[9][5].rot == 0 && grid[10][5].rot == 0) {
+		if (grid[9][5].rot == 0
+		 && grid[10][5].rot == 0) {
 			correct = true;
 		}
 		break;
 
 	case 33:
-		if (grid[10][15].player == 0 && grid[11][15].player == 0 && grid[11][16].player == 0 && grid[9][14].player == 0) {
+		if (grid[10][15].player == 0
+		 && grid[11][15].player == 0
+		 && grid[11][16].player == 0
+		 && grid[9][14].player == 0) {
 			correct = true;
 		}
 		break;
@@ -307,7 +325,9 @@ function checkTutorialMove(moved) {
 function checkTutorialSelection() {
 	switch(gameMan.tutorialStep) {
 	case 30:
-		if (inPhalanx(10,14) && !inPhalanx(9,14) && !inPhalanx(11,14)) {
+		if (inPhalanx(10,14)
+		 && !inPhalanx(9,14)
+		 && !inPhalanx(11,14)) {
 			nextTutorialStep();
 		}
 		else {
@@ -315,7 +335,10 @@ function checkTutorialSelection() {
 		}
 		break;
 	case 31:
-		if (inPhalanx(10, 14) && inPhalanx(11,14) && !inPhalanx(9,14) && !inPhalanx(11,15)) {
+		if (inPhalanx(10, 14)
+		 && inPhalanx(11,14)
+		 && !inPhalanx(9,14)
+		 && !inPhalanx(11,15)) {
 			nextTutorialStep();
 		}
 		else {
@@ -324,7 +347,10 @@ function checkTutorialSelection() {
 		}
 		break;
 	case 32:
-		if (inPhalanx(10,14) && inPhalanx(11,14) && inPhalanx(11,15) && !inPhalanx(9,14)) {
+		if (inPhalanx(10,14)
+		 && inPhalanx(11,14)
+		 && inPhalanx(11,15)
+		 && !inPhalanx(9,14)) {
 			nextTutorialStep();
 		}
 		else {

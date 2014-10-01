@@ -7,7 +7,7 @@ function menuButton(button) {
 	else if (menuMan.show) {
 		switch(button) {
 		case 1:
-			setScene(gameMan.scene ? 0 : 1);
+			gameMan.debug = !gameMan.debug;
 			break;
 		case 2:
 			if (gameMan.tutorialStep < 0) {
@@ -26,12 +26,6 @@ function menuButton(button) {
 		case 5:
 			undo();
 			break;
-		case 6:
-			ai();
-			break;
-		case 7:
-			gameMan.debug = !gameMan.debug;
-			break;
 		}
 	}
 }
@@ -49,19 +43,25 @@ function settingsButton(row, col) {
 	var col = button.col;
 	if (row == 0) {
 		if (col == 1) {
-			settingsMan.music = Math.max(0, settingsMan.music - 1);
+			audioMan.music = Math.max(0, audioMan.music - 1);
 		}
 		else if (col == 2) {
-			settingsMan.music = Math.min(10, settingsMan.music + 1);
+			audioMan.music = Math.min(10, audioMan.music + 1);
 		}
-		sounds[6].volume = volumeCurve(settingsMan.music / 10);
+		sounds["music"].volume = volumeCurve(audioMan.music / 10);
 
-	} else if (row == 1) {
+	}
+	else if (row == 1) {
 		if (col == 1) {
-			settingsMan.sound = Math.max(0, settingsMan.sound - 1);
+			audioMan.sound = Math.max(0, audioMan.sound - 1);
 		}
 		else if (col == 2) {
-			settingsMan.sound = Math.min(10, settingsMan.sound + 1);
+			audioMan.sound = Math.min(10, audioMan.sound + 1);
+		}
+	}
+	else if (row == 5) {
+		if (col == 4) {
+			setScene(0);
 		}
 	}
 }
@@ -94,8 +94,8 @@ function getXY(event) {
 
 	// no menu, so grid
 	var scene = scenes[gameMan.scene];
-	inputMan.col = Math.floor((inputMan.x - scene.x) / (cellSize * scene.scale));
-	inputMan.row = Math.floor((inputMan.y - scene.y) / (cellSize * scene.scale));
+	inputMan.col = Math.floor((inputMan.x - scene.x) / (displayMan.cellSize * scene.scale));
+	inputMan.row = Math.floor((inputMan.y - scene.y) / (displayMan.cellSize * scene.scale));
 	inputMan.rot = -1;
 	hudMan.inputText = inputMan.row + "," + inputMan.col;
 	return false;
@@ -129,12 +129,12 @@ function mouseDown(event) {
 	hudMan.soundText = "";
 	hudMan.inputText = "";
 	inputMan.menu = getXY(event);
-	if (!inputMan.menu) {
+	if (!inputMan.menu && gameMan.winner < 0) {
 		getPiece(inputMan.row, inputMan.col);
 		var scene = scenes[gameMan.scene];
 		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
-			inputMan.pX = scene.x + (gameMan.pCol * cellSize + cellSize/2) * scene.scale;
-			inputMan.pY = scene.y + (gameMan.pRow * cellSize + cellSize/2) * scene.scale;
+			inputMan.pX = scene.x + (gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
+			inputMan.pY = scene.y + (gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
 			event.preventDefault();
 		}
 		else {
@@ -146,18 +146,18 @@ function mouseDown(event) {
 	}
 	hudMan.inputText += " down";
 	inputMan.click = true;
-	mediaMan.draw = true;
+	displayMan.draw = true;
 }
 
 function mouseMove(event) {
 	if (inputMan.click) {
 		getXY(event);
-		if (!inputMan.menu) {
+		if (!inputMan.menu && gameMan.winner < 0) {
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-				if (Math.abs(dX) > cellSize/2 * scene.scale || Math.abs(dY) > cellSize/2 * scene.scale) {	// inside cell is deadzone
+				if (Math.abs(dX) > displayMan.cellSize/2 * scene.scale || Math.abs(dY) > displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 				}
@@ -172,7 +172,7 @@ function mouseMove(event) {
 				inputMan.pY = inputMan.y;
 			}
 		}
-		mediaMan.draw = true;
+		displayMan.draw = true;
 	}
 }
 
@@ -194,17 +194,18 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.scene == 2) {	// rules
-				if (inputMan.x > canvas.width - cellSize*2) {
-					gameMan.rules++;
-					if (gameMan.rules > rulePages-1) {
-						gameMan.rules = 0;
+				if (inputMan.y > canvas.height / 2 - displayMan.cellSize * 1.5
+				 && inputMan.y < canvas.height / 2 + displayMan.cellSize * 1.5) {
+					if (inputMan.x > canvas.width - displayMan.cellSize*2) {
+						gameMan.rules = Math.min(gameMan.rules + 1, rulePages - 1);
+					}
+					else if (inputMan.x < displayMan.cellSize*2) {
+						gameMan.rules = Math.max(gameMan.rules - 1, 0);
 					}
 				}
-				else if (inputMan.x < cellSize*2) {
-					gameMan.rules--;
-					if (gameMan.rules < 0) {
-						gameMan.rules = rulePages-1;
-					}
+
+				if (inputMan.x < displayMan.cellSize*3.5 && inputMan.y > canvas.height - displayMan.cellSize*2.5) {
+					setScene(0);
 				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
@@ -212,6 +213,13 @@ function mouseUp(event) {
 				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
 					inputMan.time = 0;
 					nextTutorialStep();
+				}
+			}
+			else if (gameMan.winner >= 0) {	// win screen
+				if (inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
+				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
+					inputMan.time = 0;
+					newGame();
 				}
 			}
 			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol
@@ -230,11 +238,18 @@ function mouseUp(event) {
 			else if (gameMan.selection && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
 				togglePhalanxPiece(inputMan.row, inputMan.col);
 			}
+
+			if (phalanx.length > 0) {
+				if (grid[phalanx[0].row][phalanx[0].col].kind == 3) {
+					gameMan.selection = false;
+					phalanx.length = 0;
+				}
+			}
 		}
 		inputMan.menu = false;
 		inputMan.click = false;
-		mediaMan.play = true;
-		mediaMan.draw = true;
+		audioMan.play = true;
+		displayMan.draw = true;
 	}
 }
 

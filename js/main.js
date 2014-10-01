@@ -1,68 +1,65 @@
 "use strict";
 
-function volumeCurve(input) {
-	return Math.pow(input, 2);
-}
-
 function playSound(name) {
-	if (mediaMan.play) {
+	if (audioMan.play) {
 		switch (name) {
 		case "rotate":
-			sounds[5].volume = volumeCurve(settingsMan.sound / 10);
-			sounds[5].play();
+			sounds["rally"].volume = Math.pow(audioMan.sound / 10, 2);
+			sounds["rally"].play();
 			break;
 		case "move":
-			sounds[1].volume = volumeCurve(settingsMan.sound / 10);
-			sounds[1].play();
+			sounds["drop"].volume = Math.pow(audioMan.sound / 10, 2);
+			sounds["drop"].play();
 			break;
 		case "push":
-			sounds[3].volume = volumeCurve(settingsMan.sound / 10);
-			sounds[3].play();
+			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
+			sounds["push"].play();
 			break;
 		case "rout":
-			sounds[2].volume = volumeCurve(settingsMan.sound / 10);
-			sounds[2].play();
+			sounds["move"].volume = Math.pow(audioMan.sound / 10, 2);
+			sounds["move"].play();
 			break;
 		case "rally":
-			sounds[4].volume = volumeCurve(settingsMan.sound / 10);
-			sounds[4].play();
+			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
+			sounds["push"].play();
 			break;
 		}
 		hudMan.soundText = name;
-		mediaMan.play = false;
+		audioMan.play = false;
 	}
 }
 
 window.onload = init;
 function init() {
-	generateGrid(mainBoard);
-	pushGameState();
-	useAction(0);	// init debug text
+	newGame();
 
-	images = new Array(10);
-	images[0] = document.getElementById("athens");
-	images[1] = document.getElementById("sparta");
-	images[2] = document.getElementById("mesene");
-	images[3] = document.getElementById("thebes");
-	images[4] = document.getElementById("shadow");
-	images[5] = document.getElementById("golden");
-	images[6] = document.getElementById("silver");
-	images[7] = document.getElementById("board");
-	images[8] = document.getElementById("helmet1");
-	images[9] = document.getElementById("helmet2");
+	images = {}
+	images["board"] = document.getElementById("board");
+	images["player0"] = document.getElementById("athens");
+	images["player1"] = document.getElementById("sparta");
+	images["player2"] = document.getElementById("messene");
+	images["player3"] = document.getElementById("thebes");
+	images["sheen"] = document.getElementById("sheen");
+	images["shadow"] = document.getElementById("shadow");
+	images["gold"] = document.getElementById("gold");
+	images["silver"] = document.getElementById("silver");
+	images["green"] = document.getElementById("green");
+	images["greenShadow"] = document.getElementById("greenShadow");
+	images["helmet1"] = document.getElementById("helmet1");
+	images["helmet2"] = document.getElementById("helmet2");
 
 	for (var i = 0; i < rulePages; ++i) {
-		images[10+i] = document.getElementById("rule" + i);
+		images["rule" + i] = document.getElementById("rule" + i);
 	}
 
-	sounds = new Array(7);
-	sounds[0] = document.getElementById("pick");
-	sounds[1] = document.getElementById("drop");
-	sounds[2] = document.getElementById("move");
-	sounds[3] = document.getElementById("push");
-	sounds[4] = document.getElementById("rout");
-	sounds[5] = document.getElementById("raly");
-	sounds[6] = document.getElementById("music");
+	sounds = {};
+	sounds["pick"] = document.getElementById("pick");
+	sounds["drop"] = document.getElementById("drop");
+	sounds["move"] = document.getElementById("move");
+	sounds["push"] = document.getElementById("push");
+	sounds["rout"] = document.getElementById("rout");
+	sounds["rally"] = document.getElementById("rally");
+	sounds["music"] = document.getElementById("music");
 
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
@@ -90,37 +87,17 @@ function init() {
 	else {
 		menuMan.rows = 3;
 	}
+
+	reSize();
+
 	menuMan.cols = Math.ceil((buttons.length-1) / menuMan.rows);
-	menuMan.bWidth = cellSize*2;
-	menuMan.bHeight = menuMan.rows == 1 ? cellSize*2 : cellSize;
+	menuMan.bWidth = displayMan.cellSize*2;
+	menuMan.bHeight = menuMan.rows == 1 ? displayMan.cellSize*2 : displayMan.cellSize;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
-	dialogMan.x = cellSize*6;
-	dialogMan.y = cellSize*6;
-	dialogMan.width = cellSize*9;
-	dialogMan.height = cellSize*3;
-
-	settingsMan.x = cellSize*4;
-	settingsMan.y = cellSize*4;
-	settingsMan.width = cellSize*13;
-	settingsMan.height = cellSize*7;
-	settingsMan.music = 10;
-	settingsMan.sound = 10;
-
-	var lineWidth = 44;
-	for (var i = tutorialTexts.length-1; i >= 0; --i) {
-		var lines = tutorialTexts[i];
-		for (var j = 0; lines[j].length > lineWidth; ++j) {
-			lines.push(lines[j].slice(lineWidth));
-			lines[j] = lines[j].slice(0, lineWidth);
-		}
-		lines.push("step " + i + (tutorialInputs[i] ? "                              Tap here to continue" : ""));
-	}
-
-	reSize();
 	draw();
-	sounds[6].play();
+	sounds["music"].play();
 }
 
 function reSize() {
@@ -128,59 +105,67 @@ function reSize() {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 
-		if (canvas.height >= 1536) {
-			mediaMan.retina = 2;
-		}
-		else {
-			mediaMan.retina = 1;
+		if (canvas.width >= 2048) {
+			displayMan.retina = 2;
+			displayMan.cellSize = 96;
+			displayMan.pieceSize = 80;
+			displayMan.helmetSize = 256;
+			displayMan.boardWidth = 2016;
+			displayMan.boardHeight = 1440;
+
+			dialogMan.x = 786;
+			dialogMan.y = 624;
+			dialogMan.width = 600;
+			dialogMan.height = 192;
 		}
 
 		if (maxScale == 0 && minScale == 0) {	// special case, fit to large screens
-			maxScale = minScale = canvas.height / boardHeight;
+			maxScale = minScale = canvas.height / displayMan.boardHeight;
 		}
 		else {
-			if (canvas.width / (1024*mediaMan.retina) > maxScale) {
-				maxScale = canvas.width / boardWidth;
+			if (canvas.width / (1024*displayMan.retina) > maxScale) {
+				maxScale = canvas.width / displayMan.boardWidth;
 			}
-			else if (canvas.width / (1024*mediaMan.retina) > minScale) {
-				minScale = canvas.width / boardWidth;
+			else if (canvas.width / (1024*displayMan.retina) > minScale) {
+				minScale = canvas.width / displayMan.boardWidth;
 			}
 		}
 	}
 
 	var scene = {};
-	scene.width = boardWidth;
-	scene.height = boardHeight;
+	scene.width = displayMan.boardWidth;
+	scene.height = displayMan.boardHeight;
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
 	scenes[0] = scene;
 
 	scene = {};
-	scene.width = boardWidth;
-	scene.height = boardHeight;
+	scene.width = displayMan.boardWidth;
+	scene.height = displayMan.boardHeight;
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
 	scenes[1] = scene;
 
 	scene = {};
-	scene.width = ruleWidth;
-	scene.height = ruleHeight;
+	scene.width = displayMan.ruleWidth;
+	scene.height = displayMan.ruleHeight;
+
 	if (maxScale == minScale) {
 		scene.maxScale = 1;
-		scene.minScale = canvas.height / ruleHeight;
+		scene.minScale = canvas.height / displayMan.ruleHeight;
 	}
-	else if (canvas.width > ruleWidth) {
-		scene.maxScale = canvas.width / ruleWidth;
+	else if (canvas.width > displayMan.ruleWidth) {
+		scene.maxScale = canvas.width / displayMan.ruleWidth;
 		scene.minScale = 1;
 	}
 	else{
 		scene.maxScale = 1;
-		scene.minScale = canvas.width / ruleWidth;
+		scene.minScale = canvas.width / displayMan.ruleWidth;
 	}
 	scenes[2] = scene;
 
 	setScene();
-	context.font = mediaMan.retina*16 + "px sans-serif";
+	context.font = displayMan.retina*16 + "px sans-serif";
 }
 
 function setScene(sceneIndex) {
@@ -193,33 +178,33 @@ function setScene(sceneIndex) {
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 
-	mediaMan.zoom = 0;
-	mediaMan.draw = true;
+	displayMan.zoom = 0;
+	displayMan.draw = true;
 }
 
 function zoom() {
 	var scene = scenes[gameMan.scene];
 
 	if (scene.scale == scene.minScale) {
-		mediaMan.zoom = 1;
+		displayMan.zoom = 1;
 	}
 	else {
-		mediaMan.zoom = -1;
+		displayMan.zoom = -1;
 	}
-	mediaMan.draw = true;
+	displayMan.draw = true;
 }
 
 function zooming(dTime) {
-	if (mediaMan.zoom != 0) {
+	if (displayMan.zoom != 0) {
 		var scene = scenes[gameMan.scene];
 		var speed = (scene.maxScale - scene.minScale)/200 * dTime;	// animation speed
-		if (mediaMan.zoom > 0) {
+		if (displayMan.zoom > 0) {
 			if (scene.scale + speed < scene.maxScale) {
 				scene.scale += speed;
 			}
 			else {
 				scene.scale = scene.maxScale;
-				mediaMan.zoom = 0;
+				displayMan.zoom = 0;
 			}
 		}
 		else {
@@ -228,11 +213,11 @@ function zooming(dTime) {
 			}
 			else {
 				scene.scale = scene.minScale;
-				mediaMan.zoom = 0;
+				displayMan.zoom = 0;
 			}
 		}
-		scene.x = (canvas.width - scene.width)/2 - (inputMan.col * cellSize + cellSize/2) * (scene.scale-1);
-		scene.y = (canvas.height - scene.height)/2 - (inputMan.row * cellSize + cellSize/2) * (scene.scale-1);
+		scene.x = (canvas.width - scene.width)/2 - (inputMan.col * displayMan.cellSize + displayMan.cellSize/2) * (scene.scale-1);
+		scene.y = (canvas.height - scene.height)/2 - (inputMan.row * displayMan.cellSize + displayMan.cellSize/2) * (scene.scale-1);
 		pan(0, 0);	// hack to fix if clicked outside board
 	}
 }
@@ -275,9 +260,9 @@ function pan(dX, dY) {
 }
 
 function draw(time) {
-	if (mediaMan.draw) {
+	if (displayMan.draw) {
 		context.clearRect(0, 0, canvas.width, canvas.height);
-		var dTime = time - mediaMan.time;
+		var dTime = time - displayMan.time;
 		zooming(dTime);
 
 		var scene = scenes[0];
@@ -290,7 +275,7 @@ function draw(time) {
 		drawPieces();
 		drawHelmets();
 
-		if (gameMan.tutorialStep >= 0) {
+		if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
 			drawDialog();
 		}
 
@@ -314,17 +299,17 @@ function draw(time) {
 		}
 
 		drawMenu(dTime);
-		mediaMan.draw = mediaMan.zoom != 0 || mediaMan.menu;
+		displayMan.draw = displayMan.zoom != 0 || displayMan.menu;
 	}
 	if (gameMan.debug) {
 		drawHud(time);
 	}
-	mediaMan.time = time;
+	displayMan.time = time;
 	window.requestAnimationFrame(draw);
 }
 
 function drawBoard(scene) {
-	context.drawImage(images[7], 0, 0, scene.width, scene.height);
+	context.drawImage(images["board"], 0, 0, scene.width, scene.height);
 }
 
 function setRings() {
@@ -349,41 +334,39 @@ function setRings() {
 	}
 }
 
-function clearTutorialRings() {
-	for (var row=0; row<15; ++row) {
-		for (var col=0; col<21; ++col) {
-			grid[row][col].prompt = -1;
-		}
-	}
-}
-
 function drawPieces() {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			var cell = grid[row][col];
-			if (cell.player >= 0 || cell.ring >= 0) {
+			if (cell.player >= 0 || cell.ring >= 0 || cell.prompt >= 0) {
 				context.save();
-				context.translate(col * cellSize + cellSize/2, row * cellSize + cellSize/2);
+				context.translate(col * displayMan.cellSize + displayMan.cellSize/2, row * displayMan.cellSize + displayMan.cellSize/2);
 
 				if (cell.player >= 0) {
 					context.rotate(cell.rot * Math.PI/2);
-					context.drawImage(images[cell.player], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);	// piece
+					context.drawImage(images["player" + cell.player], -displayMan.pieceSize/2, -displayMan.pieceSize/2, displayMan.pieceSize, displayMan.pieceSize);	// piece
 					context.rotate(cell.rot * Math.PI/-2);	// rotate back
-					context.drawImage(images[4], -pieceSize/2, -pieceSize/2, pieceSize, pieceSize);	// shadow
+					context.drawImage(images["sheen"], -displayMan.pieceSize/2, -displayMan.pieceSize/2, displayMan.pieceSize, displayMan.pieceSize);	// sheen
 				}
 
-				if (cell.ring >= 0) {
-					context.drawImage(images[5 + cell.ring], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
+				if (cell.prompt == 0) {
+					context.drawImage(images["green"], -displayMan.cellSize/2, -displayMan.cellSize/2, displayMan.cellSize, displayMan.cellSize);	// ring
+				}
+				else if (cell.prompt == 1) {
+					context.drawImage(images["greenShadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2, displayMan.pieceSize, displayMan.pieceSize);	// ring
+				}
+
+				if (cell.ring == 0) {
+					context.drawImage(images["gold"], -displayMan.cellSize/2, -displayMan.cellSize/2, displayMan.cellSize, displayMan.cellSize);	// ring
+				}
+				else if (cell.ring == 1) {
+					var rotation = cell.kind == 2 ? cell.city : inputMan.rot;
+					context.rotate(rotation * Math.PI/2);
+					context.drawImage(images["shadow"], -displayMan.cellSize/2, -displayMan.cellSize/2, displayMan.cellSize, displayMan.cellSize);	// ring
+					context.rotate(rotation * Math.PI/-2);	// rotate back
 				}
 				cell.ring = -1;	// clear for next time
 
-				context.restore();
-			}
-
-			if (cell.prompt >= 0) {
-				context.save();
-				context.translate(col * cellSize + cellSize/2, row * cellSize + cellSize/2);
-				context.drawImage(images[5 + cell.prompt], -cellSize/2, -cellSize/2, cellSize, cellSize);	// ring
 				context.restore();
 			}
 		}
@@ -394,42 +377,60 @@ function drawHelmets() {
 	context.save();
 	switch (gameMan.player) {
 	case 0:
-		context.translate(cellSize * 13.5, cellSize * 14);
+		context.translate(displayMan.cellSize * 13.5, displayMan.cellSize * 14);
 		break;
 	case 1:
-		context.translate(cellSize, cellSize * 10.5);
+		context.translate(displayMan.cellSize, displayMan.cellSize * 10.5);
 		break;
 	case 2:
-		context.translate(cellSize * 7.5, cellSize);
+		context.translate(displayMan.cellSize * 7.5, displayMan.cellSize);
 		break;
 	case 3:
-		context.translate(cellSize * 20, cellSize * 4.5);
+		context.translate(displayMan.cellSize * 20, displayMan.cellSize * 4.5);
 		break;
 	}
 	context.rotate(gameMan.player * Math.PI/2);
-	context.drawImage(images[7 + gameMan.actions], -helmetSize/2, -helmetSize/2, helmetSize, helmetSize);
+	context.drawImage(images["helmet" + gameMan.actions], -displayMan.helmetSize/2, -displayMan.helmetSize/2, displayMan.helmetSize, displayMan.helmetSize);
 	context.restore();
 }
 
 function drawDialog() {
-	if (gameMan.tutorialStep < tutorialTexts.length) {
-		var fontSize = 20;
-		context.font = mediaMan.retina * fontSize + "px sans-serif";
-		context.fillStyle = "white";
-		context.clearRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
+	if (gameMan.tutorialStep >= 0 && gameMan.tutorialStep < tutorialTexts.length) {
+		context.save();
+		context.fillStyle = "#292526";
+		context.fillRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
+		context.fillStyle = "#d1cbad";
+		context.font = displayMan.retina * 12 + 'pt Georgia';
 		var lines = tutorialTexts[gameMan.tutorialStep];
 		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], dialogMan.x, dialogMan.y + mediaMan.retina * fontSize * (i+1));
+			context.fillText(lines[i], dialogMan.x + 1, dialogMan.y - 3 + displayMan.retina * (i+1) * 16);
 		}
+		if (tutorialInputs[gameMan.tutorialStep]) {
+			context.fillText("Tap here to continue", dialogMan.x + 153*displayMan.retina, dialogMan.y + dialogMan.height - 5);
+		}
+		context.restore();
+	}
+	else if (gameMan.winner >= 0) {
+		context.save();
+		context.fillStyle = "#292526";
+		context.fillRect(dialogMan.x, dialogMan.y, dialogMan.width, dialogMan.height);
+		context.fillStyle = "#d1cbad";
+		context.font = displayMan.retina * 12 + 'pt Georgia';
+		var lines = [getWinnerText(gameMan.winner)];
+		for (var i = lines.length-1; i >= 0; --i) {
+			context.fillText(lines[i], dialogMan.x + 1, dialogMan.y - 3 + displayMan.retina * (i+1) * 16);
+		}
+		context.restore();
 	}
 }
 
 function drawSettings() {
 	var fontSize = 20;
-	context.font = mediaMan.retina * fontSize + "px sans-serif";
+	context.font = displayMan.retina * fontSize + "px sans-serif";
 	context.fillStyle = "white";
 	context.clearRect(settingsMan.x, settingsMan.y, settingsMan.width, settingsMan.height);
-	context.fillText("Settings", settingsMan.x + 4, settingsMan.y + mediaMan.retina * fontSize + 4);
+	context.fillText("Settings", settingsMan.x + 4, settingsMan.y + displayMan.retina * fontSize + 4);
+
 	for(var row = 0; row < settingsButtons.length; row++) {
 		var buttonRow = settingsButtons[row];
 		drawSettingsButton(row, 0, settingsButtons[row][0], "white", "#073c50");
@@ -438,26 +439,26 @@ function drawSettings() {
 		}
 	}
 
-	drawSettingsButton(0, 3, settingsMan.music, "white", "#073c50");
-	drawSettingsButton(1, 3, settingsMan.sound, "white", "#073c50");
-
+	drawSettingsButton(0, 3, audioMan.music, "white", "#073c50");
+	drawSettingsButton(1, 3, audioMan.sound, "white", "#073c50");
+	drawSettingsButton(5, 4, "Close", "white", "#13485d");
 }
 
 function drawRules(scene) {
 	if (rulePages > 0) {
-		context.drawImage(images[10 + gameMan.rules], 0, 0, scene.width, scene.height);
+		context.drawImage(images["rule" + gameMan.rules], 0, 0, scene.width, scene.height);
 	}
 }
 
 function drawMenu(dTime) {
 	var factor = 200;
-	mediaMan.menu = false;	// whether menu is animating
+	displayMan.menu = false;	// whether menu is animating
 
 	if (menuMan.show && (menuMan.width < menuMan.bWidth * menuMan.cols || menuMan.height < menuMan.bHeight * menuMan.rows)) {
 		var speed = menuMan.bWidth * (menuMan.cols-1) / factor * dTime;
 		if (menuMan.width + speed < menuMan.bWidth * menuMan.cols) {
 			menuMan.width += speed;
-			mediaMan.menu = true;
+			displayMan.menu = true;
 		}
 		else {
 			menuMan.width = menuMan.bWidth * menuMan.cols;
@@ -466,7 +467,7 @@ function drawMenu(dTime) {
 		speed = menuMan.bHeight * (menuMan.rows-1) / factor * dTime;
 		if (menuMan.height + speed < menuMan.bHeight * menuMan.rows) {
 			menuMan.height += speed;
-			mediaMan.menu = true;
+			displayMan.menu = true;
 		}
 		else {
 			menuMan.height = menuMan.bHeight * menuMan.rows;
@@ -476,7 +477,7 @@ function drawMenu(dTime) {
 		var speed = menuMan.bWidth * (menuMan.cols-1) / factor * dTime;
 		if (menuMan.width - speed > menuMan.bWidth) {
 			menuMan.width -= speed;
-			mediaMan.menu = true;
+			displayMan.menu = true;
 		}
 		else {
 			menuMan.width = menuMan.bWidth;
@@ -485,7 +486,7 @@ function drawMenu(dTime) {
 		speed = menuMan.bHeight * (menuMan.rows-1) / factor * dTime;
 		if (menuMan.height - speed > menuMan.bHeight) {
 			menuMan.height -= speed;
-			mediaMan.menu = true;
+			displayMan.menu = true;
 		}
 		else {
 			menuMan.height = menuMan.bHeight;
@@ -494,16 +495,15 @@ function drawMenu(dTime) {
 
 	context.clearRect(canvas.width - menuMan.width, canvas.height - menuMan.height, menuMan.width, menuMan.height);
 
-	if (menuMan.show && !mediaMan.menu) {
+	if (menuMan.show && !displayMan.menu) {
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length-1) {
 					if (inputMan.menu && button == menuMan.button
-					|| button == 1 && gameMan.scene == 1
+					|| button == 1 && gameMan.debug
 					|| button == 2 && gameMan.tutorialStep >= 0
-					|| button == 3 && gameMan.scene == 2
-					|| button == 7 && gameMan.debug) {
+					|| button == 3 && gameMan.scene == 2) {
 						drawButton(row, col, buttons[button+1], "#13485d", "white");
 					}
 					else {
@@ -553,9 +553,9 @@ function drawHud(time) {
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[gameMan.scene].scale + "x";
 	hudMan.pieceText = (!gameMan.selection) ? "" : "SELECTION";
 	context.fillStyle = "white";
-	context.clearRect(0, 0, canvas.width, mediaMan.retina*22);
+	context.clearRect(0, 0, canvas.width, displayMan.retina*22);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  "
-	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, mediaMan.retina*16);
+	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, displayMan.retina*16);
 }
 
 // browser compatibility
