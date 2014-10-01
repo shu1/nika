@@ -76,6 +76,7 @@ function generateGrid(ascii) {
 			grid[row][col] = cell;
 		}
 	}
+	displayMan.draw = true;
 }
 
 function newGame() {

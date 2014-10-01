@@ -12,6 +12,7 @@ function nextTutorialStep() {
 	gameMan.tutorialStep++;
 	clearTutorialRings();
 	setupTutorial(gameMan.tutorialStep);
+	displayMan.draw = true;
 }
 
 function endTutorial() {
@@ -19,6 +20,7 @@ function endTutorial() {
 	resetActions(0);
 	gameStates = [];
 	generateGrid(mainBoard);
+	displayMan.draw = true;
 }
 
 function nextTutorialPart(part) {

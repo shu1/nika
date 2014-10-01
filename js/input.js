@@ -146,6 +146,7 @@ function mouseDown(event) {
 	}
 	hudMan.inputText += " down";
 	inputMan.click = true;
+	displayMan.draw = true;
 }
 
 function mouseMove(event) {
@@ -171,6 +172,7 @@ function mouseMove(event) {
 				inputMan.pY = inputMan.y;
 			}
 		}
+		displayMan.draw = true;
 	}
 }
 
@@ -247,6 +249,7 @@ function mouseUp(event) {
 		inputMan.menu = false;
 		inputMan.click = false;
 		audioMan.play = true;
+		displayMan.draw = true;
 	}
 }
 
