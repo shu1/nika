@@ -8,6 +8,7 @@ function menuButton(button) {
 		switch(button) {
 		case 1:
 			gameMan.debug = !gameMan.debug;
+			initAnimations();
 			break;
 		case 2:
 			if (gameMan.tutorialStep < 0) {
