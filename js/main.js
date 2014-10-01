@@ -1,6 +1,6 @@
 "use strict";
 
-function playSound(name) {
+function playerAction(name) {
 	if (audioMan.play) {
 		switch (name) {
 		case "rotate":
@@ -14,18 +14,43 @@ function playSound(name) {
 		case "push":
 			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
 			sounds["push"].play();
+			murals[gameMan.player].setAnim("push");
+			if (gameMan.receiver >= 0) {
+				murals[gameMan.receiver].setAnim("pushed");
+				gameMan.receiver = -1;
+			}
 			break;
 		case "rout":
 			sounds["move"].volume = Math.pow(audioMan.sound / 10, 2);
 			sounds["move"].play();
+			murals[gameMan.player].setAnim("rout");
+			if (gameMan.receiver >= 0) {
+				murals[gameMan.receiver].setAnim("routed");
+				gameMan.receiver = -1;
+			}
 			break;
 		case "rally":
 			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
 			sounds["push"].play();
+			murals[gameMan.player].setAnim("rally");
 			break;
 		}
 		hudMan.soundText = name;
 		audioMan.play = false;
+	}
+}
+
+function initAnimations() {
+	for (var i = 0; i < 4; i++) {
+		setIdleAnimation(i);
+	}
+}
+
+function setIdleAnimation(player) {
+	if (player == gameMan.player) {
+		murals[player].setAnim("idleActive");
+	} else {
+		murals[player].setAnim("idle");
 	}
 }
 
@@ -44,6 +69,8 @@ function init() {
 	images["silver"] = document.getElementById("silver");
 	images["green"] = document.getElementById("green");
 	images["greenShadow"] = document.getElementById("greenShadow");
+	images["board"] = document.getElementById("board");
+	images["mural"] = document.getElementById("mural");
 	images["helmet1"] = document.getElementById("helmet1");
 	images["helmet2"] = document.getElementById("helmet2");
 
@@ -86,6 +113,22 @@ function init() {
 		menuMan.rows = 2;
 	}
 
+	tick = {};
+	tick.frame = 0;
+	tick.time = 0;
+	tick.time_last = 0;
+	tick.elapsed_time = 0;
+
+	var view_2d = new fo.view_2d(canvas);
+	murals[0] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
+	murals[1] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
+	murals[2] = new spriter_animation("images/mural/", view_2d, muralBlue_data);
+	murals[3] = new spriter_animation("images/mural/", view_2d, muralBlack_data);
+	murals[0].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
+	murals[1].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
+	murals[2].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
+	murals[3].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
+
 	reSize();
 	draw();
 	sounds["music"].play();
@@ -119,6 +162,15 @@ function reSize() {
 	menuMan.bHeight = menuMan.rows == 1 ? menuMan.bWidth : menuMan.bWidth/2;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
+
+	murals[0].set_position(678, 796);
+	murals[0].set_scale(1, 1);
+	murals[1].set_position(1318, 844);
+	murals[1].set_scale(1, 1);
+	murals[2].set_position(846, 796);
+	murals[2].set_scale(1, 1);
+	murals[3].set_position(1150, 844);
+	murals[3].set_scale(1, 1);
 
 	var scene = {};
 	scene.width = displayMan.boardWidth;
@@ -253,6 +305,7 @@ function draw(time) {
 	context.translate(scene.x, scene.y);
 	context.scale(scene.scale, scene.scale);
 
+	drawMural(time)
 	drawBoard(scene);
 	setRings();
 	drawPieces();
@@ -292,6 +345,29 @@ function draw(time) {
 
 function drawBoard(scene) {
 	context.drawImage(images["board"], 0, 0, scene.width, scene.height);
+}
+
+function drawMural(time) {
+	drawMuralBackground();
+	tick.frame++;
+	tick.time = time;
+	tick.elapsed_time = Math.min(tick.time - tick.time_last, 50);
+	murals[0].update(tick);
+	murals[2].update(tick);
+	murals[3].update(tick);
+	murals[1].update(tick);
+	tick.time_last = time;
+	murals[0].draw();
+	murals[2].draw();
+	murals[3].draw();
+	murals[1].draw();
+}
+
+function drawMuralBackground() {
+	context.save();
+	context.translate(628, 622);
+	context.drawImage(images["mural"], 0, 0, 760, 194);
+	context.restore();
 }
 
 function setRings() {

@@ -1,6 +1,7 @@
 "use strict";
 
-var canvas, context, grid, images=[], sounds=[], gameStates=[], phalanx=[], scenes=[];
+var canvas, context, images={}, sounds={}, grid, gameStates=[], phalanx=[], scenes=[];
+var tick, murals=[], initAnim=true;
 
 var displayMan = {
 	cellSize:96,
@@ -36,6 +37,7 @@ var gameMan = {
 	debug:false,
 	actions:2,
 	player:0,
+	receiver: -1,
 	scene:0,	// 0:game, 1:settings, 2:rules
 	rules:0,
 	pRow:-1,

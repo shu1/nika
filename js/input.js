@@ -126,6 +126,11 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
+	if (initAnim) {
+		initAnimations();
+		initAnim = false;
+	}
+
 	hudMan.soundText = "";
 	hudMan.inputText = "";
 	inputMan.menu = getXY(event);

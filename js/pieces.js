@@ -52,7 +52,7 @@ function movePiece(pRow, pCol, row, col) {
 	if (pRow >= 0 && pCol >= 0) {
 		if (phalanx.length > 1) {
 			if (movePhalanx(pRow, pCol, row, col)) {
-				playSound("move");
+				playerAction("move");
 				phalanx.length = 0;
 				moved = true;
 			}
@@ -64,15 +64,15 @@ function movePiece(pRow, pCol, row, col) {
 
 			if (routedCell(pRow, pCol) && grid[row][col].kind == 2) {	// rally
 				grid[row][col].rot = grid[row][col].player;	// set rotation toward center of board
-				playSound("rally");
+				playerAction("rally");
 			}
 			else {
-				playSound("move");
+				playerAction("move");
 			}
 		}
 
 		if (grid[pRow][pCol].rot != gameMan.pRot) {
-			playSound("rotate");
+			playerAction("rotate");
 			phalanx.length = 0;
 			moved = true;
 		}
@@ -177,7 +177,8 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 
 function pushOnePiece(row, col, fRow, fCol, pusher) {
 	if (Math.abs((grid[row][col].player - pusher)%2) == 1) {
-		playSound("push");
+		gameMan.receiver = grid[row][col].player;
+		playerAction("push");
 	}
 
 	grid[fRow][fCol].player = grid[row][col].player;
@@ -187,7 +188,8 @@ function pushOnePiece(row, col, fRow, fCol, pusher) {
 // move piece to rout cell
 function routPiece(row, col) {
 	if (grid[row][col].player >= 0) {
-		playSound("rout");
+		gameMan.receiver = grid[row][col].player;
+		playerAction("rout");
 		var cell = getRoutCell(grid[row][col].player);
 
 		grid[cell.row][cell.col].player = grid[row][col].player;
