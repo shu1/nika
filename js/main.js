@@ -308,7 +308,7 @@ function draw(time) {
 	drawMural(time)
 	drawBoard(scene);
 	setRings();
-	drawPieces(time/500);
+	drawPieces(time/500 % (Math.PI*2));
 	drawHelmets();
 
 	if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
