@@ -127,9 +127,9 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
-	if (initAnim) {
+	if (!displayMan.initAnim) {
 		initAnimations();
-		initAnim = false;
+		displayMan.initAnim = true;
 	}
 
 	hudMan.soundText = "";

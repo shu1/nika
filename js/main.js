@@ -113,12 +113,6 @@ function init() {
 		menuMan.rows = 2;
 	}
 
-	tick = {};
-	tick.frame = 0;
-	tick.time = 0;
-	tick.time_last = 0;
-	tick.elapsed_time = 0;
-
 	var view_2d = new fo.view_2d(canvas);
 	murals[0] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
 	murals[1] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
@@ -128,6 +122,11 @@ function init() {
 	murals[1].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
 	murals[2].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
 	murals[3].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
+
+	tick.frame = 0;
+	tick.time = 0;
+	tick.time_last = 0;
+	tick.elapsed_time = 0;
 
 	reSize();
 	draw();
@@ -163,14 +162,10 @@ function reSize() {
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
-	murals[0].set_position(678, 796);
-	murals[0].set_scale(1, 1);
-	murals[1].set_position(1318, 844);
-	murals[1].set_scale(1, 1);
-	murals[2].set_position(846, 796);
-	murals[2].set_scale(1, 1);
-	murals[3].set_position(1150, 844);
-	murals[3].set_scale(1, 1);
+	murals[0].set_position(678, 794);
+	murals[1].set_position(1320, 844);
+	murals[2].set_position(848, 794);
+	murals[3].set_position(1148, 844);
 
 	var scene = {};
 	scene.width = displayMan.boardWidth;
@@ -305,8 +300,8 @@ function draw(time) {
 	context.translate(scene.x, scene.y);
 	context.scale(scene.scale, scene.scale);
 
-	drawMural(time)
-	drawBoard(scene);
+	drawMural(time);
+	drawBoard();
 	setRings();
 	drawPieces(time/500 % (Math.PI*2));
 	drawHelmets();
@@ -330,7 +325,7 @@ function draw(time) {
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
-		drawRules(scene);
+		drawRules();
 		context.restore();
 	}
 
@@ -343,24 +338,24 @@ function draw(time) {
 	window.requestAnimationFrame(draw);
 }
 
-function drawBoard(scene) {
-	context.drawImage(images["board"], 0, 0, scene.width, scene.height);
-}
-
 function drawMural(time) {
-	context.drawImage(images["mural"], 628, 622, 760, 194);
+	context.drawImage(images["mural"], 628, 624);
 	tick.frame++;
 	tick.time = time;
-	tick.elapsed_time = Math.min(tick.time - tick.time_last, 50);
+	tick.elapsed_time = Math.min(time - tick.time_last, 50);
 	murals[0].update(tick);
-	murals[2].update(tick);
-	murals[3].update(tick);
-	murals[1].update(tick);
-	tick.time_last = time;
 	murals[0].draw();
+	murals[2].update(tick);
 	murals[2].draw();
+	murals[3].update(tick);
 	murals[3].draw();
+	murals[1].update(tick);
 	murals[1].draw();
+	tick.time_last = time;
+}
+
+function drawBoard() {
+	context.drawImage(images["board"], 0, 0);
 }
 
 function setRings() {
@@ -476,12 +471,6 @@ function drawDialog() {
 	}
 }
 
-function drawRules(scene) {
-	if (rulePages > 0) {
-		context.drawImage(images["rule" + gameMan.rules], 0, 0, scene.width, scene.height);
-	}
-}
-
 function drawSettings() {
 	var fontSize = 20;
 	context.font = fontSize + "px sans-serif";
@@ -511,6 +500,12 @@ function drawSettingsButton(row, col, text, textColor, bgColor) {
 	}
 	context.fillStyle = textColor;
 	context.fillText(text, displayMan.settingsX + menuMan.bWidth * (col+1.2), displayMan.settingsY + menuMan.bHeight * (row+1.5)+6);
+}
+
+function drawRules() {
+	if (rulePages > 0) {
+		context.drawImage(images["rule" + gameMan.rules], 0, 0);
+	}
 }
 
 function drawMenu(dTime) {
