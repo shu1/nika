@@ -308,7 +308,7 @@ function draw(time) {
 	drawMural(time)
 	drawBoard(scene);
 	setRings();
-	drawPieces();
+	drawPieces(time/500);
 	drawHelmets();
 
 	if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
@@ -348,7 +348,7 @@ function drawBoard(scene) {
 }
 
 function drawMural(time) {
-	drawMuralBackground();
+	context.drawImage(images["mural"], 628, 622, 760, 194);
 	tick.frame++;
 	tick.time = time;
 	tick.elapsed_time = Math.min(tick.time - tick.time_last, 50);
@@ -361,13 +361,6 @@ function drawMural(time) {
 	murals[2].draw();
 	murals[3].draw();
 	murals[1].draw();
-}
-
-function drawMuralBackground() {
-	context.save();
-	context.translate(628, 622);
-	context.drawImage(images["mural"], 0, 0, 760, 194);
-	context.restore();
 }
 
 function setRings() {
@@ -392,7 +385,7 @@ function setRings() {
 	}
 }
 
-function drawPieces() {
+function drawPieces(rotationSpeed) {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			var cell = grid[row][col];
@@ -408,14 +401,18 @@ function drawPieces() {
 				}
 
 				if (cell.prompt == 0) {
+					context.rotate(rotationSpeed);
 					context.drawImage(images["green"], -displayMan.cellSize/2, -displayMan.cellSize/2, displayMan.cellSize, displayMan.cellSize);	// ring
+					context.rotate(-rotationSpeed);
 				}
 				else if (cell.prompt == 1) {
 					context.drawImage(images["greenShadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2, displayMan.pieceSize, displayMan.pieceSize);	// ring
 				}
 
 				if (cell.ring == 0) {
+					context.rotate(rotationSpeed);
 					context.drawImage(images["gold"], -displayMan.cellSize/2, -displayMan.cellSize/2, displayMan.cellSize, displayMan.cellSize);	// ring
+					context.rotate(-rotationSpeed);
 				}
 				else if (cell.ring == 1) {
 					var rotation = cell.kind == 2 ? cell.city : inputMan.rot;
