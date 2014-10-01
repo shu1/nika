@@ -66,8 +66,7 @@ function init() {
 	images["sheen"] = document.getElementById("sheen");
 	images["shadow"] = document.getElementById("shadow");
 	images["gold"] = document.getElementById("gold");
-	images["silver"] = document.getElementById("silver");
-	images["green"] = document.getElementById("green");
+	images["greenComet"] = document.getElementById("greenComet");
 	images["greenShadow"] = document.getElementById("greenShadow");
 	images["board"] = document.getElementById("board");
 	images["mural"] = document.getElementById("mural");
@@ -303,7 +302,7 @@ function draw(time) {
 	drawMural(time);
 	drawBoard();
 	setRings();
-	drawPieces(time/500 % (Math.PI*2));
+	drawPieces(time/500 % (Math.PI*2));	// rotation speed
 	drawHelmets();
 
 	if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
@@ -390,30 +389,30 @@ function drawPieces(rotationSpeed) {
 
 				if (cell.player >= 0) {
 					context.rotate(cell.rot * Math.PI/2);
-					context.drawImage(images["player" + cell.player], -displayMan.pieceSize/2, -displayMan.pieceSize/2, displayMan.pieceSize, displayMan.pieceSize);	// piece
-					context.rotate(cell.rot * Math.PI/-2);	// rotate back
-					context.drawImage(images["sheen"], -displayMan.pieceSize/2, -displayMan.pieceSize/2, displayMan.pieceSize, displayMan.pieceSize);	// sheen
+					context.drawImage(images["player" + cell.player], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
+					context.rotate(cell.rot * Math.PI/-2);
+					context.drawImage(images["sheen"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
 				}
 
 				if (cell.prompt == 0) {
 					context.rotate(rotationSpeed);
-					context.drawImage(images["green"], -displayMan.cellSize/2, -displayMan.cellSize/2, displayMan.cellSize, displayMan.cellSize);	// ring
+					context.drawImage(images["greenComet"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
 					context.rotate(-rotationSpeed);
 				}
 				else if (cell.prompt == 1) {
-					context.drawImage(images["greenShadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2, displayMan.pieceSize, displayMan.pieceSize);	// ring
+					context.drawImage(images["greenShadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
 				}
 
 				if (cell.ring == 0) {
 					context.rotate(rotationSpeed);
-					context.drawImage(images["gold"], -displayMan.cellSize/2, -displayMan.cellSize/2, displayMan.cellSize, displayMan.cellSize);	// ring
+					context.drawImage(images["gold"], -displayMan.cellSize/2, -displayMan.cellSize/2);
 					context.rotate(-rotationSpeed);
 				}
 				else if (cell.ring == 1) {
 					var rotation = cell.kind == 2 ? cell.city : inputMan.rot;
 					context.rotate(rotation * Math.PI/2);
-					context.drawImage(images["shadow"], -displayMan.cellSize/2, -displayMan.cellSize/2, displayMan.cellSize, displayMan.cellSize);	// ring
-					context.rotate(rotation * Math.PI/-2);	// rotate back
+					context.drawImage(images["shadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
+					context.rotate(rotation * Math.PI/-2);
 				}
 				cell.ring = -1;	// clear for next time
 
@@ -440,7 +439,7 @@ function drawHelmets() {
 		break;
 	}
 	context.rotate(gameMan.player * Math.PI/2);
-	context.drawImage(images["helmet" + gameMan.actions], -displayMan.helmetSize/2, -displayMan.helmetSize/2, displayMan.helmetSize, displayMan.helmetSize);
+	context.drawImage(images["helmet" + gameMan.actions], -128, -128);
 	context.restore();
 }
 

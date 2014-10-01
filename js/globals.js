@@ -5,7 +5,6 @@ var canvas, context, grid, images=[], sounds=[], gameStates=[], phalanx=[], scen
 var displayMan = {
 	cellSize:96,
 	pieceSize:80,
-	helmetSize:256,
 	boardWidth:2016,
 	boardHeight:1440,
 	ruleWidth:2016,
