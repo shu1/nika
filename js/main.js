@@ -138,25 +138,29 @@ function reSize() {
 		canvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 	}
 
-	var minScale = 1/2, maxScale = 2/3;
-	if (screenType == 3) {
+	var minScale = 1/2, maxScale = 2/3, normal = 3/2;	// defaults for browser and ipad
+	if (screenType == 3) {	// large screen, no zoom
 		maxScale = minScale = canvas.height / displayMan.boardHeight;
 	}
-	else if (screenType >= 0) {
-		if (canvas.width / 1024 > maxScale) {
-			maxScale = canvas.width / displayMan.boardWidth;
-		}
-		else if (canvas.width / 1024 > minScale) {
-			minScale = canvas.width / displayMan.boardWidth;
-		}
+	else if (canvas.width == 2048 && canvas.height == 1536) {	// ipad retina
+		minScale = 1;
+		maxScale = 4/3;
+	}
+	else if (screenType == 1 && (canvas.width != 1024 || canvas.height == 768)) {	// tablets that are not ipad
+		minScale = canvas.height / displayMan.boardHeight;
+		maxScale = canvas.width / displayMan.boardWidth;
+	}
+	else if (screenType == 0) {	// small screens
+		minScale = canvas.width / displayMan.boardWidth;
+		maxScale = minScale * 4/3;
 	}
 
-	displayMan.hudHeight = 22 * maxScale * 3/2;
-	displayMan.hudFont = 16 * maxScale * 3/2;
+	displayMan.hudHeight = 22 * maxScale * normal;
+	displayMan.hudFont = 16 * maxScale * normal;
 	context.font = displayMan.hudFont + "px sans-serif";
 
 	menuMan.cols = Math.ceil((buttons.length-1) / menuMan.rows);
-	menuMan.bWidth = displayMan.cellSize * maxScale * 3/2;
+	menuMan.bWidth = displayMan.cellSize * maxScale * normal;
 	menuMan.bHeight = menuMan.rows == 1 ? menuMan.bWidth : menuMan.bWidth/2;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
