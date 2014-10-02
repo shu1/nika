@@ -444,12 +444,11 @@ function drawHelmets() {
 }
 
 function drawDialog() {
-	if (gameMan.tutorialStep >= 0 && gameMan.tutorialStep < tutorialTexts.length
-	|| gameMan.winner >= 0) {
+	if (gameMan.tutorialStep >= 0 && gameMan.tutorialStep < tutorialTexts.length || gameMan.winner >= 0) {
 		context.save();
-		context.fillStyle = "#292526";
+		context.fillStyle = "#221E1F";
 		context.fillRect(displayMan.dialogX, displayMan.dialogY, displayMan.dialogWidth, displayMan.dialogHeight);
-		context.fillStyle = "#d1cbad";
+		context.fillStyle = "#BEB783";
 		context.font = "24pt Georgia";
 
 		var lines;
@@ -461,10 +460,10 @@ function drawDialog() {
 		}
 
 		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], displayMan.dialogX + 1, displayMan.dialogY - 3 + 32*(i+1));
+			context.fillText(lines[i], displayMan.dialogX+4, displayMan.dialogY+28 + 32*i);
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
-			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.dialogButtonX, displayMan.dialogY + displayMan.dialogHeight - 5);
+			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.dialogButtonX, displayMan.dialogY + displayMan.dialogHeight - 10);
 		}
 		context.restore();
 	}
@@ -479,15 +478,15 @@ function drawSettings() {
 
 	for(var row = 0; row < settingsButtons.length; row++) {
 		var buttonRow = settingsButtons[row];
-		drawSettingsButton(row, 0, settingsButtons[row][0], "white", "#073c50");
+		drawSettingsButton(row, 0, settingsButtons[row][0], "white", "#00384C");
 		for(var col = 1; col < buttonRow.length; col++) {
-			drawSettingsButton(row, col, settingsButtons[row][col], "white", "#13485d");
+			drawSettingsButton(row, col, settingsButtons[row][col], "white", "#004157");
 		}
 	}
 
-	drawSettingsButton(0, 3, audioMan.music, "white", "#073c50");
-	drawSettingsButton(1, 3, audioMan.sound, "white", "#073c50");
-	drawSettingsButton(5, 4, "Close", "white", "#13485d");
+	drawSettingsButton(0, 3, audioMan.music, "white", "#00384C");
+	drawSettingsButton(1, 3, audioMan.sound, "white", "#00384C");
+	drawSettingsButton(5, 4, "Close", "white", "#004157");
 }
 
 function drawSettingsButton(row, col, text, textColor, bgColor) {
@@ -561,17 +560,17 @@ function drawMenu(dTime) {
 					|| button == 1 && gameMan.debug
 					|| button == 2 && gameMan.tutorialStep >= 0
 					|| button == 3 && gameMan.scene == 2) {
-						drawButton(row, col, buttons[button+1], "#13485d", "white");
+						drawButton(row, col, buttons[button+1], "#004157", "white");
 					}
 					else {
-						drawButton(row, col, buttons[button+1], "white", "#13485d");
+						drawButton(row, col, buttons[button+1], "white", "#004157");
 					}
 				}
 			}
 		}
 	}
 	else if (inputMan.menu && menuMan.button == 0) {
-		drawButton(0, 0, buttons[0], "#073c50", "white");
+		drawButton(0, 0, buttons[0], "#00384C", "white");
 	}
 	else {
 		drawButton(0, 0, buttons[0], "white");

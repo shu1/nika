@@ -9,11 +9,11 @@ var displayMan = {
 	boardHeight:1440,
 	ruleWidth:2016,
 	ruleHeight:1440,
-	dialogX:786,
+	dialogX:780,
 	dialogY:624,
-	dialogWidth:600,
+	dialogWidth:606,
 	dialogHeight:192,
-	dialogButtonX:306,
+	dialogButtonX:310,
 	settingsX:384,
 	settingsY:384,
 	settingsWidth:1248,
@@ -320,7 +320,7 @@ var tutorialTexts = [[
 ],[
 	"Victory!"
 ],[
-	"Our enemies have allied against us. We","must stop them from breaking through our","lines at any cost!" // 5
+	"Our enemies have allied against us. We","must stop them from breaking through","our lines at any cost!" // 5
 ],[
 	"Defeat!"
 ],[
