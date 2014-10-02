@@ -156,6 +156,9 @@ function reSize() {
 		if (maxScale > 0.9 && maxScale < 1.1) {
 			maxScale = 1;
 		}
+		else if (maxScale > 1.4 && maxScale < 1.6) {
+			maxScale = 1.5;
+		}
 	}
 
 	displayMan.hudHeight = Math.floor(44 * minScale);
