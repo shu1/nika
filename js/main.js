@@ -459,7 +459,12 @@ function drawDialog() {
 		context.fillStyle = "#221E1F";
 		context.fillRect(displayMan.dialogX, displayMan.dialogY, displayMan.dialogWidth, displayMan.dialogHeight);
 		context.fillStyle = "#BEB783";
-		context.font = "24pt Georgia";
+		if (navigator.isCocoonJS && screenType == 0) {
+			context.font = "29px Georgia";
+		}
+		else {
+			context.font = "32px Georgia";
+		}
 
 		var lines;
 		if (gameMan.winner >= 0) {
