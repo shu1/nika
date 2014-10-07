@@ -129,6 +129,7 @@ function init() {
 
 	reSize();
 	draw();
+	sounds["music"].loop = true;
 	sounds["music"].play();
 }
 
