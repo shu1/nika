@@ -310,14 +310,15 @@ function draw(time) {
 	context.translate(scene.x, scene.y);
 	context.scale(scene.scale, scene.scale);
 
+	var theta = time/400 % (Math.PI*2);	// animation time
 	drawMural(time);
 	drawBoard();
 	setRings();
-	drawPieces(time/500 % (Math.PI*2));	// rotation speed
-	drawHelmets();
+	drawPieces(theta);
+	drawHelmets(theta);
 
 	if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
-		drawDialog();
+		drawDialog(theta);
 	}
 
 	context.restore();
@@ -390,7 +391,7 @@ function setRings() {
 	}
 }
 
-function drawPieces(rotationSpeed) {
+function drawPieces(theta) {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			var cell = grid[row][col];
@@ -406,18 +407,18 @@ function drawPieces(rotationSpeed) {
 				}
 
 				if (cell.prompt == 0) {
-					context.rotate(rotationSpeed);
+					context.rotate(theta);
 					context.drawImage(images["greenComet"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
-					context.rotate(-rotationSpeed);
+					context.rotate(-theta);
 				}
 				else if (cell.prompt == 1) {
 					context.drawImage(images["greenShadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
 				}
 
 				if (cell.ring == 0) {
-					context.rotate(rotationSpeed);
+					context.rotate(theta);
 					context.drawImage(images["gold"], -displayMan.cellSize/2, -displayMan.cellSize/2);
-					context.rotate(-rotationSpeed);
+					context.rotate(-theta);
 				}
 				else if (cell.ring == 1) {
 					var rotation = cell.kind == 2 ? cell.city : inputMan.rot;
@@ -433,7 +434,7 @@ function drawPieces(rotationSpeed) {
 	}
 }
 
-function drawHelmets() {
+function drawHelmets(theta) {
 	context.save();
 	switch (gameMan.player) {
 	case 0:
@@ -450,11 +451,12 @@ function drawHelmets() {
 		break;
 	}
 	context.rotate(gameMan.player * Math.PI/2);
+	context.globalAlpha = (Math.sin(theta)+1)/4 + 0.5;
 	context.drawImage(images["helmet" + gameMan.actions], -128, -128);
 	context.restore();
 }
 
-function drawDialog() {
+function drawDialog(theta) {
 	if (gameMan.tutorialStep >= 0 && gameMan.tutorialStep < tutorialTexts.length || gameMan.winner >= 0) {
 		context.save();
 		context.fillStyle = "#221E1F";
@@ -479,6 +481,7 @@ function drawDialog() {
 			context.fillText(lines[i], displayMan.dialogX+4, displayMan.dialogY+28 + 32*i);
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
+			context.globalAlpha = (Math.sin(theta)+1)/4 + 0.5;
 			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.dialogButtonX, displayMan.dialogY + displayMan.dialogHeight - 10);
 		}
 		context.restore();
