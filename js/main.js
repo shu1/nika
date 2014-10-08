@@ -154,7 +154,7 @@ function reSize() {
 	else if (screenType == 0) {	// phones
 		minScale = canvas.width / displayMan.boardWidth;
 		maxScale = minScale * 5/3;
-		if (maxScale > 0.9 && maxScale < 1.1) {
+		if (maxScale > 0.9 && maxScale < 1.11) {
 			maxScale = 1;
 		}
 		else if (maxScale > 1.4 && maxScale < 1.6) {
