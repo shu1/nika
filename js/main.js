@@ -257,8 +257,15 @@ function zooming(dTime) {
 				displayMan.zoom = 0;
 			}
 		}
-		scene.x = (canvas.width - scene.width * scene.minScale)/2 - (inputMan.col+0.5) * displayMan.cellSize * (scene.scale - scene.minScale);
-		scene.y = (canvas.height - scene.height * scene.minScale)/2 - (inputMan.row+0.5) * displayMan.cellSize * (scene.scale - scene.minScale);
+
+		if (screenType == 1) {	// tablets should always zoom centered
+			scene.x = (canvas.width - scene.width * scene.scale)/2;
+			scene.y = (canvas.height - scene.height * scene.scale)/2;
+		}
+		else {
+			scene.x = (canvas.width - scene.width * scene.minScale)/2 - (inputMan.col+0.5) * displayMan.cellSize * (scene.scale - scene.minScale);
+			scene.y = (canvas.height - scene.height * scene.minScale)/2 - (inputMan.row+0.5) * displayMan.cellSize * (scene.scale - scene.minScale);
+		}
 		pan(0, 0);	// hack to fix if clicked outside board
 	}
 }
