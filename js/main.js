@@ -257,8 +257,8 @@ function zooming(dTime) {
 				displayMan.zoom = 0;
 			}
 		}
-		scene.x = (canvas.width - scene.width)/2 - (inputMan.col * displayMan.cellSize + displayMan.cellSize/2) * (scene.scale-1);
-		scene.y = (canvas.height - scene.height)/2 - (inputMan.row * displayMan.cellSize + displayMan.cellSize/2) * (scene.scale-1);
+		scene.x = (canvas.width - scene.width * scene.minScale)/2 - (inputMan.col+0.5) * displayMan.cellSize * (scene.scale - scene.minScale);
+		scene.y = (canvas.height - scene.height * scene.minScale)/2 - (inputMan.row+0.5) * displayMan.cellSize * (scene.scale - scene.minScale);
 		pan(0, 0);	// hack to fix if clicked outside board
 	}
 }
