@@ -68,6 +68,7 @@ function init() {
 	images["gold"] = document.getElementById("gold");
 	images["greenComet"] = document.getElementById("greenComet");
 	images["greenShadow"] = document.getElementById("greenShadow");
+	images["greenRing"] = document.getElementById("greenRing");
 	images["board"] = document.getElementById("board");
 	images["mural"] = document.getElementById("mural");
 	images["helmet1"] = document.getElementById("helmet1");
@@ -419,6 +420,9 @@ function drawPieces(theta) {
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 1) {
+					context.drawImage(images["greenRing"], -displayMan.cellSize/2, -displayMan.cellSize/2);
+				}
+				else if (cell.prompt == 2) {
 					context.drawImage(images["greenShadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
 				}
 
