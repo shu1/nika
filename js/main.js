@@ -469,7 +469,7 @@ function drawDialog(theta) {
 		context.fillStyle = "#221E1F";
 		context.fillRect(displayMan.dialogX, displayMan.dialogY, displayMan.dialogWidth, displayMan.dialogHeight);
 		context.fillStyle = "#BEB783";
-		if (navigator.isCocoonJS && screenType == 0) {
+		if (screenType == 0) {	// TODO: need to deal with Android font difference
 			context.font = "29px Georgia";
 		}
 		else {
