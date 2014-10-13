@@ -47,10 +47,20 @@ function initAnimations() {
 }
 
 function setIdleAnimation(player) {
-	if (player == gameMan.player) {
-		murals[player].setAnim("idleActive");
-	} else {
-		murals[player].setAnim("idle");
+	if (gameMan.tutorialStep >= 0 && player == 0) {
+		if (tutorialInputs[gameMan.tutorialStep]) {
+			murals[player].setAnim("idleActive");
+		}
+		else {
+			murals[player].setAnim("idle");
+		}
+	}
+	else {
+		if (player == gameMan.player) {
+			murals[player].setAnim("idleActive");
+		} else {
+			murals[player].setAnim("idle");
+		}
 	}
 }
 
