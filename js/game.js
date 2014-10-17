@@ -176,6 +176,7 @@ function undo() {
 		revertGrid();
 		gameMan.player = gameStates[gameStates.length-1].player;
 		gameMan.actions = gameStates[gameStates.length-1].actions;
+		phalanx = [];
 		hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	}
 }
