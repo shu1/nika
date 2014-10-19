@@ -66,9 +66,9 @@ function init() {
 	images["sheen"] = document.getElementById("sheen");
 	images["shadow"] = document.getElementById("shadow");
 	images["gold"] = document.getElementById("gold");
+	images["greenRing"] = document.getElementById("greenRing");
 	images["greenComet"] = document.getElementById("greenComet");
 	images["greenShadow"] = document.getElementById("greenShadow");
-	images["greenRing"] = document.getElementById("greenRing");
 	images["board"] = document.getElementById("board");
 	images["mural"] = document.getElementById("mural");
 	images["helmet1"] = document.getElementById("helmet1");
@@ -106,7 +106,7 @@ function init() {
 		window.addEventListener("mouseup", mouseUp);
 	}
 
-	if (screenType >= 0) {
+	if (screenType > 0) {
 		window.addEventListener("resize", reSize);
 	}
 	else {
@@ -135,7 +135,7 @@ function init() {
 }
 
 function reSize() {
-	if (screenType >= 0) {	// fullscreen
+	if (screenType > 0) {	// fullscreen
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 	}
@@ -148,11 +148,11 @@ function reSize() {
 		minScale = 1;
 		maxScale = 4/3;
 	}
-	else if (screenType >= 1 && (canvas.width != 1024 || canvas.height != 768)) {	// tablets except ipad
+	else if (screenType == 2) {	// tablets
 		minScale = canvas.height / displayMan.boardHeight;
 		maxScale = canvas.width / displayMan.boardWidth;
 	}
-	else if (screenType == 0) {	// phones
+	else if (canvas.width != 1024 || canvas.height != 768) {	// else if not ipad then it's a phone
 		minScale = canvas.width / displayMan.boardWidth;
 		maxScale = minScale * 5/3;
 		if (maxScale > 0.9 && maxScale < 1.11) {
@@ -259,7 +259,7 @@ function zooming(dTime) {
 			}
 		}
 
-		if (screenType == 1) {	// tablets should always zoom centered
+		if (screenType == 2) {	// tablets should always zoom centered
 			scene.x = (canvas.width - scene.width * scene.scale)/2;
 			scene.y = (canvas.height - scene.height * scene.scale)/2;
 		}
@@ -473,7 +473,7 @@ function drawDialog(theta) {
 		context.fillStyle = "#221E1F";
 		context.fillRect(displayMan.dialogX, displayMan.dialogY, displayMan.dialogWidth, displayMan.dialogHeight);
 		context.fillStyle = "#BEB783";
-		if (screenType == 0) {	// TODO: need to deal with Android font difference
+		if (fontType) {	// Android
 			context.font = "29px Georgia";
 		}
 		else {
