@@ -473,12 +473,6 @@ function drawDialog(theta) {
 		context.fillStyle = "#221E1F";
 		context.fillRect(displayMan.dialogX, displayMan.dialogY, displayMan.dialogWidth, displayMan.dialogHeight);
 		context.fillStyle = "#BEB783";
-		if (fontType) {	// Android
-			context.font = "29px Georgia";
-		}
-		else {
-			context.font = "32px Georgia";
-		}
 
 		var lines;
 		if (gameMan.winner >= 0) {
@@ -488,12 +482,23 @@ function drawDialog(theta) {
 			lines = tutorialTexts[gameMan.tutorialStep];
 		}
 
+		var spacing = 36, topPadding = 26, bottomPadding = 14;
+		if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
+			context.font = "30px Georgia";
+			spacing = 32;
+			topPadding = 24;
+			bottomPadding = 12;
+		}
+		else {
+			context.font = "32px Georgia";
+		}
+
 		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], displayMan.dialogX+8, displayMan.dialogY+28 + 36*i);
+			context.fillText(lines[i], displayMan.dialogX+8, displayMan.dialogY + topPadding + spacing * i);
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
 			context.globalAlpha = (Math.sin(theta)+1)/4 + 0.5;
-			context.fillText("Tap here to continue", displayMan.dialogX + 306, displayMan.dialogY + displayMan.dialogHeight - 14);
+			context.fillText("Tap here to continue", displayMan.dialogX+306, displayMan.dialogY + displayMan.dialogHeight - bottomPadding);
 		}
 		context.restore();
 	}
