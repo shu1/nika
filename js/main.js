@@ -35,7 +35,7 @@ function playerAction(name) {
 			murals[gameMan.player].setAnim("rally");
 			break;
 		}
-		hudMan.soundText = name;
+		hudMan.actionText = name;
 		audioMan.play = false;
 	}
 }
@@ -493,7 +493,7 @@ function drawDialog(theta) {
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
 			context.globalAlpha = (Math.sin(theta)+1)/4 + 0.5;
-			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.dialogButtonX, displayMan.dialogY + displayMan.dialogHeight - 10);
+			context.fillText("Tap here to continue", displayMan.dialogX + 310, displayMan.dialogY + displayMan.dialogHeight - 10);
 		}
 		context.restore();
 	}
@@ -626,11 +626,11 @@ function drawHud(time) {
 	}
 	hudMan.fpsCount++;
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[gameMan.scene].scale + "x";
-	hudMan.pieceText = (!gameMan.selection) ? "" : "SELECTION";
+	hudMan.pieceText = !gameMan.selection ? "" : "Phalanx selection";
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, displayMan.hudHeight);
-	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  "
-	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, displayMan.hudFont);
+	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  " + hudMan.inputText
+	+ "  |  " + hudMan.pieceText + hudMan.actionText + hudMan.tutorialText, 122, displayMan.hudFont);
 }
 
 // browser compatibility

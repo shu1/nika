@@ -132,7 +132,7 @@ function mouseDown(event) {
 		displayMan.initAnim = true;
 	}
 
-	hudMan.soundText = "";
+	hudMan.actionText = "";
 	hudMan.inputText = "";
 	inputMan.menu = getXY(event);
 	if (!inputMan.menu && gameMan.winner < 0) {

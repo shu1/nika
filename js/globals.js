@@ -13,7 +13,6 @@ var displayMan = {
 	dialogY:624,
 	dialogWidth:606,
 	dialogHeight:192,
-	dialogButtonX:310,
 	settingsX:384,
 	settingsY:384,
 	settingsWidth:1248,
@@ -76,8 +75,9 @@ var	hudMan = {
 	drawText:"",
 	gameText:"",
 	inputText:"",
-	soundText:"",
-	pieceText:""
+	pieceText:"",
+	actionText:"",
+	tutorialText:""
 }
 
 var buttons = [
@@ -306,8 +306,6 @@ var tutorialBoards = [[	// 2 Athens Victory
 	"......dddccc.........",
 	"......dddccc........."
 ]]
-
-var tutorialTurns = [1, 0, 0, 0, 2, 4, 2, 2, 1, 2, 1, 1];
 
 var tutorialTexts = [[
 	"Welcome, strategos! You have been","assigned command of our noble Athenian","troops against the cruel Spartans and the","treacherous Thebans."
