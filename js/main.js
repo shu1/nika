@@ -489,11 +489,11 @@ function drawDialog(theta) {
 		}
 
 		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], displayMan.dialogX+4, displayMan.dialogY+28 + 32*i);
+			context.fillText(lines[i], displayMan.dialogX+8, displayMan.dialogY+28 + 36*i);
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
 			context.globalAlpha = (Math.sin(theta)+1)/4 + 0.5;
-			context.fillText("Tap here to continue", displayMan.dialogX + 310, displayMan.dialogY + displayMan.dialogHeight - 10);
+			context.fillText("Tap here to continue", displayMan.dialogX + 306, displayMan.dialogY + displayMan.dialogHeight - 14);
 		}
 		context.restore();
 	}
