@@ -332,7 +332,7 @@ var tutorialTexts = [[
 ],[
 	"All hoplites carry shields which protect","their front. The Spartan is FACING this","piece, so this piece cannot attack."
 ],[
-	"But Athena smiles upon us today - we","have him flanked! Let us MOVE our","other soldier forward. Drag this piece","in the direction you want to move it."
+	"But Athena smiles upon us today -","we have him flanked! Let us MOVE our","other soldier forward. Drag this piece","in the direction you want to move it."
 ],[
 	"We can ROUT an enemy piece by moving","into it from the side or back, but not from","the front. Take out that Spartan!" // 13
 ],[
@@ -366,7 +366,7 @@ var tutorialTexts = [[
 ],[
 	"Good! You'll notice that pieces in a","phalanx can only move forward.","Moving in a different direction requires","two actions: first rotating the phalanx,","then moving it."
 ],[
-	"The Thebans have mounted a tough","defense. If we move our whole phalanx","forward, our piece nearest the main","Theban formation will be in danger.","Let us proceed with caution."
+	"The Thebans have mounted a tough","defense. If we move our whole phalanx","forward, our piece nearest the main","Theban formation will be in danger.","Proceed with caution."
 ],[
 	"Fortunately, we can split pieces off from","a phalanx. Tap the indicated piece to","enter phalanx sub-selection mode." // 30
 ],[
