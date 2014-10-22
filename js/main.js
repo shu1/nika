@@ -484,13 +484,13 @@ function drawDialog(theta) {
 
 		var spacing = 36, topPadding = 26, bottomPadding = 14;
 		if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
-			context.font = "30px Georgia";
+			context.font = (fontType ? 28 : 30) + "px Georgia";
 			spacing = 32;
 			topPadding = 24;
 			bottomPadding = 12;
 		}
 		else {
-			context.font = "32px Georgia";
+			context.font = (fontType ? 30 : 32) + "px Georgia";
 		}
 
 		for (var i = lines.length-1; i >= 0; --i) {
@@ -635,7 +635,7 @@ function drawHud(time) {
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, displayMan.hudHeight);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  " + hudMan.inputText
-	+ "  |  " + hudMan.pieceText + hudMan.actionText + hudMan.tutorialText, 122, displayMan.hudFont);
+	+ "  |  " + hudMan.pieceText + hudMan.actionText + hudMan.tutorialText, 120, displayMan.hudFont);
 }
 
 // browser compatibility
