@@ -183,6 +183,7 @@ function reSize() {
 	scene.height = displayMan.boardHeight;
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
+	scene.scale = minScale;
 	scenes[0] = scene;
 
 	scene = {};
@@ -190,6 +191,7 @@ function reSize() {
 	scene.height = displayMan.boardHeight;
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
+	scene.scale = minScale;
 	scenes[1] = scene;
 
 	scene = {};
@@ -207,6 +209,7 @@ function reSize() {
 		scene.maxScale = 1;
 		scene.minScale = canvas.width / displayMan.ruleWidth;
 	}
+	scene.scale = scene.minScale;
 	scenes[2] = scene;
 
 	setScene();
@@ -218,7 +221,6 @@ function setScene(sceneIndex) {
 	}
 
 	var scene = scenes[gameMan.scene];
-	scene.scale = scene.minScale;
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 
@@ -485,9 +487,9 @@ function drawDialog(theta) {
 		var spacing = 36, topPadding = 26, bottomPadding = 14;
 		if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
 			context.font = (fontType ? 28 : 30) + "px Georgia";
-			spacing = 32;
-			topPadding = 24;
-			bottomPadding = 12;
+			spacing -= 4;
+			topPadding -= 2;
+			bottomPadding -= 2;
 		}
 		else {
 			context.font = (fontType ? 30 : 32) + "px Georgia";
