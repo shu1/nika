@@ -489,12 +489,13 @@ function drawDialog(theta) {
 			lines = tutorialTexts[gameMan.tutorialStep];
 		}
 
-		var spacing = 36, topPadding = 26, bottomPadding = 14, font = "px Georgia";
+		var spacing = 36, topPadding = 26, bottomPadding = 14, buttonOffset = 306, font = "px Georgia";
 		if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
 			context.font = (fontType ? 28 : 30) + font;
 			spacing -= 4;
 			topPadding -= 2;
 			bottomPadding -= 2;
+			buttonOffset += 18;
 		}
 		else {
 			context.font = (fontType ? 30 : 32) + font;
@@ -505,7 +506,7 @@ function drawDialog(theta) {
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
 			context.globalAlpha = (Math.sin(theta)+1)/4 + 0.5;
-			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.tutorialOffset+306, displayMan.dialogY + displayMan.dialogHeight - bottomPadding);
+			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.tutorialOffset + buttonOffset, displayMan.dialogY + displayMan.dialogHeight - bottomPadding);
 		}
 		context.restore();
 	}
