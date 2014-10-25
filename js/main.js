@@ -473,7 +473,12 @@ function drawDialog(theta) {
 	if (gameMan.tutorialStep >= 0 && gameMan.tutorialStep < tutorialTexts.length || gameMan.winner >= 0) {
 		context.save();
 		context.fillStyle = "#221E1F";
-		context.fillRect(displayMan.dialogX, displayMan.dialogY, displayMan.dialogWidth, displayMan.dialogHeight);
+		var frame = 1;
+//		context.fillRect(displayMan.dialogX, displayMan.dialogY - frame, -frame, displayMan.dialogHeight + frame*2);
+		context.fillRect(displayMan.dialogX, displayMan.dialogY, displayMan.tutorialOffset, -frame);
+		context.fillRect(displayMan.dialogX, displayMan.dialogY + displayMan.dialogHeight, displayMan.tutorialOffset, frame);
+		context.fillRect(displayMan.dialogX + displayMan.tutorialOffset, displayMan.dialogY - frame,
+			displayMan.dialogWidth - displayMan.tutorialOffset + frame, displayMan.dialogHeight + frame*2);
 		context.fillStyle = "#BEB783";
 
 		var lines;
@@ -484,23 +489,23 @@ function drawDialog(theta) {
 			lines = tutorialTexts[gameMan.tutorialStep];
 		}
 
-		var spacing = 36, topPadding = 26, bottomPadding = 14;
+		var spacing = 36, topPadding = 26, bottomPadding = 14, font = "px Georgia";
 		if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
-			context.font = (fontType ? 28 : 30) + "px Georgia";
+			context.font = (fontType ? 28 : 30) + font;
 			spacing -= 4;
 			topPadding -= 2;
 			bottomPadding -= 2;
 		}
 		else {
-			context.font = (fontType ? 30 : 32) + "px Georgia";
+			context.font = (fontType ? 30 : 32) + font;
 		}
 
 		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], displayMan.dialogX+8, displayMan.dialogY + topPadding + spacing * i);
+			context.fillText(lines[i], displayMan.dialogX + displayMan.tutorialOffset+8, displayMan.dialogY + topPadding + spacing * i);
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
 			context.globalAlpha = (Math.sin(theta)+1)/4 + 0.5;
-			context.fillText("Tap here to continue", displayMan.dialogX+306, displayMan.dialogY + displayMan.dialogHeight - bottomPadding);
+			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.tutorialOffset+306, displayMan.dialogY + displayMan.dialogHeight - bottomPadding);
 		}
 		context.restore();
 	}
