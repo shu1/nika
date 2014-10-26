@@ -40,6 +40,11 @@ function playerAction(name) {
 	}
 }
 
+function resetAnimations() {
+	gameMan.receiver = -1;
+	initAnimations();
+}
+
 function initAnimations() {
 	for (var i = 0; i < 4; i++) {
 		setIdleAnimation(i);

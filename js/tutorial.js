@@ -21,6 +21,7 @@ function endTutorial() {
 	resetActions(0);
 	gameStates = [];
 	generateGrid(mainBoard);
+	resetAnimations();
 }
 
 function nextTutorialPart(part) {
