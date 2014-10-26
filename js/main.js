@@ -189,9 +189,9 @@ function reSize() {
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
 	murals[0].set_position(678, 794);
-	murals[1].set_position(1320, 844);
+	murals[1].set_position(1148, 844);
 	murals[2].set_position(848, 794);
-	murals[3].set_position(1148, 844);
+	murals[3].set_position(1320, 844);
 
 	var scene = {};
 	scene.width = displayMan.boardWidth;
@@ -384,10 +384,10 @@ function drawMural(time) {
 	if (gameMan.tutorialStep < 0) {
 		murals[2].update(tick);
 		murals[2].draw();
-		murals[3].update(tick);
-		murals[3].draw();
 		murals[1].update(tick);
 		murals[1].draw();
+		murals[3].update(tick);
+		murals[3].draw();
 	}
 	tick.time_last = time;
 }
