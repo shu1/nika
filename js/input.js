@@ -231,25 +231,23 @@ function mouseUp(event) {
 			 	if (!gameMan.selection) {
 			 		phalanx.length = 0;
 			 	}
-			 	gameMan.selection = true;
 			 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
 			 	checkTutorialSelection();
 			}
 			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 				inputMan.time = 0;
-				gameMan.selection = false;	// after move always get out of selection mode
 			}
 			else if (gameMan.selection && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
 				togglePhalanxPiece(inputMan.row, inputMan.col);
 			}
 
 			if (phalanx.length > 0) {
-				if (grid[phalanx[0].row][phalanx[0].col].kind == 3) {
-					gameMan.selection = false;
+				if (grid[phalanx[0].row][phalanx[0].col].kind == 3) {					
 					phalanx.length = 0;
 				}
 			}
 		}
+		gameMan.selection = false;
 		inputMan.menu = false;
 		inputMan.click = false;
 		audioMan.play = true;
