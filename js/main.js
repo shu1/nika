@@ -545,6 +545,8 @@ function drawSettingsButton(row, col, text, textColor, bgColor) {
 
 function drawRules() {
 	if (rulePages > 0) {
+		context.fillStyle = "black";
+		context.fillRect(0, 0, displayMan.ruleWidth, displayMan.ruleHeight);
 		context.drawImage(images["rule" + gameMan.rules], 0, 0);
 	}
 }
