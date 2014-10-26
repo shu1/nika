@@ -229,6 +229,11 @@ function setupTutorial() {
 		grid[6][15].prompt = 2;
 		pushGameState();
 		break;
+	case 51:
+		generateGrid(mainBoard);
+		resetActions(0);
+		pushGameState();
+		break;
 	case 56:
 		endTutorial();
 		break;
