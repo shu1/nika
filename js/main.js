@@ -366,12 +366,14 @@ function drawMural(time) {
 	tick.elapsed_time = Math.min(time - tick.time_last, 50);
 	murals[0].update(tick);
 	murals[0].draw();
-	murals[2].update(tick);
-	murals[2].draw();
-	murals[3].update(tick);
-	murals[3].draw();
-	murals[1].update(tick);
-	murals[1].draw();
+	if (gameMan.tutorialStep < 0) {
+		murals[2].update(tick);
+		murals[2].draw();
+		murals[3].update(tick);
+		murals[3].draw();
+		murals[1].update(tick);
+		murals[1].draw();
+	}
 	tick.time_last = time;
 }
 
