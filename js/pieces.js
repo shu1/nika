@@ -1,5 +1,9 @@
 "use strict";
 
+function rallyCell(row, col) {
+	return grid[row][col].kind == 2;
+}
+
 function routedCell(row, col) {
 	return grid[row][col].kind == 3;
 }
