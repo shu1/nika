@@ -428,7 +428,7 @@ function setRallyHighlights(pRow, pCol) {
 	if (gameMan.tutorialStep < 0 && routedCell(pRow, pCol)) {
 		for (var row = 0; row < 15; ++row) {
 			for (var col = 0; col < 21; ++col) {
-				if (grid[row][col].city == grid[pRow][pCol].player && rallyCell(row, col)) {
+				if (emptyRallyCell(row, col, grid[pRow][pCol].player)) {
 					grid[row][col].prompt = 2;
 				}
 			}

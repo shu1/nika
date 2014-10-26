@@ -4,6 +4,10 @@ function rallyCell(row, col) {
 	return grid[row][col].kind == 2;
 }
 
+function emptyRallyCell(row, col, player) {
+	return rallyCell(row, col) && grid[row][col].city == player && emptyCell(row, col)
+}
+
 function routedCell(row, col) {
 	return grid[row][col].kind == 3;
 }
