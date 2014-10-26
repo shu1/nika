@@ -10,12 +10,14 @@ function clearTutorialRings() {
 
 function nextTutorialStep() {
 	gameMan.tutorialStep++;
+	hudMan.tutorialText = "Tutorial " + gameMan.tutorialStep;
 	clearTutorialRings();
 	setupTutorial(gameMan.tutorialStep);
 }
 
 function endTutorial() {
 	gameMan.tutorialStep = -1;
+	hudMan.tutorialText = "";
 	resetActions(0);
 	gameStates = [];
 	generateGrid(mainBoard);
@@ -231,7 +233,6 @@ function setupTutorial() {
 		endTutorial();
 		break;
 	}
-	console.log(gameMan.tutorialStep);
 }
 
 function checkTutorialMove(moved) {

@@ -35,7 +35,7 @@ function playerAction(name) {
 			murals[gameMan.player].setAnim("rally");
 			break;
 		}
-		hudMan.soundText = name;
+		hudMan.actionText = name;
 		audioMan.play = false;
 	}
 }
@@ -76,9 +76,9 @@ function init() {
 	images["sheen"] = document.getElementById("sheen");
 	images["shadow"] = document.getElementById("shadow");
 	images["gold"] = document.getElementById("gold");
+	images["greenRing"] = document.getElementById("greenRing");
 	images["greenComet"] = document.getElementById("greenComet");
 	images["greenShadow"] = document.getElementById("greenShadow");
-	images["greenRing"] = document.getElementById("greenRing");
 	images["board"] = document.getElementById("board");
 	images["mural"] = document.getElementById("mural");
 	images["helmet1"] = document.getElementById("helmet1");
@@ -116,7 +116,7 @@ function init() {
 		window.addEventListener("mouseup", mouseUp);
 	}
 
-	if (screenType >= 0) {
+	if (screenType > 0) {
 		window.addEventListener("resize", reSize);
 	}
 	else {
@@ -145,7 +145,7 @@ function init() {
 }
 
 function reSize() {
-	if (screenType >= 0) {	// fullscreen
+	if (screenType > 0) {	// fullscreen
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 	}
@@ -158,11 +158,11 @@ function reSize() {
 		minScale = 1;
 		maxScale = 4/3;
 	}
-	else if (screenType >= 1 && (canvas.width != 1024 || canvas.height != 768)) {	// tablets except ipad
+	else if (screenType == 2) {	// tablets
 		minScale = canvas.height / displayMan.boardHeight;
 		maxScale = canvas.width / displayMan.boardWidth;
 	}
-	else if (screenType == 0) {	// phones
+	else if (canvas.width != 1024 || canvas.height != 768) {	// else if not ipad then it's a phone
 		minScale = canvas.width / displayMan.boardWidth;
 		maxScale = minScale * 5/3;
 		if (maxScale > 0.9 && maxScale < 1.11) {
@@ -193,6 +193,7 @@ function reSize() {
 	scene.height = displayMan.boardHeight;
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
+	scene.scale = minScale;
 	scenes[0] = scene;
 
 	scene = {};
@@ -200,6 +201,7 @@ function reSize() {
 	scene.height = displayMan.boardHeight;
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
+	scene.scale = minScale;
 	scenes[1] = scene;
 
 	scene = {};
@@ -217,6 +219,7 @@ function reSize() {
 		scene.maxScale = 1;
 		scene.minScale = canvas.width / displayMan.ruleWidth;
 	}
+	scene.scale = scene.minScale;
 	scenes[2] = scene;
 
 	setScene();
@@ -228,7 +231,6 @@ function setScene(sceneIndex) {
 	}
 
 	var scene = scenes[gameMan.scene];
-	scene.scale = scene.minScale;
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 
@@ -269,7 +271,7 @@ function zooming(dTime) {
 			}
 		}
 
-		if (screenType == 1) {	// tablets should always zoom centered
+		if (screenType == 2) {	// tablets should always zoom centered
 			scene.x = (canvas.width - scene.width * scene.scale)/2;
 			scene.y = (canvas.height - scene.height * scene.scale)/2;
 		}
@@ -374,12 +376,14 @@ function drawMural(time) {
 	tick.elapsed_time = Math.min(time - tick.time_last, 50);
 	murals[0].update(tick);
 	murals[0].draw();
-	murals[2].update(tick);
-	murals[2].draw();
-	murals[3].update(tick);
-	murals[3].draw();
-	murals[1].update(tick);
-	murals[1].draw();
+	if (gameMan.tutorialStep < 0) {
+		murals[2].update(tick);
+		murals[2].draw();
+		murals[3].update(tick);
+		murals[3].draw();
+		murals[1].update(tick);
+		murals[1].draw();
+	}
 	tick.time_last = time;
 }
 
@@ -481,14 +485,13 @@ function drawDialog(theta) {
 	if (gameMan.tutorialStep >= 0 && gameMan.tutorialStep < tutorialTexts.length || gameMan.winner >= 0) {
 		context.save();
 		context.fillStyle = "#221E1F";
-		context.fillRect(displayMan.dialogX, displayMan.dialogY, displayMan.dialogWidth, displayMan.dialogHeight);
+		var frame = 1;
+//		context.fillRect(displayMan.dialogX, displayMan.dialogY - frame, -frame, displayMan.dialogHeight + frame*2);
+		context.fillRect(displayMan.dialogX, displayMan.dialogY, displayMan.tutorialOffset, -frame);
+		context.fillRect(displayMan.dialogX, displayMan.dialogY + displayMan.dialogHeight, displayMan.tutorialOffset, frame);
+		context.fillRect(displayMan.dialogX + displayMan.tutorialOffset, displayMan.dialogY - frame,
+			displayMan.dialogWidth - displayMan.tutorialOffset + frame, displayMan.dialogHeight + frame*2);
 		context.fillStyle = "#BEB783";
-		if (screenType == 0) {	// TODO: need to deal with Android font difference
-			context.font = "29px Georgia";
-		}
-		else {
-			context.font = "32px Georgia";
-		}
 
 		var lines;
 		if (gameMan.winner >= 0) {
@@ -498,12 +501,24 @@ function drawDialog(theta) {
 			lines = tutorialTexts[gameMan.tutorialStep];
 		}
 
+		var spacing = 36, topPadding = 26, bottomPadding = 14, buttonOffset = 306, font = "px Georgia";
+		if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
+			context.font = (fontType ? 28 : 30) + font;
+			spacing -= 4;
+			topPadding -= 2;
+			bottomPadding -= 2;
+			buttonOffset += 18;
+		}
+		else {
+			context.font = (fontType ? 30 : 32) + font;
+		}
+
 		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], displayMan.dialogX+4, displayMan.dialogY+28 + 32*i);
+			context.fillText(lines[i], displayMan.dialogX + displayMan.tutorialOffset+8, displayMan.dialogY + topPadding + spacing * i);
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
 			context.globalAlpha = (Math.sin(theta)+1)/4 + 0.5;
-			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.dialogButtonX, displayMan.dialogY + displayMan.dialogHeight - 10);
+			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.tutorialOffset + buttonOffset, displayMan.dialogY + displayMan.dialogHeight - bottomPadding);
 		}
 		context.restore();
 	}
@@ -636,11 +651,11 @@ function drawHud(time) {
 	}
 	hudMan.fpsCount++;
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[gameMan.scene].scale + "x";
-	hudMan.pieceText = (!gameMan.selection) ? "" : "SELECTION";
+	hudMan.pieceText = !gameMan.selection ? "" : "Phalanx selection";
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, displayMan.hudHeight);
-	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  "
-	+ hudMan.inputText + "  |  " + hudMan.soundText + "  |  " + hudMan.pieceText, 120, displayMan.hudFont);
+	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  " + hudMan.inputText
+	+ "  |  " + hudMan.pieceText + hudMan.actionText + hudMan.tutorialText, 120, displayMan.hudFont);
 }
 
 // browser compatibility

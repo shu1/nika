@@ -9,11 +9,11 @@ var displayMan = {
 	boardHeight:1440,
 	ruleWidth:2016,
 	ruleHeight:1440,
-	dialogX:780,
+	dialogX:628,
 	dialogY:624,
-	dialogWidth:606,
+	dialogWidth:758,
 	dialogHeight:192,
-	dialogButtonX:310,
+	tutorialOffset:152,
 	settingsX:384,
 	settingsY:384,
 	settingsWidth:1248,
@@ -76,8 +76,9 @@ var	hudMan = {
 	drawText:"",
 	gameText:"",
 	inputText:"",
-	soundText:"",
-	pieceText:""
+	pieceText:"",
+	actionText:"",
+	tutorialText:""
 }
 
 var buttons = [
@@ -307,120 +308,118 @@ var tutorialBoards = [[	// 2 Athens Victory
 	"......dddccc........."
 ]]
 
-var tutorialTurns = [1, 0, 0, 0, 2, 4, 2, 2, 1, 2, 1, 1];
-
 var tutorialTexts = [[
 	"Welcome, strategos! You have been","assigned command of our noble Athenian","troops against the cruel Spartans and the","treacherous Thebans."
 ],[
 	"Our objective is to reach the camp of the","Messenians, our brave allies. If a single","Athenian piece reaches any part of this","area, we win, and so do the Messenians."
 ],[
-	"Drag our piece onto the highlighted space","to claim victory." // 2 Move
+	"Drag our piece onto the highlighted","space to claim victory."
 ],[
-	"We also win if any Messenian piece","reaches our own camp." // 3
+	"We also win if any Messenian piece","reaches our own camp."
 ],[
-	"Victory!"
+	"Victory!" // 4
 ],[
-	"Our enemies have allied against us. We","must stop them from breaking through","our lines at any cost!" // 5
-],[
-	"Defeat!"
-],[
-	"If any Spartan or Theban reaches the","opposite camp, we will have failed in our","mission, and the battle will be lost." // 7
+	"Our enemies have allied against us. We","must stop them from breaking through","our lines at any cost!"
 ],[
 	"Defeat!"
 ],[
-	"The Spartans have sent a scout into our","territory. We must drive him off!" // 9
+	"If any Spartan or Theban reaches the","opposite camp, we will have failed in","our mission, and the battle will be lost."
 ],[
-	"We can take two actions on our turn."
+	"Defeat!"
+],[
+	"The Spartans have sent a scout into our","territory. We must drive him off!"
+],[
+	"We can take two actions on our turn." // 10
 ],[
 	"All hoplites carry shields which protect","their front. The Spartan is FACING this","piece, so this piece cannot attack."
 ],[
-	"But Athena smiles upon us today - we","have him flanked! Let us MOVE our other","soldier forward. Drag this piece in the","direction you want to move it." // 12 Move
+	"But Athena smiles upon us today -","we have him flanked! Let us MOVE our","other soldier forward. Drag this piece","in the direction you want to move it."
 ],[
-	"We can ROUT an enemy piece by moving","into it from the side or back, but not from","the front. Take out that Spartan!" // 13 Move
+	"We can ROUT an enemy piece by moving","into it from the side or back, but not from","the front. Take out that Spartan!" // 13
 ],[
-	"Bravo! Now, listen - this is important. A","piece can move forward, left, right, or back","in one action. As you saw, it turns to face","the direction it moved in."
+	"Bravo! Now, listen - this is important.","A piece can move forward, left, right,","or back in one action. As you saw, it","turns to face the direction it moved in."
 ],[
-	"Strategos! While we were dealing with","that Spartan, a contingent of Thebans has","approached us from behind. Two of our","men are in danger!" // 15
+	"Strategos! While we were dealing with","that Spartan, a contingent of Thebans","has approached us from behind.","Two of our men are in danger!"
 ],[
-	"We must protect ourselves! To ROTATE a","piece in place, drag it in the direction you","want it to face, then end your touch on the","same piece. Rotate this piece so that it","faces the right." // 16 Move
+	"We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, then end your touch","on the same piece. Rotate this piece so","that it faces the right."
 ],[
-	"Excellent! Now, rotate our other soldier to","face the Theban. Since the Theban is","blocking movement in that direction, you","can just drag our piece toward the Theban." // 17 Move
+	"Excellent! Now, rotate our other soldier","to face the Theban. Since the Theban is","blocking movement in that direction,","you can just drag our piece toward","the Theban."
 ],[
-	"Pieces can rotate to face any direction in","one action. Well done - the men are safe,","for now."
+	"Pieces can rotate to face any direction","in one action. Well done - the men are","safe, for now." // 18
 ],[
-	"Beware! The accursed Thebans are trying","to get around the edge of our line. We","must rally!"
+	"Beware! The accursed Thebans are","trying to get around the edge of our line.","We must rally!"
 ],[
-	"Routed pieces are not out of the battle","forever. You can rally one routed piece at","a time back onto the battlefield into the","areas indicated."
+	"Routed pieces are not out of the battle","forever. You can rally one routed piece","at a time back onto the battlefield into","the areas indicated."
 ],[
-	"To RALLY a piece, drag it into one of your","rally spaces. Let's deploy our man here so","he can hurry back to the fight." // 21 Move
+	"To RALLY a piece, drag it into one of","your rally spaces. Let's deploy our man","here so he can hurry back to the fight."
 ],[
-	"We move through these spaces normally,","but our enemies are not allowed to enter","them."
+	"We move through these spaces","normally, but our enemies are not","allowed to enter them." // 22
 ],[
-	"Let's move up our fresh soldier in support." // 23 Move
+	"Let's move up our fresh soldier in","support."
 ],[
-	"Brilliant!"
+	"Brilliant!" // 24
 ],[
-	"Like all hoplites, our troops are trained to","act in the powerful PHALANX formation.","If two or more are adjacent and face the","same way, they can move and rotate","together." // 25
+	"Like all hoplites, our troops are trained to","act in the powerful PHALANX formation.","If two or more are adjacent and face the","same way, they can move and rotate","together."
 ],[
-	"To move in a phalanx, just drag forward","any piece that is part of a phalanx","formation." // 26 Move
+	"To move in a phalanx, just drag forward","any piece that is part of a phalanx","formation." // 26
 ],[
-	"Exactly. Now, rotate our phalanx to face","the Spartan. Drag any piece in the","phalanx in the direction you want it to", "face." // 27
+	"Exactly. Now, rotate our phalanx to","face the Spartan. Drag any piece in","the phalanx in the direction you want","it to face."
 ],[
-	"Good! You'll notice that pieces in a","phalanx can only move forward. Moving in","a different direction requires two actions:","first rotating the phalanx, then moving it."
+	"Good! You'll notice that pieces in a","phalanx can only move forward.","Moving in a different direction requires","two actions: first rotating the phalanx,","then moving it."
 ],[
-	"The Thebans have mounted a tough","defense. If we move our whole phalanx","forward, our piece nearest the main","Theban formation will be in danger. Let","us proceed with caution." // 29
+	"The Thebans have mounted a tough","defense. If we move our whole phalanx","forward, our piece nearest the main","Theban formation will be in danger.","Proceed with caution."
 ],[
-	"Fortunately, we can split pieces off from a","phalanx. Tap the indicated piece to enter","phalanx sub-selection mode."
+	"Fortunately, we can split pieces off from","a phalanx. Tap the indicated piece to","enter phalanx sub-selection mode." // 30
 ],[
-	"Now tap the other pieces indicated,","starting with the corner piece. If you try to","create an invalid phalanx by tapping the","forward piece first, you'll have to start", "over."
+	"Now tap the other pieces indicated,","starting with the corner piece. If you","try to create an invalid phalanx by","tapping the forward piece first, you'll","have to start over."
 ],[
-	"Now tap the other pieces indicated,","starting with the corner piece. If you try to","create an invalid phalanx by tapping the","forward piece first, you'll have to start", "over."
+	"Now tap the other pieces indicated,","starting with the corner piece. If you","try to create an invalid phalanx by","tapping the forward piece first, you'll","have to start over."
 ],[
-	"Deftly done! You can now move the","smaller phalanx you created by dragging","it forward as normal." // 33 Move
+	"Deftly done! You can now move","the smaller phalanx you created by","dragging it forward as normal." // 33
 ],[
-	"Now, to the attack! Select only the forward","piece by tapping it, then rout the exposed","Theban. Remember - unlike a phalanx, a","single piece can move in any direction!" // 31 Move
+	"Now, to the attack! Select only the","forward piece by tapping it, then rout","the exposed Theban. Remember -","unlike a phalanx, a single piece can","move in any direction!"
 ],[
-	"We have struck first without leaving our","men vulnerable. Masterful!"
+	"We have struck first without leaving","our men vulnerable. Masterful!"	// 35
 ],[
-	"This Spartan seeks to block our path.","Well, the Spartans are known more for","their bravery than their intelligence..." // 33
+	"This Spartan seeks to block our path.","Well, the Spartans are known more for","their bravery than their intelligence..."
 ],[
-	"Our phalanx cannot rout the Spartan, as","he is facing us. But, since we have two","pieces lined up against a single enemy,","we can PUSH him backward by simply","moving our phalanx toward him." // 34 Move
+	"Our phalanx cannot rout the Spartan, as","he is facing us. But, since we have two","pieces lined up against a single enemy,","we can PUSH him backward by simply","moving our phalanx toward him."
 ],[
 	"Just so. We can push no further, as there","are now two enemies lined up to block our","way, even though the farther Spartan is","not facing us. Still, it is important to gain","ground when we can."
 ],[
-	"We have gained an advantage on the","Thebans. We have three soldiers against","their two. But how best to proceed?" // 36
+	"We have gained an advantage on the","Thebans. We have three soldiers against","their two. But how best to proceed?"
 ],[
-	"We cannot push in this line, as there is","only one Athenian facing one Theban.","Our soldier here is stuck."
+	"We cannot push in this line, as there is","only one Athenian facing one Theban.","Our soldier here is stuck." // 40
 ],[
-	"However, we have the advantage in this","line. Our two pieces can push back the","single Theban. Select only them, and","move them forward." // 38 Move
+	"However, we have the advantage in this","line. Our two pieces can push back the","single Theban. Select only them, and","move them forward."
 ],[
-	"Ha! Now, seize the advantage and destroy","that Theban! Tap to select only this piece","so it can move to the left without rotating","first - but I'm sure you knew that already.","Then attack!" // 39 Move
+	"Ha! Now, seize the advantage and destroy","that Theban! Tap to select only this piece","so it can move to the left without rotating","first - but I'm sure you knew that already.","Then attack!"
 ],[
-	"Excellent!"
+	"Excellent!" // 43
 ],[
-	"Good news, strategos! Our men have","trapped a Spartan near the edge of the","field." // 41
+	"Good news, strategos! Our men have","trapped a Spartan near the edge of the","field."
 ],[
-	"If we push an enemy piece off the","battlefield, that enemy is routed. Push","that Spartan to take him out!" // 42 Move
+	"If we push an enemy piece off the","battlefield, that enemy is routed.","Push that Spartan to take him out!" // 45
 ],[
 	"Yes! We can rout enemies by pushing","them into any invalid space. That includes","our and our ally's victory areas, as well as","the center or outside of the board."
 ],[
-	"We can reap great rewards by","coordinating with the Messenians, our","allies." // 44
+	"We can reap great rewards by","coordinating with the Messenians,","our allies." // 47
 ],[
 	"If we push this piece into our ally, the","Theban will be routed, regardless of our","ally's facing. Pushing an enemy into our","own piece does the same thing."
 ],[
-	"So, order the men forward!" // 46 Move
+	"So, order the men forward!" // 49
 ],[
-	"Perfect! At this point, we'll have to wait for","the Messenians to move their soldier out","of our way. We are never allowed to push","or rout our allies - or our own men."
+	"Perfect! At this point, we'll have to wait","for the Messenians to move their soldier","out of our way. We are never allowed to","push or rout our allies - or our own men."
 ],[
-	"Congratulations! You now know","everything you need to play Nika." // 48
+	"Congratulations! You now know","everything you need to play Nika." // 51
 ],[
-	"Always remember your ultimate goal - get","one of your pieces across the board into","the victory area on your ally's side, or help","your ally do the same."
+	"Always remember your ultimate goal -","get one of your pieces across the board","into the victory area on your ally's side,","or help your ally do the same."
 ],[
-	"As you play, take some time to explore","the interface. You can, for example,","UNDO an unwanted move, or PASS if you","feel you cannot better your position by", "taking an action."
+	"As you play, take some time to explore","the interface. You can, for example,","UNDO an unwanted move, or PASS if","you feel you cannot better your position","by taking an action."
 ],[
 	"You can also zoom in by double-tapping.","While zoomed in, you can move the view","around by dragging, or zoom back out by","double-tapping again."
 ],[
-	"Though the rules are few, you will find","that the strategies are deep and varied.","Now then, proserkhou kai nika - go forth","and conquer!"
+	"Though the rules are few, you will find","that the strategies are deep and varied.","Now then, proserkhou kai nika -","go forth and conquer!"
 ]]
 
 var tutorialInputs = [
