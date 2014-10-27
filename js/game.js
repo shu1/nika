@@ -115,6 +115,7 @@ function useAction(n) {
 	if (gameMan.actions <= 0) {
 		gameMan.actions = 2;
 		gameMan.player = (gameMan.player + 1) % 4;
+		displayMan.helmetScale = 1;
 	}
 	hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	checkWin();

@@ -340,7 +340,7 @@ function draw(time) {
 	drawBoard();
 	setRings();
 	drawPieces(theta);
-	drawHelmets(theta);
+	drawHelmets(dTime, theta);
 
 	if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
 		drawDialog(theta);
@@ -492,7 +492,7 @@ function drawPieces(theta) {
 	}
 }
 
-function drawHelmets(theta) {
+function drawHelmets(dTime, theta) {
 	context.save();
 	switch (gameMan.player) {
 	case 0:
@@ -508,8 +508,20 @@ function drawHelmets(theta) {
 		context.translate(displayMan.cellSize * 20, displayMan.cellSize * 4.5);
 		break;
 	}
+	if (displayMan.helmetScale > 0) {
+		var scale = 7 * displayMan.helmetScale + 1;
+		context.scale(scale, scale);
+		displayMan.helmetScale -= dTime/400;
+		if (displayMan.helmetScale <= 0) {
+			displayMan.flashTime = 1000;
+		}
+	}
+	if (displayMan.flashTime > 0) {
+		theta *= 8;
+		displayMan.flashTime -= dTime;
+	}
 	context.rotate(gameMan.player * Math.PI/2);
-	context.globalAlpha = (Math.sin(theta)+1)/4 + 0.5;
+	context.globalAlpha = (Math.cos(theta)+1)/4 + 0.5;
 	context.drawImage(images["helmet" + gameMan.actions], -128, -128);
 	context.restore();
 }
