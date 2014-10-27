@@ -20,8 +20,9 @@ var displayMan = {
 	settingsHeight:672,
 	initAnim:false,
 	menu:false,
+	helmetTheta:0,
 	helmetScale:0,
-	flashTime:0,
+	helmetFlash:0,
 	zoom:0,
 	time:0
 }

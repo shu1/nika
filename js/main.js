@@ -256,7 +256,7 @@ function zoom() {
 function zooming(dTime) {
 	if (displayMan.zoom != 0) {
 		var scene = scenes[gameMan.scene];
-		var speed = (scene.maxScale - scene.minScale)/200 * dTime;	// animation speed
+		var speed = (scene.maxScale - scene.minScale) * dTime/200;	// animation speed
 		if (displayMan.zoom > 0) {
 			if (scene.scale + speed < scene.maxScale) {
 				scene.scale += speed;
@@ -340,7 +340,7 @@ function draw(time) {
 	drawBoard();
 	setRings();
 	drawPieces(theta);
-	drawHelmets(dTime, theta);
+	drawHelmets(dTime);
 
 	if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
 		drawDialog(theta);
@@ -492,7 +492,7 @@ function drawPieces(theta) {
 	}
 }
 
-function drawHelmets(dTime, theta) {
+function drawHelmets(dTime) {
 	context.save();
 	switch (gameMan.player) {
 	case 0:
@@ -508,20 +508,26 @@ function drawHelmets(dTime, theta) {
 		context.translate(displayMan.cellSize * 20, displayMan.cellSize * 4.5);
 		break;
 	}
-	if (displayMan.flashTime > 0) {
-		theta *= 8;
-		displayMan.flashTime -= dTime/1000;
-	}
-	if (displayMan.helmetScale > 0) {
-		var scale = 1 + displayMan.helmetScale*7;
-		context.scale(scale, scale);
-		displayMan.helmetScale -= dTime/400;
-		if (displayMan.helmetScale <= 0) {
-			displayMan.flashTime = 1;
+	if (dTime) {
+		displayMan.helmetTheta += dTime/400;
+		if (displayMan.helmetScale == 1) {
+			displayMan.helmetTheta = 0;	// reset alpha every zoom
+		}
+		if (displayMan.helmetScale > 0) {
+			var scale = 1 + displayMan.helmetScale*7;
+			context.scale(scale, scale);
+			displayMan.helmetScale -= dTime/400;
+			if (displayMan.helmetScale <= 0) {
+				displayMan.helmetFlash = 1;
+			}
+		}
+		if (displayMan.helmetFlash > 0) {
+			displayMan.helmetFlash -= dTime/1000;
+			displayMan.helmetTheta += dTime/50;
 		}
 	}
 	context.rotate(gameMan.player * Math.PI/2);
-	context.globalAlpha = (Math.cos(theta)+1)/4 + 0.5;
+	context.globalAlpha = (Math.sin(displayMan.helmetTheta % (Math.PI*2))+1)/4 + 0.5;
 	context.drawImage(images["helmet" + gameMan.actions], -128, -128);
 	context.restore();
 }
@@ -611,7 +617,7 @@ function drawMenu(dTime) {
 	displayMan.menu = false;	// whether menu is animating
 
 	if (menuMan.show && (menuMan.width < menuMan.bWidth * menuMan.cols || menuMan.height < menuMan.bHeight * menuMan.rows)) {
-		var speed = menuMan.bWidth * (menuMan.cols-1) / factor * dTime;
+		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / factor;
 		if (menuMan.width + speed < menuMan.bWidth * menuMan.cols) {
 			menuMan.width += speed;
 			displayMan.menu = true;
@@ -620,7 +626,7 @@ function drawMenu(dTime) {
 			menuMan.width = menuMan.bWidth * menuMan.cols;
 		}
 
-		speed = menuMan.bHeight * (menuMan.rows-1) / factor * dTime;
+		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / factor;
 		if (menuMan.height + speed < menuMan.bHeight * menuMan.rows) {
 			menuMan.height += speed;
 			displayMan.menu = true;
@@ -630,7 +636,7 @@ function drawMenu(dTime) {
 		}
 	}
 	else if (!menuMan.show && (menuMan.width > menuMan.bWidth || menuMan.height > menuMan.bHeight)) {
-		var speed = menuMan.bWidth * (menuMan.cols-1) / factor * dTime;
+		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / factor;
 		if (menuMan.width - speed > menuMan.bWidth) {
 			menuMan.width -= speed;
 			displayMan.menu = true;
@@ -639,7 +645,7 @@ function drawMenu(dTime) {
 			menuMan.width = menuMan.bWidth;
 		}
 
-		speed = menuMan.bHeight * (menuMan.rows-1) / factor * dTime;
+		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / factor;
 		if (menuMan.height - speed > menuMan.bHeight) {
 			menuMan.height -= speed;
 			displayMan.menu = true;
