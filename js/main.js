@@ -508,17 +508,17 @@ function drawHelmets(dTime, theta) {
 		context.translate(displayMan.cellSize * 20, displayMan.cellSize * 4.5);
 		break;
 	}
+	if (displayMan.flashTime > 0) {
+		theta *= 8;
+		displayMan.flashTime -= dTime/1000;
+	}
 	if (displayMan.helmetScale > 0) {
-		var scale = 7 * displayMan.helmetScale + 1;
+		var scale = 1 + displayMan.helmetScale*7;
 		context.scale(scale, scale);
 		displayMan.helmetScale -= dTime/400;
 		if (displayMan.helmetScale <= 0) {
-			displayMan.flashTime = 1000;
+			displayMan.flashTime = 1;
 		}
-	}
-	if (displayMan.flashTime > 0) {
-		theta *= 8;
-		displayMan.flashTime -= dTime;
 	}
 	context.rotate(gameMan.player * Math.PI/2);
 	context.globalAlpha = (Math.cos(theta)+1)/4 + 0.5;

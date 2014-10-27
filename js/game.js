@@ -119,6 +119,9 @@ function useAction(n) {
 			displayMan.helmetScale = 1;
 		}
 	}
+	else if (gameMan.tutorialStep != 2) {	// hack
+		displayMan.flashTime = 1;	// flash single helmet
+	}
 	hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	checkWin();
 }
