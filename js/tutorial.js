@@ -38,6 +38,18 @@ function setupTutorial() {
 	switch (gameMan.tutorialStep) {
 	case 0:
 		generateGrid(mainBoard);
+		grid[9][9].prompt = 1;
+		grid[10][9].prompt = 1;
+		grid[11][9].prompt = 1;
+		grid[10][10].prompt = 1;
+		grid[11][10].prompt = 1;
+		grid[11][11].prompt = 1;
+		resetActions(0);
+		break;
+	case 1:
+		grid[2][9].prompt = 2;
+		grid[2][10].prompt = 2;
+		grid[2][11].prompt = 2;
 		resetActions(0);
 		break;
 	case 2:
@@ -49,11 +61,15 @@ function setupTutorial() {
 	case 3:
 		nextTutorialPart(1);
 		grid[11][10].prompt = 1;
+		grid[12][9].prompt = 2;
+		grid[12][10].prompt = 2;
+		grid[12][11].prompt = 2;
 		resetActions(2);
 		pushGameState();
 		break;
 	case 4:
 		moveOnePiece(11, 10, 12, 10);
+		grid[12][10].prompt = 1;
 		pushGameState();
 		break;
 	case 5:
