@@ -144,7 +144,7 @@ function init() {
 	tick.elapsed_time = 0;
 
 	reSize();
-	draw();
+	draw(0);
 	sounds["music"].loop = true;
 	sounds["music"].play();
 }
