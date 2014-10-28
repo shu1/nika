@@ -21,6 +21,7 @@ function endTutorial() {
 	resetActions(0);
 	gameStates = [];
 	generateGrid(mainBoard);
+	resetAnimations();
 }
 
 function nextTutorialPart(part) {
@@ -37,6 +38,18 @@ function setupTutorial() {
 	switch (gameMan.tutorialStep) {
 	case 0:
 		generateGrid(mainBoard);
+		grid[9][9].prompt = 1;
+		grid[10][9].prompt = 1;
+		grid[11][9].prompt = 1;
+		grid[10][10].prompt = 1;
+		grid[11][10].prompt = 1;
+		grid[11][11].prompt = 1;
+		resetActions(0);
+		break;
+	case 1:
+		grid[2][9].prompt = 2;
+		grid[2][10].prompt = 2;
+		grid[2][11].prompt = 2;
 		resetActions(0);
 		break;
 	case 2:
@@ -48,11 +61,15 @@ function setupTutorial() {
 	case 3:
 		nextTutorialPart(1);
 		grid[11][10].prompt = 1;
+		grid[12][9].prompt = 2;
+		grid[12][10].prompt = 2;
+		grid[12][11].prompt = 2;
 		resetActions(2);
 		pushGameState();
 		break;
 	case 4:
 		moveOnePiece(11, 10, 12, 10);
+		grid[12][10].prompt = 1;
 		pushGameState();
 		break;
 	case 5:
@@ -91,30 +108,30 @@ function setupTutorial() {
 		grid[10][6].prompt = 2;
 		pushGameState();
 		break;
-	case 13:
+	case 14:
 		grid[10][6].prompt = 0;
 		grid[9][6].prompt = 2;
 		pushGameState();
 		break;
-	case 15:
+	case 16:
 		nextTutorialPart(5);
 		pushGameState();
 		break;
-	case 16:
+	case 17:
 		grid[10][11].prompt = 0;
 		pushGameState();
 		break;
-	case 17:
+	case 18:
 		grid[9][11].prompt = 0;
 		pushGameState();
 		break;
-	case 19:
+	case 20:
 		resetActions(0);
 		moveOnePiece(11, 14, 11, 13);
 		moveOnePiece(11, 13, 11, 12);
 		pushGameState();
 		break;
-	case 20:
+	case 21:
 		grid[13][9].prompt = 2;
 		grid[13][10].prompt = 2;
 		grid[13][11].prompt = 2;
@@ -123,44 +140,38 @@ function setupTutorial() {
 		grid[14][11].prompt = 2;
 		pushGameState();
 		break;
-	case 21:
+	case 22:
 		grid[13][8].prompt = 0;
 		grid[13][11].prompt = 2;
 		pushGameState();
 		break;
-	case 23:
+	case 24:
 		grid[13][11].prompt = 0;
 		grid[12][11].prompt = 2;
 		pushGameState();
 		break;
-	case 25:
+	case 26:
 		nextTutorialPart(6);
 		pushGameState();
 		break;
-	case 26:
+	case 27:
 		grid[9][6].prompt = 0;
 		grid[10][6].prompt = 0;
 		grid[9][5].prompt = 2;
 		grid[10][5].prompt = 2;
 		pushGameState();
 		break;
-	case 27:
+	case 28:
 		grid[9][5].prompt = 0;
 		grid[10][5].prompt = 0;
 		pushGameState();
 		break;
-	case 29:
-		nextTutorialPart(7);
-		pushGameState();
-		break;
 	case 30:
-		grid[10][14].prompt = 0;
+		nextTutorialPart(7);
 		pushGameState();
 		break;
 	case 31:
 		grid[10][14].prompt = 0;
-		grid[11][14].prompt = 0;
-		grid[11][15].prompt = 0;
 		pushGameState();
 		break;
 	case 32:
@@ -170,66 +181,77 @@ function setupTutorial() {
 		pushGameState();
 		break;
 	case 34:
+		grid[10][14].prompt = 0;
+		grid[11][14].prompt = 0;
+		grid[11][15].prompt = 0;
+		pushGameState();
+		break;
+	case 35:
 		grid[11][16].prompt = 0;
 		grid[10][16].prompt = 2;
 		pushGameState();
 		break;
-	case 36:
+	case 37:
 		nextTutorialPart(8);
 		grid[8][5].prompt = 1;
 		break;
-	case 37:
+	case 38:
 		grid[10][5].prompt = 0;
 		grid[9][5].prompt = 0;
 		grid[8][5].prompt = 2;
 		pushGameState();
 		break;
-	case 39:
+	case 40:
 		nextTutorialPart(9);
 		pushGameState();
 		break;
-	case 40:
+	case 41:
 		grid[9][15].prompt = 1;
 		pushGameState();
 		break;
-	case 41:
+	case 42:
 		grid[9][16].prompt = 0;
 		grid[10][16].prompt = 0;
 		grid[8][16].prompt = 2;
 		pushGameState();
 		break;
-	case 42:
+	case 43:
 		grid[8][16].prompt = 0;
 		grid[8][15].prompt = 2;
 		pushGameState();
 		break;
-	case 44:
+	case 45:
 		nextTutorialPart(10);
 		pushGameState();
 		break;
-	case 45:
+	case 46:
 		grid[5][5].prompt = 0;
 		grid[4][5].prompt = 0;
 		grid[3][5].prompt = 2;
 		pushGameState();
 		break;
-	case 47:
+	case 48:
 		nextTutorialPart(11);
 		grid[5][15].prompt = 1;
 		pushGameState();
 		break;
-	case 48:
+	case 49:
 		grid[5][15].prompt = -1;
 		grid[6][15].prompt = 1;
 		pushGameState();
 		break;
-	case 49:
+	case 50:
 		grid[8][15].prompt = 0;
 		grid[7][15].prompt = 0;
 		grid[6][15].prompt = 2;
 		pushGameState();
 		break;
-	case 56:
+	case 52:
+		generateGrid(mainBoard);
+		resetActions(0);
+		pushGameState();
+		break;
+	case 57:
 		endTutorial();
 		break;
 	}
@@ -248,45 +270,45 @@ function checkTutorialMove(moved) {
 			correct = true;
 		}
 		break;
-	case 13:
+	case 14:
 		if (grid[9][6].player == 0) {
 			correct = true;
 		}
 		break;
-	case 16:
+	case 17:
 		if (grid[10][11].rot == 1) {
 			correct = true;
 		}
 		break;
-	case 17:
+	case 18:
 		if (grid[9][11].rot == 1) {
 			correct = true;
 		}
 		break;
-	case 21:
+	case 22:
 		if (grid[13][11].player == 0) {
 			correct = true;
 		}
 		break;
-	case 23:
+	case 24:
 		if (grid[12][11].player == 0) {
 			correct = true;
 		}
 		break;
-	case 26:
+	case 27:
 		if (grid[9][5].player == 0
 				&& grid[10][5].player == 0) {
 			correct = true;
 		}
 		break;
-	case 27:
+	case 28:
 		if (grid[9][5].rot == 0
 		 && grid[10][5].rot == 0) {
 			correct = true;
 		}
 		break;
 
-	case 33:
+	case 34:
 		if (grid[10][15].player == 0
 		 && grid[11][15].player == 0
 		 && grid[11][16].player == 0
@@ -294,32 +316,32 @@ function checkTutorialMove(moved) {
 			correct = true;
 		}
 		break;
-	case 34:
+	case 35:
 		if (grid[10][16].player == 0) {
 			correct = true;
 		}
 		break;
-	case 37:
+	case 38:
 		if (grid[8][5].player == 0) {
 			correct = true;
 		}
 		break;
-	case 41:
+	case 42:
 		if (grid[8][16].player == 0) {
 			correct = true;
 		}
 		break;
-	case 42:
+	case 43:
 		if (grid[8][15].player == 0) {
 			correct = true;
 		}
 		break;
-	case 45:
+	case 46:
 		if (grid[3][5].player == 0) {
 			correct = true;
 		}
 		break;
-	case 49:
+	case 50:
 		if (grid[6][15].player == 0) {
 			correct = true;
 		}
@@ -334,7 +356,7 @@ function checkTutorialMove(moved) {
 
 function checkTutorialSelection() {
 	switch(gameMan.tutorialStep) {
-	case 30:
+	case 31:
 		if (inPhalanx(10,14)
 		 && !inPhalanx(9,14)
 		 && !inPhalanx(11,14)) {
@@ -344,7 +366,7 @@ function checkTutorialSelection() {
 			phalanx.length = 0;
 		}
 		break;
-	case 31:
+	case 32:
 		if (inPhalanx(10, 14)
 		 && inPhalanx(11,14)
 		 && !inPhalanx(9,14)
@@ -356,7 +378,7 @@ function checkTutorialSelection() {
 			togglePhalanxPiece(10, 14);
 		}
 		break;
-	case 32:
+	case 33:
 		if (inPhalanx(10,14)
 		 && inPhalanx(11,14)
 		 && inPhalanx(11,15)

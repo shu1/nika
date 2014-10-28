@@ -115,6 +115,12 @@ function useAction(n) {
 	if (gameMan.actions <= 0) {
 		gameMan.actions = 2;
 		gameMan.player = (gameMan.player + 1) % 4;
+		if (gameMan.tutorialStep < 0) {
+			displayMan.helmetScale = 1;	// zoom helmets
+		}
+	}
+	else if (gameMan.tutorialStep != 2) {	// hack
+		displayMan.helmetFlash = 1;	// flash helmet
 	}
 	hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	checkWin();

@@ -1,5 +1,13 @@
 "use strict";
 
+function rallyCell(row, col) {
+	return grid[row][col].kind == 2;
+}
+
+function emptyRallyCell(row, col, player) {
+	return rallyCell(row, col) && grid[row][col].city == player && emptyCell(row, col)
+}
+
 function routedCell(row, col) {
 	return grid[row][col].kind == 3;
 }
@@ -31,7 +39,9 @@ function getPiece(row, col) {
 		gameMan.pCol = col;
 		gameMan.pRot = grid[row][col].rot;
 
-		if (!gameMan.selection) {
+		if (canBeInPhalanx(row, col)) {
+			gameMan.selection = true;
+		} else {
 			phalanx.length = 0;
 			getPhalanx(row, col);
 			clearChecked();
@@ -396,10 +406,21 @@ function togglePhalanxPiece(row, col) {
 	}
 }
 
+function canBeInPhalanx(row, col) {
+	phalanx.push({row: row, col: col});
+	var result = isPhalanx() && (phalanx.length > 1);
+	phalanx.pop();
+	return result;
+}
+
 function isPhalanx() {
 	for (var i = phalanx.length-1; i >= 0; --i) {
 		for (var j = i - 1; j >= 0; --j) {
 			if (!findMember(phalanx[i].row, phalanx[i].col, phalanx[j].row, phalanx[j].col)) {
+				clearChecked();
+				return false;
+			}
+			if (grid[phalanx[i].row][phalanx[i].col].rot != grid[phalanx[j].row][phalanx[j].col].rot) {
 				clearChecked();
 				return false;
 			}

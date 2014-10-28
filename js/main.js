@@ -40,6 +40,11 @@ function playerAction(name) {
 	}
 }
 
+function resetAnimations() {
+	gameMan.receiver = -1;
+	initAnimations();
+}
+
 function initAnimations() {
 	for (var i = 0; i < 4; i++) {
 		setIdleAnimation(i);
@@ -47,10 +52,20 @@ function initAnimations() {
 }
 
 function setIdleAnimation(player) {
-	if (player == gameMan.player) {
-		murals[player].setAnim("idleActive");
-	} else {
-		murals[player].setAnim("idle");
+	if (gameMan.tutorialStep >= 0 && player == 0) {
+		if (tutorialInputs[gameMan.tutorialStep]) {
+			murals[player].setAnim("idleActive");
+		}
+		else {
+			murals[player].setAnim("idle");
+		}
+	}
+	else {
+		if (player == gameMan.player) {
+			murals[player].setAnim("idleActive");
+		} else {
+			murals[player].setAnim("idle");
+		}
 	}
 }
 
@@ -129,7 +144,7 @@ function init() {
 	tick.elapsed_time = 0;
 
 	reSize();
-	draw();
+	draw(0);
 	sounds["music"].loop = true;
 	sounds["music"].play();
 }
@@ -174,9 +189,9 @@ function reSize() {
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
 	murals[0].set_position(678, 794);
-	murals[1].set_position(1320, 844);
+	murals[1].set_position(1148, 844);
 	murals[2].set_position(848, 794);
-	murals[3].set_position(1148, 844);
+	murals[3].set_position(1320, 844);
 
 	var scene = {};
 	scene.width = displayMan.boardWidth;
@@ -241,7 +256,7 @@ function zoom() {
 function zooming(dTime) {
 	if (displayMan.zoom != 0) {
 		var scene = scenes[gameMan.scene];
-		var speed = (scene.maxScale - scene.minScale)/200 * dTime;	// animation speed
+		var speed = (scene.maxScale - scene.minScale) * dTime/250;	// animation speed
 		if (displayMan.zoom > 0) {
 			if (scene.scale + speed < scene.maxScale) {
 				scene.scale += speed;
@@ -320,15 +335,14 @@ function draw(time) {
 	context.translate(scene.x, scene.y);
 	context.scale(scene.scale, scene.scale);
 
-	var theta = time/400 % (Math.PI*2);	// animation time
 	drawMural(time);
 	drawBoard();
 	setRings();
-	drawPieces(theta);
-	drawHelmets(theta);
+	drawPieces(time);
+	drawHelmets(dTime);
 
 	if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
-		drawDialog(theta);
+		drawDialog(time);
 	}
 
 	context.restore();
@@ -366,12 +380,14 @@ function drawMural(time) {
 	tick.elapsed_time = Math.min(time - tick.time_last, 50);
 	murals[0].update(tick);
 	murals[0].draw();
-	murals[2].update(tick);
-	murals[2].draw();
-	murals[3].update(tick);
-	murals[3].draw();
-	murals[1].update(tick);
-	murals[1].draw();
+	if (gameMan.tutorialStep < 0) {
+		murals[2].update(tick);
+		murals[2].draw();
+		murals[1].update(tick);
+		murals[1].draw();
+		murals[3].update(tick);
+		murals[3].draw();
+	}
 	tick.time_last = time;
 }
 
@@ -383,6 +399,7 @@ function setRings() {
 	for (var i = phalanx.length-1; i >= 0; --i) {
 		grid[phalanx[i].row][phalanx[i].col].ring = 0;
 	}
+	clearRallyHighlights();
 
 	if (inputMan.click) {
 		if (phalanx.length > 1) {
@@ -395,13 +412,41 @@ function setRings() {
 				}
 			}
 		}
-		else if (checkMove(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
-			grid[inputMan.row][inputMan.col].ring = 1;
+		else {
+			if (checkMove(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
+				grid[inputMan.row][inputMan.col].ring = 1;
+			}
+			if (phalanx.length > 0) {
+				setRallyHighlights(phalanx[0].row, phalanx[0].col);
+			}
 		}
 	}
 }
 
-function drawPieces(theta) {
+function setRallyHighlights(pRow, pCol) {
+	if (gameMan.tutorialStep < 0 && routedCell(pRow, pCol)) {
+		for (var row = 0; row < 15; ++row) {
+			for (var col = 0; col < 21; ++col) {
+				if (emptyRallyCell(row, col, grid[pRow][pCol].player)) {
+					grid[row][col].prompt = 2;
+				}
+			}
+		}
+	}
+}
+
+function clearRallyHighlights() {
+	if (gameMan.tutorialStep < 0) {
+		for (var row = 0; row < 15; ++row) {
+			for (var col = 0; col < 21; ++col) {
+				grid[row][col].prompt = -1;
+			}
+		}
+	}
+}
+
+function drawPieces(time) {
+	var theta = time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			var cell = grid[row][col];
@@ -422,7 +467,9 @@ function drawPieces(theta) {
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 1) {
+					context.rotate(theta);
 					context.drawImage(images["greenRing"], -displayMan.cellSize/2, -displayMan.cellSize/2);
+					context.rotate(-theta);
 				}
 				else if (cell.prompt == 2) {
 					context.drawImage(images["greenShadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
@@ -447,7 +494,7 @@ function drawPieces(theta) {
 	}
 }
 
-function drawHelmets(theta) {
+function drawHelmets(dTime) {
 	context.save();
 	switch (gameMan.player) {
 	case 0:
@@ -463,13 +510,29 @@ function drawHelmets(theta) {
 		context.translate(displayMan.cellSize * 20, displayMan.cellSize * 4.5);
 		break;
 	}
+	displayMan.helmetTheta += dTime/400;
+	if (displayMan.helmetScale == 1) {
+		displayMan.helmetTheta = 0;	// reset alpha every zoom
+	}
+	if (displayMan.helmetScale > 0) {
+		var scale = 1 + displayMan.helmetScale*7;
+		context.scale(scale, scale);
+		displayMan.helmetScale -= dTime/400;
+		if (displayMan.helmetScale <= 0) {
+			displayMan.helmetFlash = 1;
+		}
+	}
+	if (displayMan.helmetFlash > 0) {
+		displayMan.helmetFlash -= dTime/600;
+		displayMan.helmetTheta += dTime/50;
+	}
 	context.rotate(gameMan.player * Math.PI/2);
-	context.globalAlpha = (Math.sin(theta)+1)/4 + 0.5;
+	context.globalAlpha = (Math.sin(displayMan.helmetTheta % (Math.PI*2))+1)/4 + 0.5;
 	context.drawImage(images["helmet" + gameMan.actions], -128, -128);
 	context.restore();
 }
 
-function drawDialog(theta) {
+function drawDialog(time) {
 	if (gameMan.tutorialStep >= 0 && gameMan.tutorialStep < tutorialTexts.length || gameMan.winner >= 0) {
 		context.save();
 		context.fillStyle = "#221E1F";
@@ -505,7 +568,7 @@ function drawDialog(theta) {
 			context.fillText(lines[i], displayMan.dialogX + displayMan.tutorialOffset+8, displayMan.dialogY + topPadding + spacing * i);
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
-			context.globalAlpha = (Math.sin(theta)+1)/4 + 0.5;
+			context.globalAlpha = (Math.sin(time/250 % (Math.PI*2))+1)/4 + 0.5;
 			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.tutorialOffset + buttonOffset, displayMan.dialogY + displayMan.dialogHeight - bottomPadding);
 		}
 		context.restore();
@@ -556,7 +619,7 @@ function drawMenu(dTime) {
 	displayMan.menu = false;	// whether menu is animating
 
 	if (menuMan.show && (menuMan.width < menuMan.bWidth * menuMan.cols || menuMan.height < menuMan.bHeight * menuMan.rows)) {
-		var speed = menuMan.bWidth * (menuMan.cols-1) / factor * dTime;
+		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / factor;
 		if (menuMan.width + speed < menuMan.bWidth * menuMan.cols) {
 			menuMan.width += speed;
 			displayMan.menu = true;
@@ -565,7 +628,7 @@ function drawMenu(dTime) {
 			menuMan.width = menuMan.bWidth * menuMan.cols;
 		}
 
-		speed = menuMan.bHeight * (menuMan.rows-1) / factor * dTime;
+		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / factor;
 		if (menuMan.height + speed < menuMan.bHeight * menuMan.rows) {
 			menuMan.height += speed;
 			displayMan.menu = true;
@@ -575,7 +638,7 @@ function drawMenu(dTime) {
 		}
 	}
 	else if (!menuMan.show && (menuMan.width > menuMan.bWidth || menuMan.height > menuMan.bHeight)) {
-		var speed = menuMan.bWidth * (menuMan.cols-1) / factor * dTime;
+		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / factor;
 		if (menuMan.width - speed > menuMan.bWidth) {
 			menuMan.width -= speed;
 			displayMan.menu = true;
@@ -584,7 +647,7 @@ function drawMenu(dTime) {
 			menuMan.width = menuMan.bWidth;
 		}
 
-		speed = menuMan.bHeight * (menuMan.rows-1) / factor * dTime;
+		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / factor;
 		if (menuMan.height - speed > menuMan.bHeight) {
 			menuMan.height -= speed;
 			displayMan.menu = true;
