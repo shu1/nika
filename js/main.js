@@ -256,7 +256,7 @@ function zoom() {
 function zooming(dTime) {
 	if (displayMan.zoom != 0) {
 		var scene = scenes[gameMan.scene];
-		var speed = (scene.maxScale - scene.minScale) * dTime/200;	// animation speed
+		var speed = (scene.maxScale - scene.minScale) * dTime/250;	// animation speed
 		if (displayMan.zoom > 0) {
 			if (scene.scale + speed < scene.maxScale) {
 				scene.scale += speed;
@@ -335,15 +335,14 @@ function draw(time) {
 	context.translate(scene.x, scene.y);
 	context.scale(scene.scale, scene.scale);
 
-	var theta = time/400 % (Math.PI*2);	// animation time
 	drawMural(time);
 	drawBoard();
 	setRings();
-	drawPieces(theta);
+	drawPieces(time);
 	drawHelmets(dTime);
 
 	if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
-		drawDialog(theta);
+		drawDialog(time);
 	}
 
 	context.restore();
@@ -446,7 +445,8 @@ function clearRallyHighlights() {
 	}
 }
 
-function drawPieces(theta) {
+function drawPieces(time) {
+	var theta = time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			var cell = grid[row][col];
@@ -467,7 +467,9 @@ function drawPieces(theta) {
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 1) {
+					context.rotate(theta);
 					context.drawImage(images["greenRing"], -displayMan.cellSize/2, -displayMan.cellSize/2);
+					context.rotate(-theta);
 				}
 				else if (cell.prompt == 2) {
 					context.drawImage(images["greenShadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
@@ -522,7 +524,7 @@ function drawHelmets(dTime) {
 			}
 		}
 		if (displayMan.helmetFlash > 0) {
-			displayMan.helmetFlash -= dTime/1000;
+			displayMan.helmetFlash -= dTime/600;
 			displayMan.helmetTheta += dTime/50;
 		}
 	}
@@ -532,7 +534,7 @@ function drawHelmets(dTime) {
 	context.restore();
 }
 
-function drawDialog(theta) {
+function drawDialog(time) {
 	if (gameMan.tutorialStep >= 0 && gameMan.tutorialStep < tutorialTexts.length || gameMan.winner >= 0) {
 		context.save();
 		context.fillStyle = "#221E1F";
@@ -568,7 +570,7 @@ function drawDialog(theta) {
 			context.fillText(lines[i], displayMan.dialogX + displayMan.tutorialOffset+8, displayMan.dialogY + topPadding + spacing * i);
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
-			context.globalAlpha = (Math.sin(theta)+1)/4 + 0.5;
+			context.globalAlpha = (Math.sin(time/250 % (Math.PI*2))+1)/4 + 0.5;
 			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.tutorialOffset + buttonOffset, displayMan.dialogY + displayMan.dialogHeight - bottomPadding);
 		}
 		context.restore();
