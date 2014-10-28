@@ -510,23 +510,21 @@ function drawHelmets(dTime) {
 		context.translate(displayMan.cellSize * 20, displayMan.cellSize * 4.5);
 		break;
 	}
-	if (dTime) {
-		displayMan.helmetTheta += dTime/400;
-		if (displayMan.helmetScale == 1) {
-			displayMan.helmetTheta = 0;	// reset alpha every zoom
+	displayMan.helmetTheta += dTime/400;
+	if (displayMan.helmetScale == 1) {
+		displayMan.helmetTheta = 0;	// reset alpha every zoom
+	}
+	if (displayMan.helmetScale > 0) {
+		var scale = 1 + displayMan.helmetScale*7;
+		context.scale(scale, scale);
+		displayMan.helmetScale -= dTime/400;
+		if (displayMan.helmetScale <= 0) {
+			displayMan.helmetFlash = 1;
 		}
-		if (displayMan.helmetScale > 0) {
-			var scale = 1 + displayMan.helmetScale*7;
-			context.scale(scale, scale);
-			displayMan.helmetScale -= dTime/400;
-			if (displayMan.helmetScale <= 0) {
-				displayMan.helmetFlash = 1;
-			}
-		}
-		if (displayMan.helmetFlash > 0) {
-			displayMan.helmetFlash -= dTime/600;
-			displayMan.helmetTheta += dTime/50;
-		}
+	}
+	if (displayMan.helmetFlash > 0) {
+		displayMan.helmetFlash -= dTime/600;
+		displayMan.helmetTheta += dTime/50;
 	}
 	context.rotate(gameMan.player * Math.PI/2);
 	context.globalAlpha = (Math.sin(displayMan.helmetTheta % (Math.PI*2))+1)/4 + 0.5;
