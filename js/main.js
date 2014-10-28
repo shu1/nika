@@ -199,7 +199,7 @@ function reSize() {
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
 	scene.scale = minScale;
-	scenes[0] = scene;
+	scenes["board"] = scene;
 
 	scene = {};
 	scene.width = displayMan.boardWidth;
@@ -207,7 +207,7 @@ function reSize() {
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
 	scene.scale = minScale;
-	scenes[1] = scene;
+	scenes["settings"] = scene;
 
 	scene = {};
 	scene.width = displayMan.ruleWidth;
@@ -225,13 +225,13 @@ function reSize() {
 		scene.minScale = canvas.width / displayMan.ruleWidth;
 	}
 	scene.scale = scene.minScale;
-	scenes[2] = scene;
+	scenes["rules"] = scene;
 
-	setScene();
+	setScene("board");
 }
 
 function setScene(sceneIndex) {
-	if (sceneIndex >= 0) {
+	if (sceneIndex) {
 		gameMan.scene = sceneIndex;
 	}
 
@@ -330,7 +330,7 @@ function draw(time) {
 	var dTime = time - displayMan.time;
 	zooming(dTime);
 
-	var scene = scenes[0];
+	var scene = scenes["board"];
 	context.save();
 	context.translate(scene.x, scene.y);
 	context.scale(scene.scale, scene.scale);
@@ -347,16 +347,16 @@ function draw(time) {
 
 	context.restore();
 
-	if (gameMan.scene == 1) {
-		scene = scenes[1];
+	if (gameMan.scene == "settings") {
+		scene = scenes[gameMan.scene];
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
 		drawSettings();
 		context.restore();
 	}
-	else if (gameMan.scene == 2) {
-		scene = scenes[2];
+	else if (gameMan.scene == "rules") {
+		scene = scenes[gameMan.scene];
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);

@@ -41,7 +41,7 @@ var gameMan = {
 	winner:-1,
 	actions:2,
 	player:0,
-	scene:0,	// 0:game, 1:settings, 2:rules
+	scene:"",
 	rules:0,
 	pRow:-1,
 	pCol:-1,

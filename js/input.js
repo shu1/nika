@@ -19,7 +19,7 @@ function menuButton(button) {
 			}
 			break;
 		case 3:
-			setScene(gameMan.scene ? 0 : 2);
+			setScene(gameMan.scene == "board" ? "rules" : "board");
 			break;
 		case 4:
 			useAction(2);
@@ -62,7 +62,7 @@ function settingsButton(row, col) {
 	}
 	else if (row == 5) {
 		if (col == 4) {
-			setScene(0);
+			setScene("board");
 		}
 	}
 }
@@ -138,7 +138,7 @@ function mouseDown(event) {
 	if (!inputMan.menu && gameMan.winner < 0) {
 		getPiece(inputMan.row, inputMan.col);
 		var scene = scenes[gameMan.scene];
-		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
+		if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
 			inputMan.pX = scene.x + (gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
 			inputMan.pY = scene.y + (gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
 			event.preventDefault();
@@ -161,7 +161,7 @@ function mouseMove(event) {
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
 			var scene = scenes[gameMan.scene];
-			if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
+			if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
 				if (Math.abs(dX) > displayMan.cellSize/2 * scene.scale || Math.abs(dY) > displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
@@ -189,7 +189,7 @@ function mouseUp(event) {
 		}
 		else if (!dblClick(event)) {
 			var scene = scenes[gameMan.scene];
-			if (gameMan.scene == 1) {	// settings
+			if (gameMan.scene == "settings") {
 				if (inputMan.x - scene.x > displayMan.settingsX * scene.scale && inputMan.x - scene.x < (displayMan.settingsX + displayMan.settingsWidth) * scene.scale
 				&& inputMan.y - scene.y > displayMan.settingsY * scene.scale && inputMan.y - scene.y < (displayMan.settingsY + displayMan.settingsHeight) * scene.scale) {
 					// sounds[6].volume = 1 - sounds[6].volume;
@@ -197,7 +197,7 @@ function mouseUp(event) {
 					settingsButton(0);
 				}
 			}
-			else if (gameMan.scene == 2) {	// rules
+			else if (gameMan.scene == "rules") {
 				if (inputMan.y > canvas.height / 2 - displayMan.cellSize * 1.5
 				 && inputMan.y < canvas.height / 2 + displayMan.cellSize * 1.5) {
 					if (inputMan.x > canvas.width - displayMan.cellSize*2) {
@@ -209,7 +209,7 @@ function mouseUp(event) {
 				}
 
 				if (inputMan.x < displayMan.cellSize*3.5 && inputMan.y > canvas.height - displayMan.cellSize*2.5) {
-					setScene(0);
+					setScene("board");
 				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
@@ -255,20 +255,19 @@ function mouseUp(event) {
 }
 
 function dblClick(event) {
-	if (gameMan.scene == 1 || gameMan.scene == 2) {
-		return false;
-	}
-	var time = Date.now();
-	if (time - inputMan.time < 300) {	// double click time in milliseconds
-		hudMan.inputText += " " + (time - inputMan.time) + "ms";
-		event.preventDefault();
+	if (gameMan.scene == "board") {
+		var time = Date.now();
+		if (time - inputMan.time < 300) {	// double click time in milliseconds
+			hudMan.inputText += " " + (time - inputMan.time) + "ms";
+			event.preventDefault();
 
-		if (screenType != 3) {	// zoom not disabled
-			zoom();
+			if (screenType != 3) {	// zoom not disabled
+				zoom();
+			}
+			inputMan.time = 0;	// reset so next click is not double click
+			return true;
 		}
-		inputMan.time = 0;	// reset so next click is not double click
-		return true;
+		inputMan.time = time;
 	}
-	inputMan.time = time;
 	return false;
 }
