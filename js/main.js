@@ -125,7 +125,7 @@ function init() {
 		window.addEventListener("resize", reSize);
 	}
 	else {
-		menuMan.rows = 2;
+		menuMan.cols = 3;
 	}
 
 	var view_2d = new fo.view_2d(canvas);
@@ -182,9 +182,9 @@ function reSize() {
 	displayMan.hudFont = Math.floor(32 * minScale);
 	context.font = displayMan.hudFont + "px sans-serif";
 
-	menuMan.cols = Math.ceil((buttons.length-1) / menuMan.rows);
+	menuMan.rows = Math.ceil((buttons.length-1) / menuMan.cols);
 	menuMan.bWidth = displayMan.cellSize * 2 * minScale;
-	menuMan.bHeight = menuMan.rows == 1 ? menuMan.bWidth : menuMan.bWidth/2;
+	menuMan.bHeight = menuMan.cols == 1 ? menuMan.bWidth : menuMan.bWidth/2;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
@@ -569,7 +569,8 @@ function drawDialog(time) {
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
 			context.globalAlpha = (Math.sin(time/250 % (Math.PI*2))+1)/4 + 0.5;
-			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.tutorialOffset + buttonOffset, displayMan.dialogY + displayMan.dialogHeight - bottomPadding);
+			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.tutorialOffset + buttonOffset,
+				displayMan.dialogY + displayMan.dialogHeight - bottomPadding);
 		}
 		context.restore();
 	}
