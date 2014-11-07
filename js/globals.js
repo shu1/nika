@@ -92,6 +92,7 @@ var buttons = [
 	"  Rules",
 	"  Pass",
 	"  Undo",
+	"  Zoom"
 ]
 
 var settingsButtons = [
