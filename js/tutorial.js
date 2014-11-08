@@ -18,9 +18,7 @@ function nextTutorialStep() {
 function endTutorial() {
 	gameMan.tutorialStep = -1;
 	hudMan.tutorialText = "";
-	resetActions(0);
-	gameStates = [];
-	generateGrid(mainBoard);
+	newGame();
 	resetAnimations();
 }
 

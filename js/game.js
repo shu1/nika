@@ -81,10 +81,12 @@ function generateGrid(ascii) {
 function newGame() {
 	generateGrid(mainBoard);
 	gameStates = [];
+	phalanx = [];
 	pushGameState();
 	gameMan.winner = -1;
 	gameMan.player = 0;
 	gameMan.actions = 2;
+
 	useAction(0);
 }
 
