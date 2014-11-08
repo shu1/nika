@@ -22,7 +22,7 @@ function menuButton(button) {
 			setScene(gameMan.scene ? 0 : 2);
 			break;
 		case 4:
-			useAction(2);
+			pass();
 			break;
 		case 5:
 			undo();
@@ -252,7 +252,7 @@ function mouseUp(event) {
 			}
 
 			if (phalanx.length > 0) {
-				if (grid[phalanx[0].row][phalanx[0].col].kind == 3) {					
+				if (grid[phalanx[0].row][phalanx[0].col].kind == 3) {
 					phalanx.length = 0;
 				}
 			}

@@ -126,6 +126,11 @@ function useAction(n) {
 	checkWin();
 }
 
+function pass() {
+	pushGameState();
+	useAction(2);
+}
+
 function getCity(player) {
 	switch (player) {
 	case 0:
