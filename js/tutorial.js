@@ -203,6 +203,11 @@ function setupTutorial() {
 		grid[11][15].prompt = 0;
 		pushGameState();
 		break;
+	case 33:
+		grid[10][14].prompt = 0;
+		grid[11][14].prompt = 0;
+		grid[11][15].prompt = 0;
+		break;
 	case 34:
 		grid[10][14].prompt = 0;
 		grid[11][14].prompt = 0;
