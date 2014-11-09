@@ -336,7 +336,6 @@ function checkTutorialMove(moved) {
 			correct = true;
 		}
 		break;
-
 	case 35:
 		if (grid[10][15].player == 0
 		 && grid[11][15].player == 0

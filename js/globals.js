@@ -37,7 +37,7 @@ var gameMan = {
 	tutorialStep:-1,
 	selection:false,
 	debug:false,
-	receiver:-1,
+	events:[],
 	winner:-1,
 	actions:2,
 	player:0,
