@@ -92,7 +92,7 @@ function movePiece(pRow, pCol, row, col) {
 			}
 		}
 
-		else if (grid[pRow][pCol].rot != gameMan.pRot) {
+		if (grid[pRow][pCol].rot != gameMan.pRot) {
 			gameMan.events.push({
 				player: gameMan.player,
 				action: "rotate"
