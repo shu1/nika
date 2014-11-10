@@ -63,10 +63,7 @@ function movePiece(pRow, pCol, row, col) {
 		if (phalanx.length > 1) {
 			if (movePhalanx(pRow, pCol, row, col)) {
 				if (gameMan.events.length == 0) {
-					gameMan.events.push({
-						player: gameMan.player,
-						action: "move"
-					});
+					gameMan.events[gameMan.player].push("move");
 				}
 				phalanx.length = 0;
 				moved = true;
@@ -79,24 +76,17 @@ function movePiece(pRow, pCol, row, col) {
 
 			if (routedCell(pRow, pCol) && grid[row][col].kind == 2) {	// rally
 				grid[row][col].rot = grid[row][col].player;	// set rotation toward center of board
-				gameMan.events.push({
-					player: gameMan.player,
-					action: "rally"
-				});
+				gameMan.events[gameMan.player].push("rally");
 			}
 			else {
-				gameMan.events.push({
-					player: gameMan.player,
-					action: "move"
-				});
+				gameMan.events[gameMan.player].push("move");
 			}
 		}
 
 		if (grid[pRow][pCol].rot != gameMan.pRot) {
-			gameMan.events.push({
-				player: gameMan.player,
-				action: "rotate"
-			});
+			if (gameMan.events[gameMan.player].length == 0) {
+				gameMan.events[gameMan.player].push("rotate");
+			}
 			phalanx.length = 0;
 			moved = true;
 		}
@@ -203,14 +193,9 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 function pushOnePiece(row, col, fRow, fCol, pusher) {
 	if (Math.abs((grid[row][col].player - pusher)%2) == 1) {
 		// gameMan.receivers.push(grid[row][col].player);
-		gameMan.events.push({
-			player: gameMan.player,
-			action: "push"
-		});
-		gameMan.events.push({
-			player: grid[row][col].player,
-			action: "pushed"
-		});
+		gameMan.events[gameMan.player].push("push");
+		gameMan.events[grid[row][col].player].push("pushed");
+		console.log(gameMan.events);
 	}
 
 	grid[fRow][fCol].player = grid[row][col].player;
@@ -220,16 +205,8 @@ function pushOnePiece(row, col, fRow, fCol, pusher) {
 // move piece to rout cell
 function routPiece(row, col) {
 	if (grid[row][col].player >= 0) {
-		// gameMan.receivers.push(grid[row][col].player);
-		// playerAction("rout");
-		gameMan.events.push({
-			player: gameMan.player,
-			action: "rout"
-		});
-		gameMan.events.push({
-			player: grid[row][col].player,
-			action: "routed"
-		});
+		gameMan.events[gameMan.player].push("rout");
+		gameMan.events[grid[row][col].player].push("routed");
 		var cell = getRoutCell(grid[row][col].player);
 
 		grid[cell.row][cell.col].player = grid[row][col].player;

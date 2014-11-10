@@ -3,79 +3,49 @@
 function playerAction(name) {
 
 	console.log(gameMan.events)
-	for (var i=gameMan.events.length - 1; i >= 0; --i) {
-		var event = gameMan.events[i];
-		if (event.action == "rotate") {
-			sounds["rally"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["rally"].play();
-			break;
-		}
-		if (event.action == "move") {
-			sounds["drop"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["drop"].play();
-		}
-		if (event.action == "push") {
-			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["push"].play();
-			murals[event.player].setAnim("push");
+	for (var player = 0; player < 4; ++player) {
+		var events = gameMan.events[player];
+		for (var i = events.length - 1; i >= 0; --i) {
+			var event = "";
+			var precedence = ["pushed", "routed", "rally", "rotate", "move", "push", "rout"];
+			for (var j = 0; j < precedence.length; ++j) {
+				events.indexOf(precedence[j]) > -1 ? event = precedence[j] : event;
+			}
 
+			if (event == "rotate") {
+				sounds["rally"].volume = Math.pow(audioMan.sound / 10, 2);
+				sounds["rally"].play();
+				break;
+			}
+			if (event == "move") {
+				sounds["drop"].volume = Math.pow(audioMan.sound / 10, 2);
+				sounds["drop"].play();
+			}
+			if (event == "push") {
+				sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
+				sounds["push"].play();
+				murals[player].setAnim("push");
+			}
+			if (event == "pushed") {
+				murals[player].setAnim("pushed");
+			}
+			if (event == "rout") {
+				sounds["move"].volume = Math.pow(audioMan.sound / 10, 2);
+				sounds["move"].play();
+				murals[player].setAnim("rout");
+			}
+			if (event == "routed") {
+				murals[player].setAnim("routed");
+			}
+			if (event == "rally") {
+				sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
+				sounds["push"].play();
+				murals[player].setAnim("rally");
+				break;
+			}
 		}
-		if (event.action == "pushed") {
-			murals[event.player].setAnim("pushed");
-		}
-		if (event.action == "rout") {
-			sounds["move"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["move"].play();
-			murals[event.player].setAnim("rout");
-		}
-		if (event.action == "routed") {
-			murals[event.player].setAnim("routed");
-		}
-		if (event.action == "rally") {
-			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["push"].play();
-			murals[event.player].setAnim("rally");
-			break;
-		}
+		gameMan.events[player] = [];
 	}
-	gameMan.events = [];
-	// if (audioMan.play) {
-	// 	switch (name) {
-	// 	case "rotate":
-	// 		sounds["rally"].volume = Math.pow(audioMan.sound / 10, 2);
-	// 		sounds["rally"].play();
-	// 		break;
-	// 	case "move":
-	// 		sounds["drop"].volume = Math.pow(audioMan.sound / 10, 2);
-	// 		sounds["drop"].play();
-	// 		break;
-	// 	case "push":
-	// 		sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
-	// 		sounds["push"].play();
-	// 		murals[gameMan.player].setAnim("push");
-	// 		console.log(gameMan.receivers);
-	// 		for (var i=gameMan.receivers.length - 1; i >= 0 ; --i) {
-	// 			murals[gameMan.receivers[i]].setAnim("pushed");
-	// 		}
-	// 		break;
-	// 	case "rout":
-	// 		sounds["move"].volume = Math.pow(audioMan.sound / 10, 2);
-	// 		sounds["move"].play();
-	// 		murals[gameMan.player].setAnim("rout");
-	// 		for (var i=gameMan.receivers.length - 1; i >= 0 ; --i) {
-	// 			murals[gameMan.receivers[i]].setAnim("pushed");
-	// 		}
-	// 		break;
-	// 	case "rally":
-	// 		sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
-	// 		sounds["push"].play();
-	// 		murals[gameMan.player].setAnim("rally");
-	// 		break;
-	// 	}
-	// 	hudMan.actionText = name;
-	// 	audioMan.play = false;
-	// 	gameMan.receivers = [];
-	// }
 }
 
 function resetAnimations() {
