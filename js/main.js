@@ -2,7 +2,6 @@
 
 function playerAction(name) {
 
-	console.log(gameMan.events)
 	for (var player = 0; player < 4; ++player) {
 		var events = gameMan.events[player];
 		for (var i = events.length - 1; i >= 0; --i) {
