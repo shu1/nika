@@ -1,7 +1,6 @@
 "use strict";
 
 function playerAction(name) {
-
 	for (var player = 0; player < 4; ++player) {
 		var events = gameMan.events[player];
 		for (var i = events.length - 1; i >= 0; --i) {
@@ -130,9 +129,11 @@ function init() {
 
 	if (screenType > 0) {
 		window.addEventListener("resize", reSize);
+		menuMan.cols = buttons.length-1;
 	}
 	else {
 		menuMan.cols = 3;
+		menuMan.rows = Math.ceil((buttons.length-1) / menuMan.cols);
 	}
 
 	var view_2d = new fo.view_2d(canvas);
@@ -189,9 +190,8 @@ function reSize() {
 	displayMan.hudFont = Math.floor(32 * minScale);
 	context.font = displayMan.hudFont + "px sans-serif";
 
-	menuMan.rows = Math.ceil((buttons.length-1) / menuMan.cols);
 	menuMan.bWidth = displayMan.cellSize * 2 * minScale;
-	menuMan.bHeight = menuMan.cols == 1 ? menuMan.bWidth : menuMan.bWidth/2;
+	menuMan.bHeight = screenType > 0 ? menuMan.bWidth : menuMan.bWidth/2;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
@@ -709,7 +709,7 @@ function drawHud(time) {
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, displayMan.hudHeight);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  " + hudMan.inputText
-	+ "  |  " + hudMan.pieceText + hudMan.actionText + hudMan.tutorialText, 120, displayMan.hudFont);
+	+ "  |  " + hudMan.pieceText + hudMan.actionText + hudMan.tutorialText, 138, displayMan.hudFont);
 }
 
 // browser compatibility
