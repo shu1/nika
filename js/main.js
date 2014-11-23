@@ -129,12 +129,10 @@ function init() {
 
 	if (screenType > 0) {
 		window.addEventListener("resize", reSize);
-		menuMan.cols = buttons.length-1;
 	}
-	else {
-		menuMan.cols = 3;
-		menuMan.rows = Math.ceil((buttons.length-1) / menuMan.cols);
-	}
+
+	menuMan.cols = 3;
+	menuMan.rows = Math.ceil((buttons.length-1) / menuMan.cols);
 
 	var view_2d = new fo.view_2d(canvas);
 	murals[0] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
@@ -191,7 +189,7 @@ function reSize() {
 	context.font = displayMan.hudFont + "px sans-serif";
 
 	menuMan.bWidth = displayMan.cellSize * 2 * minScale;
-	menuMan.bHeight = screenType > 0 ? menuMan.bWidth : menuMan.bWidth/2;
+	menuMan.bHeight = menuMan.bWidth/2;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
