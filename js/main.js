@@ -162,10 +162,7 @@ function reSize() {
 	}
 
 	var minScale = 1/2, maxScale = 2/3;	// defaults for browser and ipad
-	if (screenType == 3) {	// large screen, no zoom
-		maxScale = minScale = canvas.height / displayMan.boardHeight;
-	}
-	else if (canvas.width == 2048 && canvas.height == 1536) {	// ipad retina
+	if (canvas.width == 2048 && canvas.height == 1536) {	// ipad retina
 		minScale = 1;
 		maxScale = 4/3;
 	}
