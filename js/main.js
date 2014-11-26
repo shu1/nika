@@ -256,38 +256,33 @@ function zoom() {
 }
 
 function zooming(dTime) {
-	if (displayMan.zoom != 0) {
+	if (displayMan.zoom) {
 		var scene = scenes[gameMan.scene];
-		var speed = (scene.maxScale - scene.minScale) * dTime/250;
+		var speed = (scene.maxScale - scene.minScale) * dTime/250 * displayMan.zoom;	// set positive/negative
 
 		if (displayMan.zoom > 0) {
 			if (scene.scale + speed < scene.maxScale) {
 				scene.scale += speed;
-				scene.x -= scene.width * speed/2;
-				scene.y -= scene.height * speed/2;
 			}
 			else {
+				speed = scene.maxScale - scene.scale;	// move exactly the remainder of the animation
 				scene.scale = scene.maxScale;
 				displayMan.zoom = 0;
 			}
 		}
 		else {
-			if (scene.scale - speed > scene.minScale) {
-				scene.scale -= speed;
-				scene.x += scene.width * speed/2;
-				scene.y += scene.height * speed/2;
+			if (scene.scale + speed > scene.minScale) {
+				scene.scale += speed;
 			}
 			else {
+				speed = scene.minScale - scene.scale;	// move exactly the remainder of the animation
 				scene.scale = scene.minScale;
 				displayMan.zoom = 0;
 			}
 		}
 
-		if (!displayMan.zoom) {
-			scene.x = (canvas.width - scene.width * scene.scale)/2;
-			scene.y = (canvas.height - scene.height * scene.scale)/2;
-		}
-
+		scene.x -= scene.width * speed/2;
+		scene.y -= scene.height * speed/2;
 		pan(0, 0);	// prevent moving off screen
 	}
 }
