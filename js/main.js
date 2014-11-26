@@ -258,10 +258,13 @@ function zoom() {
 function zooming(dTime) {
 	if (displayMan.zoom != 0) {
 		var scene = scenes[gameMan.scene];
-		var speed = (scene.maxScale - scene.minScale) * dTime/250;	// animation speed
+		var speed = (scene.maxScale - scene.minScale) * dTime/250;
+
 		if (displayMan.zoom > 0) {
 			if (scene.scale + speed < scene.maxScale) {
 				scene.scale += speed;
+				scene.x -= scene.width * speed/2;
+				scene.y -= scene.height * speed/2;
 			}
 			else {
 				scene.scale = scene.maxScale;
@@ -271,17 +274,21 @@ function zooming(dTime) {
 		else {
 			if (scene.scale - speed > scene.minScale) {
 				scene.scale -= speed;
+				scene.x += scene.width * speed/2;
+				scene.y += scene.height * speed/2;
 			}
 			else {
 				scene.scale = scene.minScale;
 				displayMan.zoom = 0;
 			}
 		}
-		scene.x = (canvas.width - scene.width * scene.scale)/2;
-		scene.y = (canvas.height - scene.height * scene.scale)/2;
-//		scene.x = (canvas.width - scene.width * scene.minScale)/2 - (inputMan.col+0.5) * displayMan.cellSize * (scene.scale - scene.minScale);
-//		scene.y = (canvas.height - scene.height * scene.minScale)/2 - (inputMan.row+0.5) * displayMan.cellSize * (scene.scale - scene.minScale);
-		pan(0, 0);	// hack to fix if clicked outside board
+
+		if (!displayMan.zoom) {
+			scene.x = (canvas.width - scene.width * scene.scale)/2;
+			scene.y = (canvas.height - scene.height * scene.scale)/2;
+		}
+
+		pan(0, 0);	// prevent moving off screen
 	}
 }
 
@@ -298,7 +305,7 @@ function pan(dX, dY) {
 		else if (scene.x + dX > 0) {
 			scene.x = 0;
 		}
-		else {
+		else if (dX) {
 			scene.x += dX;
 			panned = true;
 		}
@@ -313,7 +320,7 @@ function pan(dX, dY) {
 		else if (scene.y + dY > 0) {
 			scene.y = 0;
 		}
-		else {
+		else if (dY) {
 			scene.y += dY;
 			panned = true;
 		}
@@ -611,11 +618,11 @@ function drawRules() {
 }
 
 function drawMenu(dTime) {
-	var factor = 200;
+	var duration = 200;
 	displayMan.menu = false;	// whether menu is animating
 
 	if (menuMan.show && (menuMan.width < menuMan.bWidth * menuMan.cols || menuMan.height < menuMan.bHeight * menuMan.rows)) {
-		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / factor;
+		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / duration;
 		if (menuMan.width + speed < menuMan.bWidth * menuMan.cols) {
 			menuMan.width += speed;
 			displayMan.menu = true;
@@ -624,7 +631,7 @@ function drawMenu(dTime) {
 			menuMan.width = menuMan.bWidth * menuMan.cols;
 		}
 
-		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / factor;
+		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / duration;
 		if (menuMan.height + speed < menuMan.bHeight * menuMan.rows) {
 			menuMan.height += speed;
 			displayMan.menu = true;
@@ -634,7 +641,7 @@ function drawMenu(dTime) {
 		}
 	}
 	else if (!menuMan.show && (menuMan.width > menuMan.bWidth || menuMan.height > menuMan.bHeight)) {
-		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / factor;
+		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / duration;
 		if (menuMan.width - speed > menuMan.bWidth) {
 			menuMan.width -= speed;
 			displayMan.menu = true;
@@ -643,7 +650,7 @@ function drawMenu(dTime) {
 			menuMan.width = menuMan.bWidth;
 		}
 
-		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / factor;
+		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / duration;
 		if (menuMan.height - speed > menuMan.bHeight) {
 			menuMan.height -= speed;
 			displayMan.menu = true;
