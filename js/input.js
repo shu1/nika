@@ -162,7 +162,7 @@ function mouseMove(event) {
 		getXY(event);
 		if (!inputMan.menu && gameMan.winner < 0) {
 			var dX = inputMan.x - inputMan.pX;
-			var dY = inputMan.y - inputMan.pY;
+			var dY = inputMan.y - inputMan.pY;			
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
 				if (Math.abs(dX) > displayMan.cellSize/2 * scene.scale
