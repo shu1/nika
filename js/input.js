@@ -107,23 +107,16 @@ function getXY(event) {
 
 function getRot(dX, dY) {
 	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {	// not for routed pieces
-		inputMan.row = gameMan.pRow;
-		inputMan.col = gameMan.pCol;
-
 		if (dX >= dY && dX <= -dY) {	// up
-			inputMan.row--;
 			inputMan.rot = 0;
 		}
 		else if (dX >= dY && dX >= -dY) {	// right
-			inputMan.col++;
 			inputMan.rot = 1;
 		}
 		else if (dX <= dY && dX >= -dY) {	// down
-			inputMan.row++;
 			inputMan.rot = 2;
 		}
 		else {	// left
-			inputMan.col--;
 			inputMan.rot = 3;
 		}
 	}
@@ -162,7 +155,7 @@ function mouseMove(event) {
 		getXY(event);
 		if (!inputMan.menu && gameMan.winner < 0) {
 			var dX = inputMan.x - inputMan.pX;
-			var dY = inputMan.y - inputMan.pY;			
+			var dY = inputMan.y - inputMan.pY;
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
 				if (Math.abs(dX) > displayMan.cellSize/2 * scene.scale
