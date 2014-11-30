@@ -7,7 +7,7 @@ var displayMan = {
 	pieceSize:80,
 	boardWidth:2016,
 	boardHeight:1440,
-	ruleWidth:2016,
+	ruleWidth:1820,
 	ruleHeight:1024,
 	dialogX:628,
 	dialogY:624,

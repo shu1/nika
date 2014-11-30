@@ -214,18 +214,8 @@ function reSize() {
 	scene = {};
 	scene.width = displayMan.ruleWidth;
 	scene.height = displayMan.ruleHeight;
-	if (maxScale == minScale) {
-		scene.maxScale = 1;
-		scene.minScale = canvas.height / displayMan.ruleHeight;
-	}
-	else if (canvas.width > displayMan.ruleWidth) {
-		scene.maxScale = canvas.width / displayMan.ruleWidth;
-		scene.minScale = 1;
-	}
-	else{
-		scene.maxScale = 1;
-		scene.minScale = canvas.width / displayMan.ruleWidth;
-	}
+	scene.maxScale = canvas.height / displayMan.ruleHeight;
+	scene.minScale = canvas.width / displayMan.ruleWidth;
 	scene.scale = scene.minScale;
 	scenes["rules"] = scene;
 
@@ -610,7 +600,7 @@ function drawRules() {
 	if (rulePages > 0) {
 		context.fillStyle = "black";
 		context.fillRect(0, 0, displayMan.ruleWidth, displayMan.ruleHeight);
-		context.drawImage(images["rule" + gameMan.rules], 0, 0);
+		context.drawImage(images["rule" + gameMan.rules], -98, 0);	// TODO: hack until rule pngs are resized
 	}
 }
 
@@ -667,7 +657,7 @@ function drawMenu(dTime) {
 					if (inputMan.menu && button == menuMan.button
 					|| button == 1 && gameMan.debug
 					|| button == 2 && gameMan.tutorialStep >= 0
-					|| button == 3 && gameMan.scene == 2) {
+					|| button == 3 && gameMan.scene == "rules") {
 						drawButton(row, col, buttons[button+1], "#004157", "white");
 					}
 					else {
