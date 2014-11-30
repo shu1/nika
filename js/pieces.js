@@ -62,7 +62,9 @@ function movePiece(pRow, pCol, row, col) {
 	if (pRow >= 0 && pCol >= 0) {
 		if (phalanx.length > 1) {
 			if (movePhalanx(pRow, pCol, row, col)) {
-				playerAction("move");
+				if (eventsMan[gameMan.player].length == 0) {
+					eventsMan[gameMan.player].push("move");
+				}
 				phalanx.length = 0;
 				moved = true;
 			}
@@ -74,15 +76,17 @@ function movePiece(pRow, pCol, row, col) {
 
 			if (routedCell(pRow, pCol) && grid[row][col].kind == 2) {	// rally
 				grid[row][col].rot = grid[row][col].player;	// set rotation toward center of board
-				playerAction("rally");
+				eventsMan[gameMan.player].push("rally");
 			}
 			else {
-				playerAction("move");
+				eventsMan[gameMan.player].push("move");
 			}
 		}
 
 		if (grid[pRow][pCol].rot != gameMan.pRot) {
-			playerAction("rotate");
+			if (eventsMan[gameMan.player].length == 0) {
+				eventsMan[gameMan.player].push("rotate");
+			}
 			phalanx.length = 0;
 			moved = true;
 		}
@@ -92,6 +96,7 @@ function movePiece(pRow, pCol, row, col) {
 				useAction();
 			}
 			pushGameState();
+			playerAction();
 		}
 
 		if (gameMan.tutorialStep >= 0) {
@@ -187,8 +192,10 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 
 function pushOnePiece(row, col, fRow, fCol, pusher) {
 	if (Math.abs((grid[row][col].player - pusher)%2) == 1) {
-		gameMan.receiver = grid[row][col].player;
-		playerAction("push");
+		// gameMan.receivers.push(grid[row][col].player);
+		eventsMan[gameMan.player].push("push");
+		eventsMan[grid[row][col].player].push("pushed");
+		console.log(eventsMan);
 	}
 
 	grid[fRow][fCol].player = grid[row][col].player;
@@ -198,8 +205,8 @@ function pushOnePiece(row, col, fRow, fCol, pusher) {
 // move piece to rout cell
 function routPiece(row, col) {
 	if (grid[row][col].player >= 0) {
-		gameMan.receiver = grid[row][col].player;
-		playerAction("rout");
+		eventsMan[gameMan.player].push("rout");
+		eventsMan[grid[row][col].player].push("routed");
 		var cell = getRoutCell(grid[row][col].player);
 
 		grid[cell.row][cell.col].player = grid[row][col].player;
@@ -320,6 +327,7 @@ function movePhalanx(pRow, pCol, row, col) {
 			else {
 				revertGrid();
 				moved = false;
+				eventsMan = [];
 				flag = false;
 			}
 		}

@@ -22,10 +22,13 @@ function menuButton(button) {
 			setScene(gameMan.scene == "board" ? "rules" : "board");
 			break;
 		case 4:
-			useAction(2);
+			pass();
 			break;
 		case 5:
 			undo();
+			break;
+		case 6:
+			zoom();
 			break;
 		}
 	}
@@ -159,10 +162,11 @@ function mouseMove(event) {
 		getXY(event);
 		if (!inputMan.menu && gameMan.winner < 0) {
 			var dX = inputMan.x - inputMan.pX;
-			var dY = inputMan.y - inputMan.pY;
+			var dY = inputMan.y - inputMan.pY;			
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-				if (Math.abs(dX) > displayMan.cellSize/2 * scene.scale || Math.abs(dY) > displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
+				if (Math.abs(dX) > displayMan.cellSize/2 * scene.scale
+				|| Math.abs(dY) > displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 				}
@@ -187,11 +191,13 @@ function mouseUp(event) {
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
 		}
-		else if (!dblClick(event)) {
+		else {
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == "settings") {
-				if (inputMan.x - scene.x > displayMan.settingsX * scene.scale && inputMan.x - scene.x < (displayMan.settingsX + displayMan.settingsWidth) * scene.scale
-				&& inputMan.y - scene.y > displayMan.settingsY * scene.scale && inputMan.y - scene.y < (displayMan.settingsY + displayMan.settingsHeight) * scene.scale) {
+				if (inputMan.x - scene.x > displayMan.settingsX * scene.scale
+				&& inputMan.x - scene.x < (displayMan.settingsX + displayMan.settingsWidth) * scene.scale
+				&& inputMan.y - scene.y > displayMan.settingsY * scene.scale
+				&& inputMan.y - scene.y < (displayMan.settingsY + displayMan.settingsHeight) * scene.scale) {
 					// sounds[6].volume = 1 - sounds[6].volume;
 					// getSettingsButton();
 					settingsButton(0);
@@ -213,15 +219,19 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
-				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale && inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
-				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale && inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
+				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale
+				&& inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
+				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale
+				&& inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
 					inputMan.time = 0;
 					nextTutorialStep();
 				}
 			}
 			else if (gameMan.winner >= 0) {	// win screen
-				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale && inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
-				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale && inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
+				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale
+				&& inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
+				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale
+				&& inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
 					inputMan.time = 0;
 					newGame();
 				}
@@ -242,7 +252,7 @@ function mouseUp(event) {
 			}
 
 			if (phalanx.length > 0) {
-				if (grid[phalanx[0].row][phalanx[0].col].kind == 3) {					
+				if (grid[phalanx[0].row][phalanx[0].col].kind == 3) {
 					phalanx.length = 0;
 				}
 			}
@@ -252,22 +262,4 @@ function mouseUp(event) {
 		inputMan.click = false;
 		audioMan.play = true;
 	}
-}
-
-function dblClick(event) {
-	if (gameMan.scene == "board") {
-		var time = Date.now();
-		if (time - inputMan.time < 300) {	// double click time in milliseconds
-			hudMan.inputText += " " + (time - inputMan.time) + "ms";
-			event.preventDefault();
-
-			if (screenType != 3) {	// zoom not disabled
-				zoom();
-			}
-			inputMan.time = 0;	// reset so next click is not double click
-			return true;
-		}
-		inputMan.time = time;
-	}
-	return false;
 }

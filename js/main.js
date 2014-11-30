@@ -1,42 +1,48 @@
 "use strict";
 
 function playerAction(name) {
-	if (audioMan.play) {
-		switch (name) {
-		case "rotate":
-			sounds["rally"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["rally"].play();
-			break;
-		case "move":
-			sounds["drop"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["drop"].play();
-			break;
-		case "push":
-			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["push"].play();
-			murals[gameMan.player].setAnim("push");
-			if (gameMan.receiver >= 0) {
-				murals[gameMan.receiver].setAnim("pushed");
-				gameMan.receiver = -1;
+	for (var player = 0; player < 4; ++player) {
+		var events = eventsMan[player];
+		for (var i = events.length - 1; i >= 0; --i) {
+			var event = "";
+			var precedence = ["pushed", "routed", "rally", "rotate", "move", "push", "rout"];
+			for (var j = 0; j < precedence.length; ++j) {
+				events.indexOf(precedence[j]) > -1 ? event = precedence[j] : event;
 			}
-			break;
-		case "rout":
-			sounds["move"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["move"].play();
-			murals[gameMan.player].setAnim("rout");
-			if (gameMan.receiver >= 0) {
-				murals[gameMan.receiver].setAnim("routed");
-				gameMan.receiver = -1;
+
+			if (event == "rotate") {
+				sounds["rally"].volume = Math.pow(audioMan.sound / 10, 2);
+				sounds["rally"].play();
+				break;
 			}
-			break;
-		case "rally":
-			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["push"].play();
-			murals[gameMan.player].setAnim("rally");
-			break;
+			if (event == "move") {
+				sounds["drop"].volume = Math.pow(audioMan.sound / 10, 2);
+				sounds["drop"].play();
+			}
+			if (event == "push") {
+				sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
+				sounds["push"].play();
+				murals[player].setAnim("push");
+			}
+			if (event == "pushed") {
+				murals[player].setAnim("pushed");
+			}
+			if (event == "rout") {
+				sounds["move"].volume = Math.pow(audioMan.sound / 10, 2);
+				sounds["move"].play();
+				murals[player].setAnim("rout");
+			}
+			if (event == "routed") {
+				murals[player].setAnim("routed");
+			}
+			if (event == "rally") {
+				sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
+				sounds["push"].play();
+				murals[player].setAnim("rally");
+				break;
+			}
 		}
-		hudMan.actionText = name;
-		audioMan.play = false;
+		eventsMan[player] = [];
 	}
 }
 
@@ -124,9 +130,9 @@ function init() {
 	if (screenType > 0) {
 		window.addEventListener("resize", reSize);
 	}
-	else {
-		menuMan.rows = 2;
-	}
+
+	menuMan.cols = 3;
+	menuMan.rows = Math.ceil((buttons.length-1) / menuMan.cols);
 
 	var view_2d = new fo.view_2d(canvas);
 	murals[0] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
@@ -156,10 +162,7 @@ function reSize() {
 	}
 
 	var minScale = 1/2, maxScale = 2/3;	// defaults for browser and ipad
-	if (screenType == 3) {	// large screen, no zoom
-		maxScale = minScale = canvas.height / displayMan.boardHeight;
-	}
-	else if (canvas.width == 2048 && canvas.height == 1536) {	// ipad retina
+	if (canvas.width == 2048 && canvas.height == 1536) {	// ipad retina
 		minScale = 1;
 		maxScale = 4/3;
 	}
@@ -182,9 +185,8 @@ function reSize() {
 	displayMan.hudFont = Math.floor(32 * minScale);
 	context.font = displayMan.hudFont + "px sans-serif";
 
-	menuMan.cols = Math.ceil((buttons.length-1) / menuMan.rows);
 	menuMan.bWidth = displayMan.cellSize * 2 * minScale;
-	menuMan.bHeight = menuMan.rows == 1 ? menuMan.bWidth : menuMan.bWidth/2;
+	menuMan.bHeight = menuMan.bWidth/2;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
@@ -254,37 +256,34 @@ function zoom() {
 }
 
 function zooming(dTime) {
-	if (displayMan.zoom != 0) {
+	if (displayMan.zoom) {
 		var scene = scenes[gameMan.scene];
-		var speed = (scene.maxScale - scene.minScale) * dTime/250;	// animation speed
+		var speed = (scene.maxScale - scene.minScale) * dTime/250 * displayMan.zoom;	// set positive/negative
+
 		if (displayMan.zoom > 0) {
 			if (scene.scale + speed < scene.maxScale) {
 				scene.scale += speed;
 			}
 			else {
+				speed = scene.maxScale - scene.scale;	// move exactly the remainder of the animation
 				scene.scale = scene.maxScale;
 				displayMan.zoom = 0;
 			}
 		}
 		else {
-			if (scene.scale - speed > scene.minScale) {
-				scene.scale -= speed;
+			if (scene.scale + speed > scene.minScale) {
+				scene.scale += speed;
 			}
 			else {
+				speed = scene.minScale - scene.scale;	// move exactly the remainder of the animation
 				scene.scale = scene.minScale;
 				displayMan.zoom = 0;
 			}
 		}
 
-		if (screenType == 2) {	// tablets should always zoom centered
-			scene.x = (canvas.width - scene.width * scene.scale)/2;
-			scene.y = (canvas.height - scene.height * scene.scale)/2;
-		}
-		else {
-			scene.x = (canvas.width - scene.width * scene.minScale)/2 - (inputMan.col+0.5) * displayMan.cellSize * (scene.scale - scene.minScale);
-			scene.y = (canvas.height - scene.height * scene.minScale)/2 - (inputMan.row+0.5) * displayMan.cellSize * (scene.scale - scene.minScale);
-		}
-		pan(0, 0);	// hack to fix if clicked outside board
+		scene.x -= scene.width * speed/2;
+		scene.y -= scene.height * speed/2;
+		pan(0, 0);	// prevent moving off screen
 	}
 }
 
@@ -301,7 +300,7 @@ function pan(dX, dY) {
 		else if (scene.x + dX > 0) {
 			scene.x = 0;
 		}
-		else {
+		else if (dX) {
 			scene.x += dX;
 			panned = true;
 		}
@@ -316,7 +315,7 @@ function pan(dX, dY) {
 		else if (scene.y + dY > 0) {
 			scene.y = 0;
 		}
-		else {
+		else if (dY) {
 			scene.y += dY;
 			panned = true;
 		}
@@ -569,7 +568,8 @@ function drawDialog(time) {
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
 			context.globalAlpha = (Math.sin(time/250 % (Math.PI*2))+1)/4 + 0.5;
-			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.tutorialOffset + buttonOffset, displayMan.dialogY + displayMan.dialogHeight - bottomPadding);
+			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.tutorialOffset + buttonOffset,
+				displayMan.dialogY + displayMan.dialogHeight - bottomPadding);
 		}
 		context.restore();
 	}
@@ -615,11 +615,11 @@ function drawRules() {
 }
 
 function drawMenu(dTime) {
-	var factor = 200;
+	var duration = 200;
 	displayMan.menu = false;	// whether menu is animating
 
 	if (menuMan.show && (menuMan.width < menuMan.bWidth * menuMan.cols || menuMan.height < menuMan.bHeight * menuMan.rows)) {
-		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / factor;
+		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / duration;
 		if (menuMan.width + speed < menuMan.bWidth * menuMan.cols) {
 			menuMan.width += speed;
 			displayMan.menu = true;
@@ -628,7 +628,7 @@ function drawMenu(dTime) {
 			menuMan.width = menuMan.bWidth * menuMan.cols;
 		}
 
-		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / factor;
+		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / duration;
 		if (menuMan.height + speed < menuMan.bHeight * menuMan.rows) {
 			menuMan.height += speed;
 			displayMan.menu = true;
@@ -638,7 +638,7 @@ function drawMenu(dTime) {
 		}
 	}
 	else if (!menuMan.show && (menuMan.width > menuMan.bWidth || menuMan.height > menuMan.bHeight)) {
-		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / factor;
+		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / duration;
 		if (menuMan.width - speed > menuMan.bWidth) {
 			menuMan.width -= speed;
 			displayMan.menu = true;
@@ -647,7 +647,7 @@ function drawMenu(dTime) {
 			menuMan.width = menuMan.bWidth;
 		}
 
-		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / factor;
+		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / duration;
 		if (menuMan.height - speed > menuMan.bHeight) {
 			menuMan.height -= speed;
 			displayMan.menu = true;
@@ -708,7 +708,7 @@ function drawHud(time) {
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, displayMan.hudHeight);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  " + hudMan.inputText
-	+ "  |  " + hudMan.pieceText + hudMan.actionText + hudMan.tutorialText, 120, displayMan.hudFont);
+	+ "  |  " + hudMan.pieceText + hudMan.actionText + hudMan.tutorialText, 138, displayMan.hudFont);
 }
 
 // browser compatibility

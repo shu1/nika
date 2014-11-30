@@ -81,10 +81,12 @@ function generateGrid(ascii) {
 function newGame() {
 	generateGrid(mainBoard);
 	gameStates = [];
+	phalanx = [];
 	pushGameState();
 	gameMan.winner = -1;
 	gameMan.player = 0;
 	gameMan.actions = 2;
+
 	useAction(0);
 }
 
@@ -124,6 +126,11 @@ function useAction(n) {
 	}
 	hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	checkWin();
+}
+
+function pass() {
+	pushGameState();
+	useAction(2);
 }
 
 function getCity(player) {
