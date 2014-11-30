@@ -119,6 +119,22 @@ function getRot(dX, dY) {
 		else {	// left
 			inputMan.rot = 3;
 		}
+		if (gameMan.pRot == inputMan.rot) {
+			inputMan.row = gameMan.pRow;
+			inputMan.col = gameMan.pCol;
+			if (inputMan.rot == 0) {
+				inputMan.row--;
+			}
+			else if (inputMan.rot == 1) {
+				inputMan.col++;
+			}
+			else if (inputMan.rot == 2) {
+				inputMan.row++;
+			}
+			else if (inputMan.rot == 3) {
+				inputMan.col--;
+			}
+		}
 	}
 }
 
