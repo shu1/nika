@@ -107,7 +107,7 @@ function getXY(event) {
 
 function getRot(dX, dY) {
 	var scene = scenes[gameMan.scene];
-	var radius = 4 * displayMan.cellSize*displayMan.cellSize*scene.scale*scene.scale;
+	var radius = 6.25* displayMan.cellSize*displayMan.cellSize*scene.scale*scene.scale;
 
 	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {	// not for routed pieces
 		inputMan.row = gameMan.pRow;
