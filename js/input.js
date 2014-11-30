@@ -158,8 +158,8 @@ function mouseMove(event) {
 			var dY = inputMan.y - inputMan.pY;
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-				if (Math.abs(dX) > displayMan.cellSize/2 * scene.scale
-				|| Math.abs(dY) > displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
+				if (Math.abs(dX) >= displayMan.cellSize/2 * scene.scale
+				|| Math.abs(dY) >= displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 				}
