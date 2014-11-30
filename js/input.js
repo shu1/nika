@@ -106,7 +106,12 @@ function getXY(event) {
 }
 
 function getRot(dX, dY) {
+	var scene = scenes[gameMan.scene];
+	var radius = 4 * displayMan.cellSize*displayMan.cellSize*scene.scale*scene.scale;
+
 	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {	// not for routed pieces
+		inputMan.row = gameMan.pRow;
+		inputMan.col = gameMan.pCol;
 		if (dX >= dY && dX <= -dY) {	// up
 			inputMan.rot = 0;
 		}
@@ -119,9 +124,7 @@ function getRot(dX, dY) {
 		else {	// left
 			inputMan.rot = 3;
 		}
-		if (gameMan.pRot == inputMan.rot) {
-			inputMan.row = gameMan.pRow;
-			inputMan.col = gameMan.pCol;
+		if (gameMan.pRot == inputMan.rot || dX*dX + dY*dY > radius) {	// forward or outside radius
 			if (inputMan.rot == 0) {
 				inputMan.row--;
 			}
