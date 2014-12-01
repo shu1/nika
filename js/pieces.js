@@ -307,7 +307,6 @@ function getPhalanx(row, col) {
 }
 
 function movePhalanx(pRow, pCol, row, col) {
-
 	var phalanxIndex = [];
 
 	if (checkMovePhalanx(pRow, pCol, row, col)) {
