@@ -49,6 +49,12 @@ function getPiece(row, col) {
 	}
 }
 
+function resetRotation() {
+	for (var i = phalanx.length - 1; i >= 0; --i) {
+		grid[phalanx[i].row][phalanx[i].col].rot = gameMan.pRot;
+	}
+}
+
 function rotatePiece(pRow, pCol, rot) {
 	if (grid[pRow][pCol].kind != 3 && inPhalanx(pRow,pCol)) {
 		for (var i = phalanx.length-1; i >= 0; --i) {
