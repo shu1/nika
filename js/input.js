@@ -182,6 +182,9 @@ function mouseMove(event) {
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 				}
+				else {
+					resetRotation();
+				}
 				event.preventDefault();
 			}
 			else {	// pan
