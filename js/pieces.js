@@ -387,7 +387,7 @@ function togglePhalanxPiece(row, col) {
 			if (phalanx[i].row == row && phalanx[i].col == col) {
 				var removed = phalanx.splice(i, 1);
 				if (!isPhalanx()) {
-					phalanx.splice(i,0,removed[0]);
+					phalanx = removed;
 				}
 				return;
 			}
