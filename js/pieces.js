@@ -68,8 +68,8 @@ function movePiece(pRow, pCol, row, col) {
 	if (pRow >= 0 && pCol >= 0) {
 		if (phalanx.length > 1) {
 			if (movePhalanx(pRow, pCol, row, col)) {
-				if (eventsMan[gameMan.player].length == 0) {
-					eventsMan[gameMan.player].push("move");
+				if (eventMan[gameMan.player].length == 0) {
+					eventMan[gameMan.player].push("move");
 				}
 				phalanx.length = 0;
 				moved = true;
@@ -82,16 +82,16 @@ function movePiece(pRow, pCol, row, col) {
 
 			if (routedCell(pRow, pCol) && grid[row][col].kind == 2) {	// rally
 				grid[row][col].rot = grid[row][col].player;	// set rotation toward center of board
-				eventsMan[gameMan.player].push("rally");
+				eventMan[gameMan.player].push("rally");
 			}
 			else {
-				eventsMan[gameMan.player].push("move");
+				eventMan[gameMan.player].push("move");
 			}
 		}
 
 		if (grid[pRow][pCol].rot != gameMan.pRot) {
-			if (eventsMan[gameMan.player].length == 0) {
-				eventsMan[gameMan.player].push("rotate");
+			if (eventMan[gameMan.player].length == 0) {
+				eventMan[gameMan.player].push("rotate");
 			}
 			phalanx.length = 0;
 			moved = true;
@@ -135,11 +135,11 @@ function moveOnePiece(pRow, pCol, row, col) {
 function checkMove(pRow, pCol, row, col) {
 	if (outOfBounds(pRow, pCol) || outOfBounds(row, col)
 	|| invalidCell(row, col)
-	|| (grid[pRow][pCol].kind != 3 && Math.abs(row - pRow) + Math.abs(col - pCol) > 1)																// adjacent cell
-	|| (grid[row][col].kind == 1 && (grid[row][col].city - grid[pRow][pCol].player)%2 != 0 )													// opponent win cell
+	|| (grid[pRow][pCol].kind != 3 && Math.abs(row - pRow) + Math.abs(col - pCol) > 1)	// adjacent cell
+	|| (grid[row][col].kind == 1 && (grid[row][col].city - grid[pRow][pCol].player)%2 != 0 )	// opponent win cell
 	|| (routedCell(pRow, pCol) && (grid[row][col].kind != 2 || grid[pRow][pCol].player != grid[row][col].city))
-	|| (grid[row][col].player >= 0 && (grid[row][col].player - grid[pRow][pCol].player)%2 == 0)												// same team
-	|| !inPhalanx(pRow,pCol)) {																																												// didn't click current phalanx
+	|| (grid[row][col].player >= 0 && (grid[row][col].player - grid[pRow][pCol].player)%2 == 0)	// same team
+	|| !inPhalanx(pRow,pCol)) {	// didn't click current phalanx
 		return false;
 	}
 	return true;
@@ -199,9 +199,8 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 function pushOnePiece(row, col, fRow, fCol, pusher) {
 	if (Math.abs((grid[row][col].player - pusher)%2) == 1) {
 		// gameMan.receivers.push(grid[row][col].player);
-		eventsMan[gameMan.player].push("push");
-		eventsMan[grid[row][col].player].push("pushed");
-		console.log(eventsMan);
+		eventMan[gameMan.player].push("push");
+		eventMan[grid[row][col].player].push("pushed");
 	}
 
 	grid[fRow][fCol].player = grid[row][col].player;
@@ -211,8 +210,8 @@ function pushOnePiece(row, col, fRow, fCol, pusher) {
 // move piece to rout cell
 function routPiece(row, col) {
 	if (grid[row][col].player >= 0) {
-		eventsMan[gameMan.player].push("rout");
-		eventsMan[grid[row][col].player].push("routed");
+		eventMan[gameMan.player].push("rout");
+		eventMan[grid[row][col].player].push("routed");
 		var cell = getRoutCell(grid[row][col].player);
 
 		grid[cell.row][cell.col].player = grid[row][col].player;
@@ -333,7 +332,7 @@ function movePhalanx(pRow, pCol, row, col) {
 			else {
 				revertGrid();
 				moved = false;
-				eventsMan = [];
+				eventMan = [];
 				flag = false;
 			}
 		}
@@ -357,8 +356,8 @@ function checkMovePhalanx(pRow, pCol, row, col) {
 		||  invalidCell(iRow+dRow, iCol+dCol)
 		|| (grid[iRow + dRow][iCol + dCol].kind == 1 && (grid[iRow + dRow][iCol + dCol].city - grid[iRow][iCol].player) % 2 != 0 )	// opponent win cell
 		|| (grid[iRow + dRow][iCol + dCol].player >= 0 && !inPhalanx(iRow + dRow, iCol + dCol)
-		&& (grid[iRow + dRow][iCol + dCol].player - grid[iRow][iCol].player) % 2 == 0)																							// same team, not part of phalanx
-		|| !inPhalanx(pRow,pCol)) {																																																	// didn't click current phalanx
+		&& (grid[iRow + dRow][iCol + dCol].player - grid[iRow][iCol].player) % 2 == 0)	// same team, not part of phalanx
+		|| !inPhalanx(pRow,pCol)) {	// didn't click current phalanx
 			return false;
 		}
 	}
@@ -406,9 +405,9 @@ function togglePhalanxPiece(row, col) {
 		}
 
 		for (var i = phalanx.length-1; i >= 0; --i) {
-			if (Math.abs(phalanx[i].row-row) + Math.abs(phalanx[i].col-col) == 1 		// adjacent cell
+			if (Math.abs(phalanx[i].row-row) + Math.abs(phalanx[i].col-col) == 1	// adjacent cell
 			&& grid[phalanx[i].row][phalanx[i].col].player == grid[row][col].player	// same player
-			&& grid[phalanx[i].row][phalanx[i].col].rot == grid[row][col].rot 			// same rotation
+			&& grid[phalanx[i].row][phalanx[i].col].rot == grid[row][col].rot	// same rotation
 			&& !routedCell(row, col)) {
 				phalanx.push({row:row, col:col});
 				return;
@@ -446,7 +445,6 @@ function isPhalanx() {
 }
 
 function findMember(sRow, sCol, eRow, eCol) {
-
 	if (sRow == eRow && sCol == eCol) {
 		return true;
 	}

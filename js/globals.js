@@ -1,6 +1,6 @@
 "use strict";
 
-var canvas, context, grid, images=[], sounds=[], gameStates=[], phalanx=[], scenes=[], murals=[], tick={};
+var canvas, context, grid, images=[], sounds=[], phalanx=[], gameStates=[], scenes=[], murals=[], tick={};
 
 var displayMan = {
 	cellSize:96,
@@ -33,11 +33,11 @@ var audioMan = {
 	play:true
 }
 
-var eventsMan = {
-	0: [],
-	1: [],
-	2: [],
-	3: []
+var eventMan = {
+	0:[],
+	1:[],
+	2:[],
+	3:[]
 }
 
 var gameMan = {
@@ -437,10 +437,10 @@ var tutorialTexts = [[
 ]]
 
 var tutorialInputs = [
-	true,	true,	false,	true, true,	true,	true,	true,	true,	true,	true,
-	true,	true,	false,	true, false,	true,	true,	false,	false,	true,
-	true, true,	false,	true,	false,	true,	true,	false,	false,	true,
-	true, false,	false,	false,	false,	false,	true,	true,	false,	true,
-	true, true,	false,	false,	true,	true,	false,	true,	true,	true,
-	false, true,	true,	true,	true,	true,	true
+	true,	true,	false,	true,	true,	true,	true,	true,	true,	true,	true,
+	true,	true,	false,	true,	false,	true,	true,	false,	false,	true,
+	true,	true,	false,	true,	false,	true,	true,	false,	false,	true,
+	true,	false,	false,	false,	false,	false,	true,	true,	false,	true,
+	true,	true,	false,	false,	true,	true,	false,	true,	true,	true,
+	false,	true,	true,	true,	true,	true,	true
 ]
