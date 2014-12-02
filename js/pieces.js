@@ -331,7 +331,7 @@ function movePhalanx(pRow, pCol, row, col) {
 			else {
 				revertGrid();
 				moved = false;
-				eventMan = [];
+				eventMan[gameMan.player] = [];
 				flag = false;
 			}
 		}
