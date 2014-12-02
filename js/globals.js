@@ -14,10 +14,6 @@ var displayMan = {
 	dialogWidth:758,
 	dialogHeight:192,
 	tutorialOffset:152,
-	settingsX:384,
-	settingsY:384,
-	settingsWidth:1248,
-	settingsHeight:672,
 	initAnim:false,
 	menu:false,
 	helmetTheta:0,
@@ -99,11 +95,6 @@ var buttons = [
 	"  Pass",
 	"  Undo",
 	"  Zoom"
-]
-
-var settingsButtons = [
-	["Music", "-", "+"],
-	["Sounds", "-", "+"]
 ]
 
 var mainBoard = [

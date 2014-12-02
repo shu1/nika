@@ -34,42 +34,6 @@ function menuButton(button) {
 	}
 }
 
-function getSettingsButton() {
-	var scene = scenes[gameMan.scene];
-	var row = Math.floor((inputMan.y - scene.y - displayMan.settingsY * scene.scale) / (menuMan.bHeight * scene.scale)) - 1;
-	var col = Math.floor((inputMan.x - scene.x - displayMan.settingsX * scene.scale) / (menuMan.bWidth * scene.scale)) - 1;
-	return {row: row, col: col}
-}
-
-function settingsButton(row, col) {
-	var button = getSettingsButton();
-	var row = button.row;
-	var col = button.col;
-	if (row == 0) {
-		if (col == 1) {
-			audioMan.music = Math.max(0, audioMan.music - 1);
-		}
-		else if (col == 2) {
-			audioMan.music = Math.min(10, audioMan.music + 1);
-		}
-		sounds["music"].volume = volumeCurve(audioMan.music / 10);
-
-	}
-	else if (row == 1) {
-		if (col == 1) {
-			audioMan.sound = Math.max(0, audioMan.sound - 1);
-		}
-		else if (col == 2) {
-			audioMan.sound = Math.min(10, audioMan.sound + 1);
-		}
-	}
-	else if (row == 5) {
-		if (col == 4) {
-			setScene("board");
-		}
-	}
-}
-
 function getXY(event) {
 	if (event.touches) {
 		inputMan.x = event.touches[0].pageX;
@@ -193,17 +157,7 @@ function mouseUp(event) {
 		}
 		else {
 			var scene = scenes[gameMan.scene];
-			if (gameMan.scene == "settings") {
-				if (inputMan.x - scene.x > displayMan.settingsX * scene.scale
-				&& inputMan.x - scene.x < (displayMan.settingsX + displayMan.settingsWidth) * scene.scale
-				&& inputMan.y - scene.y > displayMan.settingsY * scene.scale
-				&& inputMan.y - scene.y < (displayMan.settingsY + displayMan.settingsHeight) * scene.scale) {
-					// sounds[6].volume = 1 - sounds[6].volume;
-					// getSettingsButton();
-					settingsButton(0);
-				}
-			}
-			else if (gameMan.scene == "rules") {
+			if (gameMan.scene == "rules") {
 				if (inputMan.y > canvas.height / 2 - displayMan.cellSize * 1.5
 				 && inputMan.y < canvas.height / 2 + displayMan.cellSize * 1.5) {
 					if (inputMan.x > canvas.width - displayMan.cellSize*2) {

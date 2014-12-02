@@ -204,14 +204,6 @@ function reSize() {
 	scenes["board"] = scene;
 
 	scene = {};
-	scene.width = displayMan.boardWidth;
-	scene.height = displayMan.boardHeight;
-	scene.maxScale = maxScale;
-	scene.minScale = minScale;
-	scene.scale = minScale;
-	scenes["settings"] = scene;
-
-	scene = {};
 	scene.width = displayMan.ruleWidth;
 	scene.height = displayMan.ruleHeight;
 	scene.maxScale = canvas.height / displayMan.ruleHeight;
@@ -336,15 +328,7 @@ function draw(time) {
 
 	context.restore();
 
-	if (gameMan.scene == "settings") {
-		scene = scenes[gameMan.scene];
-		context.save();
-		context.translate(scene.x, scene.y);
-		context.scale(scene.scale, scene.scale);
-		drawSettings();
-		context.restore();
-	}
-	else if (gameMan.scene == "rules") {
+	if (gameMan.scene == "rules") {
 		scene = scenes[gameMan.scene];
 		context.save();
 		context.translate(scene.x, scene.y);
@@ -563,37 +547,6 @@ function drawDialog(time) {
 		}
 		context.restore();
 	}
-}
-
-function drawSettings() {
-	var fontSize = 20;
-	context.font = fontSize + "px sans-serif";
-	context.fillStyle = "white";
-	context.clearRect(displayMan.settingsX, displayMan.settingsY, displayMan.settingsWidth, displayMan.settingsHeight);
-	context.fillText("Settings", displayMan.settingsX + 4, displayMan.settingsY + fontSize + 4);
-
-	for(var row = 0; row < settingsButtons.length; row++) {
-		var buttonRow = settingsButtons[row];
-		drawSettingsButton(row, 0, settingsButtons[row][0], "white", "#00384C");
-		for(var col = 1; col < buttonRow.length; col++) {
-			drawSettingsButton(row, col, settingsButtons[row][col], "white", "#004157");
-		}
-	}
-
-	drawSettingsButton(0, 3, audioMan.music, "white", "#00384C");
-	drawSettingsButton(1, 3, audioMan.sound, "white", "#00384C");
-	drawSettingsButton(5, 4, "Close", "white", "#004157");
-}
-
-function drawSettingsButton(row, col, text, textColor, bgColor) {
-	var padding = 4;
-	if (bgColor) {
-		context.fillStyle = bgColor;
-		context.fillRect(displayMan.settingsX + menuMan.bWidth * (col+1) + padding, displayMan.settingsY + menuMan.bHeight * (row+1) + padding,
-			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
-	}
-	context.fillStyle = textColor;
-	context.fillText(text, displayMan.settingsX + menuMan.bWidth * (col+1.2), displayMan.settingsY + menuMan.bHeight * (row+1.5)+6);
 }
 
 function drawRules() {
