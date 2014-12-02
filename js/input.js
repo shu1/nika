@@ -177,7 +177,6 @@ function mouseMove(event) {
 			var dY = inputMan.y - inputMan.pY;
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-				console.log(inPhalanx(inputMan.row, inputMan.col));
 				if (!inPhalanx(inputMan.row, inputMan.col)) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
