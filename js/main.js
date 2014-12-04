@@ -204,10 +204,10 @@ function reSize() {
 	scenes["board"] = scene;
 
 	scene = {};
-	scene.width = displayMan.ruleWidth;
-	scene.height = displayMan.ruleHeight;
-	scene.maxScale = canvas.height / displayMan.ruleHeight;
-	scene.minScale = canvas.width / displayMan.ruleWidth;
+	scene.width = 2048;
+	scene.height = 1152;
+	scene.maxScale = canvas.height / scene.height;
+	scene.minScale = canvas.width / scene.width;
 	scene.scale = scene.minScale;
 	scenes["rules"] = scene;
 
@@ -329,11 +329,11 @@ function draw(time) {
 	context.restore();
 
 	if (gameMan.scene == "rules") {
-		scene = scenes[gameMan.scene];
+		scene = scenes["rules"];
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
-		drawRules();
+		drawRules(scene);
 		context.restore();
 	}
 
@@ -549,12 +549,10 @@ function drawDialog(time) {
 	}
 }
 
-function drawRules() {
-	if (rulePages > 0) {
-		context.fillStyle = "black";
-		context.fillRect(0, 0, displayMan.ruleWidth, displayMan.ruleHeight);
-		context.drawImage(images["rule" + gameMan.rules], -98, 0);	// TODO: hack until rule pngs are resized
-	}
+function drawRules(scene) {
+	context.fillStyle = "black";
+	context.fillRect(0, 0, scene.width, scene.height);
+	context.drawImage(images["rule" + gameMan.rules], (scene.width - displayMan.ruleWidth)/2, (scene.height - displayMan.ruleHeight)/2);
 }
 
 function drawMenu(dTime) {
