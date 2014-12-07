@@ -2,7 +2,7 @@
 
 function playerAction(name) {
 	for (var player = 0; player < 4; ++player) {
-		var events = eventsMan[player];
+		var events = eventMan[player];
 		for (var i = events.length - 1; i >= 0; --i) {
 			var event = "";
 			var precedence = ["pushed", "routed", "rally", "rotate", "move", "push", "rout"];
@@ -42,7 +42,7 @@ function playerAction(name) {
 				break;
 			}
 		}
-		eventsMan[player] = [];
+		eventMan[player] = [];
 	}
 }
 

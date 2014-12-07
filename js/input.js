@@ -70,25 +70,39 @@ function getXY(event) {
 }
 
 function getRot(dX, dY) {
+	var scene = scenes[gameMan.scene];
+	var radius = 4 * displayMan.cellSize*displayMan.cellSize*scene.scale*scene.scale;
+
 	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {	// not for routed pieces
 		inputMan.row = gameMan.pRow;
 		inputMan.col = gameMan.pCol;
 
 		if (dX >= dY && dX <= -dY) {	// up
-			inputMan.row--;
 			inputMan.rot = 0;
 		}
 		else if (dX >= dY && dX >= -dY) {	// right
-			inputMan.col++;
 			inputMan.rot = 1;
 		}
 		else if (dX <= dY && dX >= -dY) {	// down
-			inputMan.row++;
 			inputMan.rot = 2;
 		}
 		else {	// left
-			inputMan.col--;
 			inputMan.rot = 3;
+		}
+
+		if (dX*dX + dY*dY > radius) {	// outside radius
+			if (inputMan.rot == 0) {
+				inputMan.row--;
+			}
+			else if (inputMan.rot == 1) {
+				inputMan.col++;
+			}
+			else if (inputMan.rot == 2) {
+				inputMan.row++;
+			}
+			else if (inputMan.rot == 3) {
+				inputMan.col--;
+			}
 		}
 	}
 }
@@ -126,13 +140,18 @@ function mouseMove(event) {
 		getXY(event);
 		if (!inputMan.menu && gameMan.winner < 0) {
 			var dX = inputMan.x - inputMan.pX;
-			var dY = inputMan.y - inputMan.pY;			
+			var dY = inputMan.y - inputMan.pY;
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
 				if (Math.abs(dX) > displayMan.cellSize/2 * scene.scale
 				|| Math.abs(dY) > displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
+				}
+				else {
+					resetRotation();
+					inputMan.row = gameMan.pRow;
+					inputMan.col = gameMan.pCol;
 				}
 				event.preventDefault();
 			}
