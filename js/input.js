@@ -112,6 +112,7 @@ function getRot(dX, dY) {
 	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {	// not for routed pieces
 		inputMan.row = gameMan.pRow;
 		inputMan.col = gameMan.pCol;
+
 		if (dX >= dY && dX <= -dY) {	// up
 			inputMan.rot = 0;
 		}
@@ -124,7 +125,8 @@ function getRot(dX, dY) {
 		else {	// left
 			inputMan.rot = 3;
 		}
-		if (gameMan.pRot == inputMan.rot || dX*dX + dY*dY > radius) {	// forward or outside radius
+
+		if (dX*dX + dY*dY > radius) {	// outside radius
 			if (inputMan.rot == 0) {
 				inputMan.row--;
 			}
@@ -177,7 +179,8 @@ function mouseMove(event) {
 			var dY = inputMan.y - inputMan.pY;
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-				if (!inPhalanx(inputMan.row, inputMan.col)) {	// inside cell is deadzone
+				if (Math.abs(dX) >= displayMan.cellSize/2 * scene.scale
+				|| Math.abs(dY) >= displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 				}
