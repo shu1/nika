@@ -139,6 +139,12 @@ function init() {
 	murals[1] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
 	murals[2] = new spriter_animation("images/mural/", view_2d, muralBlue_data);
 	murals[3] = new spriter_animation("images/mural/", view_2d, muralBlack_data);
+
+	murals[0].set_position(678, 794);
+	murals[1].set_position(1148, 844);
+	murals[2].set_position(848, 794);
+	murals[3].set_position(1320, 844);
+
 	murals[0].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
 	murals[1].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
 	murals[2].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
@@ -190,11 +196,6 @@ function reSize() {
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
-	murals[0].set_position(678, 794);
-	murals[1].set_position(1148, 844);
-	murals[2].set_position(848, 794);
-	murals[3].set_position(1320, 844);
-
 	var scene = {};
 	scene.width = displayMan.boardWidth;
 	scene.height = displayMan.boardHeight;
@@ -203,9 +204,10 @@ function reSize() {
 	scene.scale = minScale;
 	scenes["board"] = scene;
 
+	var ratio = canvas.width / canvas.height;
 	scene = {};
-	scene.width = 2048;
 	scene.height = 1152;
+	scene.width = ratio >= 1.5 ? scene.height * ratio : 2048;
 	scene.maxScale = canvas.height / scene.height;
 	scene.minScale = canvas.width / scene.width;
 	scene.scale = scene.minScale;
