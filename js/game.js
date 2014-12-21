@@ -82,10 +82,12 @@ function generateGrid(ascii) {
 function newGame() {
 	generateGrid(mainBoard);
 	gameStates = [];
+	phalanx = [];
 	pushGameState();
 	gameMan.winner = -1;
 	gameMan.player = 0;
 	gameMan.actions = 2;
+
 	useAction(0);
 }
 
@@ -94,7 +96,7 @@ function debugGrid() {
 		var str = "";
 		for (var col = 0; col < 21; ++col) {
 			var a = grid[row][col].city;
-			str += (a == -1) ? '.' : a;
+			str += a == -1 ? '.' : a;
 		}
 		console.log(str);
 	}
@@ -116,9 +118,20 @@ function useAction(n) {
 	if (gameMan.actions <= 0) {
 		gameMan.actions = 2;
 		gameMan.player = (gameMan.player + 1) % 4;
+		if (gameMan.tutorialStep < 0) {
+			displayMan.helmetScale = 1;	// zoom helmets
+		}
+	}
+	else if (gameMan.tutorialStep != 2) {	// hack
+		displayMan.helmetFlash = 1;	// flash helmet
 	}
 	hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	checkWin();
+}
+
+function pass() {
+	pushGameState();
+	useAction(2);
 }
 
 function getCity(player) {
@@ -177,6 +190,7 @@ function undo() {
 		revertGrid();
 		gameMan.player = gameStates[gameStates.length-1].player;
 		gameMan.actions = gameStates[gameStates.length-1].actions;
+		phalanx = [];
 		hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	}
 }
@@ -198,11 +212,11 @@ function revertGrid() {
 function checkWin() {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
-			if (grid[row][col].kind == 1
-			 && grid[row][col].player >= 0
-			 && grid[row][col].player != grid[row][col].city
+			if (grid[row][col].kind == 1 && grid[row][col].player >= 0 && grid[row][col].player != grid[row][col].city
 			 && gameMan.tutorialStep < 0) {
 				gameMan.winner = grid[row][col].player;
+				murals[gameMan.winner].setAnim("victory");
+				murals[getPartner(gameMan.winner)].setAnim("victory");
 			}
 		}
 	}

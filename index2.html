@@ -2,17 +2,26 @@
 <!-- Nika Digital by Studio Mercato 2013 -->
 <html>
 <head>
+<meta name="viewport" content="width=2048, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="application-name" content="Nika Digital"/>
-<meta name="msapplication-TileColor" content="#073c50"/>
+<meta name="msapplication-TileColor" content="#00384C"/>
 <meta name="msapplication-square150x150logo" content="logo150.png"/>
 <meta name="msapplication-wide310x150logo" content="logo310.png"/>
 <title>Nika Digital</title>
 <script type="text/javascript">
-var fullScreen = true;
-var minScale = 1;
-var maxScale = 4/3;
+var fontType = 0;
+var screenType = 0;
 var rulePages = 10;
 </script>
+<script src="js/muralWhite.js"></script>
+<script src="js/muralOrange.js"></script>
+<script src="js/muralBlue.js"></script>
+<script src="js/muralBlack.js"></script>
+<script src="js/spriter.js"></script>
+<script src="js/spriter_draw_2d.js"></script>
+<script src="js/spriter_object.js"></script>
 <script src="js/globals.js"></script>
 <script src="js/main.js"></script>
 <script src="js/input.js"></script>
@@ -27,31 +36,34 @@ ga.src=('https:'==document.location.protocol?'https://ssl':'http://www')+'.googl
 var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga,s);})();
 </script>
 </head>
-<body style="margin:0px; background-color:#073c50">
-	<img src="images/athens80.png"	id="athens"	style="display:none"/>
-	<img src="images/sparta80.png"	id="sparta"	style="display:none"/>
-	<img src="images/messene80.png"	id="messene"style="display:none"/>
-	<img src="images/thebes80.png"	id="thebes"	style="display:none"/>
-	<img src="images/sheen80.png"	id="sheen"	style="display:none"/>
-	<img src="images/shadow80.png"	id="shadow"	style="display:none"/>
-	<img src="images/gold96.png"	id="gold"	style="display:none"/>
-	<img src="images/silver96.png"	id="silver"	style="display:none"/>
-	<img src="images/green96.png"	id="green"	style="display:none"/>
-	<img src="images/greenShadow80.png"	id="greenShadow"	style="display:none"/>
-	<img src="images/helmet1.png"	id="helmet1"	style="display:none"/>
-	<img src="images/helmet2.png"	id="helmet2"	style="display:none"/>
-	<img src="images/rule0.png"	id="rule0"	style="display:none"/>
-	<img src="images/rule1.png"	id="rule1"	style="display:none"/>
-	<img src="images/rule2.png"	id="rule2"	style="display:none"/>
-	<img src="images/rule3.png"	id="rule3"	style="display:none"/>
-	<img src="images/rule4.png"	id="rule4"	style="display:none"/>
-	<img src="images/rule5.png"	id="rule5"	style="display:none"/>
-	<img src="images/rule6.png"	id="rule6"	style="display:none"/>
-	<img src="images/rule7.png"	id="rule7"	style="display:none"/>
-	<img src="images/rule8.png"	id="rule8"	style="display:none"/>
-	<img src="images/rule9.png"	id="rule9"	style="display:none"/>
-	<img src="images/board2016.png"	id="board"	style="display:none"/>
-	<canvas id="canvas"></canvas>
+<body style="margin:0px; background-color:#00384C">
+	<div style="width:2048px; margin-left:auto; margin-right:auto; position:relative">
+		<img src="images/athens80.png"	id="athens"	style="display:none"/>
+		<img src="images/sparta80.png"	id="sparta"	style="display:none"/>
+		<img src="images/messene80.png"	id="messene"style="display:none"/>
+		<img src="images/thebes80.png"	id="thebes"	style="display:none"/>
+		<img src="images/sheen80.png"	id="sheen"	style="display:none"/>
+		<img src="images/shadow80.png"	id="shadow"	style="display:none"/>
+		<img src="images/gold96.png"	id="gold"	style="display:none"/>
+		<img src="images/green96.png"	id="greenRing"	style="display:none"/>
+		<img src="images/greenComet80.png"	id="greenComet"		style="display:none"/>
+		<img src="images/greenShadow80.png"	id="greenShadow"	style="display:none"/>
+		<img src="images/helmet1.png"	id="helmet1"	style="display:none"/>
+		<img src="images/helmet2.png"	id="helmet2"	style="display:none"/>
+		<img src="images/rule0.png"	id="rule0"	style="display:none"/>
+		<img src="images/rule1.png"	id="rule1"	style="display:none"/>
+		<img src="images/rule2.png"	id="rule2"	style="display:none"/>
+		<img src="images/rule3.png"	id="rule3"	style="display:none"/>
+		<img src="images/rule4.png"	id="rule4"	style="display:none"/>
+		<img src="images/rule5.png"	id="rule5"	style="display:none"/>
+		<img src="images/rule6.png"	id="rule6"	style="display:none"/>
+		<img src="images/rule7.png"	id="rule7"	style="display:none"/>
+		<img src="images/rule8.png"	id="rule8"	style="display:none"/>
+		<img src="images/rule9.png"	id="rule9"	style="display:none"/>
+		<img src="images/mural.png"	id="mural"	style="display:none"/>
+		<img src="images/board2016.png"	id="board"	style="display:none"/>
+		<canvas id="canvas" width=2048 height=1536></canvas>
+	</div>
 	<audio src="audio/pick.mp3" id="pick"></audio>
 	<audio src="audio/drop.mp3" id="drop"></audio>
 	<audio src="audio/move.mp3" id="move"></audio>

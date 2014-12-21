@@ -8,6 +8,7 @@ function menuButton(button) {
 		switch(button) {
 		case 1:
 			gameMan.debug = !gameMan.debug;
+			initAnimations();
 			break;
 		case 2:
 			if (gameMan.tutorialStep < 0) {
@@ -21,10 +22,13 @@ function menuButton(button) {
 			setScene(gameMan.scene ? 0 : 2);
 			break;
 		case 4:
-			useAction(2);
+			pass();
 			break;
 		case 5:
 			undo();
+			break;
+		case 6:
+			zoom();
 			break;
 		}
 	}
@@ -32,8 +36,8 @@ function menuButton(button) {
 
 function getSettingsButton() {
 	var scene = scenes[gameMan.scene];
-	var row = Math.floor((inputMan.y - scene.y - settingsMan.y * scene.scale) / (menuMan.bHeight * scene.scale)) - 1;
-	var col = Math.floor((inputMan.x - scene.x - settingsMan.x * scene.scale) / (menuMan.bWidth * scene.scale)) - 1;
+	var row = Math.floor((inputMan.y - scene.y - displayMan.settingsY * scene.scale) / (menuMan.bHeight * scene.scale)) - 1;
+	var col = Math.floor((inputMan.x - scene.x - displayMan.settingsX * scene.scale) / (menuMan.bWidth * scene.scale)) - 1;
 	return {row: row, col: col}
 }
 
@@ -102,31 +106,50 @@ function getXY(event) {
 }
 
 function getRot(dX, dY) {
+	var scene = scenes[gameMan.scene];
+	var radius = 4 * displayMan.cellSize*displayMan.cellSize*scene.scale*scene.scale;
+
 	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {	// not for routed pieces
 		inputMan.row = gameMan.pRow;
 		inputMan.col = gameMan.pCol;
 
 		if (dX >= dY && dX <= -dY) {	// up
-			inputMan.row--;
 			inputMan.rot = 0;
 		}
 		else if (dX >= dY && dX >= -dY) {	// right
-			inputMan.col++;
 			inputMan.rot = 1;
 		}
 		else if (dX <= dY && dX >= -dY) {	// down
-			inputMan.row++;
 			inputMan.rot = 2;
 		}
 		else {	// left
-			inputMan.col--;
 			inputMan.rot = 3;
+		}
+
+		if (dX*dX + dY*dY > radius) {	// outside radius
+			if (inputMan.rot == 0) {
+				inputMan.row--;
+			}
+			else if (inputMan.rot == 1) {
+				inputMan.col++;
+			}
+			else if (inputMan.rot == 2) {
+				inputMan.row++;
+			}
+			else if (inputMan.rot == 3) {
+				inputMan.col--;
+			}
 		}
 	}
 }
 
 function mouseDown(event) {
-	hudMan.soundText = "";
+	if (!displayMan.initAnim) {
+		initAnimations();
+		displayMan.initAnim = true;
+	}
+
+	hudMan.actionText = "";
 	hudMan.inputText = "";
 	inputMan.menu = getXY(event);
 	if (!inputMan.menu && gameMan.winner < 0) {
@@ -157,9 +180,15 @@ function mouseMove(event) {
 			var dY = inputMan.y - inputMan.pY;
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-				if (Math.abs(dX) > displayMan.cellSize/2 * scene.scale || Math.abs(dY) > displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
+				if (Math.abs(dX) >= displayMan.cellSize/2 * scene.scale
+				|| Math.abs(dY) >= displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
+				}
+				else {
+					resetRotation();
+					inputMan.row = gameMan.pRow;
+					inputMan.col = gameMan.pCol;
 				}
 				event.preventDefault();
 			}
@@ -183,11 +212,13 @@ function mouseUp(event) {
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
 		}
-		else if (!dblClick(event)) {
+		else {
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == 1) {	// settings
-				if (inputMan.x - scene.x > settingsMan.x * scene.scale && inputMan.x - scene.x < (settingsMan.x + settingsMan.width) * scene.scale
-				&& inputMan.y - scene.y > settingsMan.y * scene.scale && inputMan.y - scene.y < (settingsMan.y + settingsMan.height) * scene.scale) {
+				if (inputMan.x - scene.x > displayMan.settingsX * scene.scale
+					&& inputMan.x - scene.x < (displayMan.settingsX + displayMan.settingsWidth) * scene.scale
+				&& inputMan.y - scene.y > displayMan.settingsY * scene.scale
+				&& inputMan.y - scene.y < (displayMan.settingsY + displayMan.settingsHeight) * scene.scale) {
 					// sounds[6].volume = 1 - sounds[6].volume;
 					// getSettingsButton();
 					settingsButton(0);
@@ -209,15 +240,19 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
-				if (inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
-				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
+				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale
+					&& inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
+				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale
+				&& inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
 					inputMan.time = 0;
 					nextTutorialStep();
 				}
 			}
 			else if (gameMan.winner >= 0) {	// win screen
-				if (inputMan.x - scene.x > dialogMan.x * scene.scale && inputMan.x - scene.x < (dialogMan.x + dialogMan.width) * scene.scale
-				&& inputMan.y - scene.y > dialogMan.y * scene.scale && inputMan.y - scene.y < (dialogMan.y + dialogMan.height) * scene.scale) {
+				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale
+					&& inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
+				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale
+				&& inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
 					inputMan.time = 0;
 					newGame();
 				}
@@ -227,13 +262,11 @@ function mouseUp(event) {
 			 	if (!gameMan.selection) {
 			 		phalanx.length = 0;
 			 	}
-			 	gameMan.selection = true;
 			 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
 			 	checkTutorialSelection();
 			}
 			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 				inputMan.time = 0;
-				gameMan.selection = false;	// after move always get out of selection mode
 			}
 			else if (gameMan.selection && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
 				togglePhalanxPiece(inputMan.row, inputMan.col);
@@ -241,33 +274,14 @@ function mouseUp(event) {
 
 			if (phalanx.length > 0) {
 				if (grid[phalanx[0].row][phalanx[0].col].kind == 3) {
-					gameMan.selection = false;
 					phalanx.length = 0;
 				}
 			}
 		}
+		gameMan.selection = false;
 		inputMan.menu = false;
 		inputMan.click = false;
 		audioMan.play = true;
 		displayMan.draw = true;
 	}
-}
-
-function dblClick(event) {
-	if (gameMan.scene == 1 || gameMan.scene == 2) {
-		return false;
-	}
-	var time = Date.now();
-	if (time - inputMan.time < 300) {	// double click time in milliseconds
-		hudMan.inputText += " " + (time - inputMan.time) + "ms";
-		event.preventDefault();
-
-		if (maxScale != minScale) {	// zoom not disabled
-			zoom();
-		}
-		inputMan.time = 0;	// reset so next click is not double click
-		return true;
-	}
-	inputMan.time = time;
-	return false;
 }
