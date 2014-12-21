@@ -139,6 +139,12 @@ function init() {
 	murals[1] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
 	murals[2] = new spriter_animation("images/mural/", view_2d, muralBlue_data);
 	murals[3] = new spriter_animation("images/mural/", view_2d, muralBlack_data);
+
+	murals[0].set_position(678, 794);
+	murals[1].set_position(1148, 844);
+	murals[2].set_position(848, 794);
+	murals[3].set_position(1320, 844);
+
 	murals[0].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
 	murals[1].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
 	murals[2].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
@@ -190,50 +196,28 @@ function reSize() {
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
-	murals[0].set_position(678, 794);
-	murals[1].set_position(1148, 844);
-	murals[2].set_position(848, 794);
-	murals[3].set_position(1320, 844);
-
 	var scene = {};
 	scene.width = displayMan.boardWidth;
 	scene.height = displayMan.boardHeight;
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
 	scene.scale = minScale;
-	scenes[0] = scene;
+	scenes["board"] = scene;
 
+	var ratio = canvas.width / canvas.height;
 	scene = {};
-	scene.width = displayMan.boardWidth;
-	scene.height = displayMan.boardHeight;
-	scene.maxScale = maxScale;
-	scene.minScale = minScale;
-	scene.scale = minScale;
-	scenes[1] = scene;
-
-	scene = {};
-	scene.width = displayMan.ruleWidth;
-	scene.height = displayMan.ruleHeight;
-	if (maxScale == minScale) {
-		scene.maxScale = 1;
-		scene.minScale = canvas.height / displayMan.ruleHeight;
-	}
-	else if (canvas.width > displayMan.ruleWidth) {
-		scene.maxScale = canvas.width / displayMan.ruleWidth;
-		scene.minScale = 1;
-	}
-	else{
-		scene.maxScale = 1;
-		scene.minScale = canvas.width / displayMan.ruleWidth;
-	}
+	scene.height = 1152;
+	scene.width = ratio >= 1.5 ? scene.height * ratio : 2048;
+	scene.maxScale = canvas.height / scene.height;
+	scene.minScale = canvas.width / scene.width;
 	scene.scale = scene.minScale;
-	scenes[2] = scene;
+	scenes["rules"] = scene;
 
-	setScene();
+	setScene("board");
 }
 
 function setScene(sceneIndex) {
-	if (sceneIndex >= 0) {
+	if (sceneIndex) {
 		gameMan.scene = sceneIndex;
 	}
 
@@ -329,7 +313,7 @@ function draw(time) {
 	var dTime = time - displayMan.time;
 	zooming(dTime);
 
-	var scene = scenes[0];
+	var scene = scenes["board"];
 	context.save();
 	context.translate(scene.x, scene.y);
 	context.scale(scene.scale, scene.scale);
@@ -346,20 +330,12 @@ function draw(time) {
 
 	context.restore();
 
-	if (gameMan.scene == 1) {
-		scene = scenes[1];
+	if (gameMan.scene == "rules") {
+		scene = scenes["rules"];
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
-		drawSettings();
-		context.restore();
-	}
-	else if (gameMan.scene == 2) {
-		scene = scenes[2];
-		context.save();
-		context.translate(scene.x, scene.y);
-		context.scale(scene.scale, scene.scale);
-		drawRules();
+		drawRules(scene);
 		context.restore();
 	}
 
@@ -575,41 +551,10 @@ function drawDialog(time) {
 	}
 }
 
-function drawSettings() {
-	var fontSize = 20;
-	context.font = fontSize + "px sans-serif";
-	context.fillStyle = "white";
-	context.clearRect(displayMan.settingsX, displayMan.settingsY, displayMan.settingsWidth, displayMan.settingsHeight);
-	context.fillText("Settings", displayMan.settingsX + 4, displayMan.settingsY + fontSize + 4);
-
-	for(var row = 0; row < settingsButtons.length; row++) {
-		var buttonRow = settingsButtons[row];
-		drawSettingsButton(row, 0, settingsButtons[row][0], "white", "#00384C");
-		for(var col = 1; col < buttonRow.length; col++) {
-			drawSettingsButton(row, col, settingsButtons[row][col], "white", "#004157");
-		}
-	}
-
-	drawSettingsButton(0, 3, audioMan.music, "white", "#00384C");
-	drawSettingsButton(1, 3, audioMan.sound, "white", "#00384C");
-	drawSettingsButton(5, 4, "Close", "white", "#004157");
-}
-
-function drawSettingsButton(row, col, text, textColor, bgColor) {
-	var padding = 4;
-	if (bgColor) {
-		context.fillStyle = bgColor;
-		context.fillRect(displayMan.settingsX + menuMan.bWidth * (col+1) + padding, displayMan.settingsY + menuMan.bHeight * (row+1) + padding,
-			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
-	}
-	context.fillStyle = textColor;
-	context.fillText(text, displayMan.settingsX + menuMan.bWidth * (col+1.2), displayMan.settingsY + menuMan.bHeight * (row+1.5)+6);
-}
-
-function drawRules() {
-	if (rulePages > 0) {
-		context.drawImage(images["rule" + gameMan.rules], 0, 0);
-	}
+function drawRules(scene) {
+	context.fillStyle = "black";
+	context.fillRect(0, 0, scene.width, scene.height);
+	context.drawImage(images["rule" + gameMan.rules], (scene.width - displayMan.ruleWidth)/2, (scene.height - displayMan.ruleHeight)/2);
 }
 
 function drawMenu(dTime) {
@@ -665,7 +610,7 @@ function drawMenu(dTime) {
 					if (inputMan.menu && button == menuMan.button
 					|| button == 1 && gameMan.debug
 					|| button == 2 && gameMan.tutorialStep >= 0
-					|| button == 3 && gameMan.scene == 2) {
+					|| button == 3 && gameMan.scene == "rules") {
 						drawButton(row, col, buttons[button+1], "#004157", "white");
 					}
 					else {

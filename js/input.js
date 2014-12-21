@@ -19,7 +19,7 @@ function menuButton(button) {
 			}
 			break;
 		case 3:
-			setScene(gameMan.scene ? 0 : 2);
+			setScene(gameMan.scene == "board" ? "rules" : "board");
 			break;
 		case 4:
 			pass();
@@ -30,42 +30,6 @@ function menuButton(button) {
 		case 6:
 			zoom();
 			break;
-		}
-	}
-}
-
-function getSettingsButton() {
-	var scene = scenes[gameMan.scene];
-	var row = Math.floor((inputMan.y - scene.y - displayMan.settingsY * scene.scale) / (menuMan.bHeight * scene.scale)) - 1;
-	var col = Math.floor((inputMan.x - scene.x - displayMan.settingsX * scene.scale) / (menuMan.bWidth * scene.scale)) - 1;
-	return {row: row, col: col}
-}
-
-function settingsButton(row, col) {
-	var button = getSettingsButton();
-	var row = button.row;
-	var col = button.col;
-	if (row == 0) {
-		if (col == 1) {
-			audioMan.music = Math.max(0, audioMan.music - 1);
-		}
-		else if (col == 2) {
-			audioMan.music = Math.min(10, audioMan.music + 1);
-		}
-		sounds["music"].volume = volumeCurve(audioMan.music / 10);
-
-	}
-	else if (row == 1) {
-		if (col == 1) {
-			audioMan.sound = Math.max(0, audioMan.sound - 1);
-		}
-		else if (col == 2) {
-			audioMan.sound = Math.min(10, audioMan.sound + 1);
-		}
-	}
-	else if (row == 5) {
-		if (col == 4) {
-			setScene(0);
 		}
 	}
 }
@@ -155,7 +119,7 @@ function mouseDown(event) {
 	if (!inputMan.menu && gameMan.winner < 0) {
 		getPiece(inputMan.row, inputMan.col);
 		var scene = scenes[gameMan.scene];
-		if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
+		if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
 			inputMan.pX = scene.x + (gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
 			inputMan.pY = scene.y + (gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
 			event.preventDefault();
@@ -178,9 +142,9 @@ function mouseMove(event) {
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
 			var scene = scenes[gameMan.scene];
-			if (gameMan.scene == 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-				if (Math.abs(dX) >= displayMan.cellSize/2 * scene.scale
-				|| Math.abs(dY) >= displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
+			if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
+				if (Math.abs(dX) > displayMan.cellSize/2 * scene.scale
+				|| Math.abs(dY) > displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
 					getRot(dX, dY);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 				}
@@ -212,17 +176,7 @@ function mouseUp(event) {
 		}
 		else {
 			var scene = scenes[gameMan.scene];
-			if (gameMan.scene == 1) {	// settings
-				if (inputMan.x - scene.x > displayMan.settingsX * scene.scale
-					&& inputMan.x - scene.x < (displayMan.settingsX + displayMan.settingsWidth) * scene.scale
-				&& inputMan.y - scene.y > displayMan.settingsY * scene.scale
-				&& inputMan.y - scene.y < (displayMan.settingsY + displayMan.settingsHeight) * scene.scale) {
-					// sounds[6].volume = 1 - sounds[6].volume;
-					// getSettingsButton();
-					settingsButton(0);
-				}
-			}
-			else if (gameMan.scene == 2) {	// rules
+			if (gameMan.scene == "rules") {
 				if (inputMan.y > canvas.height / 2 - displayMan.cellSize * 1.5
 				 && inputMan.y < canvas.height / 2 + displayMan.cellSize * 1.5) {
 					if (inputMan.x > canvas.width - displayMan.cellSize*2) {
@@ -234,12 +188,12 @@ function mouseUp(event) {
 				}
 
 				if (inputMan.x < displayMan.cellSize*3.5 && inputMan.y > canvas.height - displayMan.cellSize*2.5) {
-					setScene(0);
+					setScene("board");
 				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
 				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale
-					&& inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
+				&& inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
 				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale
 				&& inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
 					inputMan.time = 0;
@@ -248,7 +202,7 @@ function mouseUp(event) {
 			}
 			else if (gameMan.winner >= 0) {	// win screen
 				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale
-					&& inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
+				&& inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
 				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale
 				&& inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
 					inputMan.time = 0;

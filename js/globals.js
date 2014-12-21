@@ -8,16 +8,12 @@ var displayMan = {
 	boardWidth:2016,
 	boardHeight:1440,
 	ruleWidth:2016,
-	ruleHeight:1440,
+	ruleHeight:1024,
 	dialogX:628,
 	dialogY:624,
 	dialogWidth:758,
 	dialogHeight:192,
 	tutorialOffset:152,
-	settingsX:384,
-	settingsY:384,
-	settingsWidth:1248,
-	settingsHeight:672,
 	initAnim:false,
 	menu:false,
 	helmetTheta:0,
@@ -47,7 +43,7 @@ var gameMan = {
 	winner:-1,
 	actions:2,
 	player:0,
-	scene:0,	// 0:game, 1:settings, 2:rules
+	scene:"",
 	rules:0,
 	pRow:-1,
 	pCol:-1,
@@ -99,11 +95,6 @@ var buttons = [
 	"  Pass",
 	"  Undo",
 	"  Zoom"
-]
-
-var settingsButtons = [
-	["Music", "-", "+"],
-	["Sounds", "-", "+"]
 ]
 
 var mainBoard = [
