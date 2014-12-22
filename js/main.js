@@ -110,13 +110,13 @@ function init() {
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
 
-	if (window.navigator.msPointerEnabled) {
+	if (navigator.msPointerEnabled) {
 		canvas.style.msTouchAction = "none";
 		canvas.addEventListener("MSPointerDown", mouseDown);
 		canvas.addEventListener("MSPointerMove", mouseMove);
 		window.addEventListener("MSPointerUp", mouseUp);
 	}
-	else if ("ontouchstart" in window) {
+	else if ("ontouchstart" in window && window.nwf === undefined) {
 		window.addEventListener("touchstart", mouseDown);
 		window.addEventListener("touchmove", mouseMove);
 		window.addEventListener("touchend", mouseUp);
@@ -172,7 +172,7 @@ function reSize() {
 		minScale = 1;
 		maxScale = 4/3;
 	}
-	else if (screenType == 2) {	// tablets
+	else if (screenType == 2) {	// tablet or tv
 		minScale = canvas.height / displayMan.boardHeight;
 		maxScale = canvas.width / displayMan.boardWidth;
 	}
