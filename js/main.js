@@ -529,14 +529,14 @@ function drawDialog(time) {
 
 		var spacing = 36, topPadding = 26, bottomPadding = 14, buttonOffset = 306, font = "px Georgia";
 		if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
-			context.font = (fontType ? 28 : 30) + font;
+			context.font = (fontSize-2) + font;
 			spacing -= 4;
 			topPadding -= 2;
 			bottomPadding -= 2;
 			buttonOffset += 18;
 		}
 		else {
-			context.font = (fontType ? 30 : 32) + font;
+			context.font = fontSize + font;
 		}
 
 		for (var i = lines.length-1; i >= 0; --i) {
