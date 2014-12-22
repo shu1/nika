@@ -280,6 +280,14 @@ function setupTutorial() {
 		resetActions(0);
 		pushGameState();
 		break;
+	case 54:
+		grid[2][9].prompt = 2;
+		grid[2][10].prompt = 2;
+		grid[2][11].prompt = 2;
+		grid[12][9].prompt = 2;
+		grid[12][10].prompt = 2;
+		grid[12][11].prompt = 2;
+		break;
 	case 58:
 		endTutorial();
 		break;
