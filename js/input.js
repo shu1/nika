@@ -171,7 +171,6 @@ function mouseMove(event) {
 function mouseUp(event) {
 	if (inputMan.click) {
 		hudMan.inputText += " up";
-		console.log("Mouse up being handled.");
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
 		}
