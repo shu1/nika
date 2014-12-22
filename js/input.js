@@ -108,30 +108,30 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
-	if (inputMan.click) {
-		revertGrid();
+	if (setCurrentTouch(event)) {
+		hudMan.actionText = "";
+		hudMan.inputText = "";
+		inputMan.menu = getXY(event);
+		if (!inputMan.menu && gameMan.winner < 0) {
+			getPiece(inputMan.row, inputMan.col);
+			if (phalanx.length > 0) {
+				setRallyHighlights(phalanx[0].row, phalanx[0].col);
+			}
+			var scene = scenes[gameMan.scene];
+			if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
+				inputMan.pX = scene.x + (gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
+				inputMan.pY = scene.y + (gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
+				event.preventDefault();
+			}
+			else {
+				inputMan.pX = inputMan.x;
+				inputMan.pY = inputMan.y;
+				gameMan.selection = false;	// back to normal selection if you deselect pieces
+				phalanx.length = 0;
+			}
+		}
 	}
-	hudMan.actionText = "";
-	hudMan.inputText = "";
-	inputMan.menu = getXY(event);
-	if (!inputMan.menu && gameMan.winner < 0) {
-		getPiece(inputMan.row, inputMan.col);
-		if (phalanx.length > 0) {
-			setRallyHighlights(phalanx[0].row, phalanx[0].col);
-		}
-		var scene = scenes[gameMan.scene];
-		if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
-			inputMan.pX = scene.x + (gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
-			inputMan.pY = scene.y + (gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
-			event.preventDefault();
-		}
-		else {
-			inputMan.pX = inputMan.x;
-			inputMan.pY = inputMan.y;
-			gameMan.selection = false;	// back to normal selection if you deselect pieces
-			phalanx.length = 0;
-		}
-	}
+
 	hudMan.inputText += " down";
 	inputMan.click = true;
 }
@@ -169,7 +169,7 @@ function mouseMove(event) {
 }
 
 function mouseUp(event) {
-	if (inputMan.click) {
+	if (inputMan.click && isMatchingTouch(event)) {
 		hudMan.inputText += " up";
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
@@ -236,4 +236,37 @@ function mouseUp(event) {
 		inputMan.click = false;
 		audioMan.play = true;
 	}
+}
+
+function setCurrentTouch(event) {
+	if (event.changedTouches && event.changedTouches.length > 0) {
+		// respect touch ID if touch API supported
+		if (currentTouchId == -1) {
+			currentTouchId = event.changedTouches[0].identifier;
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		// cancel all touches if touch API not supported
+		revertGrid();
+		return true;
+	}
+}
+
+function isMatchingTouch(event) {
+	if (event.changedTouches) {
+		// if touch API supported
+		for (var i=event.changedTouches.length - 1; i >= 0; --i) {
+			if (event.changedTouches[i].identifier == currentTouchId) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// all touches are deemed to "match" if touch API is not supported
+	return true;
 }
