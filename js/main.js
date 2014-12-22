@@ -374,7 +374,7 @@ function setRings() {
 	for (var i = phalanx.length-1; i >= 0; --i) {
 		grid[phalanx[i].row][phalanx[i].col].ring = 0;
 	}
-	clearRallyHighlights();
+	// clearRallyHighlights();
 
 	if (inputMan.click) {
 		if (phalanx.length > 1) {
@@ -391,9 +391,9 @@ function setRings() {
 			if (checkMove(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 				grid[inputMan.row][inputMan.col].ring = 1;
 			}
-			if (phalanx.length > 0) {
-				setRallyHighlights(phalanx[0].row, phalanx[0].col);
-			}
+			// if (phalanx.length > 0) {
+			// 	setRallyHighlights(phalanx[0].row, phalanx[0].col);
+			// }
 		}
 	}
 }

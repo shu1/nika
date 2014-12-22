@@ -113,6 +113,9 @@ function mouseDown(event) {
 	inputMan.menu = getXY(event);
 	if (!inputMan.menu && gameMan.winner < 0) {
 		getPiece(inputMan.row, inputMan.col);
+		if (phalanx.length > 0) {
+			setRallyHighlights(phalanx[0].row, phalanx[0].col);
+		}
 		var scene = scenes[gameMan.scene];
 		if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
 			inputMan.pX = scene.x + (gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
@@ -225,6 +228,7 @@ function mouseUp(event) {
 				}
 			}
 		}
+		clearRallyHighlights();
 		gameMan.selection = false;
 		inputMan.menu = false;
 		inputMan.click = false;
