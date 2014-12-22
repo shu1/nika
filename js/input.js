@@ -231,6 +231,7 @@ function mouseUp(event) {
 			}
 		}
 		clearRallyHighlights();
+		endCurrentTouch();
 		gameMan.selection = false;
 		inputMan.menu = false;
 		inputMan.click = false;
@@ -254,6 +255,10 @@ function setCurrentTouch(event) {
 		revertGrid();
 		return true;
 	}
+}
+
+function endCurrentTouch(event) {
+	currentTouchId = -1;
 }
 
 function isMatchingTouch(event) {
