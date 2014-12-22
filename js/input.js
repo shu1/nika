@@ -108,6 +108,9 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
+	if (inputMan.click) {
+		revertGrid();
+	}
 	hudMan.actionText = "";
 	hudMan.inputText = "";
 	inputMan.menu = getXY(event);
@@ -168,7 +171,7 @@ function mouseMove(event) {
 function mouseUp(event) {
 	if (inputMan.click) {
 		hudMan.inputText += " up";
-
+		console.log("Mouse up being handled.");
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
 		}
