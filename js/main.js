@@ -116,7 +116,7 @@ function init() {
 		canvas.addEventListener("MSPointerMove", mouseMove);
 		window.addEventListener("MSPointerUp", mouseUp);
 	}
-	else if ("ontouchstart" in window && window.nwf === undefined) {
+	else if ("ontouchstart" in window && window.nwf === undefined) {	// NWF should use mouse events
 		window.addEventListener("touchstart", mouseDown);
 		window.addEventListener("touchmove", mouseMove);
 		window.addEventListener("touchend", mouseUp);
