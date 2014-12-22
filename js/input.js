@@ -90,7 +90,7 @@ function getRot(dX, dY) {
 			inputMan.rot = 3;
 		}
 
-		if (dX*dX + dY*dY > radius) {	// outside radius
+		if (gameMan.pRot == inputMan.rot || dX*dX + dY*dY < radius) {	// forward or inside radius
 			if (inputMan.rot == 0) {
 				inputMan.row--;
 			}
