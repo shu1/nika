@@ -14,7 +14,6 @@ var displayMan = {
 	dialogWidth:758,
 	dialogHeight:192,
 	tutorialOffset:152,
-	initAnim:false,
 	menu:false,
 	helmetTheta:0,
 	helmetScale:0,
