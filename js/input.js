@@ -242,8 +242,8 @@ function mouseUp(event) {
 function setCurrentTouch(event) {
 	if (event.changedTouches && event.changedTouches.length > 0) {
 		// respect touch ID if touch API supported
-		if (currentTouchId == -1) {
-			currentTouchId = event.changedTouches[0].identifier;
+		if (inputMan.currentTouchId == -1) {
+			inputMan.currentTouchId = event.changedTouches[0].identifier;
 			return true;
 		}
 		else {
@@ -258,14 +258,14 @@ function setCurrentTouch(event) {
 }
 
 function endCurrentTouch(event) {
-	currentTouchId = -1;
+	inputMan.currentTouchId = -1;
 }
 
 function isMatchingTouch(event) {
 	if (event.changedTouches) {
 		// if touch API supported
 		for (var i=event.changedTouches.length - 1; i >= 0; --i) {
-			if (event.changedTouches[i].identifier == currentTouchId) {
+			if (event.changedTouches[i].identifier == inputMan.currentTouchId) {
 				return true;
 			}
 		}

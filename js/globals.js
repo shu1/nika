@@ -1,6 +1,6 @@
 "use strict";
 
-var canvas, context, grid, images=[], sounds=[], phalanx=[], gameStates=[], scenes=[], murals=[], tick={}, currentTouchId=-1;
+var canvas, context, grid, images=[], sounds=[], phalanx=[], gameStates=[], scenes=[], murals=[], tick={};
 
 var displayMan = {
 	cellSize:96,
@@ -59,7 +59,8 @@ var inputMan = {
 	pX:0,
 	pY:0,
 	x:0,
-	y:0
+	y:0,
+	currentTouchId:-1
 }
 
 var menuMan = {
