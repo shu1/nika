@@ -66,10 +66,11 @@ function rotatePiece(pRow, pCol, rot) {
 function movePiece(pRow, pCol, row, col) {
 	var moved = false;
 	if (pRow >= 0 && pCol >= 0) {
+		var currentPlayer = grid[pRow][pCol].player;
 		if (phalanx.length > 1) {
 			if (movePhalanx(pRow, pCol, row, col)) {
-				if (eventMan[gameMan.player].length == 0) {
-					eventMan[gameMan.player].push("move");
+				if (eventMan[currentPlayer].length == 0) {
+					eventMan[currentPlayer].push("move");
 				}
 				phalanx.length = 0;
 				moved = true;
@@ -82,16 +83,16 @@ function movePiece(pRow, pCol, row, col) {
 
 			if (routedCell(pRow, pCol) && grid[row][col].kind == 2) {	// rally
 				grid[row][col].rot = grid[row][col].player;	// set rotation toward center of board
-				eventMan[gameMan.player].push("rally");
+				eventMan[currentPlayer].push("rally");
 			}
 			else {
-				eventMan[gameMan.player].push("move");
+				eventMan[currentPlayer].push("move");
 			}
 		}
 
 		if (grid[pRow][pCol].rot != gameMan.pRot) {
-			if (eventMan[gameMan.player].length == 0) {
-				eventMan[gameMan.player].push("rotate");
+			if (eventMan[currentPlayer].length == 0) {
+				eventMan[currentPlayer].push("rotate");
 			}
 			phalanx.length = 0;
 			moved = true;
@@ -146,6 +147,7 @@ function checkMove(pRow, pCol, row, col) {
 }
 
 function pushPiece(pRow, pCol, row, col, pusher, weight) {
+	var currentPlayer = grid[pRow][pCol].player;
 	if (invalidCell(row, col)) {
 		return false;
 	}
@@ -175,7 +177,7 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 	}
 	else {	// enemy piece
 		if ((grid[pRow][pCol].rot+2)%4 != grid[row][col].rot && grid[pRow][pCol].player == pusher) {	// not facing enemy
-			routPiece(row,col);
+			routPiece(row,col, currentPlayer);
 			return true;
 		}
 
@@ -183,7 +185,7 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 			if (invalidCell(fRow, fCol)
 			|| (grid[fRow][fCol].player >= 0 && Math.abs(grid[fRow][fCol].player - grid[row][col].player)%2 == 1)	// pushed into enemy piece
 			|| (grid[fRow][fCol].kind == 1 && Math.abs(grid[fRow][fCol].city - grid[row][col].player)%2 == 1)) {	// pushed into enemy win cell
-				routPiece(row,col);
+				routPiece(row,col, currentPlayer);
 				return true;
 			}
 
@@ -199,7 +201,7 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 function pushOnePiece(row, col, fRow, fCol, pusher) {
 	if (Math.abs((grid[row][col].player - pusher)%2) == 1) {
 		// gameMan.receivers.push(grid[row][col].player);
-		eventMan[gameMan.player].push("push");
+		eventMan[pusher].push("push");
 		eventMan[grid[row][col].player].push("pushed");
 	}
 
@@ -208,9 +210,9 @@ function pushOnePiece(row, col, fRow, fCol, pusher) {
 }
 
 // move piece to rout cell
-function routPiece(row, col) {
+function routPiece(row, col, router) {
 	if (grid[row][col].player >= 0) {
-		eventMan[gameMan.player].push("rout");
+		eventMan[router].push("rout");
 		eventMan[grid[row][col].player].push("routed");
 		var cell = getRoutCell(grid[row][col].player);
 
@@ -308,7 +310,7 @@ function getPhalanx(row, col) {
 
 function movePhalanx(pRow, pCol, row, col) {
 	var phalanxIndex = [];
-
+	var currentPlayer = grid[pRow][pCol].player;
 	if (checkMovePhalanx(pRow, pCol, row, col)) {
 		var dRow = row - pRow;
 		var dCol = col - pCol;
@@ -331,7 +333,7 @@ function movePhalanx(pRow, pCol, row, col) {
 			else {
 				revertGrid();
 				moved = false;
-				eventMan[gameMan.player] = [];
+				eventMan[currentPlayer] = [];
 				flag = false;
 			}
 		}
