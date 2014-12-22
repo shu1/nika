@@ -391,7 +391,7 @@ function togglePhalanxPiece(row, col) {
 	if (inPhalanx(row, col) && phalanx.length > 1) {	// if in phalanx, find and remove
 		for (var i = phalanx.length-1; i >= 0; --i) {
 			if (phalanx[i].row == row && phalanx[i].col == col) {
-				phalanx =  phalanx.splice(i, 1);
+				phalanx = phalanx.splice(i, 1);
 				return;
 			}
 		}
