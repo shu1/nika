@@ -134,10 +134,9 @@ function mouseDown(event) {
 				phalanx.length = 0;
 			}
 		}
+		hudMan.inputText += " down";
+		inputMan.click = true;
 	}
-
-	hudMan.inputText += " down";
-	inputMan.click = true;
 }
 
 function mouseMove(event) {
