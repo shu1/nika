@@ -12,6 +12,7 @@ function nextTutorialStep() {
 	gameMan.tutorialStep++;
 	hudMan.tutorialText = "Tutorial " + gameMan.tutorialStep;
 	clearTutorialRings();
+	phalanx = [];
 	setupTutorial(gameMan.tutorialStep);
 }
 
