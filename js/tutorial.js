@@ -12,7 +12,6 @@ function nextTutorialStep() {
 	gameMan.tutorialStep++;
 	hudMan.tutorialText = "Tutorial " + gameMan.tutorialStep;
 	clearTutorialRings();
-	phalanx = [];
 	setupTutorial(gameMan.tutorialStep);
 }
 
@@ -37,6 +36,7 @@ function setupTutorial() {
 	switch (gameMan.tutorialStep) {
 	case 0:
 		generateGrid(mainBoard);
+		phalanx = [];
 		gameStates = [];
 		pushGameState();
 		grid[9][9].prompt = 1;
