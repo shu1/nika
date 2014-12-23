@@ -137,7 +137,7 @@ function mouseDown(event) {
 }
 
 function mouseMove(event) {
-	if (inputMan.click) {
+	if (inputMan.click && isMatchingTouch(event)) {
 		getXY(event);
 		if (!inputMan.menu && gameMan.winner < 0) {
 			var dX = inputMan.x - inputMan.pX;
@@ -240,21 +240,24 @@ function mouseUp(event) {
 }
 
 function setCurrentTouch(event) {
-	if (event.changedTouches && event.changedTouches.length > 0) {
-		// respect touch ID if touch API supported
+	if (event.changedTouches && event.changedTouches.length > 0) {	// respect touch ID if touch API supported
 		if (inputMan.currentTouchId == -1) {
 			inputMan.currentTouchId = event.changedTouches[0].identifier;
 			return true;
 		}
-		else {
-			return false;
+	}
+	else if (navigator.msPointerEnabled) {
+		if (inputMan.currentTouchId == -1) {
+			inputMan.currentTouchId = event.pointerId;
+			return true;
 		}
 	}
-	else {
-		// cancel all touches if touch API not supported
+	else {	// cancel all touches if touch API not supported
 		revertGrid();
 		return true;
 	}
+
+	return false;
 }
 
 function endCurrentTouch(event) {
@@ -262,16 +265,17 @@ function endCurrentTouch(event) {
 }
 
 function isMatchingTouch(event) {
-	if (event.changedTouches) {
-		// if touch API supported
-		for (var i=event.changedTouches.length - 1; i >= 0; --i) {
+	if (event.changedTouches) {	// if touch API supported
+		for (var i = event.changedTouches.length-1; i >= 0; --i) {
 			if (event.changedTouches[i].identifier == inputMan.currentTouchId) {
 				return true;
 			}
 		}
 		return false;
 	}
+	else if (navigator.msPointerEnabled) {
+		return event.pointerId == inputMan.currentTouchId;
+	}
 
-	// all touches are deemed to "match" if touch API is not supported
-	return true;
+	return true;	// all touches are deemed to "match" if touch API is not supported
 }
