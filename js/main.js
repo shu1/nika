@@ -552,7 +552,7 @@ function drawRules(scene) {
 }
 
 function drawMenu(dTime) {
-	var duration = 200;
+	var duration = 1;	// no background to animate anymore
 	displayMan.menu = false;	// whether menu is animating
 
 	if (menuMan.show && (menuMan.width < menuMan.bWidth * menuMan.cols || menuMan.height < menuMan.bHeight * menuMan.rows)) {
@@ -594,8 +594,6 @@ function drawMenu(dTime) {
 		}
 	}
 
-	context.clearRect(canvas.width - menuMan.width, canvas.height - menuMan.height, menuMan.width, menuMan.height);
-
 	if (menuMan.show && !displayMan.menu) {
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
@@ -604,20 +602,20 @@ function drawMenu(dTime) {
 					if (inputMan.menu && button == menuMan.button
 					|| button == 1 && gameMan.debug
 					|| button == 2 && gameMan.tutorialStep >= 0) {
-						drawButton(row, col, buttons[button+1], "#004157", "white");
+						drawButton(row, col, buttons[button+1], "black", "white");
 					}
 					else {
-						drawButton(row, col, buttons[button+1], "white", "#004157");
+						drawButton(row, col, buttons[button+1], "white", "black");
 					}
 				}
 			}
 		}
 	}
 	else if (inputMan.menu && menuMan.button == 0) {
-		drawButton(0, 0, gameMan.scene == "rules" ? buttons[1] : buttons[0], "#00384C", "white");
+		drawButton(0, 0, gameMan.scene == "rules" ? buttons[1] : buttons[0], "black", "white");
 	}
 	else {
-		drawButton(0, 0, gameMan.scene == "rules" ? buttons[1] : buttons[0], "white");
+		drawButton(0, 0, gameMan.scene == "rules" ? buttons[1] : buttons[0], "white", "black");
 	}
 }
 
