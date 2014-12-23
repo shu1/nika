@@ -4,35 +4,20 @@ function playerAction(name) {
 	for (var player = 0; player < 4; ++player) {
 		var priorityEvent = getPriorityEvent(eventMan[player]);
 
+		// Play sound
+		if (sounds[priorityEvent]) {
+			sounds[priorityEvent].volume = Math.pow(audioMan.sound / 10, 2);
+			sounds[priorityEvent].play();
+		}
+
+		// Play animation
 		switch(priorityEvent) {
-		case "rotate":
-			sounds["rally"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["rally"].play();
-			break;
-		case "move":
-			sounds["drop"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["drop"].play();
-			break;
 		case "push":
-			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["push"].play();
-			murals[player].setAnim("push");
-			break;
 		case "pushed":
-			murals[player].setAnim("pushed");
-			break;
 		case "rout":
-			sounds["move"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["move"].play();
-			murals[player].setAnim("rout");
-			break;
 		case "routed":
-			murals[player].setAnim("routed");
-			break;
 		case "rally":
-			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds["push"].play();
-			murals[player].setAnim("rally");
+			murals[player].setAnim(priorityEvent);
 			break;
 		}
 
@@ -103,12 +88,12 @@ function init() {
 		images["rule" + i] = document.getElementById("rule" + i);
 	}
 
-	sounds["pick"] = document.getElementById("pick");
-	sounds["drop"] = document.getElementById("drop");
-	sounds["move"] = document.getElementById("move");
+	sounds["rotate"] = document.getElementById("rally");
+	sounds["move"] = document.getElementById("drop");
 	sounds["push"] = document.getElementById("push");
-	sounds["rout"] = document.getElementById("rout");
-	sounds["rally"] = document.getElementById("rally");
+	sounds["rout"] = document.getElementById("move");
+	sounds["rally"] = document.getElementById("push");
+	sounds["pick"] = document.getElementById("pick");
 	sounds["music"] = document.getElementById("music");
 
 	canvas = document.getElementById("canvas");
