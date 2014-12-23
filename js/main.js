@@ -2,48 +2,52 @@
 
 function playerAction(name) {
 	for (var player = 0; player < 4; ++player) {
-		var events = eventMan[player];
-		for (var i = events.length - 1; i >= 0; --i) {
-			var event = "";
-			var precedence = ["pushed", "routed", "rally", "rotate", "move", "push", "rout"];
-			for (var j = 0; j < precedence.length; ++j) {
-				events.indexOf(precedence[j]) > -1 ? event = precedence[j] : event;
-			}
+		var priorityEvent = getPriorityEvent(eventMan[player]);
 
-			if (event == "rotate") {
-				sounds["rally"].volume = Math.pow(audioMan.sound / 10, 2);
-				sounds["rally"].play();
-				break;
-			}
-			if (event == "move") {
-				sounds["drop"].volume = Math.pow(audioMan.sound / 10, 2);
-				sounds["drop"].play();
-			}
-			if (event == "push") {
-				sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
-				sounds["push"].play();
-				murals[player].setAnim("push");
-			}
-			if (event == "pushed") {
-				murals[player].setAnim("pushed");
-			}
-			if (event == "rout") {
-				sounds["move"].volume = Math.pow(audioMan.sound / 10, 2);
-				sounds["move"].play();
-				murals[player].setAnim("rout");
-			}
-			if (event == "routed") {
-				murals[player].setAnim("routed");
-			}
-			if (event == "rally") {
-				sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
-				sounds["push"].play();
-				murals[player].setAnim("rally");
-				break;
-			}
+		switch(priorityEvent) {
+		case "rotate":
+			sounds["rally"].volume = Math.pow(audioMan.sound / 10, 2);
+			sounds["rally"].play();
+			break;
+		case "move":
+			sounds["drop"].volume = Math.pow(audioMan.sound / 10, 2);
+			sounds["drop"].play();
+			break;
+		case "push":
+			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
+			sounds["push"].play();
+			murals[player].setAnim("push");
+			break;
+		case "pushed":
+			murals[player].setAnim("pushed");
+			break;
+		case "rout":
+			sounds["move"].volume = Math.pow(audioMan.sound / 10, 2);
+			sounds["move"].play();
+			murals[player].setAnim("rout");
+			break;
+		case "routed":
+			murals[player].setAnim("routed");
+			break;
+		case "rally":
+			sounds["push"].volume = Math.pow(audioMan.sound / 10, 2);
+			sounds["push"].play();
+			murals[player].setAnim("rally");
+			break;
 		}
+
 		eventMan[player] = [];
 	}
+}
+
+function getPriorityEvent(events) {
+	var precedence = ["pushed", "routed", "rally", "rotate", "move", "push", "rout"];
+	for (var j = precedence.length-1; j >= 0; --j) {
+		if (events.indexOf(precedence[j]) > -1) {
+			return precedence[j];
+		}
+	}
+	return "";
 }
 
 function resetAnimations() {
