@@ -603,8 +603,7 @@ function drawMenu(dTime) {
 				if (button < buttons.length-1) {
 					if (inputMan.menu && button == menuMan.button
 					|| button == 1 && gameMan.debug
-					|| button == 2 && gameMan.tutorialStep >= 0
-					|| button == 3 && gameMan.scene == "rules") {
+					|| button == 2 && gameMan.tutorialStep >= 0) {
 						drawButton(row, col, buttons[button+1], "#004157", "white");
 					}
 					else {
@@ -615,10 +614,10 @@ function drawMenu(dTime) {
 		}
 	}
 	else if (inputMan.menu && menuMan.button == 0) {
-		drawButton(0, 0, buttons[0], "#00384C", "white");
+		drawButton(0, 0, gameMan.scene == "rules" ? buttons[1] : buttons[0], "#00384C", "white");
 	}
 	else {
-		drawButton(0, 0, buttons[0], "white");
+		drawButton(0, 0, gameMan.scene == "rules" ? buttons[1] : buttons[0], "white");
 	}
 }
 

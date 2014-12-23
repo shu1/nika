@@ -1,36 +1,40 @@
 "use strict";
 
 function menuButton(button) {
-	if (button == 0) {
-		menuMan.show = !menuMan.show;
-	}
-	else if (menuMan.show) {
-		switch(button) {
-		case 1:
-			gameMan.debug = !gameMan.debug;
-			initAnimations();
-			break;
-		case 2:
-			if (gameMan.tutorialStep < 0) {
-				nextTutorialStep();
-			}
-			else {
-				endTutorial();
-			}
-			break;
-		case 3:
-			setScene(gameMan.scene == "board" ? "rules" : "board");
-			break;
-		case 4:
-			pass();
-			break;
-		case 5:
-			undo();
-			break;
-		case 6:
-			zoom();
-			break;
+	switch(button) {
+	case 0:
+		if (gameMan.scene == "rules") {
+			setScene("board");
 		}
+		else {
+			menuMan.show = !menuMan.show;
+		}
+		break;
+	case 1:
+		gameMan.debug = !gameMan.debug;
+		initAnimations();
+		break;
+	case 2:
+		if (gameMan.tutorialStep < 0) {
+			nextTutorialStep();
+		}
+		else {
+			endTutorial();
+		}
+		break;
+	case 3:
+		setScene("rules");
+		menuMan.show = false;
+		break;
+	case 4:
+		pass();
+		break;
+	case 5:
+		undo();
+		break;
+	case 6:
+		zoom();
+		break;
 	}
 }
 
