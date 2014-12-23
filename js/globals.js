@@ -336,7 +336,7 @@ var tutorialTexts = [[
 ],[
 	"All hoplites carry shields which protect","their front. The Spartan is FACING this","piece, so this piece cannot attack."
 ],[
-	"But Athena smiles upon us today -","we have him flanked! Let us MOVE our","other soldier forward. Drag this piece","in the direction you want to move it."
+	"But Athena smiles upon us today -","we have him flanked! Let us MOVE our","other soldier. Drag this piece forward,","ending your touch in the space indicated."
 ],[
 	"Good. Notice that the single helmet","indicates we have only 1 action remaining."
 ],[
@@ -346,9 +346,9 @@ var tutorialTexts = [[
 ],[
 	"Strategos! While we were dealing with","that Spartan, a contingent of Thebans","has approached us from behind.","Two of our men are in danger!"
 ],[
-	"We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, then end your touch","on the same piece. Rotate this piece so","that it faces the right."
+	"We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, ending your touch","several spaces away. Rotate this piece","so that it faces the right."
 ],[
-	"Excellent! Now, rotate our other soldier","to face the Theban. Since the Theban is","blocking movement in that direction,","you can just drag our piece toward","the Theban."
+	"Excellent! Now, rotate our other soldier","to face the Theban. Since the Theban is","blocking its movement, our piece will","rotate even if you try to move in that","direction."
 ],[
 	"Pieces can rotate to face any direction","in one action. Well done - the men are","safe, for now."
 ],[
@@ -358,7 +358,7 @@ var tutorialTexts = [[
 ],[
 	"To RALLY a piece, drag it into one of","your rally spaces. Let's deploy our man","here so he can hurry back to the fight."
 ],[
-	"We move through these spaces","normally, but our enemies are not","allowed to enter them."
+	"This is our ally's victory area. We move","through these spaces normally, but our","enemies are not allowed to enter them."
 ],[
 	"Let's move up our fresh soldier in","support."
 ],[
