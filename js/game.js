@@ -224,25 +224,22 @@ function checkWin() {
 function playerAction(name) {
 	for (var player = 0; player < 4; ++player) {
 		var priorityEvent = getPriorityEvent(eventMan[player]);
-
-		// Play sound
-		if (sounds[priorityEvent]) {
-			sounds[priorityEvent].volume = Math.pow(audioMan.sound / 10, 2);
-			sounds[priorityEvent].play();
-		}
-
-		// Play animation
-		switch(priorityEvent) {
-		case "push":
-		case "pushed":
-		case "rout":
-		case "routed":
-		case "rally":
-			murals[player].setAnim(priorityEvent);
-			break;
-		}
-
+		playSound(priorityEvent);
+		playAnimation(player, priorityEvent);
 		eventMan[player] = [];
+	}
+}
+
+function playSound(event) {
+	if (sounds[event]) {
+		sounds[event].volume = Math.pow(audioMan.sound / 10, 2);
+		sounds[event].play();
+	}
+}
+
+function playAnimation(player, event) {
+	if (["push", "pushed", "rout", "routed", "rally"].indexOf(event) > -1) {
+		murals[player].setAnim(event);
 	}
 }
 
