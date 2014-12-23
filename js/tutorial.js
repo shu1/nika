@@ -36,6 +36,8 @@ function setupTutorial() {
 	switch (gameMan.tutorialStep) {
 	case 0:
 		generateGrid(mainBoard);
+		gameStates = [];
+		pushGameState();
 		grid[9][9].prompt = 1;
 		grid[10][9].prompt = 1;
 		grid[11][9].prompt = 1;
