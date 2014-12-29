@@ -116,6 +116,9 @@ function mouseDown(event) {
 		hudMan.actionText = "";
 		hudMan.inputText = "";
 		inputMan.menu = getXY(event);
+		if (gameMan.debug) {
+			pinch(0.02, inputMan.x, inputMan.y);
+		}
 		if (!inputMan.menu && gameMan.winner < 0) {
 			getPiece(inputMan.row, inputMan.col);
 			if (phalanx.length > 0) {
