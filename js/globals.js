@@ -1,6 +1,6 @@
 "use strict";
 
-var canvas, context, grid, images=[], sounds=[], phalanx=[], gameStates=[], scenes=[], murals=[], tick={};
+var canvas, context, grid, images={}, sounds={}, phalanx=[], gameStates=[], scenes={}, murals=[], tick={};
 
 var displayMan = {
 	cellSize:96,
