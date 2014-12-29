@@ -93,7 +93,8 @@ var buttons = [
 	"  Rules",
 	"  Pass",
 	"  Undo",
-	"  Zoom"
+	"  Zoom",
+	"     AI"
 ]
 
 var mainBoard = [

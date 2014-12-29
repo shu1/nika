@@ -63,7 +63,10 @@ function rotatePiece(pRow, pCol, rot) {
 	}
 }
 
-function movePiece(pRow, pCol, row, col) {
+function movePiece(pRow, pCol, row, col, isAI) {
+	if(isAI==undefined){
+		isAI=false;
+	}
 	var moved = false;
 	if (pRow >= 0 && pCol >= 0) {
 		var currentPlayer = grid[pRow][pCol].player;
@@ -72,14 +75,18 @@ function movePiece(pRow, pCol, row, col) {
 				if (eventMan[currentPlayer].length == 0) {
 					eventMan[currentPlayer].push("move");
 				}
-				phalanx.length = 0;
-				moved = true;
+				if(!isAI){
+					phalanx.length = 0;
+					moved = true;
+				}
 			}
 		}
 		else if (checkMove(pRow, pCol, row, col) && pushPiece(pRow, pCol, row, col, grid[pRow][pCol].player, 1)) {
 			moveOnePiece(pRow, pCol, row, col);
-			phalanx.length = 0;
-			moved = true;	// return if a piece was moved so it can be redrawn
+			if(!isAI){
+				phalanx.length = 0;
+				moved = true;	// return if a piece was moved so it can be redrawn
+			}
 
 			if (routedCell(pRow, pCol) && grid[row][col].kind == 2) {	// rally
 				grid[row][col].rot = grid[row][col].player;	// set rotation toward center of board
@@ -94,8 +101,10 @@ function movePiece(pRow, pCol, row, col) {
 			if (eventMan[currentPlayer].length == 0) {
 				eventMan[currentPlayer].push("rotate");
 			}
-			phalanx.length = 0;
-			moved = true;
+			if(!isAI){
+				phalanx.length = 0;
+				moved = true;
+			}
 		}
 
 		if (moved) {

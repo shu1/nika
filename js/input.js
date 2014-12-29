@@ -35,6 +35,9 @@ function menuButton(button) {
 	case 6:
 		zoom();
 		break;
+	case 7:
+		ai();
+		break;
 	}
 }
 
