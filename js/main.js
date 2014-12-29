@@ -1,7 +1,6 @@
 "use strict";
 
-window.onload = init;
-function init() {
+window.onload = function() {
 	newGame();
 
 	images["board"] = document.getElementById("board");
@@ -234,26 +233,29 @@ function pan(dX, dY) {
 }
 
 function draw(time) {
-	context.clearRect(0, 0, canvas.width, canvas.height);
-	var dTime = time - displayMan.time;
-	zooming(dTime);
+	var dTime = time - displayMan.time, canvasWidth = canvas.width, canvasHeight = canvas.height;
 
-	var scene = scenes["board"];
-	context.save();
-	context.translate(scene.x, scene.y);
-	context.scale(scene.scale, scene.scale);
+	if (gameMan.scene != "rules" || canvasWidth/canvasHeight < 3/2) {
+		context.clearRect(0, 0, canvasWidth, canvasHeight);
+		zooming(dTime);
 
-	drawMural(time);
-	drawBoard();
-	setRings();
-	drawPieces(time);
-	drawHelmets(dTime);
+		var scene = scenes["board"];
+		context.save();
+		context.translate(scene.x, scene.y);
+		context.scale(scene.scale, scene.scale);
 
-	if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
-		drawDialog(time);
+		drawMural(time);
+		drawBoard();
+		setRings();
+		drawPieces(time);
+		drawHelmets(dTime);
+
+		if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
+			drawDialog(time);
+		}
+
+		context.restore();
 	}
-
-	context.restore();
 
 	if (gameMan.scene == "rules") {
 		scene = scenes["rules"];
