@@ -219,10 +219,13 @@ function	ai(){
 	setGrid(bestState.board,grid);
 	phalanx=[];
 	//grid=bestState;
-	if(gameMan.actions<2){
+	if(gameMan.actions>1){
+		useAction();
+	}
+	else{
+		useAction();
 		pushGameState();
 	}
-	useAction(1);
 	displayMan.draw=true;
 }
 
