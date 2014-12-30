@@ -41,7 +41,8 @@ function getPiece(row, col) {
 
 		if (canBeInPhalanx(row, col)) {
 			gameMan.selection = true;
-		} else {
+		}
+		else {
 			phalanx.length = 0;
 			getPhalanx(row, col);
 			clearChecked();
@@ -64,10 +65,8 @@ function rotatePiece(pRow, pCol, rot) {
 }
 
 function movePiece(pRow, pCol, row, col, isAI) {
-	if(isAI==undefined){
-		isAI=false;
-	}
 	var moved = false;
+
 	if (pRow >= 0 && pCol >= 0) {
 		var currentPlayer = grid[pRow][pCol].player;
 		if (phalanx.length > 1) {
@@ -75,7 +74,8 @@ function movePiece(pRow, pCol, row, col, isAI) {
 				if (eventMan[currentPlayer].length == 0) {
 					eventMan[currentPlayer].push("move");
 				}
-				if(!isAI){
+
+				if (isAI === undefined) {
 					phalanx.length = 0;
 					moved = true;
 				}
@@ -83,7 +83,8 @@ function movePiece(pRow, pCol, row, col, isAI) {
 		}
 		else if (checkMove(pRow, pCol, row, col) && pushPiece(pRow, pCol, row, col, grid[pRow][pCol].player, 1)) {
 			moveOnePiece(pRow, pCol, row, col);
-			if(!isAI){
+
+			if (isAI === undefined) {
 				phalanx.length = 0;
 				moved = true;	// return if a piece was moved so it can be redrawn
 			}
@@ -101,7 +102,8 @@ function movePiece(pRow, pCol, row, col, isAI) {
 			if (eventMan[currentPlayer].length == 0) {
 				eventMan[currentPlayer].push("rotate");
 			}
-			if(!isAI){
+
+			if (isAI === undefined) {
 				phalanx.length = 0;
 				moved = true;
 			}

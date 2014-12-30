@@ -601,7 +601,7 @@ function drawMenu(dTime) {
 				if (button < buttons.length-1) {
 					if (inputMan.menu && button == menuMan.button
 					|| button == 1 && gameMan.debug
-					|| button == 2 && gameMan.tutorialStep >= 0) {
+					|| button == 7 && gameMan.tutorialStep >= 0) {
 						drawButton(row, col, buttons[button+1], "black", "white");
 					}
 					else {
