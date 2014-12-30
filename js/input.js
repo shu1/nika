@@ -116,9 +116,6 @@ function mouseDown(event) {
 		hudMan.actionText = "";
 		hudMan.inputText = "";
 		inputMan.menu = getXY(event);
-		if (gameMan.debug) {
-			pinch(0.02, inputMan.x, inputMan.y);
-		}
 		if (!inputMan.menu && gameMan.winner < 0) {
 			getPiece(inputMan.row, inputMan.col);
 			if (phalanx.length > 0) {
@@ -143,7 +140,10 @@ function mouseDown(event) {
 }
 
 function mouseMove(event) {
-	if (inputMan.click && isCurrentTouch(event)) {
+	if (inputMan.secondTouchId > -1) {
+		pinch(event);
+	}
+	else if (inputMan.click && isCurrentTouch(event)) {
 		getXY(event);
 		if (!inputMan.menu && gameMan.winner < 0) {
 			var dX = inputMan.x - inputMan.pX;
@@ -252,12 +252,32 @@ function setTouch(event) {
 	if (event.changedTouches && event.changedTouches.length > 0) {	// respect touch ID if touch API supported
 		if (inputMan.currentTouchId == -1) {
 			inputMan.currentTouchId = event.changedTouches[0].identifier;
-			console.log("Set current touch to " + inputMan.currentTouchId);
+			if (event.changedTouches[1] && inputMan.secondTouchId == -1) { // if second touch hits simultaneously
+				inputMan.secondTouchId = event.changedTouches[1].identifier;
+				var currentTouch = getCurrentTouch(event);
+				var secondTouch = getSecondTouch(event);
+				if (currentTouch && secondTouch) {
+					var x1 = currentTouch.pageX;
+					var y1 = currentTouch.pageY;
+					var x2 = secondTouch.pageX;
+					var y2 = secondTouch.pageY;
+					inputMan.pinchDistance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+				}
+				return false;
+			}
 			return true;
 		}
 		else if (inputMan.secondTouchId == -1) {
 			inputMan.secondTouchId = event.changedTouches[0].identifier;
-			console.log("Set second touch to " + inputMan.secondTouchId);
+			var currentTouch = getCurrentTouch(event);
+			var secondTouch = getSecondTouch(event);
+			if (currentTouch && secondTouch) {
+				var x1 = currentTouch.pageX;
+				var y1 = currentTouch.pageY;
+				var x2 = secondTouch.pageX;
+				var y2 = secondTouch.pageY;
+				inputMan.pinchDistance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+			}
 		}
 	}
 	else if (navigator.msPointerEnabled) {
@@ -274,13 +294,29 @@ function setTouch(event) {
 	return false;
 }
 
+function getCurrentTouch(event) {
+	for (var i = event.touches.length-1; i >= 0; --i) {
+		if (event.touches[i].identifier == inputMan.currentTouchId) {
+			return event.touches[i];
+		}
+	}
+}
+
+function getSecondTouch(event) {
+	for (var i = event.touches.length-1; i >= 0; --i) {
+		if (event.touches[i].identifier == inputMan.secondTouchId) {
+			return event.touches[i];
+		}
+	}
+}
+
 function endCurrentTouch(event) {
-	console.log("Current touch " + inputMan.currentTouchId + " ended");
 	inputMan.currentTouchId = -1;
+	inputMan.secondTouchId = -1;
 }
 
 function endSecondTouch(event) {
-	console.log("Second touch " + inputMan.secondTouchId + " ended");
+	inputMan.currentTouchId = -1;
 	inputMan.secondTouchId = -1;
 }
 
@@ -314,4 +350,34 @@ function isSecondTouch(event) {
 	}
 
 	return true;	// all touches are deemed to "match" if touch API is not supported
+}
+
+function pinch(event) {
+	if (event.changedTouches) {
+		var currentTouch = getCurrentTouch(event);
+		var secondTouch = getSecondTouch(event);
+		if (currentTouch && secondTouch) {
+			var x1 = currentTouch.pageX;
+			var y1 = currentTouch.pageY;
+			var x2 = secondTouch.pageX;
+			var y2 = secondTouch.pageY;
+			var distance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+			var centerX = (x1 + x2) / 2;
+			var centerY = (y1 +	y2) / 2;
+			pinchZoom(distance, centerX, centerY);
+		}
+	}
+}
+
+function pinchZoom(distance, centerX, centerY) {
+	var scene = scenes[gameMan.scene];
+	var dScale = (distance - inputMan.pinchDistance) / 500;
+	inputMan.pinchDistance = distance;
+	var oldScale = scene.scale
+	scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
+
+	scene.x = centerX - (centerX - scene.x) * scene.scale / oldScale;
+	scene.y = centerY - (centerY - scene.y) * scene.scale / oldScale;
+
+	pan(0,0);
 }

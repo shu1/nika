@@ -61,7 +61,8 @@ var inputMan = {
 	x:0,
 	y:0,
 	currentTouchId:-1,
-	secondTouchId: -1
+	secondTouchId: -1,
+	pinchDistance: 0
 }
 
 var menuMan = {

@@ -233,18 +233,6 @@ function pan(dX, dY) {
 	return panned;
 }
 
-function pinch(distance, centerX, centerY) {
-	var scene = scenes[gameMan.scene];
-	var dScale = distance * 1;
-	var oldScale = scene.scale
-	scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
-
-	scene.x = centerX - (centerX - scene.x) * scene.scale / oldScale;
-	scene.y = centerY - (centerY - scene.y) * scene.scale / oldScale;
-
-	pan(0,0);
-}
-
 function draw(time) {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	var dTime = time - displayMan.time;
