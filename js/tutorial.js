@@ -259,6 +259,7 @@ function setupTutorial() {
 		break;
 	case 46:
 		nextTutorialPart(10);
+		grid[3][5].prompt = 1;
 		pushGameState();
 		break;
 	case 47:

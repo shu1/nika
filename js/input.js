@@ -15,16 +15,10 @@ function menuButton(button) {
 		initAnimations();
 		break;
 	case 2:
-		if (gameMan.tutorialStep < 0) {
-			nextTutorialStep();
-		}
-		else {
-			endTutorial();
-		}
+		ai();
 		break;
 	case 3:
-		setScene("rules");
-		menuMan.show = false;
+		zoom();
 		break;
 	case 4:
 		pass();
@@ -33,7 +27,16 @@ function menuButton(button) {
 		undo();
 		break;
 	case 6:
-		zoom();
+		setScene("rules");
+		menuMan.show = false;
+		break;
+	case 7:
+		if (gameMan.tutorialStep < 0) {
+			nextTutorialStep();
+		}
+		else {
+			endTutorial();
+		}
 		break;
 	}
 }
