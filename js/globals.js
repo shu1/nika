@@ -90,11 +90,12 @@ var buttons = [
 	"  Menu",
 	"  Close",
 	" Debug",
-	"Tutorial",
-	"  Rules",
+	"     AI",
+	"  Zoom",
 	"  Pass",
 	"  Undo",
-	"  Zoom"
+	"  Rules",
+	"Tutorial",
 ]
 
 var mainBoard = [
