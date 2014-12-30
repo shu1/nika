@@ -112,7 +112,7 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
-	if (setCurrentTouch(event)) {
+	if (setTouch(event)) {
 		hudMan.actionText = "";
 		hudMan.inputText = "";
 		inputMan.menu = getXY(event);
@@ -143,7 +143,7 @@ function mouseDown(event) {
 }
 
 function mouseMove(event) {
-	if (inputMan.click && isMatchingTouch(event)) {
+	if (inputMan.click && isCurrentTouch(event)) {
 		getXY(event);
 		if (!inputMan.menu && gameMan.winner < 0) {
 			var dX = inputMan.x - inputMan.pX;
@@ -175,7 +175,10 @@ function mouseMove(event) {
 }
 
 function mouseUp(event) {
-	if (inputMan.click && isMatchingTouch(event)) {
+	if (isSecondTouch(event)) {
+		endSecondTouch(event);
+	}
+	if (inputMan.click && isCurrentTouch(event)) {
 		hudMan.inputText += " up";
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
@@ -245,11 +248,16 @@ function mouseUp(event) {
 	}
 }
 
-function setCurrentTouch(event) {
+function setTouch(event) {
 	if (event.changedTouches && event.changedTouches.length > 0) {	// respect touch ID if touch API supported
 		if (inputMan.currentTouchId == -1) {
 			inputMan.currentTouchId = event.changedTouches[0].identifier;
+			console.log("Set current touch to " + inputMan.currentTouchId);
 			return true;
+		}
+		else if (inputMan.secondTouchId == -1) {
+			inputMan.secondTouchId = event.changedTouches[0].identifier;
+			console.log("Set second touch to " + inputMan.secondTouchId);
 		}
 	}
 	else if (navigator.msPointerEnabled) {
@@ -267,10 +275,16 @@ function setCurrentTouch(event) {
 }
 
 function endCurrentTouch(event) {
+	console.log("Current touch " + inputMan.currentTouchId + " ended");
 	inputMan.currentTouchId = -1;
 }
 
-function isMatchingTouch(event) {
+function endSecondTouch(event) {
+	console.log("Second touch " + inputMan.secondTouchId + " ended");
+	inputMan.secondTouchId = -1;
+}
+
+function isCurrentTouch(event) {
 	if (event.changedTouches) {	// if touch API supported
 		for (var i = event.changedTouches.length-1; i >= 0; --i) {
 			if (event.changedTouches[i].identifier == inputMan.currentTouchId) {
@@ -281,6 +295,22 @@ function isMatchingTouch(event) {
 	}
 	else if (navigator.msPointerEnabled) {
 		return event.pointerId == inputMan.currentTouchId;
+	}
+
+	return true;	// all touches are deemed to "match" if touch API is not supported
+}
+
+function isSecondTouch(event) {
+	if (event.changedTouches) {	// if touch API supported
+		for (var i = event.changedTouches.length-1; i >= 0; --i) {
+			if (event.changedTouches[i].identifier == inputMan.secondTouchId) {
+				return true;
+			}
+		}
+		return false;
+	}
+	else if (navigator.msPointerEnabled) {
+		return true; // all touches are deemed to "match" for MSPointer
 	}
 
 	return true;	// all touches are deemed to "match" if touch API is not supported

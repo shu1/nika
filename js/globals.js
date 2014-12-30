@@ -60,7 +60,8 @@ var inputMan = {
 	pY:0,
 	x:0,
 	y:0,
-	currentTouchId:-1
+	currentTouchId:-1,
+	secondTouchId: -1
 }
 
 var menuMan = {
