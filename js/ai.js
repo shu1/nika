@@ -268,28 +268,28 @@ function	getValue(state,pieces){
 						}
 					}
 					//Enemy
-					// else{
-					// 	if(Math.abs((adj[j].rot-pieces[i].rot)%2)==0){
-					// 		//Facing	each	other
-					// 		//TODO BROKEN Will return true for pieces facing away from eachother too.
-					// 		val-=1
-					// 	}
-					// 	else if(pieces[i].rot==j){
-					// 		//If	piece	is	facing	adj,	but	they	aren't	facing	eachother,	then	adj	is	routable
-					// 		val+=5;
-					// 		//Move	2:	+2
-					// 	}
-					// 	else if(adj[j].rot==Math.abs(j-2)){
-					// 		//Else if	we're	not	facing	adjacent,	check	if	he's	facing	us.
-					// 		val-=5;
-					// 		//Move	2:	-12
-					// 	}
-					// 	else{
-					// 		//Adjacent	but	not	facing	each	other.
-					// 		val+=2;	//We	can	rout	enemy	as	single.
-					// 		//Move	2:	-8
-					// 	}
-					// }
+					else{
+						if(pieces[i].rot == j && Math.abs((adj[j].rot-j)%2)==0){
+							//Facing	each	other
+							//TODO BROKEN Will return true for pieces facing away from eachother too.
+							val-=1
+						}
+						else if(pieces[i].rot==j){
+							//If	piece	is	facing	adj,	but	they	aren't	facing	eachother,	then	adj	is	routable
+							val+=5;
+							//Move	2:	+2
+						}
+						else if(Math.abs((adj[j].rot-j)%2)==0){
+							//Else if	we're	not	facing	adjacent,	check	if	he's	facing	us.
+							val-=5;
+							//Move	2:	-12
+						}
+						else{
+							//Adjacent	but	not	facing	each	other.
+							val+=2;	//We	can	rout	enemy	as	single.
+							//Move	2:	-8
+						}
+					}
 				}
 			}
 		}
