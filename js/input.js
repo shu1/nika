@@ -370,6 +370,13 @@ function pinch(event) {
 }
 
 function pinchZoom(distance, centerX, centerY) {
+	if (centerX == undefined) {
+		centerX = canvas.width / 2;
+	}
+	if (centerY == undefined) {
+		centerY = canvas.height / 2;
+	}
+
 	var scene = scenes[gameMan.scene];
 	var dScale = (distance - inputMan.pinchDistance) / 500;
 	inputMan.pinchDistance = distance;
