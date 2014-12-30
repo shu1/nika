@@ -85,7 +85,8 @@ var	hudMan = {
 	inputText:"",
 	pieceText:"",
 	actionText:"",
-	tutorialText:""
+	tutorialText:"",
+	msText:""				// Temporary, should be removed after MSPointer is stable
 }
 
 var buttons = [
