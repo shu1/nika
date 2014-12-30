@@ -119,9 +119,6 @@ function	ai(){
 							bestState=temp;
 							console.log("Found better state by MOVEMENT with a value of: " + bestState.value);
 						}
-						//moveOnePiece(tRow, tCol, pRow, pCol);
-						//pieces[i].rot = origRot;
-
 						setGrid(defGrid,grid);
 						pieces = getAIPieces();
 					}
@@ -140,19 +137,14 @@ function	ai(){
 				same_dir.push(pieces[p]);
 			}
 		}
-		//console.log(same_dir);
 		if(same_dir.length>1){
-			//console.log("HERE!");
 			combinations = getCombinations(same_dir);
 			combinations.forEach(function(e){
-				//console.log(e);
 				phalanx.length=0;
 				phalanx = e.slice(0);
 				if(isPhalanx()){
 					for(var rot=0;rot<4;rot++){
 						if(rot!=i){
-							//console.log(rot);
-							//console.log(phalanx);
 							rotatePiece(phalanx[0].row, phalanx[0].col, rot);
 							pieces = getAIPieces();
 							var temp = copyState(defaultState);
@@ -188,15 +180,10 @@ function	ai(){
 								incCol = -1;
 								break;
 						}
-						//console.log("inc: ",incRow,incCol);
-						//console.log("Phalanx: ", phalanx, phalanx[0]);
 						var pRow = phalanx[0].row;
 						var pCol = phalanx[0].col;
 						var tRow = phalanx[0].row+incRow;
 						var tCol = phalanx[0].col+incCol;
-						//console.log(rot);
-						//console.log(phalanx);
-						//console.log(pRow,pCol,tRow,tCol);
 						movePiece(pRow,pCol,tRow,tCol,true);
 						phalanx = e.slice(0);
 						pieces = getAIPieces();
@@ -208,7 +195,6 @@ function	ai(){
 						}
 						setGrid(defGrid,grid);
 						pieces = getAIPieces();
-						//console.log("After Reset: ", phalanx);
 					}
 				}
 			});
@@ -279,18 +265,30 @@ function	getValue(state,pieces){
 						}
 						else if(pieces[i].rot==j){
 							//If	piece	is	facing	adj,	but	they	aren't	facing	eachother,	then	adj	is	routable
-							val+=5;
-							//Move	2:	+2
+							if(gameMan.actions>1){
+								val+=5;
+							}
+							else{
+								val+=2;
+							}
 						}
 						else if(Math.abs((adj[j].rot-j)%2)==0){
 							//Else if	we're	not	facing	adjacent,	check	if	he's	facing	us.
-							val-=5;
-							//Move	2:	-12
+							if(gameMan.actions>1){
+								val-=5;
+							}
+							else{
+								val-=12;
+							}
 						}
 						else{
 							//Adjacent	but	not	facing	each	other.
-							val+=2;	//We	can	rout	enemy	as	single.
-							//Move	2:	-8
+							if(gameMan.actions>1){
+								val+=2;
+							}
+							else{
+								val-=8;
+							}
 						}
 					}
 				}
