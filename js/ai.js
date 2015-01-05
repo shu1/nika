@@ -4,26 +4,20 @@ defGrid = null;
 
 function	newState	(){
 	var	s	=	{
-		//action	:	-1	//Action	taken
 		value	:	0,	//Value	of	state	after	board	state	adjustments
-		//totalValue	:	0,	//Total	value	of	all	the	pieces
 		board : grid //grid object, state of board after this move, will be applied to board upon ai exit.
-		//pieces	:	[],	//All	the	pieces	and	their	properties
-		//pieceValues	:	[]
 	};
 	return s;
 }
 
 function	ai(){
 	storeGrid();
-	//setGrid(grid,defGrid)
 	var	pieces	=	[];
 	pieces = getAIPieces();
 
 	//Checks	if	any	pieces	are	close	enough	to	win.
 	for	(var	i	=	0;	i<6;	i++){
 		var	d	=	getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
-		//console.log(d);
 		if(d<=2){
 			if(d==1){
 				//1	move
@@ -38,8 +32,6 @@ function	ai(){
 
 	//Creates the default state in which all other states are compared to.
 	var	defaultState	=	newState();
-	//defaultState.board	=	grid;
-	//console.log("Default init: " + defaultState.value);
 	getValue(defaultState,pieces);
 	console.log("For Player"	+	gameMan.player	+	", the value of	this state is	"	+	defaultState.value);
 	var bestState = defaultState; //Stores best state, which is default at this point. Altough we might be better off just setting best state.
@@ -66,7 +58,6 @@ function	ai(){
 			//	Do	normal	move	check,	which	means	rotation,	then	movement.
 			origRot = pieces[i].rot;
 			for	(var	rot	=	0;	rot<4;	rot++){
-				//var	tempState	=	defaultState;
 				if(rot!=origRot){
 					pieces[i].rot=rot;
 					var temp = copyState(defaultState);
@@ -79,7 +70,6 @@ function	ai(){
 			}
 			setGrid(defGrid,grid);
 			pieces = getAIPieces();
-			//pieces[i].rot=origRot;
 			for (var dir = 0; dir<4; dir++){
 				//Check moves in each direction
 				var incRow; //Increment row by this
@@ -204,7 +194,6 @@ function	ai(){
 	//AFTER ALL CHECKING IS DONE ===========
 	setGrid(bestState.board,grid);
 	phalanx=[];
-	//grid=bestState;
 	if(gameMan.actions>1){
 		useAction();
 	}
@@ -217,11 +206,9 @@ function	ai(){
 
 function	getValue(state,pieces){
 	for	(var	i	=	0;	i<6;	i++){
-	//	console.log("Piece " + i +  ", Row: " + pieces[i].row + ", Col: " + pieces[i].col + ".");
 		var	val	=	0;
 		//Piece	on	Board
 		if(pieces[i].kind!=3){
-		//	console.log(i);
 			val+=5;
 		}
 		//Adjacent	Check
@@ -237,13 +224,10 @@ function	getValue(state,pieces){
 				if(adj[j].player>-1){
 					//Own
 					if(adj[j].player==pieces[i].player){
-					// console.log("Adjacent " + j + " is own.");
 						if(adj[j].rot==pieces[i].rot){
-						// console.log("Adjacent " + j + " is in phalanx");
 							val+=6;//In	Phalanx
 						}
 						else{
-						// console.log("Adjacent " + j + " is not in phalanx");
 							val+=2;//Not in Phalanx
 						}
 					}
@@ -296,10 +280,8 @@ function	getValue(state,pieces){
 		}
 		val-=5*getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
 		state.value+=val; //Adds piece	value	to	total	value
-		//console.log("State Value: " + state.value);
 	}
 	//Subtract for every piece on	the	board
-	//state.value=state.totalValue;
 	for	(var	row	=	0;	row	<	15;	++row)	{
 		for	(var	col	=	0;	col	<	21;	++col)	{
 			if	(grid[row][col].player>-1	&& Math.abs(gameMan.player-grid[row][col].player)%2!=0	&&	grid[row][col].kind!=3)	{
@@ -307,9 +289,6 @@ function	getValue(state,pieces){
 			}
 		}
 	}
-	//state.board=(grid);
-	//useAction(1);
-	//displayMan.draw=true;
 }
 
 function copyState(original){
@@ -339,9 +318,6 @@ function copyState(original){
 function setGrid(gFrom, gTo){
 	for	(var row =	0; row	<	15;	++row){
 		for	(var col = 0; col	<	21;	++col){
-			// if(grid[row][col].player != board[row][col].player){
-			// 	console.log("Player moved");
-			// }
 			gTo[row][col].row=row;
 			gTo[row][col].col=col;
 			gTo[row][col].checked=gFrom[row][col].checked;
@@ -357,8 +333,6 @@ function setGrid(gFrom, gTo){
 
 // get distance to goal - to be used in ai evaluation
 function getDistanceFromGoal(row, col, player) {
-
-	//resetPieces(row, col);
 
 	if (player == 0) {
 		if (row <= 5 && col >= 9 && col <= 11) { // in 3x3 square in front of goal
