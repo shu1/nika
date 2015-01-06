@@ -251,6 +251,20 @@ function keyDown(event) {
 		hudMan.inputText = "Enter";
 		menuButton(menuMan.button);
 		break;
+	case 27:	// escape
+		hudMan.inputText = "Escape";
+		if (gameMan.scene == "rules") {
+			setScene("board");
+			hudMan.pageText = "";
+		}
+		else if (gameMan.tutorialStep >= 0) {
+			endTutorial();
+		}
+		else {
+			menuMan.show = false;
+			menuMan.button = 0;
+		}
+		break;
 	case 37:	// left
 		if (!keyPrev() && !menuMan.show) {
 			pan(dX, 0);
