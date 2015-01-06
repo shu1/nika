@@ -252,29 +252,29 @@ function keyDown(event) {
 		menuButton(menuMan.button);
 		break;
 	case 37:	// left
-		if (!keyLeft()) {
+		if (!keyPrev() && !menuMan.show) {
 			pan(dX, 0);
 		}
 		break;
 	case 38:	// up
-		if (!keyLeft()) {
+		if (!keyPrev() && !menuMan.show) {
 			pan(0, dX);
 		}
 		break;
 	case 39:	// right
-		if (!keyRight()) {
+		if (!keyNext() && !menuMan.show) {
 			pan(-dX, 0);
 		}
 		break;
 	case 40:	// down
-		if (!keyRight()) {
+		if (!keyNext() && !menuMan.show) {
 			pan(0, -dX);
 		}
 		break;
 	}
 }
 
-function keyLeft() {
+function keyPrev() {
 	hudMan.inputText = "Prev";
 	if (gameMan.scene == "rules" && gameMan.rules > 0) {
 		gameMan.rules--;
@@ -293,7 +293,7 @@ function keyLeft() {
 	return false;
 }
 
-function keyRight() {
+function keyNext() {
 	hudMan.inputText = "Next";
 	if (gameMan.scene == "rules" && gameMan.rules < rulePages-1) {
 		gameMan.rules++;
