@@ -197,6 +197,7 @@ function mouseUp(event) {
 		}
 		clearRallyHighlights();
 		endCurrentTouch();
+		menuMan.button = 0;	// Reset for key input
 		gameMan.selection = false;
 		inputMan.menu = false;
 		inputMan.click = false;
@@ -243,4 +244,26 @@ function isMatchingTouch(event) {
 	}
 
 	return true;	// all touches are deemed to "match" if touch API is not supported
+}
+
+function keyDown(event) {
+	switch (event.keyCode) {
+	case 13:	// enter
+		menuButton(menuMan.button);
+		break;
+	case 37:	// left
+	case 38:	// up
+		if (menuMan.show && menuMan.button < buttons.length-2) {
+			menuMan.button++;
+		}
+		break;
+	case 39:	// right
+	case 40:	// down
+		if (menuMan.show && menuMan.button > 0) {
+			menuMan.button--;
+		}
+		break;
+	}
+
+	inputMan.menu = true;	// Highlight current button even when mouse isn't down
 }

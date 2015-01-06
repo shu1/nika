@@ -336,6 +336,7 @@ function menuButton(button) {
 	case 6:
 		setScene("rules");
 		menuMan.show = false;
+		menuMan.button = 0;
 		break;
 	case 7:
 		if (gameMan.tutorialStep < 0) {

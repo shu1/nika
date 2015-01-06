@@ -49,6 +49,7 @@ window.onload = function() {
 		canvas.addEventListener("mousedown", mouseDown);
 		canvas.addEventListener("mousemove", mouseMove);
 		window.addEventListener("mouseup", mouseUp);
+		window.addEventListener("keydown", keyDown);
 	}
 
 	if (screenType > 0) {
