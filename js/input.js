@@ -144,11 +144,11 @@ function mouseUp(event) {
 			if (gameMan.scene == "rules") {
 				if (inputMan.y > canvas.height / 2 - displayMan.cellSize * 1.5
 				 && inputMan.y < canvas.height / 2 + displayMan.cellSize * 1.5) {
-					if (inputMan.x > canvas.width - displayMan.cellSize*2) {
-						gameMan.rules = Math.min(gameMan.rules + 1, rulePages - 1);
+					if (inputMan.x > canvas.width - displayMan.cellSize*2 && gameMan.rules < rulePages-1) {
+						gameMan.rules++;
 					}
-					else if (inputMan.x < displayMan.cellSize*2) {
-						gameMan.rules = Math.max(gameMan.rules - 1, 0);
+					else if (inputMan.x < displayMan.cellSize*2 && gameMan.rules > 0) {
+						gameMan.rules--;
 					}
 				}
 
@@ -253,13 +253,25 @@ function keyDown(event) {
 		break;
 	case 37:	// left
 	case 38:	// up
-		if (menuMan.show && menuMan.button < buttons.length-2) {
+		if (gameMan.scene == "rules" && gameMan.rules > 0) {
+			gameMan.rules--;
+		}
+		else if (gameMan.tutorialStep > 0) {
+			gameMan.tutorialStep--;
+		}
+		else if (menuMan.show && menuMan.button < buttons.length-2) {
 			menuMan.button++;
 		}
 		break;
 	case 39:	// right
 	case 40:	// down
-		if (menuMan.show && menuMan.button > 0) {
+		if (gameMan.scene == "rules" && gameMan.rules < rulePages-1) {
+			gameMan.rules++;
+		}
+		else if (gameMan.tutorialStep >= 0) {
+			nextTutorialStep();
+		}
+		else if (menuMan.show && menuMan.button > 0) {
 			menuMan.button--;
 		}
 		break;
