@@ -319,28 +319,6 @@ function setRings() {
 	}
 }
 
-function setRallyHighlights(pRow, pCol) {
-	if (gameMan.tutorialStep < 0 && routedCell(pRow, pCol)) {
-		for (var row = 0; row < 15; ++row) {
-			for (var col = 0; col < 21; ++col) {
-				if (emptyRallyCell(row, col, grid[pRow][pCol].player)) {
-					grid[row][col].prompt = 2;
-				}
-			}
-		}
-	}
-}
-
-function clearRallyHighlights() {
-	if (gameMan.tutorialStep < 0) {
-		for (var row = 0; row < 15; ++row) {
-			for (var col = 0; col < 21; ++col) {
-				grid[row][col].prompt = -1;
-			}
-		}
-	}
-}
-
 function drawPieces(time) {
 	var theta = time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
