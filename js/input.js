@@ -248,10 +248,12 @@ function keyDown(event) {
 
 	switch (event.keyCode) {
 	case 13:	// enter
+	case 90:	// Z
 		hudMan.inputText = "Enter";
 		menuButton(menuMan.button);
 		break;
 	case 27:	// escape
+	case 88:	// X
 		hudMan.inputText = "Escape";
 		if (gameMan.scene == "rules") {
 			setScene("board");
