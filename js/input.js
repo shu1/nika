@@ -122,7 +122,6 @@ function mouseMove(event) {
 			}
 			else {	// pan
 				if (pan(dX, dY)) {
-					hudMan.inputText = -scene.x + "," + -scene.y;
 					event.preventDefault();
 				}
 				inputMan.pX = inputMan.x;
@@ -244,38 +243,70 @@ function isMatchingTouch(event) {
 }
 
 function keyDown(event) {
+	inputMan.menu = true;	// Highlight current button even when mouse isn't down
+	var dX = 8;
+
 	switch (event.keyCode) {
 	case 13:	// enter
+		hudMan.inputText = "Enter";
 		menuButton(menuMan.button);
 		break;
 	case 37:	// left
+		if (!keyLeft()) {
+			pan(dX, 0);
+		}
+		break;
 	case 38:	// up
-		if (gameMan.scene == "rules" && gameMan.rules > 0) {
-			gameMan.rules--;
-			hudMan.pageText = "Rule " + gameMan.rules;
-		}
-		else if (gameMan.tutorialStep > 0) {
-			gameMan.tutorialStep--;
-			hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
-		}
-		else if (menuMan.show && menuMan.button < buttons.length-2) {
-			menuMan.button++;
+		if (!keyLeft()) {
+			pan(0, dX);
 		}
 		break;
 	case 39:	// right
+		if (!keyRight()) {
+			pan(-dX, 0);
+		}
+		break;
 	case 40:	// down
-		if (gameMan.scene == "rules" && gameMan.rules < rulePages-1) {
-			gameMan.rules++;
-			hudMan.pageText = "Rule " + gameMan.rules;
-		}
-		else if (gameMan.tutorialStep >= 0) {
-			nextTutorialStep();
-		}
-		else if (menuMan.show && menuMan.button > 0) {
-			menuMan.button--;
+		if (!keyRight()) {
+			pan(0, -dX);
 		}
 		break;
 	}
+}
 
-	inputMan.menu = true;	// Highlight current button even when mouse isn't down
+function keyLeft() {
+	hudMan.inputText = "Prev";
+	if (gameMan.scene == "rules" && gameMan.rules > 0) {
+		gameMan.rules--;
+		hudMan.pageText = "Rule " + gameMan.rules;
+		return true;
+	}
+	else if (gameMan.tutorialStep > 0) {
+		gameMan.tutorialStep--;
+		hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
+		return true;
+	}
+	else if (menuMan.show && menuMan.button < buttons.length-2) {
+		menuMan.button++;
+		return true;
+	}
+	return false;
+}
+
+function keyRight() {
+	hudMan.inputText = "Next";
+	if (gameMan.scene == "rules" && gameMan.rules < rulePages-1) {
+		gameMan.rules++;
+		hudMan.pageText = "Rule " + gameMan.rules;
+		return true;
+	}
+	else if (gameMan.tutorialStep >= 0) {
+		nextTutorialStep();
+		return true;
+	}
+	else if (menuMan.show && menuMan.button > 0) {
+		menuMan.button--;
+		return true;
+	}
+	return false;
 }

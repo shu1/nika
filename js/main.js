@@ -230,6 +230,7 @@ function pan(dX, dY) {
 		}
 	}
 
+	hudMan.inputText = -scene.x + "," + -scene.y;
 	return panned;
 }
 
