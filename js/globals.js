@@ -79,11 +79,8 @@ var	hudMan = {
 	fpsCount:0,
 	fpsText:"",
 	drawText:"",
-	gameText:"",
 	inputText:"",
-	pieceText:"",
-	actionText:"",
-	tutorialText:""
+	pageText:""
 }
 
 var buttons = [

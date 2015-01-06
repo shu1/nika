@@ -127,7 +127,6 @@ function useAction(n) {
 	else if (gameMan.tutorialStep != 2) {	// hack
 		displayMan.helmetFlash = 1;	// flash helmet
 	}
-	hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	checkWin();
 }
 
@@ -193,7 +192,6 @@ function undo() {
 		gameMan.player = gameStates[gameStates.length-1].player;
 		gameMan.actions = gameStates[gameStates.length-1].actions;
 		phalanx = [];
-		hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	}
 }
 
@@ -224,7 +222,7 @@ function checkWin() {
 	}
 }
 
-function playerAction(name) {
+function playerAction() {
 	for (var player = 0; player < 4; ++player) {
 		var priorityEvent = getPriorityEvent(eventMan[player]);
 		playSound(priorityEvent);
@@ -312,6 +310,7 @@ function menuButton(button) {
 	case 0:
 		if (gameMan.scene == "rules") {
 			setScene("board");
+			hudMan.pageText = "";
 		}
 		else {
 			menuMan.show = !menuMan.show;
@@ -337,6 +336,7 @@ function menuButton(button) {
 		setScene("rules");
 		menuMan.show = false;
 		menuMan.button = 0;
+		hudMan.pageText = "Rule " + gameMan.rules;
 		break;
 	case 7:
 		if (gameMan.tutorialStep < 0) {

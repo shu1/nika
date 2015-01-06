@@ -75,7 +75,6 @@ function getRot(dX, dY) {
 
 function mouseDown(event) {
 	if (setCurrentTouch(event)) {
-		hudMan.actionText = "";
 		hudMan.inputText = "";
 		inputMan.menu = getXY(event);
 		if (!inputMan.menu && gameMan.winner < 0) {
@@ -142,18 +141,16 @@ function mouseUp(event) {
 		else {
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == "rules") {
-				if (inputMan.y > canvas.height / 2 - displayMan.cellSize * 1.5
-				 && inputMan.y < canvas.height / 2 + displayMan.cellSize * 1.5) {
+				if (inputMan.y > canvas.height/2 - displayMan.cellSize*1.5
+				 && inputMan.y < canvas.height/2 + displayMan.cellSize*1.5) {
 					if (inputMan.x > canvas.width - displayMan.cellSize*2 && gameMan.rules < rulePages-1) {
 						gameMan.rules++;
+						hudMan.pageText = "Rule " + gameMan.rules;
 					}
 					else if (inputMan.x < displayMan.cellSize*2 && gameMan.rules > 0) {
 						gameMan.rules--;
+						hudMan.pageText = "Rule " + gameMan.rules;
 					}
-				}
-
-				if (inputMan.x < displayMan.cellSize*3.5 && inputMan.y > canvas.height - displayMan.cellSize*2.5) {
-					setScene("board");
 				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
@@ -255,9 +252,11 @@ function keyDown(event) {
 	case 38:	// up
 		if (gameMan.scene == "rules" && gameMan.rules > 0) {
 			gameMan.rules--;
+			hudMan.pageText = "Rule " + gameMan.rules;
 		}
 		else if (gameMan.tutorialStep > 0) {
 			gameMan.tutorialStep--;
+			hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
 		}
 		else if (menuMan.show && menuMan.button < buttons.length-2) {
 			menuMan.button++;
@@ -267,6 +266,7 @@ function keyDown(event) {
 	case 40:	// down
 		if (gameMan.scene == "rules" && gameMan.rules < rulePages-1) {
 			gameMan.rules++;
+			hudMan.pageText = "Rule " + gameMan.rules;
 		}
 		else if (gameMan.tutorialStep >= 0) {
 			nextTutorialStep();

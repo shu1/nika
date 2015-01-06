@@ -544,11 +544,10 @@ function drawHud(time) {
 	}
 	hudMan.fpsCount++;
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[gameMan.scene].scale + "x";
-	hudMan.pieceText = !gameMan.selection ? "" : "Phalanx selection";
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, displayMan.hudHeight);
-	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.gameText + "  |  " + hudMan.inputText
-	+ "  |  " + hudMan.pieceText + hudMan.actionText + hudMan.tutorialText, 138, displayMan.hudFont);
+	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText,
+		138, displayMan.hudFont);
 }
 
 // browser compatibility
