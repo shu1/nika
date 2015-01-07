@@ -31,6 +31,9 @@ window.onload = function() {
 	sounds["pick"] = document.getElementById("pick");
 	sounds["music"] = document.getElementById("music");
 
+	sounds["music"].loop = true;
+	sounds["music"].play();
+
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
 
@@ -85,19 +88,29 @@ window.onload = function() {
 	reSize();
 
 	if (window.nwf) {
-		gamePadDisplay = nwf.display.DisplayManager.getInstance().getGamePadDisplay();
-		gamePadDisplay.x = (canvas.width - gamePadDisplay.width)/2
-		gamePadDisplay.y = (canvas.height - gamePadDisplay.height)/2
-		gamePadDisplay.setViewport(gamePadDisplay.x, gamePadDisplay.y);
-	}
+		var tvDisplay = nwf.display.DisplayManager.getInstance().getTVDisplay();
 
-	draw(0);
-	sounds["music"].loop = true;
-	sounds["music"].play();
+		tvDisplay.addEventListener("load", function() {
+			tvCanvas = tvDisplay.window.document.getElementById("tvCanvas");
+			tvCanvas.width = 1920;
+			tvCanvas.height = 1080;
+			tvContext = tvCanvas.getContext("2d");
+			draw(0);
+		});
+
+		tvDisplay.load("wiiutv.html");
+	}
+	else {
+		draw(0);
+	}
 }
 
 function reSize() {
-	if (screenType > 0) {	// fullscreen
+	if (window.nwf) {
+		canvas.width = 854;
+		canvas.height = 480;
+	}
+	else if (screenType > 0) {	// fullscreen
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 	}
@@ -206,70 +219,39 @@ function zooming(dTime) {
 
 function pan(dX, dY) {
 	var panned = false;
+	var scene = scenes[gameMan.scene];
+	var width = canvas.width - scene.width * scene.scale;
+	var height = canvas.height - scene.height * scene.scale;
 
-	if (window.nwf) {
-		var width = canvas.width - gamePadDisplay.width;
-		var height = canvas.height - gamePadDisplay.height;
-
-		if (gamePadDisplay.x - dX > width) {
-			gamePadDisplay.x = width;
+	if (width < 0) {
+		if (scene.x + dX < width) {
+			scene.x = width;
 		}
-		else if (gamePadDisplay.x - dX < 0) {
-			gamePadDisplay.x = 0;
+		else if (scene.x + dX > 0) {
+			scene.x = 0;
 		}
-		else {
-			gamePadDisplay.x -= dX;
-		}
-
-		if (gamePadDisplay.y - dY > height) {
-			gamePadDisplay.y = height;
-		}
-		else if (gamePadDisplay.y - dY < 0) {
-			gamePadDisplay.y = 0;
-		}
-		else {
-			gamePadDisplay.y -= dY;
-		}
-
-		gamePadDisplay.setViewport(gamePadDisplay.x, gamePadDisplay.y);
-		hudMan.inputText = gamePadDisplay.x + "," + gamePadDisplay.y;
-	}
-	else {
-		var scene = scenes[gameMan.scene];
-		var width = canvas.width - scene.width * scene.scale;
-		var height = canvas.height - scene.height * scene.scale;
-
-		if (width < 0) {
-			if (scene.x + dX < width) {
-				scene.x = width;
-			}
-			else if (scene.x + dX > 0) {
-				scene.x = 0;
-			}
-			else if (dX) {
-				scene.x += dX;
-				panned = true;
-			}
-		}
-
-		if (height < 0) {
-			if (scene.y + dY < height) {
-				scene.y = height;
-			}
-			else if (scene.y + dY > 0) {
-				scene.y = 0;
-			}
-			else if (dY) {
-				scene.y += dY;
-				panned = true;
-			}
-		}
-
-		if (panned) {
-			hudMan.inputText = -scene.x + "," + -scene.y;
+		else if (dX) {
+			scene.x += dX;
+			panned = true;
 		}
 	}
 
+	if (height < 0) {
+		if (scene.y + dY < height) {
+			scene.y = height;
+		}
+		else if (scene.y + dY > 0) {
+			scene.y = 0;
+		}
+		else if (dY) {
+			scene.y += dY;
+			panned = true;
+		}
+	}
+
+	if (panned) {
+		hudMan.inputText = -scene.x + "," + -scene.y;
+	}
 	return panned;
 }
 
