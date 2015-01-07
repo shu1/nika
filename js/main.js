@@ -264,7 +264,9 @@ function pan(dX, dY) {
 			}
 		}
 
-		hudMan.inputText = -scene.x + "," + -scene.y;
+		if (panned) {
+			hudMan.inputText = -scene.x + "," + -scene.y;
+		}
 	}
 
 	return panned;
