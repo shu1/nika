@@ -135,11 +135,11 @@ function reSize() {
 		}
 	}
 
-	displayMan.hudHeight = Math.floor(44 * minScale);
-	displayMan.hudFont = Math.floor(32 * minScale);
+	displayMan.hudHeight = Math.floor(44*minScale);
+	displayMan.hudFont = Math.floor(32*minScale);
 	gpContext.font = displayMan.hudFont + "px sans-serif";
 
-	menuMan.bWidth = displayMan.cellSize * 2 * minScale;
+	menuMan.bWidth = displayMan.cellSize*2 * minScale;
 	menuMan.bHeight = menuMan.bWidth/2;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
@@ -315,7 +315,7 @@ function drawContext(context, time, dTime) {
 	drawMenu(context, dTime);
 
 	if (gameMan.debug) {
-		drawHud(context, time);
+		drawHud(context);
 	}
 }
 
@@ -569,7 +569,7 @@ function drawMenu(context, dTime) {
 }
 
 function drawButton(context, row, col, text, textColor, bgColor) {
-	var padding = 4;
+	var padding = 4;	// TODO: put in displayMan and calculate in reSize()
 	if (bgColor) {
 		context.fillStyle = bgColor;
 		context.fillRect(gpCanvas.width - menuMan.bWidth * (col+1) + padding, gpCanvas.height - menuMan.bHeight * (row+1) + padding,
@@ -579,10 +579,11 @@ function drawButton(context, row, col, text, textColor, bgColor) {
 	context.fillText(text, gpCanvas.width - menuMan.bWidth * (col+0.8), gpCanvas.height - menuMan.bHeight * (row+0.5)+6);
 }
 
-function drawHud(context, time) {
-	hudMan.drawText = context.canvas.width + "x" + context.canvas.height + " " + scenes[gameMan.scene].scale + "x";
+function drawHud(context) {
+	var canvas = context.canvas;
+	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[gameMan.scene].scale + "x";
 	context.fillStyle = "white";
-	context.clearRect(0, 0, context.canvas.width, displayMan.hudHeight);
+	context.clearRect(0, 0, canvas.width, displayMan.hudHeight);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText,
 		138, displayMan.hudFont);
 }
