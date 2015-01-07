@@ -34,6 +34,27 @@ window.onload = function() {
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
 
+	var view_2d = new fo.view_2d(canvas);
+	murals[0] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
+	murals[1] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
+	murals[2] = new spriter_animation("images/mural/", view_2d, muralBlue_data);
+	murals[3] = new spriter_animation("images/mural/", view_2d, muralBlack_data);
+
+	murals[0].set_position(678, 794);
+	murals[1].set_position(1148, 844);
+	murals[2].set_position(848, 794);
+	murals[3].set_position(1320, 844);
+
+	murals[0].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
+	murals[1].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
+	murals[2].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
+	murals[3].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
+
+	tick.frame = 0;
+	tick.time = 0;
+	tick.time_last = 0;
+	tick.elapsed_time = 0;
+
 	if (navigator.msPointerEnabled) {
 		canvas.style.msTouchAction = "none";
 		canvas.addEventListener("MSPointerDown", mouseDown);
@@ -59,31 +80,9 @@ window.onload = function() {
 	menuMan.cols = 3;
 	menuMan.rows = Math.ceil((buttons.length-1) / menuMan.cols);
 
-	var view_2d = new fo.view_2d(canvas);
-	murals[0] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
-	murals[1] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
-	murals[2] = new spriter_animation("images/mural/", view_2d, muralBlue_data);
-	murals[3] = new spriter_animation("images/mural/", view_2d, muralBlack_data);
-
-	murals[0].set_position(678, 794);
-	murals[1].set_position(1148, 844);
-	murals[2].set_position(848, 794);
-	murals[3].set_position(1320, 844);
-
-	murals[0].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
-	murals[1].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
-	murals[2].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
-	murals[3].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
-
-	tick.frame = 0;
-	tick.time = 0;
-	tick.time_last = 0;
-	tick.elapsed_time = 0;
-
+	scenes["board"] = {};
+	scenes["rules"] = {};
 	reSize();
-	draw(0);
-	sounds["music"].loop = true;
-	sounds["music"].play();
 
 	if (window.nwf) {
 		gamePadDisplay = nwf.display.DisplayManager.getInstance().getGamePadDisplay();
@@ -91,6 +90,10 @@ window.onload = function() {
 		gamePadDisplay.y = (canvas.height - gamePadDisplay.height)/2
 		gamePadDisplay.setViewport(gamePadDisplay.x, gamePadDisplay.y);
 	}
+
+	draw(0);
+	sounds["music"].loop = true;
+	sounds["music"].play();
 }
 
 function reSize() {
@@ -128,22 +131,20 @@ function reSize() {
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
-	var scene = {};
+	var scene = scenes["board"];
 	scene.width = displayMan.boardWidth;
 	scene.height = displayMan.boardHeight;
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
 	scene.scale = minScale;
-	scenes["board"] = scene;
 
 	var ratio = canvas.width / canvas.height;
-	scene = {};
+	scene = scenes["rules"];
 	scene.height = 1152;
 	scene.width = ratio >= 1.5 ? scene.height * ratio : 2048;
 	scene.maxScale = canvas.height / scene.height;
 	scene.minScale = canvas.width / scene.width;
 	scene.scale = scene.minScale;
-	scenes["rules"] = scene;
 
 	setScene("board");
 }
