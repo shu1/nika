@@ -84,6 +84,13 @@ window.onload = function() {
 	draw(0);
 	sounds["music"].loop = true;
 	sounds["music"].play();
+
+	if (window.nwf) {
+		gamePadDisplay = nwf.display.DisplayManager.getInstance().getGamePadDisplay();
+		gamePadDisplay.x = (canvas.width - gamePadDisplay.width)/2
+		gamePadDisplay.y = (canvas.height - gamePadDisplay.height)/2
+		gamePadDisplay.setViewport(gamePadDisplay.x, gamePadDisplay.y);
+	}
 }
 
 function reSize() {
@@ -198,47 +205,76 @@ function zooming(dTime) {
 
 function pan(dX, dY) {
 	var panned = false;
-	var scene = scenes[gameMan.scene];
 
-	if (scene.width * scene.scale >= canvas.width) {
-		var width = canvas.width - scene.width * scene.scale;
+	if (window.nwf) {
+		var width = canvas.width - gamePadDisplay.width;
+		var height = canvas.height - gamePadDisplay.height;
 
-		if (scene.x + dX < width) {
-			scene.x = width;
+		if (gamePadDisplay.x - dX > width) {
+			gamePadDisplay.x = width;
 		}
-		else if (scene.x + dX > 0) {
-			scene.x = 0;
+		else if (gamePadDisplay.x - dX < 0) {
+			gamePadDisplay.x = 0;
 		}
-		else if (dX) {
-			scene.x += dX;
-			panned = true;
+		else {
+			gamePadDisplay.x -= dX;
 		}
+
+		if (gamePadDisplay.y - dY > height) {
+			gamePadDisplay.y = height;
+		}
+		else if (gamePadDisplay.y - dY < 0) {
+			gamePadDisplay.y = 0;
+		}
+		else {
+			gamePadDisplay.y -= dY;
+		}
+
+		gamePadDisplay.setViewport(gamePadDisplay.x, gamePadDisplay.y);
+		hudMan.inputText = gamePadDisplay.x + "," + gamePadDisplay.y;
 	}
-
-	if (scene.height * scene.scale >= canvas.height) {
+	else {
+		var scene = scenes[gameMan.scene];
+		var width = canvas.width - scene.width * scene.scale;
 		var height = canvas.height - scene.height * scene.scale;
 
-		if (scene.y + dY < height) {
-			scene.y = height;
+		if (width < 0) {
+			if (scene.x + dX < width) {
+				scene.x = width;
+			}
+			else if (scene.x + dX > 0) {
+				scene.x = 0;
+			}
+			else if (dX) {
+				scene.x += dX;
+				panned = true;
+			}
 		}
-		else if (scene.y + dY > 0) {
-			scene.y = 0;
+
+		if (height < 0) {
+			if (scene.y + dY < height) {
+				scene.y = height;
+			}
+			else if (scene.y + dY > 0) {
+				scene.y = 0;
+			}
+			else if (dY) {
+				scene.y += dY;
+				panned = true;
+			}
 		}
-		else if (dY) {
-			scene.y += dY;
-			panned = true;
-		}
+
+		hudMan.inputText = -scene.x + "," + -scene.y;
 	}
 
-	hudMan.inputText = -scene.x + "," + -scene.y;
 	return panned;
 }
 
 function draw(time) {
-	var dTime = time - displayMan.time, canvasWidth = canvas.width, canvasHeight = canvas.height;
+	var dTime = time - displayMan.time;
 
-	if (gameMan.scene != "rules" || canvasWidth/canvasHeight < 3/2) {
-		context.clearRect(0, 0, canvasWidth, canvasHeight);
+	if (gameMan.scene != "rules" || canvas.width / canvas.height < 3/2) {
+		context.clearRect(0, 0, canvas.width, canvas.height);
 		zooming(dTime);
 
 		var scene = scenes["board"];
