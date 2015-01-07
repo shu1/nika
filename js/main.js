@@ -214,6 +214,13 @@ function zooming(dTime) {
 		scene.x -= scene.width * speed/2;
 		scene.y -= scene.height * speed/2;
 		pan(0, 0);	// prevent moving off screen
+
+		if (Math.abs(scene.x) < 1) {
+			scene.x = 0;
+		}
+		if (Math.abs(scene.y) < 1) {
+			scene.y = 0;
+		}
 	}
 }
 
