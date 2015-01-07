@@ -257,12 +257,23 @@ function pan(dX, dY) {
 
 function draw(time) {
 	var dTime = time - displayMan.time;
-	drawGP(gpContext, time, dTime);
+	if (time - hudMan.fpsTime > 984) {
+		hudMan.fpsText = hudMan.fpsCount + "fps";
+		hudMan.fpsTime = time;
+		hudMan.fpsCount = 0;
+	}
+	hudMan.fpsCount++;
+
+	drawContext(gpContext, time, dTime);
+	if (window.nwf) {
+		drawContext(tvContext, time, dTime);
+	}
+
 	displayMan.time = time;
 	window.requestAnimationFrame(draw);
 }
 
-function drawGP(context, time, dTime) {
+function drawContext(context, time, dTime) {
 	if (gameMan.scene != "rules" || gpCanvas.width / gpCanvas.height < 3/2) {
 		context.clearRect(0, 0, gpCanvas.width, gpCanvas.height);
 		zooming(dTime);
@@ -562,15 +573,9 @@ function drawButton(context, row, col, text, textColor, bgColor) {
 }
 
 function drawHud(context, time) {
-	if (time - hudMan.fpsTime > 984) {
-		hudMan.fpsText = hudMan.fpsCount + "fps";
-		hudMan.fpsTime = time;
-		hudMan.fpsCount = 0;
-	}
-	hudMan.fpsCount++;
-	hudMan.drawText = gpCanvas.width + "x" + gpCanvas.height + " " + scenes[gameMan.scene].scale + "x";
+	hudMan.drawText = context.canvas.width + "x" + context.canvas.height + " " + scenes[gameMan.scene].scale + "x";
 	context.fillStyle = "white";
-	context.clearRect(0, 0, gpCanvas.width, displayMan.hudHeight);
+	context.clearRect(0, 0, context.canvas.width, displayMan.hudHeight);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText,
 		138, displayMan.hudFont);
 }
