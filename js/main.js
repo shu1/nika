@@ -127,12 +127,15 @@ function reSize() {
 	}
 	else if (gpCanvas.width != 1024 || gpCanvas.height != 768) {	// else if not ipad then it's a phone
 		minScale = gpCanvas.width / displayMan.boardWidth;
-		maxScale = minScale * 5/3;
-		if (maxScale > 0.9 && maxScale < 1.11) {
+		maxScale = minScale * displayMan.boardWidth / 1281;	// make maxScale = 2/3 on WiiU gamepad
+		if (maxScale > 0.9 && maxScale < 1.1) {
 			maxScale = 1;
 		}
 		else if (maxScale > 1.4 && maxScale < 1.6) {
 			maxScale = 1.5;
+		}
+		else if (maxScale > 0.7 && maxScale < 0.8) {
+			maxScale = 0.75;
 		}
 	}
 
@@ -294,7 +297,7 @@ function drawContext(context, time, dTime) {
 	var canvas = context.canvas;
 	var tv = (canvas === gpCanvas) ? "" : "tv";
 
-	if (gameMan.scene != "rules" || canvas.width / canvas.height < 3/2) {
+	if (gameMan.scene != "rules" || canvas.width / canvas.height < 1.5) {
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		zooming(dTime);
 
