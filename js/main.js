@@ -95,6 +95,11 @@ window.onload = function() {
 			tvCanvas.width = tvDisplay.width;
 			tvCanvas.height = tvDisplay.height;
 			tvContext = tvCanvas.getContext("2d");
+
+			scenes["tvboard"] = {};
+			scenes["tvrules"] = {};
+			initScenes(tvCanvas, tvCanvas.height / displayMan.boardHeight, tvCanvas.width / displayMan.boardWidth);
+
 			draw(0);
 		});
 
@@ -140,22 +145,31 @@ function reSize() {
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
-	var scene = scenes["board"];
+	initScenes(gpCanvas, maxScale, minScale);
+	setScene("board");
+}
+
+function initScenes(canvas, maxScale, minScale) {
+	var tv = (canvas === gpCanvas) ? "" : "tv";
+
+	var scene = scenes[tv + "board"];
 	scene.width = displayMan.boardWidth;
 	scene.height = displayMan.boardHeight;
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
 	scene.scale = minScale;
+	scene.x = (canvas.width - scene.width * scene.scale)/2;
+	scene.y = (canvas.height - scene.height * scene.scale)/2;
 
-	var ratio = gpCanvas.width / gpCanvas.height;
-	scene = scenes["rules"];
+	var ratio = canvas.width / canvas.height;
+	scene = scenes[tv + "rules"];
 	scene.height = 1152;
 	scene.width = ratio >= 1.5 ? scene.height * ratio : 2048;
 	scene.maxScale = gpCanvas.height / scene.height;
 	scene.minScale = gpCanvas.width / scene.width;
 	scene.scale = scene.minScale;
-
-	setScene("board");
+	scene.x = (canvas.width - scene.width * scene.scale)/2;
+	scene.y = (canvas.height - scene.height * scene.scale)/2;
 }
 
 function setScene(sceneIndex) {
