@@ -1,6 +1,6 @@
 "use strict";
 
-var canvas, context, grid, images=[], sounds=[], phalanx=[], gameStates=[], scenes=[], murals=[], tick={};
+var canvas, context, gamePadDisplay, grid, images={}, sounds={}, phalanx=[], gameStates=[], scenes={}, murals=[], tick={};
 
 var displayMan = {
 	cellSize:96,
@@ -8,17 +8,12 @@ var displayMan = {
 	boardWidth:2016,
 	boardHeight:1440,
 	ruleWidth:2016,
-	ruleHeight:1440,
+	ruleHeight:1024,
 	dialogX:628,
 	dialogY:624,
 	dialogWidth:758,
 	dialogHeight:192,
 	tutorialOffset:152,
-	settingsX:384,
-	settingsY:384,
-	settingsWidth:1248,
-	settingsHeight:672,
-	initAnim:false,
 	menu:false,
 	helmetTheta:0,
 	helmetScale:0,
@@ -47,7 +42,7 @@ var gameMan = {
 	winner:-1,
 	actions:2,
 	player:0,
-	scene:0,	// 0:game, 1:settings, 2:rules
+	scene:"",
 	rules:0,
 	pRow:-1,
 	pCol:-1,
@@ -64,7 +59,8 @@ var inputMan = {
 	pX:0,
 	pY:0,
 	x:0,
-	y:0
+	y:0,
+	currentTouchId:-1
 }
 
 var menuMan = {
@@ -75,7 +71,7 @@ var menuMan = {
 	height:0,
 	bWidth:0,
 	bHeight:0,
-	button:-1
+	button:0
 }
 
 var	hudMan = {
@@ -83,27 +79,20 @@ var	hudMan = {
 	fpsCount:0,
 	fpsText:"",
 	drawText:"",
-	gameText:"",
 	inputText:"",
-	pieceText:"",
-	actionText:"",
-	tutorialText:""
+	pageText:""
 }
 
 var buttons = [
 	"  Menu",
 	"  Close",
 	" Debug",
-	"Tutorial",
-	"  Rules",
+	"     AI",
+	"  Zoom",
 	"  Pass",
 	"  Undo",
-	"  Zoom"
-]
-
-var settingsButtons = [
-	["Music", "-", "+"],
-	["Sounds", "-", "+"]
+	"  Rules",
+	"Tutorial",
 ]
 
 var mainBoard = [
@@ -345,7 +334,7 @@ var tutorialTexts = [[
 ],[
 	"All hoplites carry shields which protect","their front. The Spartan is FACING this","piece, so this piece cannot attack."
 ],[
-	"But Athena smiles upon us today -","we have him flanked! Let us MOVE our","other soldier forward. Drag this piece","in the direction you want to move it."
+	"But Athena smiles upon us today -","we have him flanked! Let us MOVE our","other soldier. Drag this piece forward,","ending your touch in the space indicated."
 ],[
 	"Good. Notice that the single helmet","indicates we have only 1 action remaining."
 ],[
@@ -355,9 +344,9 @@ var tutorialTexts = [[
 ],[
 	"Strategos! While we were dealing with","that Spartan, a contingent of Thebans","has approached us from behind.","Two of our men are in danger!"
 ],[
-	"We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, then end your touch","on the same piece. Rotate this piece so","that it faces the right."
+	"We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, ending your touch","several spaces away. Rotate this piece","so that it faces the right."
 ],[
-	"Excellent! Now, rotate our other soldier","to face the Theban. Since the Theban is","blocking movement in that direction,","you can just drag our piece toward","the Theban."
+	"Excellent! Now, rotate our other soldier","to face the Theban. Since the Theban is","blocking its movement, our piece will","rotate even if you try to move in that","direction."
 ],[
 	"Pieces can rotate to face any direction","in one action. Well done - the men are","safe, for now."
 ],[
@@ -367,7 +356,7 @@ var tutorialTexts = [[
 ],[
 	"To RALLY a piece, drag it into one of","your rally spaces. Let's deploy our man","here so he can hurry back to the fight."
 ],[
-	"We move through these spaces","normally, but our enemies are not","allowed to enter them."
+	"This is our ally's victory area. We move","through these spaces normally, but our","enemies are not allowed to enter them."
 ],[
 	"Let's move up our fresh soldier in","support."
 ],[
@@ -431,16 +420,16 @@ var tutorialTexts = [[
 ],[
 	"As you play, take some time to explore","the interface. You can, for example,","UNDO an unwanted move, or PASS if","you feel you cannot better your position","by taking an action."
 ],[
-	"You can also zoom in by double-tapping.","While zoomed in, you can move the view","around by dragging, or zoom back out by","double-tapping again."
+	"You can also press the ZOOM button to","zoom in and out. While zoomed in, you","can move the view around by dragging."
 ],[
 	"Though the rules are few, you will find","that the strategies are deep and varied.","Now then, proserkhou kai nika -","go forth and conquer!"
 ]]
 
 var tutorialInputs = [
-	true,	true,	false,	true,	true,	true,	true,	true,	true,	true,	true,
-	true,	true,	false,	true,	false,	true,	true,	false,	false,	true,
-	true,	true,	false,	true,	false,	true,	true,	false,	false,	true,
-	true,	false,	false,	false,	false,	false,	true,	true,	false,	true,
-	true,	true,	false,	false,	true,	true,	false,	true,	true,	true,
-	false,	true,	true,	true,	true,	true,	true
+	true,	true,	false,	true,	true,	true,	true,	true,	true,	true,
+	true,	true,	true,	false,	true,	false,	true,	true,	false,	false,
+	true,	true,	true,	false,	true,	false,	true,	true,	false,	false,
+	true,	true,	false,	false,	false,	false,	false,	true,	true,	false,
+	true,	true,	true,	false,	false,	true,	true,	false,	true,	true,
+	true,	false,	true,	true,	true,	true,	true,	true
 ]

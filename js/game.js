@@ -13,7 +13,9 @@ function generateGrid(ascii) {
 				city:-1,
 				rot:-1,
 				ring:-1,
-				prompt:-1
+				prompt:-1,
+				row:-1,
+				col:-1
 			}
 
 			if (a == 'A' || a == 'B' || a == 'C' || a == 'D' || a == 'Q') {
@@ -73,22 +75,12 @@ function generateGrid(ascii) {
 				cell.kind = 3;
 			}
 
+			cell.row = row;
+			cell.col = col;
 			grid[row][col] = cell;
 		}
 	}
 	displayMan.draw = true;
-}
-
-function newGame() {
-	generateGrid(mainBoard);
-	gameStates = [];
-	phalanx = [];
-	pushGameState();
-	gameMan.winner = -1;
-	gameMan.player = 0;
-	gameMan.actions = 2;
-
-	useAction(0);
 }
 
 function debugGrid() {
@@ -96,7 +88,7 @@ function debugGrid() {
 		var str = "";
 		for (var col = 0; col < 21; ++col) {
 			var a = grid[row][col].city;
-			str += a == -1 ? '.' : a;
+			str += (a == -1) ? '.' : a;
 		}
 		console.log(str);
 	}
@@ -110,8 +102,19 @@ function clearChecked() {
 	}
 }
 
+function newGame() {
+	generateGrid(mainBoard);
+	gameStates = [];
+	phalanx = [];
+	pushGameState();
+	gameMan.winner = -1;
+	gameMan.player = 0;
+	gameMan.actions = 2;
+	useAction(0);
+}
+
 function useAction(n) {
-	if (typeof n == 'undefined') {
+	if (n === undefined) {
 		n = 1;
 	}
 	gameMan.actions -= n;
@@ -125,7 +128,6 @@ function useAction(n) {
 	else if (gameMan.tutorialStep != 2) {	// hack
 		displayMan.helmetFlash = 1;	// flash helmet
 	}
-	hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	checkWin();
 }
 
@@ -191,7 +193,6 @@ function undo() {
 		gameMan.player = gameStates[gameStates.length-1].player;
 		gameMan.actions = gameStates[gameStates.length-1].actions;
 		phalanx = [];
-		hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	}
 }
 
@@ -219,5 +220,132 @@ function checkWin() {
 				murals[getPartner(gameMan.winner)].setAnim("victory");
 			}
 		}
+	}
+}
+
+function playerAction() {
+	for (var player = 0; player < 4; ++player) {
+		var priorityEvent = getPriorityEvent(eventMan[player]);
+		playSound(priorityEvent);
+		playAnimation(player, priorityEvent);
+		eventMan[player] = [];
+	}
+}
+
+function playSound(event) {
+	if (sounds[event]) {
+		sounds[event].volume = Math.pow(audioMan.sound / 10, 2);
+		sounds[event].play();
+	}
+}
+
+function playAnimation(player, event) {
+	if (["push", "pushed", "rout", "routed", "rally"].indexOf(event) > -1) {
+		murals[player].setAnim(event);
+	}
+}
+
+function getPriorityEvent(events) {
+	var precedence = ["pushed", "routed", "rally", "rotate", "move", "push", "rout"];
+	for (var j = precedence.length-1; j >= 0; --j) {
+		if (events.indexOf(precedence[j]) > -1) {
+			return precedence[j];
+		}
+	}
+	return "";
+}
+
+function resetAnimations() {
+	gameMan.receiver = -1;
+	initAnimations();
+}
+
+function initAnimations() {
+	for (var i = 0; i < 4; i++) {
+		setIdleAnimation(i);
+	}
+}
+
+function setIdleAnimation(player) {
+	if (gameMan.tutorialStep >= 0 && player == 0) {
+		if (tutorialInputs[gameMan.tutorialStep]) {
+			murals[player].setAnim("idleActive");
+		}
+		else {
+			murals[player].setAnim("idle");
+		}
+	}
+	else {
+		if (player == gameMan.player) {
+			murals[player].setAnim("idleActive");
+		} else {
+			murals[player].setAnim("idle");
+		}
+	}
+}
+
+function setRallyHighlights(pRow, pCol) {
+	if (gameMan.tutorialStep < 0 && routedCell(pRow, pCol)) {
+		for (var row = 0; row < 15; ++row) {
+			for (var col = 0; col < 21; ++col) {
+				if (emptyRallyCell(row, col, grid[pRow][pCol].player)) {
+					grid[row][col].prompt = 2;
+				}
+			}
+		}
+	}
+}
+
+function clearRallyHighlights() {
+	if (gameMan.tutorialStep < 0) {
+		for (var row = 0; row < 15; ++row) {
+			for (var col = 0; col < 21; ++col) {
+				grid[row][col].prompt = -1;
+			}
+		}
+	}
+}
+
+function menuButton(button) {
+	switch(button) {
+	case 0:
+		if (gameMan.scene == "rules") {
+			setScene("board");
+			hudMan.pageText = "";
+		}
+		else {
+			menuMan.show = !menuMan.show;
+		}
+		break;
+	case 1:
+		gameMan.debug = !gameMan.debug;
+		initAnimations();
+		break;
+	case 2:
+		ai();
+		break;
+	case 3:
+		zoom();
+		break;
+	case 4:
+		pass();
+		break;
+	case 5:
+		undo();
+		break;
+	case 6:
+		setScene("rules");
+		menuMan.show = false;
+		menuMan.button = 0;
+		hudMan.pageText = "Rule " + gameMan.rules;
+		break;
+	case 7:
+		if (gameMan.tutorialStep < 0) {
+			nextTutorialStep();
+		}
+		else {
+			endTutorial();
+		}
+		break;
 	}
 }

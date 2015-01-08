@@ -1,442 +1,493 @@
-"use strict";
+"use	strict";
 
-// TODO: should refactor so this isn't necessary in AI code
-function resetPieces(row, col) {
-		phalanx.length = 0;
-		phalanx.push({row:row, col:col});
-		gameMan.pRot = grid[row][col].rot;	// Only single pieces
-//		getPiece(row, col);					// Only phalanxes
+defGrid = null;
+
+function	newState	(){
+	var	s	=	{
+		//action	:	-1	//Action	taken
+		value	:	0,	//Value	of	state	after	board	state	adjustments
+		//totalValue	:	0,	//Total	value	of	all	the	pieces
+		board : grid //grid object, state of board after this move, will be applied to board upon ai exit.
+		//pieces	:	[],	//All	the	pieces	and	their	properties
+		//pieceValues	:	[]
+	};
+	return s;
 }
 
-function ai() {
-	// find all pieces of current player
-	var pieces = [];
+function	ai(){
+	storeGrid();
+	//setGrid(grid,defGrid)
+	var	pieces	=	[];
+	pieces = getAIPieces();
+
+	//Checks	if	any	pieces	are	close	enough	to	win.
+	for	(var	i	=	0;	i<6;	i++){
+		var	d	=	getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
+		//console.log(d);
+		if(d<=2){
+			if(d==1){
+				//1	move
+				console.log("1 space away.");
+			}
+			else if(d==2){
+				//2	moves
+				console.log("2 spaces away.");
+			}
+		}
+	}
+
+	//Creates the default state in which all other states are compared to.
+	var	defaultState	=	newState();
+	//defaultState.board	=	grid;
+	//console.log("Default init: " + defaultState.value);
+	getValue(defaultState,pieces);
+	console.log("For Player"	+	gameMan.player	+	", the value of	this state is	"	+	defaultState.value);
+	var bestState = defaultState; //Stores best state, which is default at this point. Altough we might be better off just setting best state.
+
+	var	rallySpots	=	[];
+	for	(var	row	=	0	;	row	<	15;	++row)	{
+		for	(var	col	=	0;	col	<	21;	++col)	{
+			if(grid[row][col].kind	==	3	&&	grid[row][col].city	==	pieces[0].player	&&	grid[row][col]	<	0){
+				rallySpots.push(grid[row][col]);
+			}
+		}
+	}
+
+	//EACH PIECE CHECKING =============
+	for(var	i	=	0;	i<6;	i++){
+		if(pieces[i].kind	==	3){
+			for(var	j	=	0;	j<rallySpots.length;	j++){
+				//Value	piece.	Make	separate	functions	for	checking	adjacent,	rot,	whatever.
+				//Then check	distance	to	goal,	to	ensure	frontmost	placement.	Although	there	could	be	a	more	efficient	way	of	doing	this.
+				//OR	JUST	GET	THE	SPACE	FARTHEST	FROM	THE	EDGE	(Athens	farthest	from	bottom,	sparta	from	left,	etc...)
+			}
+		}
+		else{
+			//	Do	normal	move	check,	which	means	rotation,	then	movement.
+			origRot = pieces[i].rot;
+			for	(var	rot	=	0;	rot<4;	rot++){
+				//var	tempState	=	defaultState;
+				if(rot!=origRot){
+					pieces[i].rot=rot;
+					var temp = copyState(defaultState);
+					getValue(temp,pieces);
+					if(temp.value>bestState.value){
+						bestState=temp;
+						console.log("Found better state by ROTATION with a value of: " + bestState.value);
+					}
+				}
+			}
+			setGrid(defGrid,grid);
+			pieces = getAIPieces();
+			//pieces[i].rot=origRot;
+			for (var dir = 0; dir<4; dir++){
+				//Check moves in each direction
+				var incRow; //Increment row by this
+				var incCol; //Increment col by this
+				switch(dir){
+					case 0:
+						incRow = -1;
+						incCol = 0;
+						break;
+					case 1:
+						incRow = 0;
+						incCol = 1;
+						break;
+					case 2:
+						incRow = 1;
+						incCol = 0;
+						break;
+					case 3:
+						incRow = 0;
+						incCol = -1;
+						break;
+				}
+
+				phalanx=[pieces[i]];
+				var pRow = pieces[i].row;
+				var pCol = pieces[i].col;
+				var tRow = pieces[i].row+incRow;
+				var tCol = pieces[i].col+incCol;
+				var origRot = pieces[i].rot;
+				if(checkMove(pRow,pCol,tRow,tCol)){
+					if(pushPiece(pRow,pCol,tRow,tCol,pieces[i],1)){
+						moveOnePiece(pRow, pCol, tRow, tCol);
+						pieces = getAIPieces();
+						var temp = copyState(defaultState);
+						getValue(temp,pieces);
+						if(temp.value>bestState.value){
+							bestState=temp;
+							console.log("Found better state by MOVEMENT with a value of: " + bestState.value);
+						}
+						setGrid(defGrid,grid);
+						pieces = getAIPieces();
+					}
+				}
+				phalanx=[];
+			}
+		}
+	}
+
+	setGrid(defGrid,grid);
+	//PHALANX CHECKING =====================
+	for(var i=0; i<4; i++){
+		same_dir=[];
+		for	(var p=0;	p<6; p++){
+			if(pieces[p].rot==i){
+				same_dir.push(pieces[p]);
+			}
+		}
+		if(same_dir.length>1){
+			combinations = getCombinations(same_dir);
+			combinations.forEach(function(e){
+				phalanx.length=0;
+				phalanx = e.slice(0);
+				if(isPhalanx()){
+					for(var rot=0;rot<4;rot++){
+						if(rot!=i){
+							rotatePiece(phalanx[0].row, phalanx[0].col, rot);
+							pieces = getAIPieces();
+							var temp = copyState(defaultState);
+							getValue(temp,pieces);
+							if(temp.value>bestState.value){
+								bestState=temp;
+								console.log("Found better state by ROTATING A PHALANX with a value of: " + bestState.value);
+							}
+							setGrid(defGrid,grid);
+							pieces = getAIPieces();
+						}
+					}
+					for(var rot=0;rot<4;rot++){
+						setGrid(defGrid,grid);
+						pieces = getAIPieces();
+						var incRow; //Increment row by this
+						var incCol; //Increment col by this
+						switch(rot){
+							case 0:
+								incRow = -1;
+								incCol = 0;
+								break;
+							case 1:
+								incRow = 0;
+								incCol = 1;
+								break;
+							case 2:
+								incRow = 1;
+								incCol = 0;
+								break;
+							case 3:
+								incRow = 0;
+								incCol = -1;
+								break;
+						}
+						var pRow = phalanx[0].row;
+						var pCol = phalanx[0].col;
+						var tRow = phalanx[0].row+incRow;
+						var tCol = phalanx[0].col+incCol;
+						movePiece(pRow,pCol,tRow,tCol,true);
+						phalanx = e.slice(0);
+						pieces = getAIPieces();
+						var temp = copyState(defaultState);
+						getValue(temp,pieces);
+						if(temp.value>bestState.value){
+							bestState=temp;
+							console.log("Found better state by MOVING A PHALANX with a value of: " + bestState.value);
+						}
+						setGrid(defGrid,grid);
+						pieces = getAIPieces();
+					}
+				}
+			});
+		}
+	}
+
+	//AFTER ALL CHECKING IS DONE ===========
+	setGrid(bestState.board,grid);
+	phalanx=[];
+	//grid=bestState;
+	if(gameMan.actions>1){
+		useAction();
+	}
+	else{
+		useAction();
+		pushGameState();
+	}
+	displayMan.draw=true;
+}
+
+function	getValue(state,pieces){
+	for	(var	i	=	0;	i<6;	i++){
+	//	console.log("Piece " + i +  ", Row: " + pieces[i].row + ", Col: " + pieces[i].col + ".");
+		var	val	=	0;
+		//Piece	on	Board
+		if(pieces[i].kind!=3){
+		//	console.log(i);
+			val+=5;
+		}
+		//Adjacent	Check
+		var	adj	=	[];
+		adj[0] = grid[pieces[i].row-1][pieces[i].col];//N
+		adj[1] = grid[pieces[i].row][pieces[i].col+1];//E
+		adj[2] = grid[pieces[i].row+1][pieces[i].col];//S
+		adj[3] = grid[pieces[i].row][pieces[i].col-1];//W
+		//TODO:	Check	everything	to	make	sure	on	field.
+		for(var	j=0;	j<4;	j++){
+			if(adj[j].kind!=-1){
+				//Is	a	piece
+				if(adj[j].player>-1){
+					//Own
+					if(adj[j].player==pieces[i].player){
+					// console.log("Adjacent " + j + " is own.");
+						if(adj[j].rot==pieces[i].rot){
+						// console.log("Adjacent " + j + " is in phalanx");
+							val+=6;//In	Phalanx
+						}
+						else{
+						// console.log("Adjacent " + j + " is not in phalanx");
+							val+=2;//Not in Phalanx
+						}
+					}
+					//Ally
+					else if(Math.abs((adj[j].player-pieces[i].player)%2)==0){
+						if(adj[j].rot==pieces[i].rot){
+							val+=3;//Facing	Same	dir
+						}
+						else{
+							val+=1;//Diff	dir
+						}
+					}
+					//Enemy
+					else{
+						if(pieces[i].rot == j && Math.abs((adj[j].rot-j)%2)==0){
+							//Facing	each	other
+							//TODO BROKEN Will return true for pieces facing away from eachother too.
+							val-=1
+						}
+						else if(pieces[i].rot==j){
+							//If	piece	is	facing	adj,	but	they	aren't	facing	eachother,	then	adj	is	routable
+							if(gameMan.actions>1){
+								val+=5;
+							}
+							else{
+								val+=2;
+							}
+						}
+						else if(Math.abs((adj[j].rot-j)%2)==0){
+							//Else if	we're	not	facing	adjacent,	check	if	he's	facing	us.
+							if(gameMan.actions>1){
+								val-=5;
+							}
+							else{
+								val-=12;
+							}
+						}
+						else{
+							//Adjacent	but	not	facing	each	other.
+							if(gameMan.actions>1){
+								val+=2;
+							}
+							else{
+								val-=8;
+							}
+						}
+					}
+				}
+			}
+		}
+		val-=5*getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
+		state.value+=val; //Adds piece	value	to	total	value
+		//console.log("State Value: " + state.value);
+	}
+	//Subtract for every piece on	the	board
+	//state.value=state.totalValue;
+	for	(var	row	=	0;	row	<	15;	++row)	{
+		for	(var	col	=	0;	col	<	21;	++col)	{
+			if	(grid[row][col].player>-1	&& Math.abs(gameMan.player-grid[row][col].player)%2!=0	&&	grid[row][col].kind!=3)	{
+				state.value-=5;
+			}
+		}
+	}
+	//state.board=(grid);
+	//useAction(1);
+	//displayMan.draw=true;
+}
+
+function copyState(original){
+	var o = original.board;
+	var s = newState();
+	b=new Array(15);
+	for	(var row =	0; row	<	15;	++row){
+		b[row]=new Array(21);
+		for	(var col = 0; col	<	21;	++col){
+			var p = {}
+			p.row=row;
+			p.col=col;
+			p.checked=o[row][col].checked;
+			p.player=o[row][col].player;
+			p.kind=o[row][col].kind;
+			p.city=o[row][col].city;
+			p.rot=o[row][col].rot;
+			p.ring=o[row][col].ring;
+			p.prompt=o[row][col].prompt;
+			b[row][col]=p;
+		}
+	}
+	s.board=b;
+	return s;
+}
+
+function setGrid(gFrom, gTo){
+	for	(var row =	0; row	<	15;	++row){
+		for	(var col = 0; col	<	21;	++col){
+			// if(grid[row][col].player != board[row][col].player){
+			// 	console.log("Player moved");
+			// }
+			gTo[row][col].row=row;
+			gTo[row][col].col=col;
+			gTo[row][col].checked=gFrom[row][col].checked;
+			gTo[row][col].player=gFrom[row][col].player;
+			gTo[row][col].kind=gFrom[row][col].kind;
+			gTo[row][col].city=gFrom[row][col].city;
+			gTo[row][col].rot=gFrom[row][col].rot	;
+			gTo[row][col].ring=gFrom[row][col].ring;
+			gTo[row][col].prompt=gFrom[row][col].prompt;
+		}
+	}
+}
+
+// get distance to goal - to be used in ai evaluation
+function getDistanceFromGoal(row, col, player) {
+
+	//resetPieces(row, col);
+
+	if (player == 0) {
+		if (row <= 5 && col >= 9 && col <= 11) { // in 3x3 square in front of goal
+			return (row-2);
+		}
+		if (row <= 5 && col >= 6 && col <= 8) { // in Messenian territory "west" of 3x3 square
+			return (row-3) + (8-col) + 2;
+		}
+		if (row <= 5 && col >= 12 && col <= 14) { // in Messenian territory "east" of 3x3 square
+			return (row-3) + (col-12) + 2;
+		}
+		if (row >= 3 && row <= 11 && col >= 3 && col <= 5) { // in Spartan territory
+			return (row-3) + (5-col) + 5;
+		}
+		if (row >= 3 && row <= 11 && col >= 15 && col <= 17) { // in Theban territory
+			return (row-3) + (col-15) + 5;
+		}
+		if (row >= 9 && col >= 6 && col <= 10) { // in "west" half of Athenian territory (including rally areas)
+			return (row-9) + (col-5) + 11;
+		}
+		if (row >= 9 && col >= 11 && col <= 14) { // in "east" half of Athenian territory (including rally areas)
+			return (row-9) + (15-col) + 11;
+		}
+	}
+
+	if (player == 1) {
+		if (row >= 6 && row <= 8 && col >= 15) { // in 3x3 square in front of goal
+			return (18-col);
+		}
+		if (row >= 3 && row <= 5 && col >= 3) {	// in long rectangle "north" of goal
+			return (5-row) + (17-col) + 2;
+		}
+		if (row >= 9 && row <= 11 && col >= 3) { // in long rectangle "south" of goal
+			return (row-9) + (17-col) + 2;
+		}
+		if (row >= 6 && row <= 7 && col <= 5) { // in "north" 2x6 rectangle between center and back of rally area
+			return (row-5) + (5-col) + 14;
+		}
+		if (row == 8 && col <= 5) { // in "south" 1x6 rectangle between center and back of rally area
+			return (9-row) + (5-col) + 14;
+		}
+	}
+
+	if (player == 2) {
+		if (row >= 9 && col >= 9 && col <= 11) { // in 3x3 square in front of goal
+			return (12-row);
+		}
+		if (row >= 9 && col >= 6 && col <= 8) { // in Athenian territory "west" of 3x3 square
+			return (11-row) + (8-col) + 2;
+		}
+		if (row >= 9 && col >= 12 && col <= 14) { // in Athenian territory "east" of 3x3 square
+			return (11-row) + (col-12) + 2;
+		}
+		if (row >= 3 && row <= 11 && col >= 3 && col <= 5) { // in Spartan territory
+			return (11-row) + (5-col) + 5;
+		}
+		if (row >= 3 && row <= 11 && col >= 15 && col <= 17) { // in Theban territory
+			return (11-row) + (col-15) + 5;
+		}
+		if (row <= 5 && col >= 6 && col <= 10) { // in "west" half of Messenian territory (including rally areas)
+			return (5-row) + (col-5) + 11;
+		}
+		if (row <= 5 && col >= 11 && col <= 14) { // in "east" half of Messenian territory (including rally areas)
+			return (5-row) + (15-col) + 11;
+		}
+	}
+
+	if (player == 3) {
+		if (row >= 6 && row <= 8 && col <= 5) {	// in 3x3 square in front of goal
+			return (col-2);
+		}
+		if (row >= 3 && row <= 5 && col <= 17) { // in long rectangle "north" of goal
+			return (5-row) + (col-3) + 2;
+		}
+		if (row >= 9 && row <= 11 && col <= 17) { // in long rectangle "south" of goal
+			return (row-9) + (col-3) + 2;
+		}
+		if (row >= 6 && row <= 7 && col >= 15) { // in "north" 2x6 rectangle between center and back of rally area
+			return (row-5) + (col-15) + 14;
+		}
+		if (row == 8 && col >= 15) { // in "south" 1x6 rectangle between center and back of rally area
+			return (9-row) + (col-15) + 14;
+		}
+	}
+
+	return -1;
+
+}
+
+function storeGrid(){
+	var pGrid = new Array(15);
 	for (var row = 0; row < 15; ++row) {
+		pGrid[row] = new Array(21);
 		for (var col = 0; col < 21; ++col) {
-			if (grid[row][col].player == gameMan.player) {
-				pieces.push({row:row, col:col});
+			var cell = {
+				checked: grid[row][col].checked,
+				player : grid[row][col].player,
+				kind   : grid[row][col].kind,
+				city   : grid[row][col].city,
+				rot    : grid[row][col].rot,
+				ring   : grid[row][col].ring
 			}
+			pGrid[row][col] = cell;
 		}
 	}
-
-
-	for (var i = 0; i < 6; ++i) {
-		var row = pieces[i].row;
-		var col = pieces[i].col;
-	}
-
-	// try AI methods in order
-	var success = false;
-	if (!success) {
-		success = checkWinNextAction(pieces);
-	}
-	if (!success && gameMan.actions == 2) {
-		success = checkWinTwoActions(pieces);
-	}
-	if (!success) {
-		success = moveTowardsGoal(pieces);
-	}
-	if (!success) {
-		success = randomMove(pieces);
-	}
+	defGrid=pGrid;
 }
 
-// check if this piece can be pushed in 1 action
-// TODO - include "back" pieces (i.e. check friends in front of and behind you)
-function canBePushed(row, col) {
-
-	resetPieces(row, col);
-
-	var enemies = 0;
-	var foundAllEnemies = false;
-	var friends = 0;
-	var foundAllFriends = false;
-
-	switch(grid[row][col].rot) {
-	case 0:
-		if(isEnemy(row-1, col) && grid[row-1][col].rot == 2) {
-
-			enemies = 1;			//figure out how many enemies on the same team in a row are in front of this piece and facing it
-			for (var i = 2; !foundAllEnemies; i++) {
-				if (grid[row-i][col].player >= 0 && grid[row-i][col].player == grid[row-1][col].player && grid[row-i][col].rot == 2) {
-					enemies++;
-				}
-				else {
-					foundAllEnemies = true;
-				}
-			}
-
-			friends = 1;			//figure out how many friends (i.e. own and allied pieces) are behind this piece
-			for (var i = 1; !foundAllFriends; i++) {
-				if(grid[row+i][col].player >= 0 && Math.abs(grid[row+i][col].player - gameMan.player)%2 == 0) {
-					friends++;
-				}
-				else {
-					foundAllFriends = true;
-				}
-			}
-
-			return enemies > friends;
-			break;
-		}
-
-		else {
-			return false;
-			break;
-		}
-
-	case 1:
-		if(isEnemy(row, col+1) && grid[row][col+1].rot == 3) {
-
-			enemies = 1;			//figure out how many enemies on the same team in a row are in front of this piece and facing it
-			for (var i = 2; !foundAllEnemies; i++) {
-				if (grid[row][col+i].player >= 0 && grid[row][col+i].player == grid[row][col+i].player && grid[row][col+i].rot == 3) {
-					enemies++;
-				}
-				else {
-					foundAllEnemies = true;
-				}
-			}
-
-			friends = 1;			//figure out how many friends (i.e. own and allied pieces) are behind this piece
-			for (var i = 1; !foundAllFriends; i++) {
-				if(grid[row][col-i].player >= 0 && Math.abs(grid[row][col-i].player - gameMan.player)%2 == 0) {
-					friends++;
-				}
-				else {
-					foundAllFriends = true;
-				}
-			}
-
-			return enemies > friends;
-			break;
-		}
-
-		else {
-			return false;
-			break;
-		}		
-
-	case 2:
-		if(isEnemy(row+1, col) && grid[row+1][col].rot == 0) {
-
-			enemies = 1;			//figure out how many enemies on the same team in a row are in front of this piece and facing it
-			for (var i = 2; !foundAllEnemies; i++) {
-				if (grid[row+i][col].player >= 0 && grid[row+i][col].player == grid[row+1][col].player && grid[row+i][col].rot == 0) {
-					enemies++;
-				}
-				else {
-					foundAllEnemies = true;
-				}
-			}
-
-			friends = 1;			//figure out how many friends (i.e. own and allied pieces) are behind this piece
-			for (var i = 1; !foundAllFriends; i++) {
-				if(grid[row-i][col].player >= 0 && Math.abs(grid[row-i][col].player - gameMan.player)%2 == 0) {
-					friends++;
-				}
-				else {
-					foundAllFriends = true;
-				}
-			}
-
-			return enemies > friends;
-			break;
-		}
-
-		else {
-			return false;
-			break;
-		}
-
-	case 3:
-		if(isEnemy(row, col-1) && grid[row][col-1].rot == 1) {
-
-			enemies = 1;			//figure out how many enemies on the same team in a row are in front of this piece and facing it
-			for (var i = 2; !foundAllEnemies; i++) {
-				if (grid[row][col-i].player >= 0 && grid[row][col-i].player == grid[row][col-i].player && grid[row][col-i].rot == 1) {
-					enemies++;
-				}
-				else {
-					foundAllEnemies = true;
-				}
-			}
-
-			friends = 1;			//figure out how many friends (i.e. own and allied pieces) are behind this piece
-			for (var i = 1; !foundAllFriends; i++) {
-				if(grid[row][col+i].player >= 0 && Math.abs(grid[row][col+i].player - gameMan.player)%2 == 0) {
-					friends++;
-				}
-				else {
-					foundAllFriends = true;
-				}
-			}
-
-			return enemies > friends;
-			break;
-		}
-
-		else {
-			return false;
-			break;
-		}		
-	}
-
-}
-
-
-// check if this piece can be routed in 1 action
-// TODO (maybe?) - check if you can be routed via pushing
-// will probably also want something to check if you can be routed in 2 actions (and maybe take into account player turn order too)
-function canBeRouted(row, col) {
-
-	resetPieces(row, col); //?
-
-	switch (grid[row][col].rot) {
-	case 0:
-		return (isEnemy(row+1, col) || isEnemy(row, col-1) || isEnemy(row, col+1));
-		break;
-	case 1:
-		return (isEnemy(row-1, col) || isEnemy(row+1, col) || isEnemy(row, col-1));
-		break;
-	case 2:
-		return (isEnemy(row-1, col) || isEnemy(row, col-1) || isEnemy(row, col+1));
-		break;
-	case 3:
-		return (isEnemy(row+1, col) || isEnemy(row-1, col) || isEnemy(row, col+1));
-		break;
-
-	}
-
-}
-
-// check if the given cell contains an enemy piece
-// this seems like it should already exist and would be useful elsewhere, but I didn't see anything so I made one
-function isEnemy(row, col) {
-	return (grid[row][col].player >= 0 && Math.abs(grid[row][col].player - gameMan.player)%2 == 1);
-}
-
-// see if you can win in 2 actions
-function checkWinTwoActions(pieces) {
-
-	for (var i = 0; i < 6; i++) {
-		var row = pieces[i].row;
-		var col = pieces[i].col;
-		resetPieces(row, col);
-
-		if (checkMove(row, col, row-1, col) && isAdjacentToGoal(row-1, col)) {
-			return movePiece(row, col, row-1, col);
-		}
-		else if (checkMove(row, col, row, col+1) && isAdjacentToGoal(row, col+1)) {
-			return movePiece(row, col, row, col+1);
-		}
-		else if (checkMove(row, col, row+1, col) && isAdjacentToGoal(row+1, col)) {
-			return movePiece(row, col, row+1, col);
-		}
-		else if (checkMove(row, col, row, col-1) && isAdjacentToGoal(row, col-1)) {
-			return movePiece(row, col, row, col-1);
-		}
-
-	}
-
-}
-
-// moves a piece into the goal. ONLY CALL after isAdjacentToGoal
-function moveIntoGoal(row, col) {
-	switch (gameMan.player) {
-	case 0:
-		return (movePiece(row, col, row-1, col));
-		break;
-	case 1:
-		return (movePiece(row, col, row, col+1));
-		break;
-	case 2:
-		return (movePiece(row, col, row+1, col));
-		break;
-	case 3:
-		return (movePiece(row, col, row, col-1));
-		break;
-	}	
-
-	return false;
-}
-
-// check if given square is adjacent to current player's goal
-function isAdjacentToGoal(row, col) {
-	switch (gameMan.player) {
-	case 0:
-		row--;
-		break;
-	case 1:
-		col++;
-		break;
-	case 2:
-		row--;
-		break;
-	case 3:
-		col--;
-		break;
-	}	
-
-	return (grid[row][col].kind == 1 && grid[row][col].city == getPartner(gameMan.player));
-
-}
-
-
-
-// check if you can win in 1 action
-function checkWinNextAction(pieces) {
-	for (var i = 0; i < 6; i++) {
-		var row = pieces[i].row;
-		var col = pieces[i].col;
-		resetPieces(row, col);
-
-		if (isAdjacentToGoal(row, col)) {
-			if (moveIntoGoal(pieces[i].row, pieces[i].col)) {
-				return true;	// success!
+function getAIPieces(){
+	var p = [];
+	for	(var	row	=	0;	row	<	15;	++row)	{
+		for	(var	col	=	0;	col	<	21;	++col)	{
+			if	(grid[row][col].player	==	gameMan.player)	{
+				p.push(grid[row][col]);
 			}
 		}
 	}
-
-	return false;
+	return p;
 }
 
-// move a random piece around the board towards the goal (like an ocean current), regardless of other pieces
-function moveTowardsGoal(pieces) {
-	var tries = 12;
-	while (tries > 0) {
-		var i = Math.floor(Math.random()*6);
-		var row = pieces[i].row;
-		var col = pieces[i].col;
-		var rots;
+function getCombinations(pieces) {
+  var result = [];
 
-		resetPieces(row, col);
-
-		// put the possible movement directions into a list
-		switch (gameMan.player) {
-		case 0:
-			if (row < 7 && col > 8 && col < 12 || row > 5 && (col < 6 || col > 14)) {
-				rots = [0];
-			}
-			else if (row < 7 && col < 10 || row > 7 && col > 10) {
-				rots = [0, 1];
-			}
-			else if (row < 7 && col > 10 || row > 7 && col < 10) {
-				rots = [0, 3];
-			}
-			else {
-				rots = [0, 1, 3];
-			}
-			break;
-		case 1:
-			if (col > 10 && row > 5 && row < 9 || col < 15 && (row < 6 || row > 8)) {
-				rots = [1];
-			}
-			else if (col > 10 && row > 7 || col < 10 && row < 7) {
-				rots = [1, 0];
-			}
-			else if (col > 10 && row < 7 || col < 10 && row > 7) {
-				rots = [1, 2];
-			}
-			else {
-				rots = [1, 0, 2];
-			}
-			break;
-		case 2:
-			if (row > 7 && col > 8 && col < 12 || row < 9 && (col < 6 || col > 14)) {
-				rots = [2];
-			}
-			else if (row > 7 && col < 10 || row < 7 && col > 10) {
-				rots = [2, 1];
-			}
-			else if (row > 7 && col > 10 || row < 7 && col < 10) {
-				rots = [2, 3];
-			}
-			else {
-				rots = [2, 1, 3];
-			}
-			break;
-		case 3:
-			if (col < 10 && row > 5 && row < 9 || col > 6 && (row < 6 || row > 8)) {
-				rots = [3];
-			}
-			else if (col < 10 && row > 7 || col > 10 && row < 7) {
-				rots = [3, 0];
-			}
-			else if (col < 10 && row < 7 || col > 10 && row > 7) {
-				rots = [3, 2];
-			}
-			else {
-				rots = [3, 0, 2];
-			}
-			break;
-		}
-
-		// choose a random direction from the previously made list
-		var rot = rots[Math.floor(Math.random()*rots.length)];
-		if (rot == 0) {
-			--row;
-		}
-		else if (rot == 1) {
-			++col;
-		}
-		else if (rot == 2) {
-			++row;
-		}
-		else {
-			--col;
-		}
-
-		if (movePiece(pieces[i].row, pieces[i].col, row, col)) {
-			return true;	// success!
-		}
-		--tries;	// use up a try
-	}
-
-	useAction(2);
-	return false;	// failed to find a valid move within n tries
-}
-
-// when all else fails, totally random move or rotation
-function randomMove(pieces) {
-	var tries = 12;
-	while (tries > 0) {
-		var i = Math.floor(Math.random()*6);
-		var row = pieces[i].row;
-		var col = pieces[i].col;
-
-		resetPieces(row, col);
-
-		var rot = Math.floor(Math.random()*4);
-		if (rot == 0) {
-			--row;
-		}
-		else if (rot == 1) {
-			++col;
-		}
-		else if (rot == 2) {
-			++row;
-		}
-		else {
-			--col;
-		}
-
-		var success = false;
-		var action = Math.floor(Math.random()*1.5);
-		if (action == 0) {
-			success = movePiece(pieces[i].row, pieces[i].col, row, col);
-		}
-		else if (action == 1) {
-			rotatePiece(pieces[i].row, pieces[i].col, rot);
-			success = movePiece(pieces[i].row, pieces[i].col, pieces[i].row, pieces[i].col);
-		}
-
-		if (success) {
-			return true;	// success!
-		}
-		--tries;	// use up a try
-	}
-
-	useAction(2);
-	return false;	// failed to find a valid move within n tries
+  var f = function(prefix, checking) {
+    for (var i = 0; i < checking.length; i++) {
+      result.push(prefix.concat(checking[i]));
+      f(prefix.concat(checking[i]), checking.slice(i + 1));
+    }
+  }
+  f([], pieces);
+  return result;
 }

@@ -10,14 +10,14 @@ function clearTutorialRings() {
 
 function nextTutorialStep() {
 	gameMan.tutorialStep++;
-	hudMan.tutorialText = "Tutorial " + gameMan.tutorialStep;
+	hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
 	clearTutorialRings();
 	setupTutorial(gameMan.tutorialStep);
 }
 
 function endTutorial() {
 	gameMan.tutorialStep = -1;
-	hudMan.tutorialText = "";
+	hudMan.pageText = "";
 	newGame();
 	resetAnimations();
 }
@@ -36,6 +36,9 @@ function setupTutorial() {
 	switch (gameMan.tutorialStep) {
 	case 0:
 		generateGrid(mainBoard);
+		phalanx = [];
+		gameStates = [];
+		pushGameState();
 		grid[9][9].prompt = 1;
 		grid[10][9].prompt = 1;
 		grid[11][9].prompt = 1;
@@ -55,6 +58,9 @@ function setupTutorial() {
 		grid[3][10].prompt = 0;
 		grid[2][10].prompt = 2;
 		pushGameState();
+		break;
+	case 3:
+		grid[2][10].prompt = 1;
 		break;
 	case 4:
 		nextTutorialPart(1);
@@ -191,6 +197,7 @@ function setupTutorial() {
 		break;
 	case 31:
 		nextTutorialPart(7);
+		grid[9][14].prompt = 1;
 		pushGameState();
 		break;
 	case 32:
@@ -222,6 +229,7 @@ function setupTutorial() {
 	case 38:
 		nextTutorialPart(8);
 		grid[8][5].prompt = 1;
+		pushGameState();
 		break;
 	case 39:
 		grid[10][5].prompt = 0;
@@ -251,6 +259,7 @@ function setupTutorial() {
 		break;
 	case 46:
 		nextTutorialPart(10);
+		grid[3][5].prompt = 1;
 		pushGameState();
 		break;
 	case 47:
@@ -279,6 +288,14 @@ function setupTutorial() {
 		generateGrid(mainBoard);
 		resetActions(0);
 		pushGameState();
+		break;
+	case 54:
+		grid[2][9].prompt = 2;
+		grid[2][10].prompt = 2;
+		grid[2][11].prompt = 2;
+		grid[12][9].prompt = 2;
+		grid[12][10].prompt = 2;
+		grid[12][11].prompt = 2;
 		break;
 	case 58:
 		endTutorial();
