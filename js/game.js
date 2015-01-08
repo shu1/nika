@@ -113,7 +113,7 @@ function newGame() {
 }
 
 function useAction(n) {
-	if (typeof n == 'undefined') {
+	if (n === undefined) {
 		n = 1;
 	}
 	gameMan.actions -= n;
