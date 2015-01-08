@@ -98,7 +98,7 @@ window.onload = function() {
 
 			scenes["tvboard"] = {};
 			scenes["tvrules"] = {};
-			initScenes(tvCanvas, tvCanvas.height / displayMan.boardHeight, tvCanvas.width / displayMan.boardWidth);
+			initScenes(tvCanvas, tvCanvas.width / displayMan.boardWidth, tvCanvas.height / displayMan.boardHeight);
 
 			draw(0);
 		});
@@ -165,8 +165,8 @@ function initScenes(canvas, maxScale, minScale) {
 	scene = scenes[tv + "rules"];
 	scene.height = 1152;
 	scene.width = ratio >= 1.5 ? scene.height * ratio : 2048;
-	scene.maxScale = gpCanvas.height / scene.height;
-	scene.minScale = gpCanvas.width / scene.width;
+	scene.maxScale = canvas.height / scene.height;
+	scene.minScale = canvas.width / scene.width;
 	scene.scale = scene.minScale;
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
@@ -292,11 +292,13 @@ function draw(time) {
 
 function drawContext(context, time, dTime) {
 	var canvas = context.canvas;
+	var tv = (canvas === gpCanvas) ? "" : "tv";
+
 	if (gameMan.scene != "rules" || canvas.width / canvas.height < 3/2) {
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		zooming(dTime);
 
-		var scene = scenes["board"];
+		var scene = scenes[tv + "board"];
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
@@ -315,7 +317,7 @@ function drawContext(context, time, dTime) {
 	}
 
 	if (gameMan.scene == "rules") {
-		scene = scenes["rules"];
+		var scene = scenes[tv + "rules"];
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
@@ -326,7 +328,7 @@ function drawContext(context, time, dTime) {
 	drawMenu(context, dTime);
 
 	if (gameMan.debug) {
-		drawHud(context);
+		drawHud(context, tv + gameMan.scene);
 	}
 }
 
@@ -591,9 +593,9 @@ function drawButton(context, row, col, text, textColor, bgColor) {
 	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);
 }
 
-function drawHud(context) {
+function drawHud(context, scene) {
 	var canvas = context.canvas;
-	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[gameMan.scene].scale + "x";
+	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[scene].scale + "x";
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, displayMan.hudHeight);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText,
