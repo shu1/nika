@@ -64,7 +64,7 @@ window.onload = function() {
 		gpCanvas.addEventListener("MSPointerMove", mouseMove);
 		window.addEventListener("MSPointerUp", mouseUp);
 	}
-	else if ("ontouchstart" in window && window.nwf === undefined) {	// NWF should use mouse events
+	else if ("ontouchstart" in window && !window.nwf) {	// NWF should use mouse events
 		window.addEventListener("touchstart", mouseDown);
 		window.addEventListener("touchmove", mouseMove);
 		window.addEventListener("touchend", mouseUp);
@@ -91,7 +91,7 @@ window.onload = function() {
 		var tvDisplay = nwf.display.DisplayManager.getInstance().getTVDisplay();
 
 		tvDisplay.addEventListener("load", function() {
-			var tvCanvas = tvDisplay.window.document.getElementById("tvCanvas");
+			var tvCanvas = tvDisplay.window.document.getElementById("canvas");
 			tvCanvas.width = tvDisplay.width;
 			tvCanvas.height = tvDisplay.height;
 			tvContext = tvCanvas.getContext("2d");
@@ -106,11 +106,7 @@ window.onload = function() {
 }
 
 function reSize() {
-	if (window.nwf) {
-		gpCanvas.width = 854;
-		gpCanvas.height = 480;
-	}
-	else if (screenType > 0) {	// fullscreen
+	if (screenType > 0) {	// fullscreen
 		gpCanvas.width = window.innerWidth;
 		gpCanvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 	}
