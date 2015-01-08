@@ -92,8 +92,8 @@ window.onload = function() {
 
 		tvDisplay.addEventListener("load", function() {
 			var tvCanvas = tvDisplay.window.document.getElementById("tvCanvas");
-			tvCanvas.width = 1920;
-			tvCanvas.height = 1080;
+			tvCanvas.width = tvDisplay.width;
+			tvCanvas.height = tvDisplay.height;
 			tvContext = tvCanvas.getContext("2d");
 			draw(0);
 		});
@@ -281,8 +281,9 @@ function draw(time) {
 }
 
 function drawContext(context, time, dTime) {
-	if (gameMan.scene != "rules" || gpCanvas.width / gpCanvas.height < 3/2) {
-		context.clearRect(0, 0, gpCanvas.width, gpCanvas.height);
+	var canvas = context.canvas;
+	if (gameMan.scene != "rules" || canvas.width / canvas.height < 3/2) {
+		context.clearRect(0, 0, canvas.width, canvas.height);
 		zooming(dTime);
 
 		var scene = scenes["board"];
@@ -570,13 +571,14 @@ function drawMenu(context, dTime) {
 
 function drawButton(context, row, col, text, textColor, bgColor) {
 	var padding = 4;	// TODO: put in displayMan and calculate in reSize()
+	var canvas = context.canvas;
 	if (bgColor) {
 		context.fillStyle = bgColor;
-		context.fillRect(gpCanvas.width - menuMan.bWidth * (col+1) + padding, gpCanvas.height - menuMan.bHeight * (row+1) + padding,
+		context.fillRect(canvas.width - menuMan.bWidth * (col+1) + padding, canvas.height - menuMan.bHeight * (row+1) + padding,
 			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
 	}
 	context.fillStyle = textColor;
-	context.fillText(text, gpCanvas.width - menuMan.bWidth * (col+0.8), gpCanvas.height - menuMan.bHeight * (row+0.5)+6);
+	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);
 }
 
 function drawHud(context) {
