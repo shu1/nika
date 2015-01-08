@@ -166,8 +166,8 @@ function initScenes(canvas, maxScale, minScale) {
 
 	var ratio = canvas.width / canvas.height;
 	scene = scenes[tv + "rules"];
-	scene.height = 1152;
-	scene.width = ratio >= 1.5 ? scene.height * ratio : 2048;
+	scene.height = (canvas.height <= 480) ? displayMan.ruleHeight : 1152;	// make rules bigger on small screen
+	scene.width = (ratio >= 1.5) ? scene.height * ratio : 2048;
 	scene.maxScale = canvas.height / scene.height;
 	scene.minScale = canvas.width / scene.width;
 	scene.scale = scene.minScale;
@@ -306,7 +306,9 @@ function drawContext(context, time, dTime) {
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
 
-		drawMural(context, time);
+		if (!tv) {
+			drawMural(context, time);
+		}
 		drawBoard(context);
 		setRings();
 		drawPieces(context, time);
@@ -415,7 +417,7 @@ function drawPieces(context, time) {
 					context.rotate(-theta);
 				}
 				else if (cell.ring == 1) {
-					var rotation = cell.kind == 2 ? cell.city : inputMan.rot;
+					var rotation = (cell.kind == 2) ? cell.city : inputMan.rot;
 					context.rotate(rotation * Math.PI/2);
 					context.drawImage(images["shadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
 					context.rotate(rotation * Math.PI/-2);
@@ -577,10 +579,10 @@ function drawMenu(context, dTime) {
 		}
 	}
 	else if (inputMan.menu && menuMan.button == 0) {
-		drawButton(context, 0, 0, gameMan.scene == "rules" ? buttons[1] : buttons[0], "black", "white");
+		drawButton(context, 0, 0, (gameMan.scene == "rules") ? buttons[1] : buttons[0], "black", "white");
 	}
 	else {
-		drawButton(context, 0, 0, gameMan.scene == "rules" ? buttons[1] : buttons[0], "white", "black");
+		drawButton(context, 0, 0, (gameMan.scene == "rules") ? buttons[1] : buttons[0], "white", "black");
 	}
 }
 
