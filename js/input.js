@@ -11,11 +11,12 @@ function getXY(event) {
 	}
 
 	// check menu
-	if (inputMan.x < canvas.width && inputMan.x > canvas.width - menuMan.width
-	&& inputMan.y < canvas.height && inputMan.y > canvas.height - menuMan.height) {
+	var width = gpCanvas.width, height = gpCanvas.height;
+	if (inputMan.x < width && inputMan.x > width - menuMan.width
+	&& inputMan.y < height && inputMan.y > height - menuMan.height) {
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
-				if (inputMan.x > canvas.width - menuMan.bWidth * (col+1) && inputMan.y > canvas.height - menuMan.bHeight * (row+1)) {
+				if (inputMan.x > width - menuMan.bWidth * (col+1) && inputMan.y > height - menuMan.bHeight * (row+1)) {
 					menuMan.button = row * menuMan.cols + col;
 					if (menuMan.button < buttons.length-1) {
 						hudMan.inputText = buttons[menuMan.button+1];
@@ -140,9 +141,9 @@ function mouseUp(event) {
 		else {
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == "rules") {
-				if (inputMan.y > canvas.height/2 - displayMan.cellSize*1.5
-				 && inputMan.y < canvas.height/2 + displayMan.cellSize*1.5) {
-					if (inputMan.x > canvas.width - displayMan.cellSize*2 && gameMan.rules < rulePages-1) {
+				if (inputMan.y > gpCanvas.height/2 - displayMan.cellSize*1.5
+				 && inputMan.y < gpCanvas.height/2 + displayMan.cellSize*1.5) {
+					if (inputMan.x > gpCanvas.width - displayMan.cellSize*2 && gameMan.rules < rulePages-1) {
 						gameMan.rules++;
 						hudMan.pageText = "Rule " + gameMan.rules;
 					}

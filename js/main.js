@@ -1,6 +1,26 @@
 "use strict";
 
 window.onload = function() {
+	function initMurals(canvas, offset) {
+		offset = offset ? offset : 0;
+		var view_2d = new fo.view_2d(canvas);
+
+		murals[0+offset] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
+		murals[1+offset] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
+		murals[2+offset] = new spriter_animation("images/mural/", view_2d, muralBlue_data);
+		murals[3+offset] = new spriter_animation("images/mural/", view_2d, muralBlack_data);
+
+		murals[0+offset].set_position(678, 794);
+		murals[1+offset].set_position(1148, 844);
+		murals[2+offset].set_position(848, 794);
+		murals[3+offset].set_position(1320, 844);
+
+		murals[0+offset].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
+		murals[1+offset].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
+		murals[2+offset].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
+		murals[3+offset].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
+	}
+
 	newGame();
 
 	images["board"] = document.getElementById("board");
@@ -31,24 +51,13 @@ window.onload = function() {
 	sounds["pick"] = document.getElementById("pick");
 	sounds["music"] = document.getElementById("music");
 
-	canvas = document.getElementById("canvas");
-	context = canvas.getContext("2d");
+	sounds["music"].loop = true;
+	sounds["music"].play();
 
-	var view_2d = new fo.view_2d(canvas);
-	murals[0] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
-	murals[1] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
-	murals[2] = new spriter_animation("images/mural/", view_2d, muralBlue_data);
-	murals[3] = new spriter_animation("images/mural/", view_2d, muralBlack_data);
+	gpCanvas = document.getElementById("canvas");
+	gpContext = gpCanvas.getContext("2d");
 
-	murals[0].set_position(678, 794);
-	murals[1].set_position(1148, 844);
-	murals[2].set_position(848, 794);
-	murals[3].set_position(1320, 844);
-
-	murals[0].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
-	murals[1].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
-	murals[2].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
-	murals[3].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
+	initMurals(gpCanvas);
 
 	tick.frame = 0;
 	tick.time = 0;
@@ -56,22 +65,22 @@ window.onload = function() {
 	tick.elapsed_time = 0;
 
 	if (navigator.msPointerEnabled) {
-		canvas.style.msTouchAction = "none";
-		canvas.addEventListener("MSPointerDown", mouseDown);
-		canvas.addEventListener("MSPointerMove", mouseMove);
+		gpCanvas.style.msTouchAction = "none";
+		gpCanvas.addEventListener("MSPointerDown", mouseDown);
+		gpCanvas.addEventListener("MSPointerMove", mouseMove);
 		window.addEventListener("MSPointerUp", mouseUp);
 	}
-	else if ("ontouchstart" in window && window.nwf === undefined) {	// NWF should use mouse events
+	else if ("ontouchstart" in window && !window.nwf) {	// NWF should use mouse events
 		window.addEventListener("touchstart", mouseDown);
 		window.addEventListener("touchmove", mouseMove);
 		window.addEventListener("touchend", mouseUp);
 	}
 	else {
-		canvas.addEventListener("mousedown", mouseDown);
-		canvas.addEventListener("mousemove", mouseMove);
+		gpCanvas.addEventListener("mousedown", mouseDown);
+		gpCanvas.addEventListener("mousemove", mouseMove);
 		window.addEventListener("mouseup", mouseUp);
-		window.addEventListener("keydown", keyDown);
 	}
+	window.addEventListener("keydown", keyDown);
 
 	if (screenType > 0) {
 		window.addEventListener("resize", reSize);
@@ -85,68 +94,93 @@ window.onload = function() {
 	reSize();
 
 	if (window.nwf) {
-		gamePadDisplay = nwf.display.DisplayManager.getInstance().getGamePadDisplay();
-		gamePadDisplay.x = (canvas.width - gamePadDisplay.width)/2
-		gamePadDisplay.y = (canvas.height - gamePadDisplay.height)/2
-		gamePadDisplay.setViewport(gamePadDisplay.x, gamePadDisplay.y);
-	}
+		var tvDisplay = nwf.display.DisplayManager.getInstance().getTVDisplay();
 
-	draw(0);
-	sounds["music"].loop = true;
-	sounds["music"].play();
+		tvDisplay.addEventListener("load", function() {
+			var tvCanvas = tvDisplay.window.document.getElementById("canvas");
+			tvCanvas.width = tvDisplay.width;
+			tvCanvas.height = tvDisplay.height;
+			tvContext = tvCanvas.getContext("2d");
+
+			initMurals(tvCanvas, 4);
+
+			scenes["tvboard"] = {};
+			scenes["tvrules"] = {};
+			initScenes(tvCanvas, tvCanvas.width / displayMan.boardWidth, tvCanvas.height / displayMan.boardHeight);
+
+			draw(0);
+		});
+
+		tvDisplay.load("wiiutv.html");
+	}
+	else {
+		draw(0);
+	}
 }
 
 function reSize() {
 	if (screenType > 0) {	// fullscreen
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
+		gpCanvas.width = window.innerWidth;
+		gpCanvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 	}
 
 	var minScale = 1/2, maxScale = 2/3;	// defaults for browser and ipad
-	if (canvas.width == 2048 && canvas.height == 1536) {	// ipad retina
+	if (gpCanvas.width == 2048 && gpCanvas.height == 1536) {	// ipad retina
 		minScale = 1;
 		maxScale = 4/3;
 	}
 	else if (screenType == 2) {	// tablet or tv
-		minScale = canvas.height / displayMan.boardHeight;
-		maxScale = canvas.width / displayMan.boardWidth;
+		minScale = gpCanvas.height / displayMan.boardHeight;
+		maxScale = gpCanvas.width / displayMan.boardWidth;
 	}
-	else if (canvas.width != 1024 || canvas.height != 768) {	// else if not ipad then it's a phone
-		minScale = canvas.width / displayMan.boardWidth;
-		maxScale = minScale * 5/3;
-		if (maxScale > 0.9 && maxScale < 1.11) {
+	else if (gpCanvas.width != 1024 || gpCanvas.height != 768) {	// else if not ipad then it's a phone
+		minScale = gpCanvas.width / displayMan.boardWidth;
+		maxScale = minScale * displayMan.boardWidth / 1281;	// make maxScale = 2/3 on WiiU gamepad
+		if (maxScale > 0.9 && maxScale < 1.1) {
 			maxScale = 1;
 		}
 		else if (maxScale > 1.4 && maxScale < 1.6) {
 			maxScale = 1.5;
 		}
+		else if (maxScale > 0.7 && maxScale < 0.8) {
+			maxScale = 0.75;
+		}
 	}
 
-	displayMan.hudHeight = Math.floor(44 * minScale);
-	displayMan.hudFont = Math.floor(32 * minScale);
-	context.font = displayMan.hudFont + "px sans-serif";
+	displayMan.hudHeight = Math.floor(44*minScale);
+	displayMan.hudFont = Math.floor(32*minScale);
+	gpContext.font = displayMan.hudFont + "px sans-serif";
 
-	menuMan.bWidth = displayMan.cellSize * 2 * minScale;
+	menuMan.bWidth = displayMan.cellSize*2 * minScale;
 	menuMan.bHeight = menuMan.bWidth/2;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
-	var scene = scenes["board"];
+	initScenes(gpCanvas, maxScale, minScale);
+	setScene("board");
+}
+
+function initScenes(canvas, maxScale, minScale) {
+	var tv = (canvas === gpCanvas) ? "" : "tv";
+
+	var scene = scenes[tv + "board"];
 	scene.width = displayMan.boardWidth;
 	scene.height = displayMan.boardHeight;
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
 	scene.scale = minScale;
+	scene.x = (canvas.width - scene.width * scene.scale)/2;
+	scene.y = (canvas.height - scene.height * scene.scale)/2;
 
 	var ratio = canvas.width / canvas.height;
-	scene = scenes["rules"];
-	scene.height = 1152;
-	scene.width = ratio >= 1.5 ? scene.height * ratio : 2048;
+	scene = scenes[tv + "rules"];
+	scene.height = (canvas.height <= 480) ? displayMan.ruleHeight : 1152;	// make rules bigger on small screen
+	scene.width = (ratio >= 1.5) ? scene.height * ratio : 2048;
 	scene.maxScale = canvas.height / scene.height;
 	scene.minScale = canvas.width / scene.width;
 	scene.scale = scene.minScale;
-
-	setScene("board");
+	scene.x = (canvas.width - scene.width * scene.scale)/2;
+	scene.y = (canvas.height - scene.height * scene.scale)/2;
 }
 
 function setScene(sceneIndex) {
@@ -155,8 +189,8 @@ function setScene(sceneIndex) {
 	}
 
 	var scene = scenes[gameMan.scene];
-	scene.x = (canvas.width - scene.width * scene.scale)/2;
-	scene.y = (canvas.height - scene.height * scene.scale)/2;
+	scene.x = (gpCanvas.width - scene.width * scene.scale)/2;
+	scene.y = (gpCanvas.height - scene.height * scene.scale)/2;
 
 	displayMan.zoom = 0;
 }
@@ -201,140 +235,137 @@ function zooming(dTime) {
 		scene.x -= scene.width * speed/2;
 		scene.y -= scene.height * speed/2;
 		pan(0, 0);	// prevent moving off screen
+
+		if (Math.abs(scene.x) < 1) {
+			scene.x = 0;
+		}
+		if (Math.abs(scene.y) < 1) {
+			scene.y = 0;
+		}
 	}
 }
 
 function pan(dX, dY) {
 	var panned = false;
+	var scene = scenes[gameMan.scene];
+	var width = gpCanvas.width - scene.width * scene.scale;
+	var height = gpCanvas.height - scene.height * scene.scale;
 
-	if (window.nwf) {
-		var width = canvas.width - gamePadDisplay.width;
-		var height = canvas.height - gamePadDisplay.height;
-
-		if (gamePadDisplay.x - dX > width) {
-			gamePadDisplay.x = width;
+	if (width < 0) {
+		if (scene.x + dX < width) {
+			scene.x = width;
 		}
-		else if (gamePadDisplay.x - dX < 0) {
-			gamePadDisplay.x = 0;
+		else if (scene.x + dX > 0) {
+			scene.x = 0;
 		}
-		else {
-			gamePadDisplay.x -= dX;
-		}
-
-		if (gamePadDisplay.y - dY > height) {
-			gamePadDisplay.y = height;
-		}
-		else if (gamePadDisplay.y - dY < 0) {
-			gamePadDisplay.y = 0;
-		}
-		else {
-			gamePadDisplay.y -= dY;
-		}
-
-		gamePadDisplay.setViewport(gamePadDisplay.x, gamePadDisplay.y);
-		hudMan.inputText = gamePadDisplay.x + "," + gamePadDisplay.y;
-	}
-	else {
-		var scene = scenes[gameMan.scene];
-		var width = canvas.width - scene.width * scene.scale;
-		var height = canvas.height - scene.height * scene.scale;
-
-		if (width < 0) {
-			if (scene.x + dX < width) {
-				scene.x = width;
-			}
-			else if (scene.x + dX > 0) {
-				scene.x = 0;
-			}
-			else if (dX) {
-				scene.x += dX;
-				panned = true;
-			}
-		}
-
-		if (height < 0) {
-			if (scene.y + dY < height) {
-				scene.y = height;
-			}
-			else if (scene.y + dY > 0) {
-				scene.y = 0;
-			}
-			else if (dY) {
-				scene.y += dY;
-				panned = true;
-			}
-		}
-
-		if (panned) {
-			hudMan.inputText = -scene.x + "," + -scene.y;
+		else if (dX) {
+			scene.x += dX;
+			panned = true;
 		}
 	}
 
+	if (height < 0) {
+		if (scene.y + dY < height) {
+			scene.y = height;
+		}
+		else if (scene.y + dY > 0) {
+			scene.y = 0;
+		}
+		else if (dY) {
+			scene.y += dY;
+			panned = true;
+		}
+	}
+
+	if (panned) {
+		hudMan.inputText = -scene.x + "," + -scene.y;
+	}
 	return panned;
 }
 
 function draw(time) {
 	var dTime = time - displayMan.time;
+	if (time - hudMan.fpsTime > 984) {
+		hudMan.fpsText = hudMan.fpsCount + "fps";
+		hudMan.fpsTime = time;
+		hudMan.fpsCount = 0;
+	}
+	hudMan.fpsCount++;
 
-	if (gameMan.scene != "rules" || canvas.width / canvas.height < 3/2) {
+	tick.frame++;
+	tick.time = time;
+	tick.elapsed_time = Math.min(time - tick.time_last, 50);
+
+	drawContext(gpContext, time, dTime);
+	if (window.nwf) {
+		drawContext(tvContext, time, dTime);
+	}
+
+	tick.time_last = time;
+	displayMan.time = time;
+	window.requestAnimationFrame(draw);
+}
+
+function drawContext(context, time, dTime) {
+	var canvas = context.canvas;
+	var tv = (canvas === gpCanvas) ? "" : "tv";
+
+	if (gameMan.scene != "rules" || canvas.width / canvas.height < 1.5) {
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		zooming(dTime);
 
-		var scene = scenes["board"];
+		var scene = scenes[tv + "board"];
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
 
-		drawMural(time);
-		drawBoard();
+		drawMural(context, time, tv);
+		drawBoard(context);
 		setRings();
-		drawPieces(time);
-		drawHelmets(dTime);
+		drawPieces(context, time);
+		drawHelmets(context, dTime);
 
 		if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
-			drawDialog(time);
+			drawDialog(context, time);
 		}
 
 		context.restore();
 	}
 
 	if (gameMan.scene == "rules") {
-		scene = scenes["rules"];
+		var scene = scenes[tv + "rules"];
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
-		drawRules(scene);
+		drawRules(context, scene);
 		context.restore();
 	}
 
-	drawMenu(dTime);
+	drawMenu(context, dTime);
 
 	if (gameMan.debug) {
-		drawHud(time);
+		drawHud(context, tv + gameMan.scene);
 	}
-	displayMan.time = time;
-	window.requestAnimationFrame(draw);
 }
 
-function drawMural(time) {
+function drawMural(context, time, tv) {
+	var offset = tv ? 4 : 0;
+
 	context.drawImage(images["mural"], 628, 624);
-	tick.frame++;
-	tick.time = time;
-	tick.elapsed_time = Math.min(time - tick.time_last, 50);
-	murals[0].update(tick);
-	murals[0].draw();
+
+	murals[0+offset].update(tick);
+	murals[0+offset].draw();
 	if (gameMan.tutorialStep < 0) {
-		murals[2].update(tick);
-		murals[2].draw();
-		murals[1].update(tick);
-		murals[1].draw();
-		murals[3].update(tick);
-		murals[3].draw();
+		murals[2+offset].update(tick);
+		murals[2+offset].draw();
+		murals[1+offset].update(tick);
+		murals[1+offset].draw();
+		murals[3+offset].update(tick);
+		murals[3+offset].draw();
 	}
-	tick.time_last = time;
 }
 
-function drawBoard() {
+function drawBoard(context) {
 	context.drawImage(images["board"], 0, 0);
 }
 
@@ -360,7 +391,7 @@ function setRings() {
 	}
 }
 
-function drawPieces(time) {
+function drawPieces(context, time) {
 	var theta = time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
@@ -396,7 +427,7 @@ function drawPieces(time) {
 					context.rotate(-theta);
 				}
 				else if (cell.ring == 1) {
-					var rotation = cell.kind == 2 ? cell.city : inputMan.rot;
+					var rotation = (cell.kind == 2) ? cell.city : inputMan.rot;
 					context.rotate(rotation * Math.PI/2);
 					context.drawImage(images["shadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
 					context.rotate(rotation * Math.PI/-2);
@@ -409,7 +440,7 @@ function drawPieces(time) {
 	}
 }
 
-function drawHelmets(dTime) {
+function drawHelmets(context, dTime) {
 	context.save();
 	switch (gameMan.player) {
 	case 0:
@@ -447,7 +478,7 @@ function drawHelmets(dTime) {
 	context.restore();
 }
 
-function drawDialog(time) {
+function drawDialog(context, time) {
 	if (gameMan.tutorialStep >= 0 && gameMan.tutorialStep < tutorialTexts.length || gameMan.winner >= 0) {
 		context.save();
 		context.fillStyle = "#221E1F";
@@ -491,13 +522,13 @@ function drawDialog(time) {
 	}
 }
 
-function drawRules(scene) {
+function drawRules(context, scene) {
 	context.fillStyle = "black";
 	context.fillRect(0, 0, scene.width, scene.height);
 	context.drawImage(images["rule" + gameMan.rules], (scene.width - displayMan.ruleWidth)/2, (scene.height - displayMan.ruleHeight)/2);
 }
 
-function drawMenu(dTime) {
+function drawMenu(context, dTime) {
 	var duration = 1;	// no background to animate anymore
 	displayMan.menu = false;	// whether menu is animating
 
@@ -548,25 +579,26 @@ function drawMenu(dTime) {
 					if (inputMan.menu && button == menuMan.button
 					|| button == 1 && gameMan.debug
 					|| button == 7 && gameMan.tutorialStep >= 0) {
-						drawButton(row, col, buttons[button+1], "black", "white");
+						drawButton(context, row, col, buttons[button+1], "black", "white");
 					}
 					else {
-						drawButton(row, col, buttons[button+1], "white", "black");
+						drawButton(context, row, col, buttons[button+1], "white", "black");
 					}
 				}
 			}
 		}
 	}
 	else if (inputMan.menu && menuMan.button == 0) {
-		drawButton(0, 0, gameMan.scene == "rules" ? buttons[1] : buttons[0], "black", "white");
+		drawButton(context, 0, 0, (gameMan.scene == "rules") ? buttons[1] : buttons[0], "black", "white");
 	}
 	else {
-		drawButton(0, 0, gameMan.scene == "rules" ? buttons[1] : buttons[0], "white", "black");
+		drawButton(context, 0, 0, (gameMan.scene == "rules") ? buttons[1] : buttons[0], "white", "black");
 	}
 }
 
-function drawButton(row, col, text, textColor, bgColor) {
-	var padding = 4;
+function drawButton(context, row, col, text, textColor, bgColor) {
+	var padding = 4;	// TODO: put in displayMan and calculate in reSize()
+	var canvas = context.canvas;
 	if (bgColor) {
 		context.fillStyle = bgColor;
 		context.fillRect(canvas.width - menuMan.bWidth * (col+1) + padding, canvas.height - menuMan.bHeight * (row+1) + padding,
@@ -576,14 +608,9 @@ function drawButton(row, col, text, textColor, bgColor) {
 	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);
 }
 
-function drawHud(time) {
-	if (time - hudMan.fpsTime > 984) {
-		hudMan.fpsText = hudMan.fpsCount + "fps";
-		hudMan.fpsTime = time;
-		hudMan.fpsCount = 0;
-	}
-	hudMan.fpsCount++;
-	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[gameMan.scene].scale + "x";
+function drawHud(context, scene) {
+	var canvas = context.canvas;
+	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[scene].scale + "x";
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, displayMan.hudHeight);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText,
