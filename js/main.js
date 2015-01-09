@@ -73,8 +73,8 @@ window.onload = function() {
 		gpCanvas.addEventListener("mousedown", mouseDown);
 		gpCanvas.addEventListener("mousemove", mouseMove);
 		window.addEventListener("mouseup", mouseUp);
-		window.addEventListener("keydown", keyDown);
 	}
+	window.addEventListener("keydown", keyDown);
 
 	if (screenType > 0) {
 		window.addEventListener("resize", reSize);
