@@ -1,26 +1,6 @@
 "use strict";
 
 window.onload = function() {
-	function initMurals(canvas, offset) {
-		offset = offset ? offset : 0;
-		var view_2d = new fo.view_2d(canvas);
-
-		murals[0+offset] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
-		murals[1+offset] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
-		murals[2+offset] = new spriter_animation("images/mural/", view_2d, muralBlue_data);
-		murals[3+offset] = new spriter_animation("images/mural/", view_2d, muralBlack_data);
-
-		murals[0+offset].set_position(678, 794);
-		murals[1+offset].set_position(1148, 844);
-		murals[2+offset].set_position(848, 794);
-		murals[3+offset].set_position(1320, 844);
-
-		murals[0+offset].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
-		murals[1+offset].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
-		murals[2+offset].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
-		murals[3+offset].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
-	}
-
 	newGame();
 
 	images["board"] = document.getElementById("board");
@@ -57,12 +37,28 @@ window.onload = function() {
 	gpCanvas = document.getElementById("canvas");
 	gpContext = gpCanvas.getContext("2d");
 
-	initMurals(gpCanvas);
+	function initMurals(canvas, offset) {
+		offset = offset ? offset : 0;
+		var view_2d = new fo.view_2d(canvas);
 
-	tick.frame = 0;
-	tick.time = 0;
+		murals[0+offset] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
+		murals[1+offset] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
+		murals[2+offset] = new spriter_animation("images/mural/", view_2d, muralBlue_data);
+		murals[3+offset] = new spriter_animation("images/mural/", view_2d, muralBlack_data);
+
+		murals[0+offset].set_position(678, 794);
+		murals[1+offset].set_position(1148, 844);
+		murals[2+offset].set_position(848, 794);
+		murals[3+offset].set_position(1320, 844);
+
+		murals[0+offset].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
+		murals[1+offset].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
+		murals[2+offset].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
+		murals[3+offset].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
+	}
+
+	initMurals(gpCanvas);
 	tick.time_last = 0;
-	tick.elapsed_time = 0;
 
 	if (navigator.msPointerEnabled) {
 		gpCanvas.style.msTouchAction = "none";
@@ -106,7 +102,8 @@ window.onload = function() {
 
 			scenes["tvboard"] = {};
 			scenes["tvrules"] = {};
-			initScenes(tvCanvas, tvCanvas.width / displayMan.boardWidth, tvCanvas.height / displayMan.boardHeight);
+			var scale = tvCanvas.height / displayMan.boardHeight;
+			initScenes(tvCanvas, scale, scale, "tv");
 
 			draw(0);
 		});
@@ -160,8 +157,8 @@ function reSize() {
 	setScene("board");
 }
 
-function initScenes(canvas, maxScale, minScale) {
-	var tv = (canvas === gpCanvas) ? "" : "tv";
+function initScenes(canvas, maxScale, minScale, tv) {
+	tv = tv ? tv : "";
 
 	var scene = scenes[tv + "board"];
 	scene.width = displayMan.boardWidth;
@@ -285,6 +282,9 @@ function pan(dX, dY) {
 
 function draw(time) {
 	var dTime = time - displayMan.time;
+	displayMan.time = time;
+	tick.elapsed_time = dTime;
+
 	if (time - hudMan.fpsTime > 984) {
 		hudMan.fpsText = hudMan.fpsCount + "fps";
 		hudMan.fpsTime = time;
@@ -292,23 +292,17 @@ function draw(time) {
 	}
 	hudMan.fpsCount++;
 
-	tick.frame++;
-	tick.time = time;
-	tick.elapsed_time = Math.min(time - tick.time_last, 50);
-
 	drawContext(gpContext, time, dTime);
 	if (window.nwf) {
-		drawContext(tvContext, time, dTime);
+		drawContext(tvContext, time, dTime, "tv");
 	}
 
-	tick.time_last = time;
-	displayMan.time = time;
 	window.requestAnimationFrame(draw);
 }
 
-function drawContext(context, time, dTime) {
+function drawContext(context, time, dTime, tv) {
+	tv = tv ? tv : "";
 	var canvas = context.canvas;
-	var tv = (canvas === gpCanvas) ? "" : "tv";
 
 	if (gameMan.scene != "rules" || canvas.width / canvas.height < 1.5) {
 		context.clearRect(0, 0, canvas.width, canvas.height);
