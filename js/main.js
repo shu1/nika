@@ -1,6 +1,26 @@
 "use strict";
 
 window.onload = function() {
+	function initMurals(canvas, offset) {
+		offset = offset ? offset : 0;
+		var view_2d = new fo.view_2d(canvas);
+
+		murals[0+offset] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
+		murals[1+offset] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
+		murals[2+offset] = new spriter_animation("images/mural/", view_2d, muralBlue_data);
+		murals[3+offset] = new spriter_animation("images/mural/", view_2d, muralBlack_data);
+
+		murals[0+offset].set_position(678, 794);
+		murals[1+offset].set_position(1148, 844);
+		murals[2+offset].set_position(848, 794);
+		murals[3+offset].set_position(1320, 844);
+
+		murals[0+offset].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
+		murals[1+offset].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
+		murals[2+offset].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
+		murals[3+offset].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
+	}
+
 	newGame();
 
 	images["board"] = document.getElementById("board");
@@ -37,21 +57,7 @@ window.onload = function() {
 	gpCanvas = document.getElementById("canvas");
 	gpContext = gpCanvas.getContext("2d");
 
-	var view_2d = new fo.view_2d(gpCanvas);
-	murals[0] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
-	murals[1] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
-	murals[2] = new spriter_animation("images/mural/", view_2d, muralBlue_data);
-	murals[3] = new spriter_animation("images/mural/", view_2d, muralBlack_data);
-
-	murals[0].set_position(678, 794);
-	murals[1].set_position(1148, 844);
-	murals[2].set_position(848, 794);
-	murals[3].set_position(1320, 844);
-
-	murals[0].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
-	murals[1].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
-	murals[2].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
-	murals[3].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
+	initMurals(gpCanvas);
 
 	tick.frame = 0;
 	tick.time = 0;
@@ -95,6 +101,8 @@ window.onload = function() {
 			tvCanvas.width = tvDisplay.width;
 			tvCanvas.height = tvDisplay.height;
 			tvContext = tvCanvas.getContext("2d");
+
+			initMurals(tvCanvas, 4);
 
 			scenes["tvboard"] = {};
 			scenes["tvrules"] = {};
@@ -284,11 +292,16 @@ function draw(time) {
 	}
 	hudMan.fpsCount++;
 
+	tick.frame++;
+	tick.time = time;
+	tick.elapsed_time = Math.min(time - tick.time_last, 50);
+
 	drawContext(gpContext, time, dTime);
 	if (window.nwf) {
 		drawContext(tvContext, time, dTime);
 	}
 
+	tick.time_last = time;
 	displayMan.time = time;
 	window.requestAnimationFrame(draw);
 }
@@ -306,9 +319,7 @@ function drawContext(context, time, dTime) {
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
 
-		if (!tv) {
-			drawMural(context, time);
-		}
+		drawMural(context, time, tv);
 		drawBoard(context);
 		setRings();
 		drawPieces(context, time);
@@ -337,22 +348,21 @@ function drawContext(context, time, dTime) {
 	}
 }
 
-function drawMural(context, time) {
+function drawMural(context, time, tv) {
+	var offset = tv ? 4 : 0;
+
 	context.drawImage(images["mural"], 628, 624);
-	tick.frame++;
-	tick.time = time;
-	tick.elapsed_time = Math.min(time - tick.time_last, 50);
-	murals[0].update(tick);
-	murals[0].draw();
+
+	murals[0+offset].update(tick);
+	murals[0+offset].draw();
 	if (gameMan.tutorialStep < 0) {
-		murals[2].update(tick);
-		murals[2].draw();
-		murals[1].update(tick);
-		murals[1].draw();
-		murals[3].update(tick);
-		murals[3].draw();
+		murals[2+offset].update(tick);
+		murals[2+offset].draw();
+		murals[1+offset].update(tick);
+		murals[1+offset].draw();
+		murals[3+offset].update(tick);
+		murals[3+offset].draw();
 	}
-	tick.time_last = time;
 }
 
 function drawBoard(context) {
