@@ -312,17 +312,7 @@ function drawContext(context, time, dTime, tv) {
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
-
-		drawMural(context, time, tv);
-		drawBoard(context);
-		setRings();
-		drawPieces(context, time);
-		drawHelmets(context, dTime);
-
-		if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
-			drawDialog(context, time);
-		}
-
+		drawBoard(context, time, dTime, tv);
 		context.restore();
 	}
 
@@ -342,6 +332,18 @@ function drawContext(context, time, dTime, tv) {
 	}
 }
 
+function drawBoard(context, time, dTime, tv) {
+	drawMural(context, time, tv);
+	context.drawImage(images["board"], 0, 0);
+	setRings();
+	drawPieces(context, time);
+	drawHelmets(context, dTime);
+
+	if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
+		drawDialog(context, time);
+	}
+}
+
 function drawMural(context, time, tv) {
 	var offset = tv ? 4 : 0;
 
@@ -357,10 +359,6 @@ function drawMural(context, time, tv) {
 		murals[3+offset].update(tick);
 		murals[3+offset].draw();
 	}
-}
-
-function drawBoard(context) {
-	context.drawImage(images["board"], 0, 0);
 }
 
 function setRings() {
@@ -602,9 +600,9 @@ function drawButton(context, row, col, text, textColor, bgColor) {
 	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);
 }
 
-function drawHud(context, scene) {
+function drawHud(context, sceneIndex) {
 	var canvas = context.canvas;
-	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[scene].scale + "x";
+	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[sceneIndex].scale + "x";
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, displayMan.hudHeight);
 	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText,
