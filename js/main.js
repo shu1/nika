@@ -37,27 +37,26 @@ window.onload = function() {
 	gpCanvas = document.getElementById("canvas");
 	gpContext = gpCanvas.getContext("2d");
 
-	function initMurals(canvas, offset) {
-		offset = offset ? offset : 0;
-		var view_2d = new fo.view_2d(canvas);
+	muralCanvas = document.createElement("canvas");
+	muralCanvas.width = displayMan.dialogWidth;
+	muralCanvas.height = displayMan.dialogHeight;
 
-		murals[0+offset] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
-		murals[1+offset] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
-		murals[2+offset] = new spriter_animation("images/mural/", view_2d, muralBlue_data);
-		murals[3+offset] = new spriter_animation("images/mural/", view_2d, muralBlack_data);
+	var view_2d = new fo.view_2d(muralCanvas);
 
-		murals[0+offset].set_position(678, 794);
-		murals[1+offset].set_position(1148, 844);
-		murals[2+offset].set_position(848, 794);
-		murals[3+offset].set_position(1320, 844);
+	murals[0] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
+	murals[1] = new spriter_animation("images/mural/", view_2d, muralOrange_data);
+	murals[2] = new spriter_animation("images/mural/", view_2d, muralBlue_data);
+	murals[3] = new spriter_animation("images/mural/", view_2d, muralBlack_data);
 
-		murals[0+offset].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
-		murals[1+offset].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
-		murals[2+offset].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
-		murals[3+offset].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
-	}
+	murals[0].set_position( 50, 170);
+	murals[1].set_position(520, 220);
+	murals[2].set_position(220, 170);
+	murals[3].set_position(692, 220);
 
-	initMurals(gpCanvas);
+	murals[0].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
+	murals[1].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
+	murals[2].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
+	murals[3].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
 
 	if (navigator.msPointerEnabled) {
 		gpCanvas.style.msTouchAction = "none";
@@ -96,8 +95,6 @@ window.onload = function() {
 			tvCanvas.width = tvDisplay.width;
 			tvCanvas.height = tvDisplay.height;
 			tvContext = tvCanvas.getContext("2d");
-
-			initMurals(tvCanvas, 4);
 
 			scenes["tvboard"] = {};
 			scenes["tvrules"] = {};
@@ -290,6 +287,12 @@ function draw(time) {
 	}
 	hudMan.fpsCount++;
 
+	if (gameMan.scene == "board") {
+		var context = muralCanvas.getContext("2d");
+		context.clearRect(0, 0, muralCanvas.width, muralCanvas.height);
+		drawMural(dTime);
+	}
+
 	drawContext(gpContext, time, dTime);
 	if (window.nwf) {
 		drawContext(tvContext, time, dTime, "tv");
@@ -298,11 +301,25 @@ function draw(time) {
 	window.requestAnimationFrame(draw);
 }
 
+function drawMural(dTime) {
+	var tick = {elapsed_time: dTime};
+	murals[0].update(tick);
+	murals[0].draw();
+	if (gameMan.tutorialStep < 0) {
+		murals[2].update(tick);
+		murals[2].draw();
+		murals[1].update(tick);
+		murals[1].draw();
+		murals[3].update(tick);
+		murals[3].draw();
+	}
+}
+
 function drawContext(context, time, dTime, tv) {
 	tv = tv ? tv : "";
 	var canvas = context.canvas;
 
-	if (gameMan.scene != "rules" || canvas.width / canvas.height < 1.5) {
+	if (gameMan.scene == "board" || canvas.width / canvas.height < 1.5) {
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		zooming(dTime);
 
@@ -310,7 +327,7 @@ function drawContext(context, time, dTime, tv) {
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
-		drawBoard(context, time, dTime, tv);
+		drawBoard(context, time, dTime);
 		context.restore();
 	}
 
@@ -330,8 +347,9 @@ function drawContext(context, time, dTime, tv) {
 	}
 }
 
-function drawBoard(context, time, dTime, tv) {
-	drawMural(context, dTime, tv);
+function drawBoard(context, time, dTime) {
+	context.drawImage(images["mural"], displayMan.dialogX, displayMan.dialogY);
+	context.drawImage(muralCanvas, displayMan.dialogX, displayMan.dialogY);
 	context.drawImage(images["board"], 0, 0);
 	setRings();
 	drawPieces(context, time);
@@ -339,24 +357,6 @@ function drawBoard(context, time, dTime, tv) {
 
 	if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
 		drawDialog(context, time);
-	}
-}
-
-function drawMural(context, dTime, tv) {
-	var offset = tv ? 4 : 0;
-	var tick = {elapsed_time: dTime};
-
-	context.drawImage(images["mural"], 628, 624);
-
-	murals[0+offset].update(tick);
-	murals[0+offset].draw();
-	if (gameMan.tutorialStep < 0) {
-		murals[2+offset].update(tick);
-		murals[2+offset].draw();
-		murals[1+offset].update(tick);
-		murals[1+offset].draw();
-		murals[3+offset].update(tick);
-		murals[3+offset].draw();
 	}
 }
 
