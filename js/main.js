@@ -58,7 +58,6 @@ window.onload = function() {
 	}
 
 	initMurals(gpCanvas);
-	tick.time_last = 0;
 
 	if (navigator.msPointerEnabled) {
 		gpCanvas.style.msTouchAction = "none";
@@ -283,7 +282,6 @@ function pan(dX, dY) {
 function draw(time) {
 	var dTime = time - displayMan.time;
 	displayMan.time = time;
-	tick.elapsed_time = dTime;
 
 	if (time - hudMan.fpsTime > 984) {
 		hudMan.fpsText = hudMan.fpsCount + "fps";
@@ -333,7 +331,7 @@ function drawContext(context, time, dTime, tv) {
 }
 
 function drawBoard(context, time, dTime, tv) {
-	drawMural(context, time, tv);
+	drawMural(context, dTime, tv);
 	context.drawImage(images["board"], 0, 0);
 	setRings();
 	drawPieces(context, time);
@@ -344,8 +342,9 @@ function drawBoard(context, time, dTime, tv) {
 	}
 }
 
-function drawMural(context, time, tv) {
+function drawMural(context, dTime, tv) {
 	var offset = tv ? 4 : 0;
+	var tick = {elapsed_time: dTime};
 
 	context.drawImage(images["mural"], 628, 624);
 

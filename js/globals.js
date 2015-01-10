@@ -1,6 +1,6 @@
 "use strict";
 
-var gpCanvas, gpContext, tvContext, grid, images={}, sounds={}, phalanx=[], gameStates=[], scenes={}, murals=[], tick={};
+var gpCanvas, gpContext, tvContext, grid, images={}, sounds={}, scenes={}, gameStates=[], phalanx=[], murals=[];
 
 var displayMan = {
 	cellSize:96,
