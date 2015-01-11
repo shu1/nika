@@ -37,7 +37,7 @@ window.onload = function() {
 	gpCanvas = document.getElementById("canvas");
 	gpContext = gpCanvas.getContext("2d");
 
-	muralCanvas = document.createElement("canvas");
+	muralCanvas = document.createElement("canvas");	// buffer
 	muralCanvas.width = displayMan.dialogWidth;
 	muralCanvas.height = displayMan.dialogHeight;
 
@@ -290,28 +290,68 @@ function draw(time) {
 	if (gameMan.scene == "board") {
 		var context = muralCanvas.getContext("2d");
 		context.clearRect(0, 0, muralCanvas.width, muralCanvas.height);
-		drawMural(dTime);
+		drawMural(context, time, dTime);	// draw mural to buffer
 	}
 
-	drawContext(gpContext, time, dTime);
+	drawContext(gpContext, time, dTime);	// draw main screen
 	if (window.nwf) {
-		drawContext(tvContext, time, dTime, "tv");
+		drawContext(tvContext, time, dTime, "tv");	// draw tv
 	}
 
 	window.requestAnimationFrame(draw);
 }
 
-function drawMural(dTime) {
+function drawMural(context, time, dTime) {
+	context.drawImage(images["mural"], 0, 0);
+
 	var tick = {elapsed_time: dTime};
 	murals[0].update(tick);
 	murals[0].draw();
-	if (gameMan.tutorialStep < 0) {
+	if (gameMan.tutorialStep < 0 && gameMan.winner < 0) {
 		murals[2].update(tick);
 		murals[2].draw();
 		murals[1].update(tick);
 		murals[1].draw();
 		murals[3].update(tick);
 		murals[3].draw();
+	}
+	else {
+		drawDialog(context, time);
+	}
+}
+
+function drawDialog(context, time) {
+	context.fillStyle = "#221E1F";
+	context.fillRect(displayMan.tutorialOffset, 0, displayMan.dialogWidth - displayMan.tutorialOffset, displayMan.dialogHeight);
+	context.fillStyle = "#BEB783";
+
+	var lines;
+	if (gameMan.winner >= 0) {
+		lines = [getWinnerText(gameMan.winner)];
+	}
+	else {
+		lines = tutorialTexts[gameMan.tutorialStep];
+	}
+
+	var spacing = 36, topPadding = 26, bottomPadding = 14, buttonOffset = 306, font = "px Georgia";
+	if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
+		context.font = (fontSize-2) + font;
+		spacing -= 4;
+		topPadding -= 2;
+		bottomPadding -= 2;
+		buttonOffset += 18;
+	}
+	else {
+		context.font = fontSize + font;
+	}
+
+	for (var i = lines.length-1; i >= 0; --i) {
+		context.fillText(lines[i], displayMan.tutorialOffset+8, topPadding + spacing * i);
+	}
+	if (tutorialInputs[gameMan.tutorialStep]) {
+		context.globalAlpha = (Math.sin(time/250 % (Math.PI*2))+1)/4 + 0.5;
+		context.fillText("Tap here to continue", displayMan.tutorialOffset + buttonOffset, displayMan.dialogHeight - bottomPadding);
+		context.globalAlpha = 1;
 	}
 }
 
@@ -348,16 +388,11 @@ function drawContext(context, time, dTime, tv) {
 }
 
 function drawBoard(context, time, dTime) {
-	context.drawImage(images["mural"], displayMan.dialogX, displayMan.dialogY);
 	context.drawImage(muralCanvas, displayMan.dialogX, displayMan.dialogY);
 	context.drawImage(images["board"], 0, 0);
 	setRings();
 	drawPieces(context, time);
 	drawHelmets(context, dTime);
-
-	if (gameMan.tutorialStep >= 0 || gameMan.winner >= 0) {
-		drawDialog(context, time);
-	}
 }
 
 function setRings() {
@@ -467,50 +502,6 @@ function drawHelmets(context, dTime) {
 	context.globalAlpha = (Math.sin(displayMan.helmetTheta % (Math.PI*2))+1)/4 + 0.5;
 	context.drawImage(images["helmet" + gameMan.actions], -128, -128);
 	context.restore();
-}
-
-function drawDialog(context, time) {
-	if (gameMan.tutorialStep >= 0 && gameMan.tutorialStep < tutorialTexts.length || gameMan.winner >= 0) {
-		context.save();
-		context.fillStyle = "#221E1F";
-		var frame = 1;
-//		context.fillRect(displayMan.dialogX, displayMan.dialogY - frame, -frame, displayMan.dialogHeight + frame*2);
-		context.fillRect(displayMan.dialogX, displayMan.dialogY, displayMan.tutorialOffset, -frame);
-		context.fillRect(displayMan.dialogX, displayMan.dialogY + displayMan.dialogHeight, displayMan.tutorialOffset, frame);
-		context.fillRect(displayMan.dialogX + displayMan.tutorialOffset, displayMan.dialogY - frame,
-			displayMan.dialogWidth - displayMan.tutorialOffset + frame, displayMan.dialogHeight + frame*2);
-		context.fillStyle = "#BEB783";
-
-		var lines;
-		if (gameMan.winner >= 0) {
-			lines = [getWinnerText(gameMan.winner)];
-		}
-		else {
-			lines = tutorialTexts[gameMan.tutorialStep];
-		}
-
-		var spacing = 36, topPadding = 26, bottomPadding = 14, buttonOffset = 306, font = "px Georgia";
-		if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
-			context.font = (fontSize-2) + font;
-			spacing -= 4;
-			topPadding -= 2;
-			bottomPadding -= 2;
-			buttonOffset += 18;
-		}
-		else {
-			context.font = fontSize + font;
-		}
-
-		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], displayMan.dialogX + displayMan.tutorialOffset+8, displayMan.dialogY + topPadding + spacing * i);
-		}
-		if (tutorialInputs[gameMan.tutorialStep]) {
-			context.globalAlpha = (Math.sin(time/250 % (Math.PI*2))+1)/4 + 0.5;
-			context.fillText("Tap here to continue", displayMan.dialogX + displayMan.tutorialOffset + buttonOffset,
-				displayMan.dialogY + displayMan.dialogHeight - bottomPadding);
-		}
-		context.restore();
-	}
 }
 
 function drawRules(context, scene) {
