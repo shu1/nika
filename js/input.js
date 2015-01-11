@@ -75,30 +75,28 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
-	if (setCurrentTouch(event)) {
-		hudMan.inputText = "";
-		inputMan.menu = getXY(event);
-		if (!inputMan.menu && gameMan.winner < 0) {
-			getPiece(inputMan.row, inputMan.col);
-			if (phalanx.length > 0) {
-				setRallyHighlights(phalanx[0].row, phalanx[0].col);
-			}
-			var scene = scenes[gameMan.scene];
-			if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
-				inputMan.pX = scene.x + (gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
-				inputMan.pY = scene.y + (gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
-				event.preventDefault();
-			}
-			else {
-				inputMan.pX = inputMan.x;
-				inputMan.pY = inputMan.y;
-				gameMan.selection = false;	// back to normal selection if you deselect pieces
-				phalanx.length = 0;
-			}
+	hudMan.inputText = "";
+	inputMan.menu = getXY(event);
+	if (!inputMan.menu && gameMan.winner < 0 && setCurrentTouch(event)) {
+		getPiece(inputMan.row, inputMan.col);
+		if (phalanx.length > 0) {
+			setRallyHighlights(phalanx[0].row, phalanx[0].col);
 		}
-		hudMan.inputText += " down";
-		inputMan.click = true;
+		var scene = scenes[gameMan.scene];
+		if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
+			inputMan.pX = scene.x + (gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
+			inputMan.pY = scene.y + (gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
+			event.preventDefault();
+		}
+		else {
+			inputMan.pX = inputMan.x;
+			inputMan.pY = inputMan.y;
+			gameMan.selection = false;	// back to normal selection if you deselect pieces
+			phalanx.length = 0;
+		}
 	}
+	hudMan.inputText += " down";
+	inputMan.click = true;
 }
 
 function mouseMove(event) {
