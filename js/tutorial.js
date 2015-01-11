@@ -10,14 +10,14 @@ function clearTutorialRings() {
 
 function nextTutorialStep() {
 	gameMan.tutorialStep++;
-	hudMan.tutorialText = "Tutorial " + gameMan.tutorialStep;
+	hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
 	clearTutorialRings();
 	setupTutorial(gameMan.tutorialStep);
 }
 
 function endTutorial() {
 	gameMan.tutorialStep = -1;
-	hudMan.tutorialText = "";
+	hudMan.pageText = "";
 	newGame();
 	resetAnimations();
 }

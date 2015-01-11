@@ -1,6 +1,6 @@
 "use strict";
 
-var canvas, context, grid, images={}, sounds={}, phalanx=[], gameStates=[], scenes={}, murals=[], tick={};
+var gpCanvas, gpContext, muralCanvas, tvContext, grid, images={}, sounds={}, scenes={}, gameStates=[], phalanx=[], murals=[];
 
 var displayMan = {
 	cellSize:96,
@@ -71,7 +71,7 @@ var menuMan = {
 	height:0,
 	bWidth:0,
 	bHeight:0,
-	button:-1
+	button:0
 }
 
 var	hudMan = {
@@ -79,11 +79,8 @@ var	hudMan = {
 	fpsCount:0,
 	fpsText:"",
 	drawText:"",
-	gameText:"",
 	inputText:"",
-	pieceText:"",
-	actionText:"",
-	tutorialText:""
+	pageText:""
 }
 
 var buttons = [
