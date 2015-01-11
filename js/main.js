@@ -288,20 +288,18 @@ function draw(time) {
 	hudMan.fpsCount++;
 
 	if (gameMan.scene == "board") {
-		var context = muralCanvas.getContext("2d");
-		context.clearRect(0, 0, muralCanvas.width, muralCanvas.height);
-		drawMural(context, time, dTime);	// draw mural to buffer
+		drawMural(muralCanvas.getContext("2d"), dTime);	// draw mural to buffer
 	}
 
-	drawContext(gpContext, time, dTime);	// draw main screen
+	drawContext(gpContext, dTime);	// draw main screen
 	if (window.nwf) {
-		drawContext(tvContext, time, dTime, "tv");	// draw tv
+		drawContext(tvContext, dTime, "tv");	// draw tv
 	}
 
 	window.requestAnimationFrame(draw);
 }
 
-function drawMural(context, time, dTime) {
+function drawMural(context, dTime) {
 	context.drawImage(images["mural"], 0, 0);
 
 	var tick = {elapsed_time: dTime};
@@ -316,11 +314,11 @@ function drawMural(context, time, dTime) {
 		murals[3].draw();
 	}
 	else {
-		drawDialog(context, time);
+		drawDialog(context);
 	}
 }
 
-function drawDialog(context, time) {
+function drawDialog(context) {
 	context.fillStyle = "#221E1F";
 	context.fillRect(displayMan.tutorialOffset, 0, displayMan.dialogWidth - displayMan.tutorialOffset, displayMan.dialogHeight);
 	context.fillStyle = "#BEB783";
@@ -349,13 +347,13 @@ function drawDialog(context, time) {
 		context.fillText(lines[i], displayMan.tutorialOffset+8, topPadding + spacing * i);
 	}
 	if (tutorialInputs[gameMan.tutorialStep]) {
-		context.globalAlpha = (Math.sin(time/250 % (Math.PI*2))+1)/4 + 0.5;
+		context.globalAlpha = (Math.sin(displayMan.time/250 % (Math.PI*2))+1)/4 + 0.5;
 		context.fillText("Tap here to continue", displayMan.tutorialOffset + buttonOffset, displayMan.dialogHeight - bottomPadding);
 		context.globalAlpha = 1;
 	}
 }
 
-function drawContext(context, time, dTime, tv) {
+function drawContext(context, dTime, tv) {
 	tv = tv ? tv : "";
 	var canvas = context.canvas;
 
@@ -367,7 +365,13 @@ function drawContext(context, time, dTime, tv) {
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
-		drawBoard(context, time, dTime);
+
+		context.drawImage(muralCanvas, displayMan.dialogX, displayMan.dialogY);
+		context.drawImage(images["board"], 0, 0);
+		setRings();
+		drawPieces(context);
+		drawHelmets(context, dTime);
+
 		context.restore();
 	}
 
@@ -376,7 +380,11 @@ function drawContext(context, time, dTime, tv) {
 		context.save();
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
-		drawRules(context, scene);
+
+		context.fillStyle = "black";
+		context.fillRect(0, 0, scene.width, scene.height);
+		context.drawImage(images["rule" + gameMan.rules], (scene.width - displayMan.ruleWidth)/2, (scene.height - displayMan.ruleHeight)/2);
+
 		context.restore();
 	}
 
@@ -385,14 +393,6 @@ function drawContext(context, time, dTime, tv) {
 	if (gameMan.debug) {
 		drawHud(context, tv + gameMan.scene);
 	}
-}
-
-function drawBoard(context, time, dTime) {
-	context.drawImage(muralCanvas, displayMan.dialogX, displayMan.dialogY);
-	context.drawImage(images["board"], 0, 0);
-	setRings();
-	drawPieces(context, time);
-	drawHelmets(context, dTime);
 }
 
 function setRings() {
@@ -417,8 +417,8 @@ function setRings() {
 	}
 }
 
-function drawPieces(context, time) {
-	var theta = time/500 % (Math.PI*2);
+function drawPieces(context) {
+	var theta = displayMan.time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			var cell = grid[row][col];
@@ -502,12 +502,6 @@ function drawHelmets(context, dTime) {
 	context.globalAlpha = (Math.sin(displayMan.helmetTheta % (Math.PI*2))+1)/4 + 0.5;
 	context.drawImage(images["helmet" + gameMan.actions], -128, -128);
 	context.restore();
-}
-
-function drawRules(context, scene) {
-	context.fillStyle = "black";
-	context.fillRect(0, 0, scene.width, scene.height);
-	context.drawImage(images["rule" + gameMan.rules], (scene.width - displayMan.ruleWidth)/2, (scene.height - displayMan.ruleHeight)/2);
 }
 
 function drawMenu(context, dTime) {
