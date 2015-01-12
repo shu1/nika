@@ -308,7 +308,6 @@ function keyPrev() {
 	}
 	else if (gameMan.tutorialStep > 0) {
 		prevTutorialPart();
-		hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
 		return true;
 	}
 	else if (menuMan.show && menuMan.button < buttons.length-2) {
