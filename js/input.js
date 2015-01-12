@@ -307,7 +307,7 @@ function keyPrev() {
 		return true;
 	}
 	else if (gameMan.tutorialStep > 0) {
-		gameMan.tutorialStep--;
+		prevTutorialPart();
 		hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
 		return true;
 	}
@@ -326,7 +326,7 @@ function keyNext() {
 		return true;
 	}
 	else if (gameMan.tutorialStep >= 0) {
-		nextTutorialStep();
+		nextTutorialPart();
 		return true;
 	}
 	else if (menuMan.show && menuMan.button > 0) {
