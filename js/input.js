@@ -297,6 +297,7 @@ function isCurrentTouch(event) {
 		return false;
 	}
 	else if (navigator.msPointerEnabled) {
+		console.log("Are they matching?", event.pointerId, inputMan.currentTouchId);
 		return event.pointerId == inputMan.currentTouchId;
 	}
 
@@ -313,7 +314,7 @@ function isSecondTouch(event) {
 		return false;
 	}
 	else if (navigator.msPointerEnabled) {
-		return true; // all touches are deemed to "match" for MSPointer
+		return false; // no touches are deemed to "match" for MSPointer
 	}
 
 	return true;	// all touches are deemed to "match" if touch API is not supported
