@@ -28,12 +28,15 @@ function getXY(event) {
 	}
 
 	// no menu, so grid
+	return false;
+}
+
+function getRowCol() {
 	var scene = scenes[gameMan.scene];
 	inputMan.col = Math.floor((inputMan.x - scene.x) / (displayMan.cellSize * scene.scale));
 	inputMan.row = Math.floor((inputMan.y - scene.y) / (displayMan.cellSize * scene.scale));
 	inputMan.rot = -1;
 	hudMan.inputText = inputMan.row + "," + inputMan.col;
-	return false;
 }
 
 function getRot(dX, dY) {
@@ -75,10 +78,12 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
+	// get inputMan.x and y
+	inputMan.menu = getXY(event);
 	if (setCurrentTouch(event)) {
 		hudMan.inputText = "";
-		inputMan.menu = getXY(event);
 		if (!inputMan.menu && gameMan.winner < 0) {
+			getRowCol();
 			getPiece(inputMan.row, inputMan.col);
 			if (phalanx.length > 0) {
 				setRallyHighlights(phalanx[0].row, phalanx[0].col);
@@ -102,9 +107,10 @@ function mouseDown(event) {
 }
 
 function mouseMove(event) {
+	getXY(event);
 	if (inputMan.click && isMatchingTouch(event)) {
-		getXY(event);
 		if (!inputMan.menu && gameMan.winner < 0) {
+			getRowCol();
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
 			var scene = scenes[gameMan.scene];
@@ -216,7 +222,9 @@ function setCurrentTouch(event) {
 		}
 	}
 	else {	// cancel all touches if touch API not supported
-		revertGrid();
+		if (!inputMan.menu) {
+			revertGrid();
+		}
 		return true;
 	}
 
