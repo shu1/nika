@@ -38,8 +38,8 @@ window.onload = function() {
 	gpContext = gpCanvas.getContext("2d");
 
 	muralCanvas = document.createElement("canvas");	// buffer
-	muralCanvas.width = displayMan.dialogWidth;
-	muralCanvas.height = displayMan.dialogHeight;
+	muralCanvas.width = displayMan.muralWidth;
+	muralCanvas.height = displayMan.muralHeight;
 
 	var view_2d = new fo.view_2d(muralCanvas);
 
@@ -320,7 +320,7 @@ function drawMural(context, dTime) {
 
 function drawDialog(context) {
 	context.fillStyle = "#221E1F";
-	context.fillRect(displayMan.tutorialOffset, 0, displayMan.dialogWidth - displayMan.tutorialOffset, displayMan.dialogHeight);
+	context.fillRect(displayMan.tutorialOffset, 0, displayMan.muralWidth - displayMan.tutorialOffset, displayMan.muralHeight);
 	context.fillStyle = "#BEB783";
 
 	var lines;
@@ -348,7 +348,7 @@ function drawDialog(context) {
 	}
 	if (tutorialInputs[gameMan.tutorialStep]) {
 		context.globalAlpha = (Math.sin(displayMan.time/250 % (Math.PI*2))+1)/4 + 0.5;
-		context.fillText("Tap here to continue", displayMan.tutorialOffset + buttonOffset, displayMan.dialogHeight - bottomPadding);
+		context.fillText("Tap here to continue", displayMan.tutorialOffset + buttonOffset, displayMan.muralHeight - bottomPadding);
 		context.globalAlpha = 1;
 	}
 }
@@ -366,7 +366,7 @@ function drawContext(context, dTime, tv) {
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
 
-		context.drawImage(muralCanvas, displayMan.dialogX, displayMan.dialogY);
+		context.drawImage(muralCanvas, displayMan.muralX, displayMan.muralY);
 		context.drawImage(images["board"], 0, 0);
 		setRings();
 		drawPieces(context);

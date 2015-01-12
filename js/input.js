@@ -160,19 +160,19 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
-				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale
-				&& inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
-				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale
-				&& inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
+				if (inputMan.x - scene.x > displayMan.muralX * scene.scale
+				&& inputMan.x - scene.x < (displayMan.muralX + displayMan.muralWidth) * scene.scale
+				&& inputMan.y - scene.y > displayMan.muralY * scene.scale
+				&& inputMan.y - scene.y < (displayMan.muralY + displayMan.muralHeight) * scene.scale) {
 					inputMan.time = 0;
 					nextTutorialStep();
 				}
 			}
 			else if (gameMan.winner >= 0) {	// win screen
-				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale
-				&& inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
-				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale
-				&& inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
+				if (inputMan.x - scene.x > displayMan.muralX * scene.scale
+				&& inputMan.x - scene.x < (displayMan.muralX + displayMan.muralWidth) * scene.scale
+				&& inputMan.y - scene.y > displayMan.muralY * scene.scale
+				&& inputMan.y - scene.y < (displayMan.muralY + displayMan.muralHeight) * scene.scale) {
 					inputMan.time = 0;
 					newGame();
 				}
