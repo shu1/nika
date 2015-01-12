@@ -63,19 +63,6 @@ window.onload = function() {
 		gpCanvas.addEventListener("MSPointerDown", mouseDown);
 		gpCanvas.addEventListener("MSPointerMove", mouseMove);
 		window.addEventListener("MSPointerUp", mouseUp);
-		window.addEventListener("MSGestureChange", function(event) {
-			hudMan.msText = "";
-			hudMan.msText += "Ex: " + event.expansion;
-			hudMan.msText += "Sc: " + event.scale;
-			hudMan.msText += "X: " + event.layerX;
-			hudMan.msText += "Y: " + event.layerY;
-
-			console.log("----------------");
-			console.log("Ex: " + event.expansion);
-			console.log("Sc: " + event.scale);
-			console.log("X:  " + event.layerX);
-			console.log("Y:  " + event.layerY);
-		});
 	}
 	else if ("ontouchstart" in window && !window.nwf) {	// NWF should use mouse events
 		window.addEventListener("touchstart", mouseDown);
