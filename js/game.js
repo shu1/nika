@@ -82,24 +82,12 @@ function generateGrid(ascii) {
 	}
 }
 
-function newGame() {
-	generateGrid(mainBoard);
-	gameStates = [];
-	phalanx = [];
-	pushGameState();
-	gameMan.winner = -1;
-	gameMan.player = 0;
-	gameMan.actions = 2;
-
-	useAction(0);
-}
-
 function debugGrid() {
 	for (var row = 0; row < 15; ++row) {
 		var str = "";
 		for (var col = 0; col < 21; ++col) {
 			var a = grid[row][col].city;
-			str += a == -1 ? '.' : a;
+			str += (a == -1) ? '.' : a;
 		}
 		console.log(str);
 	}
@@ -113,8 +101,19 @@ function clearChecked() {
 	}
 }
 
+function newGame() {
+	generateGrid(mainBoard);
+	gameStates = [];
+	phalanx = [];
+	pushGameState();
+	gameMan.winner = -1;
+	gameMan.player = 0;
+	gameMan.actions = 2;
+	useAction(0);
+}
+
 function useAction(n) {
-	if (typeof n == 'undefined') {
+	if (n === undefined) {
 		n = 1;
 	}
 	gameMan.actions -= n;
@@ -128,7 +127,6 @@ function useAction(n) {
 	else if (gameMan.tutorialStep != 2) {	// hack
 		displayMan.helmetFlash = 1;	// flash helmet
 	}
-	hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	checkWin();
 }
 
@@ -194,7 +192,6 @@ function undo() {
 		gameMan.player = gameStates[gameStates.length-1].player;
 		gameMan.actions = gameStates[gameStates.length-1].actions;
 		phalanx = [];
-		hudMan.gameText = getCity(gameMan.player) + gameMan.actions + " moves left";
 	}
 }
 
@@ -225,7 +222,7 @@ function checkWin() {
 	}
 }
 
-function playerAction(name) {
+function playerAction() {
 	for (var player = 0; player < 4; ++player) {
 		var priorityEvent = getPriorityEvent(eventMan[player]);
 		playSound(priorityEvent);
@@ -283,5 +280,71 @@ function setIdleAnimation(player) {
 		} else {
 			murals[player].setAnim("idle");
 		}
+	}
+}
+
+function setRallyHighlights(pRow, pCol) {
+	if (gameMan.tutorialStep < 0 && routedCell(pRow, pCol)) {
+		for (var row = 0; row < 15; ++row) {
+			for (var col = 0; col < 21; ++col) {
+				if (emptyRallyCell(row, col, grid[pRow][pCol].player)) {
+					grid[row][col].prompt = 2;
+				}
+			}
+		}
+	}
+}
+
+function clearRallyHighlights() {
+	if (gameMan.tutorialStep < 0) {
+		for (var row = 0; row < 15; ++row) {
+			for (var col = 0; col < 21; ++col) {
+				grid[row][col].prompt = -1;
+			}
+		}
+	}
+}
+
+function menuButton(button) {
+	switch(button) {
+	case 0:
+		if (gameMan.scene == "rules") {
+			setScene("board");
+			hudMan.pageText = "";
+		}
+		else {
+			menuMan.show = !menuMan.show;
+		}
+		break;
+	case 1:
+		gameMan.debug = !gameMan.debug;
+		initAnimations();
+		break;
+	case 2:
+		ai();
+		break;
+	case 3:
+		zoom();
+		break;
+	case 4:
+		pass();
+		break;
+	case 5:
+		undo();
+		break;
+	case 6:
+		setScene("rules");
+		menuMan.show = false;
+		menuMan.button = 0;
+		hudMan.pageText = "Rule " + gameMan.rules;
+		break;
+	case 7:
+		if (gameMan.tutorialStep < 0) {
+			nextTutorialStep();
+		}
+		else {
+			endTutorial();
+		}
+		break;
 	}
 }

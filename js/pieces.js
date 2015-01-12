@@ -75,7 +75,7 @@ function movePiece(pRow, pCol, row, col, isAI) {
 					eventMan[currentPlayer].push("move");
 				}
 
-				if (isAI === undefined) {
+				if (!isAI) {
 					phalanx.length = 0;
 					moved = true;
 				}
@@ -84,7 +84,7 @@ function movePiece(pRow, pCol, row, col, isAI) {
 		else if (checkMove(pRow, pCol, row, col) && pushPiece(pRow, pCol, row, col, grid[pRow][pCol].player, 1)) {
 			moveOnePiece(pRow, pCol, row, col);
 
-			if (isAI === undefined) {
+			if (!isAI) {
 				phalanx.length = 0;
 				moved = true;	// return if a piece was moved so it can be redrawn
 			}
@@ -103,7 +103,7 @@ function movePiece(pRow, pCol, row, col, isAI) {
 				eventMan[currentPlayer].push("rotate");
 			}
 
-			if (isAI === undefined) {
+			if (!isAI) {
 				phalanx.length = 0;
 				moved = true;
 			}

@@ -1,6 +1,6 @@
 "use strict";
 
-var canvas, context, grid, images={}, sounds={}, phalanx=[], gameStates=[], scenes={}, murals=[], tick={};
+var gpCanvas, gpContext, muralCanvas, tvContext, grid, images={}, sounds={}, scenes={}, gameStates=[], phalanx=[], murals=[];
 
 var displayMan = {
 	cellSize:96,
@@ -9,10 +9,10 @@ var displayMan = {
 	boardHeight:1440,
 	ruleWidth:2016,
 	ruleHeight:1024,
-	dialogX:628,
-	dialogY:624,
-	dialogWidth:758,
-	dialogHeight:192,
+	muralX:628,
+	muralY:624,
+	muralWidth:758,
+	muralHeight:192,
 	tutorialOffset:152,
 	menu:false,
 	helmetTheta:0,
@@ -73,7 +73,7 @@ var menuMan = {
 	height:0,
 	bWidth:0,
 	bHeight:0,
-	button:-1
+	button:0
 }
 
 var	hudMan = {
@@ -81,12 +81,8 @@ var	hudMan = {
 	fpsCount:0,
 	fpsText:"",
 	drawText:"",
-	gameText:"",
 	inputText:"",
-	pieceText:"",
-	actionText:"",
-	tutorialText:"",
-	msText:""				// Temporary, should be removed after MSPointer is stable
+	pageText:""
 }
 
 var buttons = [

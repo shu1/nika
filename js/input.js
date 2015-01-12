@@ -1,46 +1,5 @@
 "use strict";
 
-function menuButton(button) {
-	switch(button) {
-	case 0:
-		if (gameMan.scene == "rules") {
-			setScene("board");
-		}
-		else {
-			menuMan.show = !menuMan.show;
-		}
-		break;
-	case 1:
-		gameMan.debug = !gameMan.debug;
-		initAnimations();
-		break;
-	case 2:
-		ai();
-		break;
-	case 3:
-		zoom();
-		break;
-	case 4:
-		pass();
-		break;
-	case 5:
-		undo();
-		break;
-	case 6:
-		setScene("rules");
-		menuMan.show = false;
-		break;
-	case 7:
-		if (gameMan.tutorialStep < 0) {
-			nextTutorialStep();
-		}
-		else {
-			endTutorial();
-		}
-		break;
-	}
-}
-
 function getXY(event) {
 	if (event.touches) {
 		inputMan.x = event.touches[0].pageX;
@@ -52,11 +11,12 @@ function getXY(event) {
 	}
 
 	// check menu
-	if (inputMan.x < canvas.width && inputMan.x > canvas.width - menuMan.width
-	&& inputMan.y < canvas.height && inputMan.y > canvas.height - menuMan.height) {
+	var width = gpCanvas.width, height = gpCanvas.height;
+	if (inputMan.x < width && inputMan.x > width - menuMan.width
+	&& inputMan.y < height && inputMan.y > height - menuMan.height) {
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
-				if (inputMan.x > canvas.width - menuMan.bWidth * (col+1) && inputMan.y > canvas.height - menuMan.bHeight * (row+1)) {
+				if (inputMan.x > width - menuMan.bWidth * (col+1) && inputMan.y > height - menuMan.bHeight * (row+1)) {
 					menuMan.button = row * menuMan.cols + col;
 					if (menuMan.button < buttons.length-1) {
 						hudMan.inputText = buttons[menuMan.button+1];
@@ -68,12 +28,15 @@ function getXY(event) {
 	}
 
 	// no menu, so grid
+	return false;
+}
+
+function getRowCol() {
 	var scene = scenes[gameMan.scene];
 	inputMan.col = Math.floor((inputMan.x - scene.x) / (displayMan.cellSize * scene.scale));
 	inputMan.row = Math.floor((inputMan.y - scene.y) / (displayMan.cellSize * scene.scale));
 	inputMan.rot = -1;
 	hudMan.inputText = inputMan.row + "," + inputMan.col;
-	return false;
 }
 
 function getRot(dX, dY) {
@@ -115,11 +78,11 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
+	inputMan.menu = getXY(event);
 	if (setTouch(event)) {
-		hudMan.actionText = "";
 		hudMan.inputText = "";
-		inputMan.menu = getXY(event);
 		if (!inputMan.menu && gameMan.winner < 0) {
+			getRowCol();
 			getPiece(inputMan.row, inputMan.col);
 			if (phalanx.length > 0) {
 				setRallyHighlights(phalanx[0].row, phalanx[0].col);
@@ -143,12 +106,13 @@ function mouseDown(event) {
 }
 
 function mouseMove(event) {
+	getXY(event);
 	if (inputMan.secondTouchId > -1) {
 		pinch(event);
 	}
 	else if (inputMan.click && isCurrentTouch(event)) {
-		getXY(event);
 		if (!inputMan.menu && gameMan.winner < 0) {
+			getRowCol();
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
 			var scene = scenes[gameMan.scene];
@@ -167,7 +131,6 @@ function mouseMove(event) {
 			}
 			else {	// pan
 				if (pan(dX, dY)) {
-					hudMan.inputText = -scene.x + "," + -scene.y;
 					event.preventDefault();
 				}
 				inputMan.pX = inputMan.x;
@@ -189,34 +152,32 @@ function mouseUp(event) {
 		else {
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == "rules") {
-				if (inputMan.y > canvas.height / 2 - displayMan.cellSize * 1.5
-				 && inputMan.y < canvas.height / 2 + displayMan.cellSize * 1.5) {
-					if (inputMan.x > canvas.width - displayMan.cellSize*2) {
-						gameMan.rules = Math.min(gameMan.rules + 1, rulePages - 1);
+				if (inputMan.y > gpCanvas.height/2 - displayMan.cellSize*1.5
+				 && inputMan.y < gpCanvas.height/2 + displayMan.cellSize*1.5) {
+					if (inputMan.x > gpCanvas.width - displayMan.cellSize*2 && gameMan.rules < rulePages-1) {
+						gameMan.rules++;
+						hudMan.pageText = "Rule " + gameMan.rules;
 					}
-					else if (inputMan.x < displayMan.cellSize*2) {
-						gameMan.rules = Math.max(gameMan.rules - 1, 0);
+					else if (inputMan.x < displayMan.cellSize*2 && gameMan.rules > 0) {
+						gameMan.rules--;
+						hudMan.pageText = "Rule " + gameMan.rules;
 					}
-				}
-
-				if (inputMan.x < displayMan.cellSize*3.5 && inputMan.y > canvas.height - displayMan.cellSize*2.5) {
-					setScene("board");
 				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
-				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale
-				&& inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
-				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale
-				&& inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
+				if (inputMan.x - scene.x > displayMan.muralX * scene.scale
+				&& inputMan.x - scene.x < (displayMan.muralX + displayMan.muralWidth) * scene.scale
+				&& inputMan.y - scene.y > displayMan.muralY * scene.scale
+				&& inputMan.y - scene.y < (displayMan.muralY + displayMan.muralHeight) * scene.scale) {
 					inputMan.time = 0;
 					nextTutorialStep();
 				}
 			}
 			else if (gameMan.winner >= 0) {	// win screen
-				if (inputMan.x - scene.x > displayMan.dialogX * scene.scale
-				&& inputMan.x - scene.x < (displayMan.dialogX + displayMan.dialogWidth) * scene.scale
-				&& inputMan.y - scene.y > displayMan.dialogY * scene.scale
-				&& inputMan.y - scene.y < (displayMan.dialogY + displayMan.dialogHeight) * scene.scale) {
+				if (inputMan.x - scene.x > displayMan.muralX * scene.scale
+				&& inputMan.x - scene.x < (displayMan.muralX + displayMan.muralWidth) * scene.scale
+				&& inputMan.y - scene.y > displayMan.muralY * scene.scale
+				&& inputMan.y - scene.y < (displayMan.muralY + displayMan.muralHeight) * scene.scale) {
 					inputMan.time = 0;
 					newGame();
 				}
@@ -244,6 +205,7 @@ function mouseUp(event) {
 		}
 		clearRallyHighlights();
 		endCurrentTouch();
+		menuMan.button = 0;	// Reset for key input
 		gameMan.selection = false;
 		inputMan.menu = false;
 		inputMan.click = false;
@@ -290,7 +252,9 @@ function setTouch(event) {
 		}
 	}
 	else {	// cancel all touches if touch API not supported
-		revertGrid();
+		if (!inputMan.menu) {
+			revertGrid();
+		}
 		return true;
 	}
 
@@ -390,4 +354,89 @@ function pinchZoom(distance, centerX, centerY) {
 	scene.y = centerY - (centerY - scene.y) * scene.scale / oldScale;
 
 	pan(0,0);
+}
+
+function keyDown(event) {
+	inputMan.menu = true;	// Highlight current button even when mouse isn't down
+	var dX = 8;
+
+	switch (event.keyCode) {
+	case 13:	// enter
+	case 90:	// Z
+		hudMan.inputText = "Enter";
+		menuButton(menuMan.button);
+		break;
+	case 27:	// escape
+	case 88:	// X
+		hudMan.inputText = "Escape";
+		if (gameMan.scene == "rules") {
+			setScene("board");
+			hudMan.pageText = "";
+		}
+		else if (gameMan.tutorialStep >= 0) {
+			endTutorial();
+		}
+		else {
+			menuMan.show = false;
+			menuMan.button = 0;
+		}
+		break;
+	case 37:	// left
+		if (!keyPrev() && !menuMan.show) {
+			pan(dX, 0);
+		}
+		break;
+	case 38:	// up
+		if (!keyPrev() && !menuMan.show) {
+			pan(0, dX);
+		}
+		break;
+	case 39:	// right
+		if (!keyNext() && !menuMan.show) {
+			pan(-dX, 0);
+		}
+		break;
+	case 40:	// down
+		if (!keyNext() && !menuMan.show) {
+			pan(0, -dX);
+		}
+		break;
+	}
+}
+
+function keyPrev() {
+	hudMan.inputText = "Prev";
+	if (gameMan.scene == "rules" && gameMan.rules > 0) {
+		gameMan.rules--;
+		hudMan.pageText = "Rule " + gameMan.rules;
+		return true;
+	}
+	else if (gameMan.tutorialStep > 0) {
+		gameMan.tutorialStep--;
+		hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
+		return true;
+	}
+	else if (menuMan.show && menuMan.button < buttons.length-2) {
+		menuMan.button++;
+		return true;
+	}
+	return false;
+}
+
+function keyNext() {
+	hudMan.inputText = "Next";
+	if (gameMan.scene == "rules" && gameMan.rules < rulePages-1) {
+		gameMan.rules++;
+		hudMan.pageText = "Rule " + gameMan.rules;
+		return true;
+	}
+	else if (gameMan.tutorialStep >= 0) {
+		nextTutorialStep();
+		return true;
+	}
+	else if (menuMan.show && menuMan.button > 0) {
+		menuMan.button--;
+		return true;
+	}
+	return false;
 }
