@@ -4,14 +4,13 @@ var gpCanvas, gpContext, muralCanvas, tvContext, grid, images={}, sounds={}, sce
 
 var displayMan = {
 	cellSize:96,
-	pieceSize:80,
 	boardWidth:2016,
 	boardHeight:1440,
 	ruleWidth:2016,
 	ruleHeight:1024,
 	arrowWidth:96,
 	arrowHeight:416,
-	arrowOffset:46,
+	arrowOffset:48,
 	muralX:628,
 	muralY:624,
 	muralWidth:758,

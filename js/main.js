@@ -4,6 +4,7 @@ window.onload = function() {
 	newGame();
 
 	images["board"] = document.getElementById("board");
+	images["mural"] = document.getElementById("mural");
 	images["player0"] = document.getElementById("athens");
 	images["player1"] = document.getElementById("sparta");
 	images["player2"] = document.getElementById("messene");
@@ -14,8 +15,6 @@ window.onload = function() {
 	images["greenRing"] = document.getElementById("greenRing");
 	images["greenComet"] = document.getElementById("greenComet");
 	images["greenShadow"] = document.getElementById("greenShadow");
-	images["board"] = document.getElementById("board");
-	images["mural"] = document.getElementById("mural");
 	images["helmet1"] = document.getElementById("helmet1");
 	images["helmet2"] = document.getElementById("helmet2");
 	images["arrowLeft"] = document.getElementById("arrowLeft");
@@ -368,8 +367,8 @@ function drawContext(context, dTime, tv) {
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
 
-		context.drawImage(muralCanvas, displayMan.muralX, displayMan.muralY);
 		context.drawImage(images["board"], 0, 0);
+		context.drawImage(muralCanvas, displayMan.muralX, displayMan.muralY);
 		setRings();
 		drawPieces(context);
 		drawHelmets(context, dTime);
@@ -421,6 +420,7 @@ function setRings() {
 }
 
 function drawPieces(context) {
+	var pieceSize = 80;
 	var theta = displayMan.time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
@@ -431,14 +431,14 @@ function drawPieces(context) {
 
 				if (cell.player >= 0) {
 					context.rotate(cell.rot * Math.PI/2);
-					context.drawImage(images["player" + cell.player], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
+					context.drawImage(images["player" + cell.player], -pieceSize/2, -pieceSize/2);
 					context.rotate(cell.rot * Math.PI/-2);
-					context.drawImage(images["sheen"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
+					context.drawImage(images["sheen"], -pieceSize/2, -pieceSize/2);
 				}
 
 				if (cell.prompt == 0) {
 					context.rotate(theta);
-					context.drawImage(images["greenComet"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
+					context.drawImage(images["greenComet"], -pieceSize/2, -pieceSize/2);
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 1) {
@@ -447,7 +447,7 @@ function drawPieces(context) {
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 2) {
-					context.drawImage(images["greenShadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
+					context.drawImage(images["greenShadow"], -pieceSize/2, -pieceSize/2);
 				}
 
 				if (cell.ring == 0) {
@@ -458,7 +458,7 @@ function drawPieces(context) {
 				else if (cell.ring == 1) {
 					var rotation = (cell.kind == 2) ? cell.city : inputMan.rot;
 					context.rotate(rotation * Math.PI/2);
-					context.drawImage(images["shadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
+					context.drawImage(images["shadow"], -pieceSize/2, -pieceSize/2);
 					context.rotate(rotation * Math.PI/-2);
 				}
 				cell.ring = -1;	// clear for next time
