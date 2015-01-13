@@ -18,6 +18,8 @@ window.onload = function() {
 	images["mural"] = document.getElementById("mural");
 	images["helmet1"] = document.getElementById("helmet1");
 	images["helmet2"] = document.getElementById("helmet2");
+	images["arrowLeft"] = document.getElementById("arrowLeft");
+	images["arrowRight"] = document.getElementById("arrowRight");
 
 	for (var i = 0; i < rulePages; ++i) {
 		images["rule" + i] = document.getElementById("rule" + i);
@@ -384,6 +386,7 @@ function drawContext(context, dTime, tv) {
 		context.fillStyle = "black";
 		context.fillRect(0, 0, scene.width, scene.height);
 		context.drawImage(images["rule" + gameMan.rules], (scene.width - displayMan.ruleWidth)/2, (scene.height - displayMan.ruleHeight)/2);
+		drawRules(context, scene);
 
 		context.restore();
 	}
@@ -502,6 +505,15 @@ function drawHelmets(context, dTime) {
 	context.globalAlpha = (Math.sin(displayMan.helmetTheta % (Math.PI*2))+1)/4 + 0.5;
 	context.drawImage(images["helmet" + gameMan.actions], -128, -128);
 	context.restore();
+}
+
+function drawRules(context, scene) {
+	if (gameMan.rules > 0) {
+		context.drawImage(images["arrowLeft"], displayMan.arrowOffset, scene.height/2 - displayMan.arrowHeight/2);
+	}
+	if (gameMan.rules < rulePages-1) {
+		context.drawImage(images["arrowRight"], scene.width - displayMan.arrowWidth - displayMan.arrowOffset, scene.height/2 - displayMan.arrowHeight/2);
+	}
 }
 
 function drawMenu(context, dTime) {
