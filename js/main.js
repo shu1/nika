@@ -509,10 +509,10 @@ function drawHelmets(context, dTime) {
 
 function drawRules(context, scene) {
 	if (gameMan.rules > 0) {
-		context.drawImage(images["arrowLeft"], displayMan.arrowOffset, scene.height/2 - displayMan.arrowHeight/2);
+		context.drawImage(images["arrowLeft"], displayMan.arrowWidth/2, (scene.height - displayMan.arrowHeight)/2);
 	}
 	if (gameMan.rules < rulePages-1) {
-		context.drawImage(images["arrowRight"], scene.width - displayMan.arrowWidth - displayMan.arrowOffset, scene.height/2 - displayMan.arrowHeight/2);
+		context.drawImage(images["arrowRight"], scene.width - displayMan.arrowWidth*1.5, (scene.height - displayMan.arrowHeight)/2);
 	}
 }
 

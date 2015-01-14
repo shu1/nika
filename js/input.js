@@ -149,11 +149,11 @@ function mouseUp(event) {
 			if (gameMan.scene == "rules") {
 				if (inputMan.y > gpCanvas.height/2 - displayMan.arrowHeight/2 * scene.scale
 				&& inputMan.y < gpCanvas.height/2 + displayMan.arrowHeight/2 * scene.scale) {
-					if (inputMan.x > gpCanvas.width - (displayMan.arrowWidth + displayMan.arrowOffset) * scene.scale && gameMan.rules < rulePages-1) {
+					if (inputMan.x > gpCanvas.width - displayMan.arrowWidth*1.5 * scene.scale && gameMan.rules < rulePages-1) {
 						gameMan.rules++;
 						hudMan.pageText = "Rule " + gameMan.rules;
 					}
-					else if (inputMan.x < (displayMan.arrowWidth + displayMan.arrowOffset) * scene.scale && gameMan.rules > 0) {
+					else if (inputMan.x < displayMan.arrowWidth*1.5 * scene.scale && gameMan.rules > 0) {
 						gameMan.rules--;
 						hudMan.pageText = "Rule " + gameMan.rules;
 					}
