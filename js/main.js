@@ -168,11 +168,11 @@ function initScenes(canvas, maxScale, minScale, tv) {
 
 	var ratio = canvas.width / canvas.height;
 	scene = scenes[tv + "rules"];
-	scene.height = (canvas.height <= 480) ? displayMan.ruleHeight : 1152;	// make rules bigger on small screen
-	scene.width = (ratio >= 1.5) ? scene.height * ratio : 2048;
+	scene.height = (canvas.height <= 480) ? displayMan.ruleHeight : (ratio >= 1.5) ? 1152 : 1536;
+	scene.width = scene.height * ratio;
 	scene.maxScale = canvas.height / scene.height;
 	scene.minScale = canvas.width / scene.width;
-	scene.scale = scene.minScale;
+	scene.scale = scene.maxScale;
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 }
@@ -358,7 +358,7 @@ function drawContext(context, dTime, tv) {
 	tv = tv ? tv : "";
 	var canvas = context.canvas;
 
-	if (gameMan.scene == "board" || canvas.width / canvas.height < 1.5) {
+	if (gameMan.scene == "board") {
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		zooming(dTime);
 
