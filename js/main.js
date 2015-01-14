@@ -508,11 +508,25 @@ function drawHelmets(context, dTime) {
 }
 
 function drawRules(context, scene) {
+	var padding      = displayMan.arrowWidth/6;
+	var borderX      = displayMan.arrowWidth*1.1;
+	var borderWidth  = scene.width    - borderX*2;
+	var borderHeight = scene.height/2 + displayMan.ruleHeight/2;
+	var borderY      = scene.height/4 - displayMan.ruleHeight/4;
+	var arrowY       = scene.height/2 - displayMan.arrowHeight/2;
+
+	context.strokeStyle = "lightgoldenrodyellow";
+//	context.strokeRect((scene.width - 1536)/2, (scene.height - displayMan.ruleHeight)/2, 1536, displayMan.ruleHeight);
+	context.lineWidth = 8;
+	context.strokeRect(borderX, borderY, borderWidth, borderHeight);
+	context.lineWidth = 2;
+	context.strokeRect(borderX + padding, borderY + padding, borderWidth - padding*2, borderHeight - padding*2);
+
 	if (gameMan.rules > 0) {
-		context.drawImage(images["arrowLeft"], displayMan.arrowWidth/2, (scene.height - displayMan.arrowHeight)/2);
+		context.drawImage(images["arrowLeft"], displayMan.arrowWidth/2, arrowY);
 	}
 	if (gameMan.rules < rulePages-1) {
-		context.drawImage(images["arrowRight"], scene.width - displayMan.arrowWidth*1.5, (scene.height - displayMan.arrowHeight)/2);
+		context.drawImage(images["arrowRight"], scene.width - displayMan.arrowWidth*1.5, arrowY);
 	}
 }
 
