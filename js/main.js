@@ -382,9 +382,6 @@ function drawContext(context, dTime, tv) {
 		context.translate(scene.x, scene.y);
 		context.scale(scene.scale, scene.scale);
 
-		context.fillStyle = "black";
-		context.fillRect(0, 0, scene.width, scene.height);
-		context.drawImage(images["rule" + gameMan.rules], (scene.width - displayMan.ruleWidth)/2, (scene.height - displayMan.ruleHeight)/2);
 		drawRules(context, scene);
 
 		context.restore();
@@ -508,12 +505,16 @@ function drawHelmets(context, dTime) {
 }
 
 function drawRules(context, scene) {
-	if (scene.height > 1024) {
+	context.fillStyle = "black";
+	context.fillRect(0, 0, scene.width, scene.height);
+	context.drawImage(images["rule" + gameMan.rules], (scene.width - displayMan.ruleWidth)/2, (scene.height - displayMan.ruleHeight)/2);
+
+	if (scene.height > 1024) {	// only draw border if screen isn't small
 		var padding      = displayMan.arrowWidth/6;
 		var borderX      = displayMan.arrowWidth*1.1;
-		var borderWidth  = scene.width    - borderX*2;
-		var borderHeight = scene.height/2 + displayMan.ruleHeight/2;
-		var borderY      = scene.height/4 - displayMan.ruleHeight/4;
+		var borderWidth  =  scene.width  - borderX*2;
+		var borderHeight = (scene.height + displayMan.ruleHeight)/2;
+		var borderY      = (scene.height - displayMan.ruleHeight)/4;
 
 		context.strokeStyle = "lightgoldenrodyellow";
 		context.lineCap = "square";
@@ -524,7 +525,7 @@ function drawRules(context, scene) {
 		context.strokeRect(borderX + padding, borderY + padding, borderWidth - padding*2, borderHeight - padding*2);
 	}
 
-	var arrowY = scene.height/2 - displayMan.arrowHeight/2;
+	var arrowY = (scene.height - displayMan.arrowHeight)/2;
 	if (gameMan.rules > 0) {
 		context.drawImage(images["arrowLeft"], displayMan.arrowWidth/2, arrowY);
 	}
