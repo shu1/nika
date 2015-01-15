@@ -332,13 +332,13 @@ function drawDialog(context) {
 		lines = tutorialTexts[gameMan.tutorialStep];
 	}
 
-	var spacing = 36, topPadding = 26, bottomPadding = 14, buttonOffset = 306, font = "px Georgia";
+	var spacing = 36, topPadding = 26, bottomPadding = 14, nextX = 672, font = "px Georgia";
 	if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
 		context.font = (fontSize-2) + font;
 		spacing -= 4;
 		topPadding -= 2;
 		bottomPadding -= 2;
-		buttonOffset += 18;
+		nextX += 4;
 	}
 	else {
 		context.font = fontSize + font;
@@ -349,7 +349,8 @@ function drawDialog(context) {
 	}
 	if (tutorialInputs[gameMan.tutorialStep]) {
 		context.globalAlpha = (Math.sin(displayMan.time/250 % (Math.PI*2))+1)/4 + 0.5;
-		context.fillText("Tap here to continue", displayMan.tutorialOffset + buttonOffset, displayMan.muralHeight - bottomPadding);
+		context.fillStyle = "white";
+		context.fillText("Next", nextX, displayMan.muralHeight - bottomPadding);
 		context.globalAlpha = 1;
 	}
 }
