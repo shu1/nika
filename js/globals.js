@@ -346,7 +346,7 @@ var tutorialTexts = [[
 ],[
 	"Strategos! While we were dealing with","that Spartan, a contingent of Thebans","has approached us from behind.","Two of our men are in danger!"
 ],[
-	"We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, ending your touch","several spaces away. Rotate this piece","so that it faces the right."
+	"We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, and end your touch","more than a space away. Rotate this","piece so that it faces the right."
 ],[
 	"Excellent! Now, rotate our other soldier","to face the Theban. Since the Theban is","blocking its movement, our piece will","rotate even if you try to move in that","direction."
 ],[
