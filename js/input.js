@@ -101,9 +101,9 @@ function mouseDown(event) {
 }
 
 function mouseMove(event) {
-	getXY(event);
-	if (inputMan.click && isMatchingTouch(event)) {
-		if (!inputMan.menu && gameMan.winner < 0) {
+	if (inputMan.click) {
+		getXY(event);
+		if (!inputMan.menu && gameMan.winner < 0 && isMatchingTouch(event)) {
 			var scene = scenes[gameMan.scene];
 			getRowCol(scene);
 
