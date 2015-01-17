@@ -35,7 +35,7 @@ function getRowCol(scene) {
 	hudMan.inputText = inputMan.row + "," + inputMan.col;
 }
 
-function getRot(dX, dY, scene) {
+function getRot(dX, dY) {
 	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {	// not for routed pieces
 		if (dX >= dY && dX <= -dY) {	// up
 			inputMan.rot = 0;
@@ -52,7 +52,7 @@ function getRot(dX, dY, scene) {
 
 		inputMan.row = gameMan.pRow;
 		inputMan.col = gameMan.pCol;
-		var radius = 4 * displayMan.cellSize*displayMan.cellSize*scene.scale*scene.scale;
+		var radius = displayMan.cellSize * displayMan.cellSize * 4;
 		if (gameMan.pRot == inputMan.rot || dX*dX + dY*dY < radius) {	// forward or inside radius
 			if (inputMan.rot == 0) {
 				inputMan.row--;
@@ -110,8 +110,9 @@ function mouseMove(event) {
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
 			if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-				if (Math.abs(dX) > displayMan.cellSize/2 * scene.scale
-				|| Math.abs(dY) > displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
+				dX /= scene.scale;
+				dY /= scene.scale;
+				if (Math.abs(dX) > displayMan.cellSize/2 || Math.abs(dY) > displayMan.cellSize/2) {	// inside cell is deadzone
 					getRot(dX, dY, scene);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 				}
@@ -141,32 +142,29 @@ function mouseUp(event) {
 		}
 		else {
 			var scene = scenes[gameMan.scene];
+			var x = (inputMan.x - scene.x) / scene.scale;
+			var y = (inputMan.y - scene.y) / scene.scale;
 			if (gameMan.scene == "rules") {
-				if (inputMan.y > gpCanvas.height/2 - displayMan.arrowHeight/2 * scene.scale
-				&& inputMan.y < gpCanvas.height/2 + displayMan.arrowHeight/2 * scene.scale) {
-					if (inputMan.x > gpCanvas.width - displayMan.arrowWidth*1.5 * scene.scale && gameMan.rules < rulePages-1) {
+				if (y > (scene.height - displayMan.arrowHeight)/2 && y < (scene.height + displayMan.arrowHeight)/2) {
+					if (x > scene.width - displayMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
 						gameMan.rules++;
 						hudMan.pageText = "Rule " + gameMan.rules;
 					}
-					else if (inputMan.x < displayMan.arrowWidth*1.5 * scene.scale && gameMan.rules > 0) {
+					else if (x < displayMan.arrowWidth*1.5 && gameMan.rules > 0) {
 						gameMan.rules--;
 						hudMan.pageText = "Rule " + gameMan.rules;
 					}
 				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
-				if (inputMan.x - scene.x > displayMan.muralX * scene.scale
-				&& inputMan.x - scene.x < (displayMan.muralX + displayMan.muralWidth) * scene.scale
-				&& inputMan.y - scene.y > displayMan.muralY * scene.scale
-				&& inputMan.y - scene.y < (displayMan.muralY + displayMan.muralHeight) * scene.scale) {
+				if (x > displayMan.muralX && x < displayMan.muralX + displayMan.muralWidth
+				&& y > displayMan.muralY && y < displayMan.muralY + displayMan.muralHeight) {
 					nextTutorialStep();
 				}
 			}
 			else if (gameMan.winner >= 0) {	// win screen
-				if (inputMan.x - scene.x > displayMan.muralX * scene.scale
-				&& inputMan.x - scene.x < (displayMan.muralX + displayMan.muralWidth) * scene.scale
-				&& inputMan.y - scene.y > displayMan.muralY * scene.scale
-				&& inputMan.y - scene.y < (displayMan.muralY + displayMan.muralHeight) * scene.scale) {
+				if (x > displayMan.muralX && x < displayMan.muralX + displayMan.muralWidth
+				&& y > displayMan.muralY && y < displayMan.muralY + displayMan.muralHeight) {
 					newGame();
 				}
 			}
