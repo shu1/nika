@@ -170,9 +170,7 @@ function initScenes(canvas, maxScale, minScale, tv) {
 	scene = scenes[tv + "rules"];
 	scene.height = (canvas.height <= 480) ? displayMan.ruleHeight : (ratio >= 1.5) ? 1152 : 1536;
 	scene.width = scene.height * ratio;
-	scene.maxScale = canvas.height / scene.height;
-	scene.minScale = canvas.width / scene.width;
-	scene.scale = scene.maxScale;
+	scene.scale = canvas.height / scene.height;
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 }
@@ -191,7 +189,6 @@ function setScene(sceneIndex) {
 
 function zoom() {
 	var scene = scenes[gameMan.scene];
-
 	if (scene.scale == scene.minScale) {
 		displayMan.zoom = 1;
 	}
@@ -201,41 +198,39 @@ function zoom() {
 }
 
 function zooming(dTime) {
-	if (displayMan.zoom) {
-		var scene = scenes[gameMan.scene];
-		var speed = (scene.maxScale - scene.minScale) * dTime/250 * displayMan.zoom;	// set positive/negative
+	var scene = scenes[gameMan.scene];
+	var speed = (scene.maxScale - scene.minScale) * dTime/250 * displayMan.zoom;	// set positive/negative
 
-		if (displayMan.zoom > 0) {
-			if (scene.scale + speed < scene.maxScale) {
-				scene.scale += speed;
-			}
-			else {
-				speed = scene.maxScale - scene.scale;	// move exactly the remainder of the animation
-				scene.scale = scene.maxScale;
-				displayMan.zoom = 0;
-			}
+	if (displayMan.zoom > 0) {
+		if (scene.scale + speed < scene.maxScale) {
+			scene.scale += speed;
 		}
 		else {
-			if (scene.scale + speed > scene.minScale) {
-				scene.scale += speed;
-			}
-			else {
-				speed = scene.minScale - scene.scale;	// move exactly the remainder of the animation
-				scene.scale = scene.minScale;
-				displayMan.zoom = 0;
-			}
+			speed = scene.maxScale - scene.scale;	// move exactly the remainder of the animation
+			scene.scale = scene.maxScale;
+			displayMan.zoom = 0;
 		}
+	}
+	else {
+		if (scene.scale + speed > scene.minScale) {
+			scene.scale += speed;
+		}
+		else {
+			speed = scene.minScale - scene.scale;	// move exactly the remainder of the animation
+			scene.scale = scene.minScale;
+			displayMan.zoom = 0;
+		}
+	}
 
-		scene.x -= scene.width * speed/2;
-		scene.y -= scene.height * speed/2;
-		pan(0, 0);	// prevent moving off screen
+	scene.x -= scene.width * speed/2;
+	scene.y -= scene.height * speed/2;
+	pan(0, 0);	// prevent moving off screen
 
-		if (Math.abs(scene.x) < 1) {
-			scene.x = 0;
-		}
-		if (Math.abs(scene.y) < 1) {
-			scene.y = 0;
-		}
+	if (Math.abs(scene.x) < 1) {
+		scene.x = 0;
+	}
+	if (Math.abs(scene.y) < 1) {
+		scene.y = 0;
 	}
 }
 
@@ -314,80 +309,70 @@ function drawMural(context, dTime) {
 		murals[3].update(tick);
 		murals[3].draw();
 	}
-	else {
-		drawDialog(context);
-	}
-}
+	else {	// draw dialog
+		context.fillStyle = "#221E1F";
+		context.fillRect(displayMan.tutorialOffset, 0, displayMan.muralWidth - displayMan.tutorialOffset, displayMan.muralHeight);
+		context.fillStyle = "#BEB783";
 
-function drawDialog(context) {
-	context.fillStyle = "#221E1F";
-	context.fillRect(displayMan.tutorialOffset, 0, displayMan.muralWidth - displayMan.tutorialOffset, displayMan.muralHeight);
-	context.fillStyle = "#BEB783";
+		var lines;
+		if (gameMan.winner >= 0) {
+			lines = [getWinnerText(gameMan.winner)];
+		}
+		else {
+			lines = tutorialTexts[gameMan.tutorialStep];
+		}
 
-	var lines;
-	if (gameMan.winner >= 0) {
-		lines = [getWinnerText(gameMan.winner)];
-	}
-	else {
-		lines = tutorialTexts[gameMan.tutorialStep];
-	}
+		var spacing = 36, topPadding = 26, bottomPadding = 14, nextX = 672, font = "px Georgia";
+		if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
+			context.font = (fontSize-2) + font;
+			spacing -= 4;
+			topPadding -= 2;
+			bottomPadding -= 2;
+			nextX += 4;
+		}
+		else {
+			context.font = fontSize + font;
+		}
 
-	var spacing = 36, topPadding = 26, bottomPadding = 14, nextX = 672, font = "px Georgia";
-	if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
-		context.font = (fontSize-2) + font;
-		spacing -= 4;
-		topPadding -= 2;
-		bottomPadding -= 2;
-		nextX += 4;
-	}
-	else {
-		context.font = fontSize + font;
-	}
-
-	for (var i = lines.length-1; i >= 0; --i) {
-		context.fillText(lines[i], displayMan.tutorialOffset+8, topPadding + spacing * i);
-	}
-	if (tutorialInputs[gameMan.tutorialStep]) {
-		context.globalAlpha = (Math.sin(displayMan.time/250 % (Math.PI*2))+1)/4 + 0.5;
-		context.fillStyle = "white";
-		context.fillText("Next", nextX, displayMan.muralHeight - bottomPadding);
-		context.globalAlpha = 1;
+		for (var i = lines.length-1; i >= 0; --i) {
+			context.fillText(lines[i], displayMan.tutorialOffset+8, topPadding + spacing * i);
+		}
+		if (tutorialInputs[gameMan.tutorialStep]) {
+			context.globalAlpha = (Math.sin(displayMan.time/250 % (Math.PI*2))+1)/4 + 0.5;
+			context.fillStyle = "white";
+			context.fillText("Next", nextX, displayMan.muralHeight - bottomPadding);
+			context.globalAlpha = 1;
+		}
 	}
 }
 
 function drawContext(context, dTime, tv) {
 	tv = tv ? tv : "";
 	var canvas = context.canvas;
-
-	if (gameMan.scene == "board") {
-		context.clearRect(0, 0, canvas.width, canvas.height);
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	if (displayMan.zoom) {
 		zooming(dTime);
+	}
 
-		var scene = scenes[tv + "board"];
-		context.save();
-		context.translate(scene.x, scene.y);
-		context.scale(scene.scale, scene.scale);
+	var scene = scenes[tv + gameMan.scene];
+	context.save();
+	context.translate(scene.x, scene.y);
+	context.scale(scene.scale, scene.scale);
 
+	switch (gameMan.scene) {
+	case "board":
 		context.drawImage(images["board"], 0, 0);
 		context.drawImage(muralCanvas, displayMan.muralX, displayMan.muralY);
 		setRings();
 		drawPieces(context);
 		drawHelmets(context, dTime);
-
-		context.restore();
-	}
-
-	if (gameMan.scene == "rules") {
-		var scene = scenes[tv + "rules"];
-		context.save();
-		context.translate(scene.x, scene.y);
-		context.scale(scene.scale, scene.scale);
-
+		break;
+	case "rules":
 		drawRules(context, scene);
-
-		context.restore();
+		break;
 	}
 
+	context.restore();
 	drawMenu(context, dTime);
 
 	if (gameMan.debug) {
@@ -519,7 +504,7 @@ function drawRules(context, scene) {
 
 		context.strokeStyle = "lightgoldenrodyellow";
 		context.lineCap = "square";
-	//	context.strokeRect((scene.width - 1536)/2, (scene.height - displayMan.ruleHeight)/2, 1536, displayMan.ruleHeight);
+//		context.strokeRect((scene.width - 1536)/2, (scene.height - displayMan.ruleHeight)/2, 1536, displayMan.ruleHeight);
 		context.lineWidth = 8;
 		context.strokeRect(borderX, borderY, borderWidth, borderHeight);
 		context.lineWidth = 2;

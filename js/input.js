@@ -10,10 +10,9 @@ function getXY(event) {
 		inputMan.y = event.layerY;
 	}
 
-	// check menu
 	var width = gpCanvas.width, height = gpCanvas.height;
 	if (inputMan.x < width && inputMan.x > width - menuMan.width
-	&& inputMan.y < height && inputMan.y > height - menuMan.height) {
+	&& inputMan.y < height && inputMan.y > height - menuMan.height) {	// check menu
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				if (inputMan.x > width - menuMan.bWidth * (col+1) && inputMan.y > height - menuMan.bHeight * (row+1)) {
@@ -26,27 +25,18 @@ function getXY(event) {
 			}
 		}
 	}
-
-	// no menu, so grid
 	return false;
 }
 
-function getRowCol() {
-	var scene = scenes[gameMan.scene];
+function getRowCol(scene) {
 	inputMan.col = Math.floor((inputMan.x - scene.x) / (displayMan.cellSize * scene.scale));
 	inputMan.row = Math.floor((inputMan.y - scene.y) / (displayMan.cellSize * scene.scale));
 	inputMan.rot = -1;
 	hudMan.inputText = inputMan.row + "," + inputMan.col;
 }
 
-function getRot(dX, dY) {
-	var scene = scenes[gameMan.scene];
-	var radius = 4 * displayMan.cellSize*displayMan.cellSize*scene.scale*scene.scale;
-
+function getRot(dX, dY, scene) {
 	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {	// not for routed pieces
-		inputMan.row = gameMan.pRow;
-		inputMan.col = gameMan.pCol;
-
 		if (dX >= dY && dX <= -dY) {	// up
 			inputMan.rot = 0;
 		}
@@ -60,6 +50,9 @@ function getRot(dX, dY) {
 			inputMan.rot = 3;
 		}
 
+		inputMan.row = gameMan.pRow;
+		inputMan.col = gameMan.pCol;
+		var radius = 4 * displayMan.cellSize*displayMan.cellSize*scene.scale*scene.scale;
 		if (gameMan.pRot == inputMan.rot || dX*dX + dY*dY < radius) {	// forward or inside radius
 			if (inputMan.rot == 0) {
 				inputMan.row--;
@@ -78,17 +71,18 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
-	// get inputMan.x and y
-	inputMan.menu = getXY(event);
+	inputMan.menu = getXY(event);	// get inputMan.x and y
 	if (setCurrentTouch(event)) {
 		hudMan.inputText = "";
 		if (!inputMan.menu && gameMan.winner < 0) {
-			getRowCol();
+			var scene = scenes[gameMan.scene];
+			getRowCol(scene);
+
 			getPiece(inputMan.row, inputMan.col);
 			if (phalanx.length > 0) {
 				setRallyHighlights(phalanx[0].row, phalanx[0].col);
 			}
-			var scene = scenes[gameMan.scene];
+
 			if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
 				inputMan.pX = scene.x + (gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
 				inputMan.pY = scene.y + (gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
@@ -110,14 +104,15 @@ function mouseMove(event) {
 	getXY(event);
 	if (inputMan.click && isMatchingTouch(event)) {
 		if (!inputMan.menu && gameMan.winner < 0) {
-			getRowCol();
+			var scene = scenes[gameMan.scene];
+			getRowCol(scene);
+
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
-			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
 				if (Math.abs(dX) > displayMan.cellSize/2 * scene.scale
 				|| Math.abs(dY) > displayMan.cellSize/2 * scene.scale) {	// inside cell is deadzone
-					getRot(dX, dY);
+					getRot(dX, dY, scene);
 					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 				}
 				else {
@@ -164,7 +159,6 @@ function mouseUp(event) {
 				&& inputMan.x - scene.x < (displayMan.muralX + displayMan.muralWidth) * scene.scale
 				&& inputMan.y - scene.y > displayMan.muralY * scene.scale
 				&& inputMan.y - scene.y < (displayMan.muralY + displayMan.muralHeight) * scene.scale) {
-					inputMan.time = 0;
 					nextTutorialStep();
 				}
 			}
@@ -173,7 +167,6 @@ function mouseUp(event) {
 				&& inputMan.x - scene.x < (displayMan.muralX + displayMan.muralWidth) * scene.scale
 				&& inputMan.y - scene.y > displayMan.muralY * scene.scale
 				&& inputMan.y - scene.y < (displayMan.muralY + displayMan.muralHeight) * scene.scale) {
-					inputMan.time = 0;
 					newGame();
 				}
 			}
@@ -185,26 +178,23 @@ function mouseUp(event) {
 			 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
 			 	checkTutorialSelection();
 			}
-			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
-				inputMan.time = 0;
+			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {	// TODO: change order of this else if?
 			}
 			else if (gameMan.selection && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
 				togglePhalanxPiece(inputMan.row, inputMan.col);
 			}
 
-			if (phalanx.length > 0) {
-				if (grid[phalanx[0].row][phalanx[0].col].kind == 3) {
-					phalanx.length = 0;
-				}
+			if (phalanx.length > 0 && grid[phalanx[0].row][phalanx[0].col].kind == 3) {
+				phalanx.length = 0;
 			}
 		}
+
 		clearRallyHighlights();
 		endCurrentTouch();
-		menuMan.button = 0;	// Reset for key input
+		menuMan.button = 0;	// reset for key input
 		gameMan.selection = false;
 		inputMan.menu = false;
 		inputMan.click = false;
-		audioMan.play = true;
 	}
 }
 
@@ -227,7 +217,6 @@ function setCurrentTouch(event) {
 		}
 		return true;
 	}
-
 	return false;
 }
 
@@ -247,12 +236,11 @@ function isMatchingTouch(event) {
 	else if (navigator.msPointerEnabled) {
 		return event.pointerId == inputMan.currentTouchId;
 	}
-
 	return true;	// all touches are deemed to "match" if touch API is not supported
 }
 
 function keyDown(event) {
-	inputMan.menu = true;	// Highlight current button even when mouse isn't down
+	inputMan.menu = true;	// highlight current button even when mouse isn't down
 	var dX = 8;
 
 	switch (event.keyCode) {

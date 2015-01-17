@@ -25,8 +25,7 @@ var displayMan = {
 
 var audioMan = {
 	sound:10,
-	music:10,
-	play:true
+	music:10
 }
 
 var eventMan = {
