@@ -226,6 +226,8 @@ function setTouch(event) {
 			var currentTouch = getCurrentTouch(event);
 			var secondTouch = getSecondTouch(event);
 			if (currentTouch && secondTouch) {
+				phalanx = [];
+				revertGrid();
 				var x1 = currentTouch.pageX;
 				var y1 = currentTouch.pageY;
 				var x2 = secondTouch.pageX;
