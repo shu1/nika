@@ -248,7 +248,19 @@ function setTouch(event) {
 	else if (navigator.msPointerEnabled) {
 		if (inputMan.currentTouchId == -1) {
 			inputMan.currentTouchId = event.pointerId;
+			inputMan.currentX = event.layerX;
+			inputMan.currentY = event.layerY;
 			return true;
+		}
+		else if (inputMan.secondTouchId == -1) {
+			inputMan.secondX = event.layerX;
+			inputMan.secondY = event.layerY;
+			inputMan.secondTouchId = event.pointerId;
+			var x1 = inputMan.currentX;
+			var y1 = inputMan.currentY;
+			var x2 = inputMan.secondX;
+			var y2 = inputMan.secondY;
+			inputMan.pinchDistance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
 		}
 	}
 	else {	// cancel all touches if touch API not supported
@@ -297,7 +309,6 @@ function isCurrentTouch(event) {
 		return false;
 	}
 	else if (navigator.msPointerEnabled) {
-		console.log("Are they matching?", event.pointerId, inputMan.currentTouchId);
 		return event.pointerId == inputMan.currentTouchId;
 	}
 
@@ -314,7 +325,7 @@ function isSecondTouch(event) {
 		return false;
 	}
 	else if (navigator.msPointerEnabled) {
-		return false; // no touches are deemed to "match" for MSPointer
+		return event.pointerId == inputMan.secondTouchId;
 	}
 
 	return true;	// all touches are deemed to "match" if touch API is not supported
@@ -334,6 +345,33 @@ function pinch(event) {
 			var centerY = (y1 +	y2) / 2;
 			pinchZoom(distance, centerX, centerY);
 		}
+	}
+	else if (navigator.msPointerEnabled) {
+		if (isCurrentTouch(event)) {
+			inputMan.currentX = event.layerX;
+			inputMan.currentY = event.layerY;
+			var x1 = inputMan.currentX;
+			var y1 = inputMan.currentY;
+			var x2 = inputMan.secondX;
+			var y2 = inputMan.secondY;
+			inputMan.pinchDistance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+			var centerX = (x1 + x2) / 2;
+			var centerY = (y1 +	y2) / 2;
+			pinchZoom(distance, centerX, centerY);
+		}
+		else if (isSecondTouch(event)) {
+			inputMan.secondX = event.layerX;
+			inputMan.secondY = event.layerY;
+			var x1 = inputMan.currentX;
+			var y1 = inputMan.currentY;
+			var x2 = inputMan.secondX;
+			var y2 = inputMan.secondY;
+			inputMan.pinchDistance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+			var centerX = (x1 + x2) / 2;
+			var centerY = (y1 +	y2) / 2;
+			pinchZoom(distance, centerX, centerY);
+		}
+		console.log(inputMan.pinchDistance);
 	}
 }
 
