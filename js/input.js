@@ -215,11 +215,9 @@ function setTouch(event) {
 				var currentTouch = getCurrentTouch(event);
 				var secondTouch = getSecondTouch(event);
 				if (currentTouch && secondTouch) {
-					var x1 = currentTouch.pageX;
-					var y1 = currentTouch.pageY;
-					var x2 = secondTouch.pageX;
-					var y2 = secondTouch.pageY;
-					inputMan.pinchDistance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+					phalanx = [];
+					revertGrid();
+					setPinchInfo(currentTouch.pageX, currentTouch.pageY, secondTouch.pageX, secondTouch.pageY);
 				}
 				return false;
 			}
@@ -232,11 +230,7 @@ function setTouch(event) {
 			if (currentTouch && secondTouch) {
 				phalanx = [];
 				revertGrid();
-				var x1 = currentTouch.pageX;
-				var y1 = currentTouch.pageY;
-				var x2 = secondTouch.pageX;
-				var y2 = secondTouch.pageY;
-				inputMan.pinchDistance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+				setPinchInfo(currentTouch.pageX, currentTouch.pageY, secondTouch.pageX, secondTouch.pageY);
 			}
 		}
 	}
@@ -253,11 +247,7 @@ function setTouch(event) {
 			inputMan.secondX = event.layerX;
 			inputMan.secondY = event.layerY;
 			inputMan.secondTouchId = event.pointerId;
-			var x1 = inputMan.currentX;
-			var y1 = inputMan.currentY;
-			var x2 = inputMan.secondX;
-			var y2 = inputMan.secondY;
-			inputMan.pinchDistance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+			setPinchInfo(inputMan.currentX, inputMan.currentY, inputMan.secondX, inputMan.secondY);
 		}
 	}
 	else {	// cancel all touches if touch API not supported
@@ -267,6 +257,12 @@ function setTouch(event) {
 		return true;
 	}
 	return false;
+}
+
+function setPinchInfo(x1, y1, x2, y2) {
+	var dx = x2 - x1;
+	var dy = y2 - y1;
+	inputMan.pinchDistance = Math.sqrt(dx*dx + dy*dy);
 }
 
 function getCurrentTouch(event) {
@@ -331,14 +327,7 @@ function pinch(event) {
 		var currentTouch = getCurrentTouch(event);
 		var secondTouch = getSecondTouch(event);
 		if (currentTouch && secondTouch) {
-			var x1 = currentTouch.pageX;
-			var y1 = currentTouch.pageY;
-			var x2 = secondTouch.pageX;
-			var y2 = secondTouch.pageY;
-			var distance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
-			var centerX = (x1 + x2) / 2;
-			var centerY = (y1 +	y2) / 2;
-			pinchZoom(distance, centerX, centerY);
+			pinchZoom(currentTouch.pageX, currentTouch.pageY, secondTouch.pageX, secondTouch.pageY);
 		}
 	}
 	else if (navigator.msPointerEnabled) {
@@ -349,19 +338,15 @@ function pinch(event) {
 		else if (isSecondTouch(event)) {
 			inputMan.secondX = event.layerX;
 			inputMan.secondY = event.layerY;
-			var x1 = inputMan.currentX;
-			var y1 = inputMan.currentY;
-			var x2 = inputMan.secondX;
-			var y2 = inputMan.secondY;
-			var distance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
-			var centerX = (x1 + x2) / 2;
-			var centerY = (y1 +	y2) / 2;
-			pinchZoom(distance, centerX, centerY);
+			pinchZoom(inputMan.currentX, inputMan.currentY, inputMan.secondX, inputMan.secondY);
 		}
 	}
 }
 
-function pinchZoom(distance, centerX, centerY) {
+function pinchZoom(x1, y1, x2, y2) {
+	var distance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+	var centerX = (x1 + x2) / 2;
+	var centerY = (y1 +	y2) / 2;
 	if (centerX == undefined) {
 		centerX = canvas.width / 2;
 	}
