@@ -3,34 +3,44 @@
 window.onload = function() {
 	newGame();
 
-	images["board"] = document.getElementById("board");
-	images["mural"] = document.getElementById("mural");
-	images["player0"] = document.getElementById("athens");
-	images["player1"] = document.getElementById("sparta");
-	images["player2"] = document.getElementById("messene");
-	images["player3"] = document.getElementById("thebes");
-	images["sheen"] = document.getElementById("sheen");
-	images["shadow"] = document.getElementById("shadow");
-	images["gold"] = document.getElementById("gold");
-	images["greenRing"] = document.getElementById("greenRing");
-	images["greenComet"] = document.getElementById("greenComet");
-	images["greenShadow"] = document.getElementById("greenShadow");
-	images["helmet1"] = document.getElementById("helmet1");
-	images["helmet2"] = document.getElementById("helmet2");
-	images["arrowLeft"] = document.getElementById("arrowLeft");
-	images["arrowRight"] = document.getElementById("arrowRight");
-
-	for (var i = 0; i < rulePages; ++i) {
-		images["rule" + i] = document.getElementById("rule" + i);
+	function loadImage(name) {
+		images[name] = document.createElement("img");
+		images[name].src = "images/" + name + ".png";
 	}
 
-	sounds["rotate"] = document.getElementById("rally");
-	sounds["move"] = document.getElementById("drop");
-	sounds["push"] = document.getElementById("push");
-	sounds["rout"] = document.getElementById("move");
-	sounds["rally"] = document.getElementById("push");
-	sounds["pick"] = document.getElementById("pick");
-	sounds["music"] = document.getElementById("music");
+	loadImage("board");
+	loadImage("mural");
+	loadImage("player0");
+	loadImage("player1");
+	loadImage("player2");
+	loadImage("player3");
+	loadImage("sheen");
+	loadImage("shadow");
+	loadImage("goldRing");
+	loadImage("greenRing");
+	loadImage("greenComet");
+	loadImage("greenShadow");
+	loadImage("helmet1");
+	loadImage("helmet2");
+	loadImage("arrowLeft");
+	loadImage("arrowRight");
+
+	for (var i = 0; i < rulePages; ++i) {
+		loadImage("rule" + i);
+	}
+
+	function loadAudio(name, file, type) {
+		type = type ? type : audioType;
+		sounds[name] = document.createElement("audio");
+		sounds[name].src = "audio/" + file + "." + type;
+	}
+
+	loadAudio("rotate",	"rally");
+	loadAudio("move",	"drop");
+	loadAudio("push",	"push");
+	loadAudio("rout",	"move");
+	loadAudio("rally",	"rout");
+	loadAudio("music",	"nika2", "ogg");
 
 	sounds["music"].loop = true;
 	sounds["music"].play();
@@ -435,7 +445,7 @@ function drawPieces(context) {
 
 				if (cell.ring == 0) {
 					context.rotate(theta);
-					context.drawImage(images["gold"], -displayMan.cellSize/2, -displayMan.cellSize/2);
+					context.drawImage(images["goldRing"], -displayMan.cellSize/2, -displayMan.cellSize/2);
 					context.rotate(-theta);
 				}
 				else if (cell.ring == 1) {
