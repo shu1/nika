@@ -32,6 +32,7 @@ function nextTutorialPart() {
 	gameMan.tutorialPart++;
 	if (tutorialParts[gameMan.tutorialPart] != undefined) {
 		gameMan.tutorialStep = tutorialParts[gameMan.tutorialPart];
+		hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
 		setupTutorial();
 	} else {
 		endTutorial();
@@ -47,6 +48,7 @@ function prevTutorialPart() {
 		}
 	}
 	gameMan.tutorialStep = step;
+	hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
 	setupTutorial();
 }
 

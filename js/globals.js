@@ -4,11 +4,12 @@ var gpCanvas, gpContext, muralCanvas, tvContext, grid, images={}, sounds={}, sce
 
 var displayMan = {
 	cellSize:96,
-	pieceSize:80,
 	boardWidth:2016,
 	boardHeight:1440,
 	ruleWidth:2016,
 	ruleHeight:1024,
+	arrowWidth:96,
+	arrowHeight:416,
 	muralX:628,
 	muralY:624,
 	muralWidth:758,
@@ -24,8 +25,7 @@ var displayMan = {
 
 var audioMan = {
 	sound:10,
-	music:10,
-	play:true
+	music:10
 }
 
 var eventMan = {
@@ -347,7 +347,7 @@ var tutorialTexts = [[
 ],[
 	"Strategos! While we were dealing with","that Spartan, a contingent of Thebans","has approached us from behind.","Two of our men are in danger!"
 ],[
-	"We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, ending your touch","several spaces away. Rotate this piece","so that it faces the right."
+	"We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, and end your touch","more than a space away. Rotate this","piece so that it faces the right."
 ],[
 	"Excellent! Now, rotate our other soldier","to face the Theban. Since the Theban is","blocking its movement, our piece will","rotate even if you try to move in that","direction."
 ],[

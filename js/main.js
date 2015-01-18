@@ -4,6 +4,7 @@ window.onload = function() {
 	newGame();
 
 	images["board"] = document.getElementById("board");
+	images["mural"] = document.getElementById("mural");
 	images["player0"] = document.getElementById("athens");
 	images["player1"] = document.getElementById("sparta");
 	images["player2"] = document.getElementById("messene");
@@ -14,10 +15,10 @@ window.onload = function() {
 	images["greenRing"] = document.getElementById("greenRing");
 	images["greenComet"] = document.getElementById("greenComet");
 	images["greenShadow"] = document.getElementById("greenShadow");
-	images["board"] = document.getElementById("board");
-	images["mural"] = document.getElementById("mural");
 	images["helmet1"] = document.getElementById("helmet1");
 	images["helmet2"] = document.getElementById("helmet2");
+	images["arrowLeft"] = document.getElementById("arrowLeft");
+	images["arrowRight"] = document.getElementById("arrowRight");
 
 	for (var i = 0; i < rulePages; ++i) {
 		images["rule" + i] = document.getElementById("rule" + i);
@@ -167,11 +168,9 @@ function initScenes(canvas, maxScale, minScale, tv) {
 
 	var ratio = canvas.width / canvas.height;
 	scene = scenes[tv + "rules"];
-	scene.height = (canvas.height <= 480) ? displayMan.ruleHeight : 1152;	// make rules bigger on small screen
-	scene.width = (ratio >= 1.5) ? scene.height * ratio : 2048;
-	scene.maxScale = canvas.height / scene.height;
-	scene.minScale = canvas.width / scene.width;
-	scene.scale = scene.minScale;
+	scene.height = (canvas.height <= 480) ? displayMan.ruleHeight : (ratio >= 1.5) ? 1152 : 1536;
+	scene.width = scene.height * ratio;
+	scene.scale = canvas.height / scene.height;
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 }
@@ -190,7 +189,6 @@ function setScene(sceneIndex) {
 
 function zoom() {
 	var scene = scenes[gameMan.scene];
-
 	if (scene.scale == scene.minScale) {
 		displayMan.zoom = 1;
 	}
@@ -200,41 +198,39 @@ function zoom() {
 }
 
 function zooming(dTime) {
-	if (displayMan.zoom) {
-		var scene = scenes[gameMan.scene];
-		var speed = (scene.maxScale - scene.minScale) * dTime/250 * displayMan.zoom;	// set positive/negative
+	var scene = scenes[gameMan.scene];
+	var speed = (scene.maxScale - scene.minScale) * dTime/250 * displayMan.zoom;	// set positive/negative
 
-		if (displayMan.zoom > 0) {
-			if (scene.scale + speed < scene.maxScale) {
-				scene.scale += speed;
-			}
-			else {
-				speed = scene.maxScale - scene.scale;	// move exactly the remainder of the animation
-				scene.scale = scene.maxScale;
-				displayMan.zoom = 0;
-			}
+	if (displayMan.zoom > 0) {
+		if (scene.scale + speed < scene.maxScale) {
+			scene.scale += speed;
 		}
 		else {
-			if (scene.scale + speed > scene.minScale) {
-				scene.scale += speed;
-			}
-			else {
-				speed = scene.minScale - scene.scale;	// move exactly the remainder of the animation
-				scene.scale = scene.minScale;
-				displayMan.zoom = 0;
-			}
+			speed = scene.maxScale - scene.scale;	// move exactly the remainder of the animation
+			scene.scale = scene.maxScale;
+			displayMan.zoom = 0;
 		}
+	}
+	else {
+		if (scene.scale + speed > scene.minScale) {
+			scene.scale += speed;
+		}
+		else {
+			speed = scene.minScale - scene.scale;	// move exactly the remainder of the animation
+			scene.scale = scene.minScale;
+			displayMan.zoom = 0;
+		}
+	}
 
-		scene.x -= scene.width * speed/2;
-		scene.y -= scene.height * speed/2;
-		pan(0, 0);	// prevent moving off screen
+	scene.x -= scene.width * speed/2;
+	scene.y -= scene.height * speed/2;
+	pan(0, 0);	// prevent moving off screen
 
-		if (Math.abs(scene.x) < 1) {
-			scene.x = 0;
-		}
-		if (Math.abs(scene.y) < 1) {
-			scene.y = 0;
-		}
+	if (Math.abs(scene.x) < 1) {
+		scene.x = 0;
+	}
+	if (Math.abs(scene.y) < 1) {
+		scene.y = 0;
 	}
 }
 
@@ -313,81 +309,70 @@ function drawMural(context, dTime) {
 		murals[3].update(tick);
 		murals[3].draw();
 	}
-	else {
-		drawDialog(context);
-	}
-}
+	else {	// draw dialog
+		context.fillStyle = "#221E1F";
+		context.fillRect(displayMan.tutorialOffset, 0, displayMan.muralWidth - displayMan.tutorialOffset, displayMan.muralHeight);
+		context.fillStyle = "#BEB783";
 
-function drawDialog(context) {
-	context.fillStyle = "#221E1F";
-	context.fillRect(displayMan.tutorialOffset, 0, displayMan.muralWidth - displayMan.tutorialOffset, displayMan.muralHeight);
-	context.fillStyle = "#BEB783";
+		var lines;
+		if (gameMan.winner >= 0) {
+			lines = [getWinnerText(gameMan.winner)];
+		}
+		else {
+			lines = tutorialTexts[gameMan.tutorialStep];
+		}
 
-	var lines;
-	if (gameMan.winner >= 0) {
-		lines = [getWinnerText(gameMan.winner)];
-	}
-	else {
-		lines = tutorialTexts[gameMan.tutorialStep];
-	}
+		var spacing = 36, topPadding = 26, bottomPadding = 14, nextX = 672, font = "px Georgia";
+		if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
+			context.font = (fontSize-2) + font;
+			spacing -= 4;
+			topPadding -= 2;
+			bottomPadding -= 2;
+			nextX += 4;
+		}
+		else {
+			context.font = fontSize + font;
+		}
 
-	var spacing = 36, topPadding = 26, bottomPadding = 14, buttonOffset = 306, font = "px Georgia";
-	if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
-		context.font = (fontSize-2) + font;
-		spacing -= 4;
-		topPadding -= 2;
-		bottomPadding -= 2;
-		buttonOffset += 18;
-	}
-	else {
-		context.font = fontSize + font;
-	}
-
-	for (var i = lines.length-1; i >= 0; --i) {
-		context.fillText(lines[i], displayMan.tutorialOffset+8, topPadding + spacing * i);
-	}
-	if (tutorialInputs[gameMan.tutorialStep]) {
-		context.globalAlpha = (Math.sin(displayMan.time/250 % (Math.PI*2))+1)/4 + 0.5;
-		context.fillText("Tap here to continue", displayMan.tutorialOffset + buttonOffset, displayMan.muralHeight - bottomPadding);
-		context.globalAlpha = 1;
+		for (var i = lines.length-1; i >= 0; --i) {
+			context.fillText(lines[i], displayMan.tutorialOffset+8, topPadding + spacing * i);
+		}
+		if (tutorialInputs[gameMan.tutorialStep]) {
+			context.globalAlpha = (Math.sin(displayMan.time/250 % (Math.PI*2))+1)/4 + 0.5;
+			context.fillStyle = "white";
+			context.fillText("Next", nextX, displayMan.muralHeight - bottomPadding);
+			context.globalAlpha = 1;
+		}
 	}
 }
 
 function drawContext(context, dTime, tv) {
 	tv = tv ? tv : "";
 	var canvas = context.canvas;
-
-	if (gameMan.scene == "board" || canvas.width / canvas.height < 1.5) {
-		context.clearRect(0, 0, canvas.width, canvas.height);
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	if (displayMan.zoom) {
 		zooming(dTime);
+	}
 
-		var scene = scenes[tv + "board"];
-		context.save();
-		context.translate(scene.x, scene.y);
-		context.scale(scene.scale, scene.scale);
+	var scene = scenes[tv + gameMan.scene];
+	context.save();
+	context.translate(scene.x, scene.y);
+	context.scale(scene.scale, scene.scale);
 
-		context.drawImage(muralCanvas, displayMan.muralX, displayMan.muralY);
+	switch (gameMan.scene) {
+	case "board":
 		context.drawImage(images["board"], 0, 0);
+		context.drawImage(muralCanvas, displayMan.muralX, displayMan.muralY);
 		setRings();
 		drawPieces(context);
 		drawHelmets(context, dTime);
-
-		context.restore();
+		break;
+	case "rules":
+		drawRules(context, scene);
+		break;
 	}
 
-	if (gameMan.scene == "rules") {
-		var scene = scenes[tv + "rules"];
-		context.save();
-		context.translate(scene.x, scene.y);
-		context.scale(scene.scale, scene.scale);
-
-		context.fillStyle = "black";
-		context.fillRect(0, 0, scene.width, scene.height);
-		context.drawImage(images["rule" + gameMan.rules], (scene.width - displayMan.ruleWidth)/2, (scene.height - displayMan.ruleHeight)/2);
-
-		context.restore();
-	}
-
+	context.restore();
 	drawMenu(context, dTime);
 
 	if (gameMan.debug) {
@@ -418,6 +403,7 @@ function setRings() {
 }
 
 function drawPieces(context) {
+	var pieceSize = 80;
 	var theta = displayMan.time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
@@ -428,14 +414,14 @@ function drawPieces(context) {
 
 				if (cell.player >= 0) {
 					context.rotate(cell.rot * Math.PI/2);
-					context.drawImage(images["player" + cell.player], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
+					context.drawImage(images["player" + cell.player], -pieceSize/2, -pieceSize/2);
 					context.rotate(cell.rot * Math.PI/-2);
-					context.drawImage(images["sheen"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
+					context.drawImage(images["sheen"], -pieceSize/2, -pieceSize/2);
 				}
 
 				if (cell.prompt == 0) {
 					context.rotate(theta);
-					context.drawImage(images["greenComet"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
+					context.drawImage(images["greenComet"], -pieceSize/2, -pieceSize/2);
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 1) {
@@ -444,7 +430,7 @@ function drawPieces(context) {
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 2) {
-					context.drawImage(images["greenShadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
+					context.drawImage(images["greenShadow"], -pieceSize/2, -pieceSize/2);
 				}
 
 				if (cell.ring == 0) {
@@ -455,7 +441,7 @@ function drawPieces(context) {
 				else if (cell.ring == 1) {
 					var rotation = (cell.kind == 2) ? cell.city : inputMan.rot;
 					context.rotate(rotation * Math.PI/2);
-					context.drawImage(images["shadow"], -displayMan.pieceSize/2, -displayMan.pieceSize/2);
+					context.drawImage(images["shadow"], -pieceSize/2, -pieceSize/2);
 					context.rotate(rotation * Math.PI/-2);
 				}
 				cell.ring = -1;	// clear for next time
@@ -502,6 +488,36 @@ function drawHelmets(context, dTime) {
 	context.globalAlpha = (Math.sin(displayMan.helmetTheta % (Math.PI*2))+1)/4 + 0.5;
 	context.drawImage(images["helmet" + gameMan.actions], -128, -128);
 	context.restore();
+}
+
+function drawRules(context, scene) {
+	context.fillStyle = "black";
+	context.fillRect(0, 0, scene.width, scene.height);
+	context.drawImage(images["rule" + gameMan.rules], (scene.width - displayMan.ruleWidth)/2, (scene.height - displayMan.ruleHeight)/2);
+
+	if (scene.height > 1024) {	// only draw border if screen isn't small
+		var padding      = displayMan.arrowWidth/6;
+		var borderX      = displayMan.arrowWidth*1.1;
+		var borderWidth  =  scene.width  - borderX*2;
+		var borderHeight = (scene.height + displayMan.ruleHeight)/2;
+		var borderY      = (scene.height - displayMan.ruleHeight)/4;
+
+		context.strokeStyle = "lightgoldenrodyellow";
+		context.lineCap = "square";
+//		context.strokeRect((scene.width - 1536)/2, (scene.height - displayMan.ruleHeight)/2, 1536, displayMan.ruleHeight);
+		context.lineWidth = 8;
+		context.strokeRect(borderX, borderY, borderWidth, borderHeight);
+		context.lineWidth = 2;
+		context.strokeRect(borderX + padding, borderY + padding, borderWidth - padding*2, borderHeight - padding*2);
+	}
+
+	var arrowY = (scene.height - displayMan.arrowHeight)/2;
+	if (gameMan.rules > 0) {
+		context.drawImage(images["arrowLeft"], displayMan.arrowWidth/2, arrowY);
+	}
+	if (gameMan.rules < rulePages-1) {
+		context.drawImage(images["arrowRight"], scene.width - displayMan.arrowWidth*1.5, arrowY);
+	}
 }
 
 function drawMenu(context, dTime) {
