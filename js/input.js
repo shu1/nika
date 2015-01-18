@@ -215,7 +215,7 @@ function setTouch(event) {
 				var currentTouch = getCurrentTouch(event);
 				var secondTouch = getSecondTouch(event);
 				if (currentTouch && secondTouch) {
-					phalanx = [];
+					phalanx.length = 0;
 					revertGrid();
 					setPinchInfo(currentTouch.pageX, currentTouch.pageY, secondTouch.pageX, secondTouch.pageY);
 				}
@@ -228,7 +228,7 @@ function setTouch(event) {
 			var currentTouch = getCurrentTouch(event);
 			var secondTouch = getSecondTouch(event);
 			if (currentTouch && secondTouch) {
-				phalanx = [];
+				phalanx.length = 0;
 				revertGrid();
 				setPinchInfo(currentTouch.pageX, currentTouch.pageY, secondTouch.pageX, secondTouch.pageY);
 			}
@@ -242,7 +242,7 @@ function setTouch(event) {
 			return true;
 		}
 		else if (inputMan.secondTouchId == -1) {
-			phalanx = [];
+			phalanx.length = 0;
 			revertGrid();
 			inputMan.secondX = event.layerX;
 			inputMan.secondY = event.layerY;
