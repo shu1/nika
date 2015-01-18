@@ -8,6 +8,10 @@ function getXY(event) {
 	else {
 		inputMan.x = event.layerX;
 		inputMan.y = event.layerY;
+		if (navigator.msPointerEnabled && isCurrentTouch(event)) {
+			inputMan.currentX = event.layerX;
+			inputMan.currentY = event.layerY;
+		}
 	}
 
 	var width = gpCanvas.width, height = gpCanvas.height;
