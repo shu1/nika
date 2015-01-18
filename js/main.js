@@ -323,7 +323,7 @@ function drawMural(context, dTime) {
 	else {	// draw dialog
 		context.fillStyle = "#221E1F";
 		context.fillRect(displayMan.tutorialOffset, 0, displayMan.muralWidth - displayMan.tutorialOffset, displayMan.muralHeight);
-		context.fillStyle = "#BEB783";
+		context.fillStyle = "#E0D9B3";
 
 		var lines;
 		if (gameMan.winner >= 0) {
@@ -514,7 +514,7 @@ function drawRules(context, scene) {
 		var borderHeight = (scene.height + displayMan.ruleHeight)/2;
 		var borderY      = (scene.height - displayMan.ruleHeight)/4;
 
-		context.strokeStyle = "lightgoldenrodyellow";
+		context.strokeStyle = "#E0D9B3";
 		context.lineCap = "square";
 		context.lineWidth = 8;
 		context.strokeRect(borderX, borderY, borderWidth, borderHeight);
@@ -645,6 +645,6 @@ function drawHud(context, sceneIndex) {
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+})(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
 ga('create', 'UA-42200724-1', 'auto');
 ga('send', 'pageview');
