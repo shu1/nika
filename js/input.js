@@ -2,16 +2,30 @@
 
 function getXY(event) {
 	if (event.touches) {
-		inputMan.x = event.touches[0].pageX;
-		inputMan.y = event.touches[0].pageY;
+		var currentTouch = getCurrentTouch(event);
+		var secondTouch = getSecondTouch(event);
+		if (currentTouch) {
+			inputMan.x = currentTouch.pageX;
+			inputMan.y = currentTouch.pageY;
+		}
+		if (secondTouch) {
+			inputMan.x2 = secondTouch.pageX;
+			inputMan.y2 = secondTouch.pageY;
+		}
+	}
+	else if (navigator.msPointerEnabled) {
+		if (isCurrentTouch(event)) {
+			inputMan.x = event.layerX;
+			inputMan.y = event.layerY;
+		}
+		if (isSecondTouch(event)) {
+			inputMan.x2 = event.layerX;
+			inputMan.y2 = event.layerY;
+		}
 	}
 	else {
 		inputMan.x = event.layerX;
 		inputMan.y = event.layerY;
-		if (navigator.msPointerEnabled && isCurrentTouch(event)) {
-			inputMan.currentX = event.layerX;
-			inputMan.currentY = event.layerY;
-		}
 	}
 
 	var width = gpCanvas.width, height = gpCanvas.height;
@@ -75,8 +89,8 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
-	inputMan.menu = getXY(event);
 	if (setTouch(event)) {
+		inputMan.menu = getXY(event);
 		hudMan.inputText = "";
 		if (!inputMan.menu && gameMan.winner < 0) {
 			var scene = scenes[gameMan.scene];
@@ -100,18 +114,15 @@ function mouseDown(event) {
 			}
 		}
 		hudMan.inputText += " down";
-		inputMan.click = true;
 	}
 }
 
 function mouseMove(event) {
-
-	if (inputMan.secondTouchId > -1) {
-		pinch(event);
-	}
-	else if (inputMan.click) {
+	if (inputMan.currentTouchId > -1) {
 		getXY(event);
-		if (!inputMan.menu && gameMan.winner < 0 && isCurrentTouch(event)) {
+		if (inputMan.secondTouchId > -1) {
+			pinch(event);
+		} else if (!inputMan.menu && gameMan.winner < 0 && isCurrentTouch(event)) {
 			var scene = scenes[gameMan.scene];
 			getRowCol(scene);
 			var dX = inputMan.x - inputMan.pX;
@@ -145,7 +156,7 @@ function mouseUp(event) {
 	if (isSecondTouch(event)) {
 		endSecondTouch(event);
 	}
-	if (inputMan.click && isCurrentTouch(event)) {
+	if (isCurrentTouch(event)) {
 		hudMan.inputText += " up";
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
@@ -202,7 +213,6 @@ function mouseUp(event) {
 		menuMan.button = 0;	// reset for key input
 		gameMan.selection = false;
 		inputMan.menu = false;
-		inputMan.click = false;
 	}
 }
 
@@ -244,16 +254,17 @@ function setTouch(event) {
 		else if (inputMan.secondTouchId == -1) {
 			phalanx.length = 0;
 			revertGrid();
-			inputMan.secondX = event.layerX;
-			inputMan.secondY = event.layerY;
+			inputMan.x2 = event.layerX;
+			inputMan.y2 = event.layerY;
 			inputMan.secondTouchId = event.pointerId;
-			setPinchInfo(inputMan.currentX, inputMan.currentY, inputMan.secondX, inputMan.secondY);
+			setPinchInfo(inputMan.currentX, inputMan.currentY, inputMan.x2, inputMan.y2);
 		}
 	}
 	else {	// cancel all touches if touch API not supported
 		if (!inputMan.menu) {
 			revertGrid();
 		}
+		inputMan.currentTouchId = 0;
 		return true;
 	}
 	return false;
@@ -323,23 +334,8 @@ function isSecondTouch(event) {
 }
 
 function pinch(event) {
-	if (event.changedTouches) {
-		var currentTouch = getCurrentTouch(event);
-		var secondTouch = getSecondTouch(event);
-		if (currentTouch && secondTouch) {
-			pinchZoom(currentTouch.pageX, currentTouch.pageY, secondTouch.pageX, secondTouch.pageY);
-		}
-	}
-	else if (navigator.msPointerEnabled) {
-		if (isCurrentTouch(event)) {
-			inputMan.currentX = event.layerX;
-			inputMan.currentY = event.layerY;
-		}
-		else if (isSecondTouch(event)) {
-			inputMan.secondX = event.layerX;
-			inputMan.secondY = event.layerY;
-			pinchZoom(inputMan.currentX, inputMan.currentY, inputMan.secondX, inputMan.secondY);
-		}
+	if (inputMan.currentTouchId > -1 && inputMan.secondTouchId > -1) {
+		pinchZoom(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
 	}
 }
 
@@ -357,7 +353,7 @@ function pinchZoom(x1, y1, x2, y2) {
 	var scene = scenes[gameMan.scene];
 	var dScale = (distance - inputMan.pinchDistance) / 500;
 	inputMan.pinchDistance = distance;
-	var oldScale = scene.scale
+	var oldScale = scene.scale;
 	scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
 
 	scene.x = centerX - (centerX - scene.x) * scene.scale / oldScale;
