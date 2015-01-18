@@ -6,7 +6,7 @@ var displayMan = {
 	cellSize:96,
 	boardWidth:2016,
 	boardHeight:1440,
-	ruleWidth:2016,
+	ruleWidth:1536,
 	ruleHeight:1024,
 	arrowWidth:96,
 	arrowHeight:416,

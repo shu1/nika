@@ -26,7 +26,8 @@ window.onload = function() {
 	loadImage("arrowRight");
 
 	for (var i = 0; i < rulePages; ++i) {
-		loadImage("rule" + i);
+		loadImage("rule" + i + "0");
+		loadImage("rule" + i + "1");
 	}
 
 	function loadAudio(name, file, type) {
@@ -503,7 +504,8 @@ function drawHelmets(context, dTime) {
 function drawRules(context, scene) {
 	context.fillStyle = "black";
 	context.fillRect(0, 0, scene.width, scene.height);
-	context.drawImage(images["rule" + gameMan.rules], (scene.width - displayMan.ruleWidth)/2, (scene.height - displayMan.ruleHeight)/2);
+	context.drawImage(images["rule" + gameMan.rules + "0"], (scene.width - displayMan.ruleWidth)/2,        (scene.height - displayMan.ruleHeight)/2);
+	context.drawImage(images["rule" + gameMan.rules + "1"], (scene.width - displayMan.ruleWidth)/2 + 1024, (scene.height - displayMan.ruleHeight)/2);
 
 	if (scene.height > 1024) {	// only draw border if screen isn't small
 		var padding      = displayMan.arrowWidth/6;
@@ -514,7 +516,6 @@ function drawRules(context, scene) {
 
 		context.strokeStyle = "lightgoldenrodyellow";
 		context.lineCap = "square";
-//		context.strokeRect((scene.width - 1536)/2, (scene.height - displayMan.ruleHeight)/2, 1536, displayMan.ruleHeight);
 		context.lineWidth = 8;
 		context.strokeRect(borderX, borderY, borderWidth, borderHeight);
 		context.lineWidth = 2;
