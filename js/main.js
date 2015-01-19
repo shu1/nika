@@ -99,6 +99,7 @@ window.onload = function() {
 
 	scenes["board"] = {};
 	scenes["menus"] = scenes["rules"] = {};	// menus and rules have the same properties for now
+	gameMan.scene = "menus";
 	reSize();
 
 	if (window.nwf) {
@@ -164,7 +165,7 @@ function reSize() {
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
 	initScenes(gpCanvas, maxScale, minScale);
-	setScene("menus");
+	setScene();
 }
 
 function initScenes(canvas, maxScale, minScale, tv) {
@@ -372,6 +373,8 @@ function drawContext(context, dTime, tv) {
 	context.translate(scene.x, scene.y);
 	context.scale(scene.scale, scene.scale);
 
+	var x = (scene.width - displayMan.ruleWidth)/2;
+	var y = (scene.height - displayMan.ruleHeight)/2;
 	switch (gameMan.scene) {
 	case "board":
 		context.drawImage(images["board"], 0, 0);
@@ -381,13 +384,15 @@ function drawContext(context, dTime, tv) {
 		drawHelmets(context, dTime);
 		break;
 	case "rules":
+		context.fillStyle = "black";
+		context.fillRect(0, 0, scene.width, scene.height);
+		context.drawImage(images["rule" + gameMan.rules + "0"], x, y);
+		context.drawImage(images["rule" + gameMan.rules + "1"], x+1024, y);
 		drawRules(context, scene);
 		break;
 	case "menus":
 		context.fillStyle = "#0A3C51";
 		context.fillRect(0, 0, scene.width, scene.height);
-		var x = (scene.width - displayMan.ruleWidth)/2;
-		var y = (scene.height - displayMan.ruleHeight)/2;
 		context.drawImage(images["menuTitle0"], x, y);
 		context.drawImage(images["menuTitle1"], x+1024, y);
 /*		context.strokeStyle = "white";
@@ -516,11 +521,6 @@ function drawHelmets(context, dTime) {
 }
 
 function drawRules(context, scene) {
-	context.fillStyle = "black";
-	context.fillRect(0, 0, scene.width, scene.height);
-	context.drawImage(images["rule" + gameMan.rules + "0"], (scene.width - displayMan.ruleWidth)/2,        (scene.height - displayMan.ruleHeight)/2);
-	context.drawImage(images["rule" + gameMan.rules + "1"], (scene.width - displayMan.ruleWidth)/2 + 1024, (scene.height - displayMan.ruleHeight)/2);
-
 	if (scene.height > 1024) {	// only draw border if screen isn't small
 		var padding      = displayMan.arrowWidth/6;
 		var borderX      = displayMan.arrowWidth*1.1;
