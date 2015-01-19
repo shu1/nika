@@ -144,7 +144,35 @@ function mouseUp(event) {
 			var scene = scenes[gameMan.scene];
 			var x = (inputMan.x - scene.x) / scene.scale;
 			var y = (inputMan.y - scene.y) / scene.scale;
-			if (gameMan.scene == "rules") {
+			if (gameMan.scene == "menus") {
+				x -= (scene.width - displayMan.ruleWidth)/2 + 128;	// offset to coordinates of buttons
+				y -= (scene.height - displayMan.ruleHeight)/2 + 330;
+				if (x > 0 && x < 400 && y > 0 && y < 110*5) {
+					if (y < 110) {
+						setScene("board");
+						hudMan.inputText = "New Game";
+					}
+					else if (y < 110*2) {
+						hudMan.inputText = "Resume Game";
+					}
+					else if (y < 110*3) {
+						setScene("board");
+						nextTutorialStep();
+						hudMan.inputText = "Tutorial";
+					}
+					else if (y < 110*4) {
+						setScene("rules");
+						menuMan.show = false;
+						menuMan.button = 0;
+						hudMan.inputText = "Rules";
+						hudMan.pageText = "Rule " + gameMan.rules;
+					}
+					else {
+						hudMan.inputText = "Options";
+					}
+				}
+			}
+			else if (gameMan.scene == "rules") {
 				if (y > (scene.height - displayMan.arrowHeight)/2 && y < (scene.height + displayMan.arrowHeight)/2) {
 					if (x > scene.width - displayMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
 						gameMan.rules++;

@@ -8,6 +8,8 @@ window.onload = function() {
 		images[name].src = "images/" + name + ".png";
 	}
 
+	loadImage("menuTitle0");
+	loadImage("menuTitle1");
 	loadImage("board");
 	loadImage("mural");
 	loadImage("player0");
@@ -96,7 +98,7 @@ window.onload = function() {
 	menuMan.rows = Math.ceil((buttons.length-1) / menuMan.cols);
 
 	scenes["board"] = {};
-	scenes["rules"] = {};
+	scenes["menus"] = scenes["rules"] = {};	// menus and rules have the same properties for now
 	reSize();
 
 	if (window.nwf) {
@@ -109,7 +111,7 @@ window.onload = function() {
 			tvContext = tvCanvas.getContext("2d");
 
 			scenes["tvboard"] = {};
-			scenes["tvrules"] = {};
+			scenes["tvmenus"] = scenes["tvrules"] = {};
 			var scale = tvCanvas.height / displayMan.boardHeight;
 			initScenes(tvCanvas, scale, scale, "tv");
 
@@ -162,7 +164,7 @@ function reSize() {
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 
 	initScenes(gpCanvas, maxScale, minScale);
-	setScene("board");
+	setScene("menus");
 }
 
 function initScenes(canvas, maxScale, minScale, tv) {
@@ -381,6 +383,18 @@ function drawContext(context, dTime, tv) {
 	case "rules":
 		drawRules(context, scene);
 		break;
+	case "menus":
+		context.fillStyle = "#0A3C51";
+		context.fillRect(0, 0, scene.width, scene.height);
+		var x = (scene.width - displayMan.ruleWidth)/2;
+		var y = (scene.height - displayMan.ruleHeight)/2;
+		context.drawImage(images["menuTitle0"], x, y);
+		context.drawImage(images["menuTitle1"], x+1024, y);
+/*		context.strokeStyle = "white";
+		for (var i = 0; i < 5; ++i) {
+			context.strokeRect(x+128, y+330 + 110*i, 400, 110);
+		}
+*/		break;
 	}
 
 	context.restore();
