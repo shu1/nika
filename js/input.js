@@ -315,7 +315,11 @@ function keyDown(event) {
 
 function keyPrev() {
 	hudMan.inputText = "Prev";
-	if (gameMan.scene == "rules" && gameMan.rules > 0) {
+	if (gameMan.scene == "menus" && menus["title"].button > 0 && !menuMan.show) {
+		menus["title"].button--;
+		return true;
+	}
+	else if (gameMan.scene == "rules" && gameMan.rules > 0) {
 		gameMan.rules--;
 		hudMan.pageText = "Rule " + gameMan.rules;
 		return true;
@@ -333,7 +337,11 @@ function keyPrev() {
 
 function keyNext() {
 	hudMan.inputText = "Next";
-	if (gameMan.scene == "rules" && gameMan.rules < rulePages-1) {
+	if (gameMan.scene == "menus" && menus["title"].button < 4 && !menuMan.show) {
+		menus["title"].button++;
+		return true;
+	}
+	else if (gameMan.scene == "rules" && gameMan.rules < rulePages-1) {
 		gameMan.rules++;
 		hudMan.pageText = "Rule " + gameMan.rules;
 		return true;
