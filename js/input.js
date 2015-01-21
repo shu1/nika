@@ -145,22 +145,22 @@ function mouseUp(event) {
 			var x = (inputMan.x - scene.x) / scene.scale;
 			var y = (inputMan.y - scene.y) / scene.scale;
 			if (gameMan.scene == "menus") {
-				x -= (scene.width - displayMan.ruleWidth)/2 + 128;	// offset to coordinates of buttons
-				y -= (scene.height - displayMan.ruleHeight)/2 + 330;
-				if (x > 0 && x < 400 && y > 0 && y < 110*5) {
-					if (y < 110) {
+				x -= (scene.width - displayMan.screenWidth)/2 + 128;	// offset to coordinates of buttons
+				y -= (scene.height - displayMan.screenHeight)/2 + 330;
+				if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*5) {
+					if (y < displayMan.activeHeight) {
 						setScene("board");
 						hudMan.inputText = "New Game";
 					}
-					else if (y < 110*2) {
+					else if (y < displayMan.activeHeight*2) {
 						hudMan.inputText = "Resume Game";
 					}
-					else if (y < 110*3) {
+					else if (y < displayMan.activeHeight*3) {
 						setScene("board");
 						nextTutorialStep();
 						hudMan.inputText = "Tutorial";
 					}
-					else if (y < 110*4) {
+					else if (y < displayMan.activeHeight*4) {
 						setScene("rules");
 						menuMan.show = false;
 						menuMan.button = 0;

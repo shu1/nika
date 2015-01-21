@@ -186,7 +186,7 @@ function initScenes(canvas, maxScale, minScale, tv) {
 
 	var ratio = canvas.width / canvas.height;
 	scene = scenes[tv + "rules"];
-	scene.height = (canvas.height <= 480) ? displayMan.ruleHeight : (ratio >= 1.5) ? 1152 : 1536;
+	scene.height = (canvas.height <= 480) ? displayMan.screenHeight : (ratio >= 1.5) ? 1152 : 1536;
 	scene.width = scene.height * ratio;
 	scene.scale = canvas.height / scene.height;
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
@@ -377,8 +377,8 @@ function drawContext(context, dTime, tv) {
 	context.translate(scene.x, scene.y);
 	context.scale(scene.scale, scene.scale);
 
-	var x = (scene.width - displayMan.ruleWidth)/2;
-	var y = (scene.height - displayMan.ruleHeight)/2;
+	var x = (scene.width - displayMan.screenWidth)/2;
+	var y = (scene.height - displayMan.screenHeight)/2;
 	switch (gameMan.scene) {
 	case "board":
 		context.drawImage(images["board"], 0, 0);
@@ -399,12 +399,8 @@ function drawContext(context, dTime, tv) {
 		context.fillRect(0, 0, scene.width, scene.height);
 		context.drawImage(images["menuTitle0"], x, y);
 		context.drawImage(images["menuTitle1"], x+1024, y);
-		context.drawImage(images["menuTitleActive"], x+80, y+330 + 110*menus["title"].button);
-/*		context.strokeStyle = "white";
-		for (var i = 0; i < 5; ++i) {
-			context.strokeRect(x+128, y+330 + 110*i, 400, 110);
-		}
-*/		break;
+		context.drawImage(images["menuTitleActive"], x+80, y+330 + displayMan.activeHeight*menus["title"].button);
+		break;
 	}
 
 	context.restore();
@@ -530,8 +526,8 @@ function drawRules(context, scene) {
 		var padding      = displayMan.arrowWidth/6;
 		var borderX      = displayMan.arrowWidth*1.1;
 		var borderWidth  =  scene.width  - borderX*2;
-		var borderHeight = (scene.height + displayMan.ruleHeight)/2;
-		var borderY      = (scene.height - displayMan.ruleHeight)/4;
+		var borderHeight = (scene.height + displayMan.screenHeight)/2;
+		var borderY      = (scene.height - displayMan.screenHeight)/4;
 
 		context.strokeStyle = "#E0D9B3";
 		context.lineCap = "square";
