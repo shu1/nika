@@ -10,6 +10,7 @@ window.onload = function() {
 
 	loadImage("menuTitle0");
 	loadImage("menuTitle1");
+	loadImage("menuTitleActive");
 	loadImage("board");
 	loadImage("mural");
 	loadImage("player0");
@@ -96,6 +97,9 @@ window.onload = function() {
 
 	menuMan.cols = 3;
 	menuMan.rows = Math.ceil((buttons.length-1) / menuMan.cols);
+
+	menus["title"] = {};
+	menus["title"].button = 0;
 
 	scenes["board"] = {};
 	scenes["menus"] = scenes["rules"] = {};	// menus and rules have the same properties for now
@@ -395,6 +399,7 @@ function drawContext(context, dTime, tv) {
 		context.fillRect(0, 0, scene.width, scene.height);
 		context.drawImage(images["menuTitle0"], x, y);
 		context.drawImage(images["menuTitle1"], x+1024, y);
+		context.drawImage(images["menuTitleActive"], x+80, y+330 + 110*menus["title"].button);
 /*		context.strokeStyle = "white";
 		for (var i = 0; i < 5; ++i) {
 			context.strokeRect(x+128, y+330 + 110*i, 400, 110);
