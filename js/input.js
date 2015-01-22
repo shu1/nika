@@ -1,11 +1,30 @@
 "use strict";
 
 function getXY(event) {
-	if (event.touches) {
-		inputMan.x = event.touches[0].pageX;
-		inputMan.y = event.touches[0].pageY;
+	if (event.touches) {	// iOS and Android Touch API
+		var currentTouch = getCurrentTouch(event);
+		var secondTouch = getSecondTouch(event);
+		if (currentTouch) {
+			inputMan.x = currentTouch.pageX;
+			inputMan.y = currentTouch.pageY;
+		}
+		if (secondTouch) {
+			inputMan.x2 = secondTouch.pageX;
+			inputMan.y2 = secondTouch.pageY;
+		}
 	}
-	else {
+	else if (navigator.msPointerEnabled) { // Windows MSPointer API
+		if (isCurrentTouch(event)) {
+			inputMan.x = event.layerX;
+			inputMan.y = event.layerY;
+		}
+		if (isSecondTouch(event)) {
+			inputMan.x2 = event.layerX;
+			inputMan.y2 = event.layerY;
+			pinchStart(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+		}
+	}
+	else {	// Other (PC)
 		inputMan.x = event.layerX;
 		inputMan.y = event.layerY;
 	}
@@ -71,8 +90,9 @@ function getRot(dX, dY) {
 }
 
 function mouseDown(event) {
-	inputMan.menu = getXY(event);	// get inputMan.x and y
-	if (setCurrentTouch(event)) {
+	var singleClick = setTouch(event);
+	inputMan.menu = getXY(event);
+	if (singleClick) {
 		hudMan.inputText = "";
 		if (!inputMan.menu && gameMan.winner < 0) {
 			var scene = scenes[gameMan.scene];
@@ -96,17 +116,17 @@ function mouseDown(event) {
 			}
 		}
 		hudMan.inputText += " down";
-		inputMan.click = true;
 	}
 }
 
 function mouseMove(event) {
-	if (inputMan.click) {
+	if (inputMan.currentTouchId > -1) {
 		getXY(event);
-		if (!inputMan.menu && gameMan.winner < 0 && isMatchingTouch(event)) {
+		if (inputMan.secondTouchId > -1) {
+			pinch(event);
+		} else if (!inputMan.menu && gameMan.winner < 0 && isCurrentTouch(event)) {
 			var scene = scenes[gameMan.scene];
 			getRowCol(scene);
-
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
 			if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
@@ -135,7 +155,10 @@ function mouseMove(event) {
 }
 
 function mouseUp(event) {
-	if (inputMan.click && isMatchingTouch(event)) {
+	if (isSecondTouch(event)) {
+		endSecondTouch(event);
+	}
+	if (isCurrentTouch(event)) {
 		hudMan.inputText += " up";
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
@@ -220,15 +243,29 @@ function mouseUp(event) {
 		menuMan.button = 0;	// reset for key input
 		gameMan.selection = false;
 		inputMan.menu = false;
-		inputMan.click = false;
 	}
 }
 
-function setCurrentTouch(event) {
+function setTouch(event) {
 	if (event.changedTouches && event.changedTouches.length > 0) {	// respect touch ID if touch API supported
 		if (inputMan.currentTouchId == -1) {
 			inputMan.currentTouchId = event.changedTouches[0].identifier;
+			inputMan.x1 = event.changedTouches[0].pageX;
+			inputMan.y1 = event.changedTouches[0].pageY;
+			if (event.changedTouches[1] && inputMan.secondTouchId == -1) { // if second touch hits simultaneously
+				inputMan.secondTouchId = event.changedTouches[1].identifier;
+				inputMan.x2 = event.changedTouches[1].pageX;
+				inputMan.y2 = event.changedTouches[1].pageY;
+				pinchStart(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+				return false;
+			}
 			return true;
+		}
+		else if (inputMan.secondTouchId == -1) {
+			inputMan.secondTouchId = event.changedTouches[0].identifier;
+			inputMan.x2 = event.changedTouches[0].pageX;
+			inputMan.y2 = event.changedTouches[0].pageY;
+			pinchStart(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
 		}
 	}
 	else if (navigator.msPointerEnabled) {
@@ -236,21 +273,47 @@ function setCurrentTouch(event) {
 			inputMan.currentTouchId = event.pointerId;
 			return true;
 		}
+		else if (inputMan.secondTouchId == -1) {
+			inputMan.secondTouchId = event.pointerId;
+		}
 	}
 	else {	// cancel all touches if touch API not supported
 		if (!inputMan.menu) {
 			revertGrid();
 		}
+		inputMan.currentTouchId = 0;
 		return true;
 	}
 	return false;
 }
 
-function endCurrentTouch(event) {
-	inputMan.currentTouchId = -1;
+function getCurrentTouch(event) {
+	for (var i = event.touches.length-1; i >= 0; --i) {
+		if (event.touches[i].identifier == inputMan.currentTouchId) {
+			return event.touches[i];
+		}
+	}
 }
 
-function isMatchingTouch(event) {
+function getSecondTouch(event) {
+	for (var i = event.touches.length-1; i >= 0; --i) {
+		if (event.touches[i].identifier == inputMan.secondTouchId) {
+			return event.touches[i];
+		}
+	}
+}
+
+function endCurrentTouch(event) {
+	inputMan.currentTouchId = -1;
+	inputMan.secondTouchId = -1;
+}
+
+function endSecondTouch(event) {
+	inputMan.currentTouchId = -1;
+	inputMan.secondTouchId = -1;
+}
+
+function isCurrentTouch(event) {
 	if (event.changedTouches) {	// if touch API supported
 		for (var i = event.changedTouches.length-1; i >= 0; --i) {
 			if (event.changedTouches[i].identifier == inputMan.currentTouchId) {
@@ -263,6 +326,58 @@ function isMatchingTouch(event) {
 		return event.pointerId == inputMan.currentTouchId;
 	}
 	return true;	// all touches are deemed to "match" if touch API is not supported
+}
+
+function isSecondTouch(event) {
+	if (event.changedTouches) {	// if touch API supported
+		for (var i = event.changedTouches.length-1; i >= 0; --i) {
+			if (event.changedTouches[i].identifier == inputMan.secondTouchId) {
+				return true;
+			}
+		}
+		return false;
+	}
+	else if (navigator.msPointerEnabled) {
+		return event.pointerId == inputMan.secondTouchId;
+	}
+
+	return true;	// all touches are deemed to "match" if touch API is not supported
+}
+
+function setPinchInfo(x1, y1, x2, y2) {
+	var dx = x2 - x1;
+	var dy = y2 - y1;
+	inputMan.pinchDistance = Math.sqrt(dx*dx + dy*dy);
+}
+
+function pinchStart(x1, y1, x2, y2) {
+	phalanx.length = 0;
+	revertGrid();
+	setPinchInfo(x1, y1, x2, y2);
+}
+
+function pinch(event) {
+	if (inputMan.currentTouchId > -1 && inputMan.secondTouchId > -1) {
+		pinchZoom(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+	}
+}
+
+function pinchZoom(x1, y1, x2, y2) {
+	var distance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+	var centerX = (x1 + x2) / 2;
+	var centerY = (y1 +	y2) / 2;
+
+	var scene = scenes[gameMan.scene];
+	var dScale = (distance - inputMan.pinchDistance) / 500;
+	var oldScale = scene.scale;
+
+	inputMan.pinchDistance = distance;
+
+	scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
+	scene.x = centerX - (centerX - scene.x) * scene.scale / oldScale;
+	scene.y = centerY - (centerY - scene.y) * scene.scale / oldScale;
+
+	pan(0,0);
 }
 
 function keyDown(event) {
