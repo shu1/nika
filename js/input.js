@@ -171,28 +171,7 @@ function mouseUp(event) {
 				x -= (scene.width - displayMan.screenWidth)/2 + 128;	// offset to coordinates of buttons
 				y -= (scene.height - displayMan.screenHeight)/2 + 330;
 				if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*5) {
-					if (y < displayMan.activeHeight) {
-						setScene("board");
-						hudMan.inputText = "New Game";
-					}
-					else if (y < displayMan.activeHeight*2) {
-						hudMan.inputText = "Resume Game";
-					}
-					else if (y < displayMan.activeHeight*3) {
-						setScene("board");
-						nextTutorialStep();
-						hudMan.inputText = "Tutorial";
-					}
-					else if (y < displayMan.activeHeight*4) {
-						setScene("rules");
-						menuMan.show = false;
-						menuMan.button = 0;
-						hudMan.inputText = "Rules";
-						hudMan.pageText = "Rule " + gameMan.rules;
-					}
-					else {
-						hudMan.inputText = "Options";
-					}
+					menuTitle(Math.floor(y / displayMan.activeHeight));
 				}
 			}
 			else if (gameMan.scene == "rules") {
@@ -381,47 +360,66 @@ function pinchZoom(x1, y1, x2, y2) {
 }
 
 function keyDown(event) {
-	inputMan.menu = true;	// highlight current button even when mouse isn't down
 	var dX = 8;
 
 	switch (event.keyCode) {
 	case 13:	// enter
 	case 90:	// Z
 		hudMan.inputText = "Enter";
-		menuButton(menuMan.button);
+		if (menuMan.show) {
+			menuButton(menuMan.button);
+			inputMan.menu = menuMan.show;	// if menu was closed during menuButton()
+		}
+		else if (gameMan.scene == "menus") {
+			menuTitle(menus["title"].button);
+		}
+		else if (gameMan.tutorialStep >= 0) {
+			nextTutorialStep();
+		}
 		break;
+	case 8: 	// backspace
 	case 27:	// escape
 	case 88:	// X
-		hudMan.inputText = "Escape";
-		if (gameMan.scene == "rules") {
+	case 227:	// rewind
+		hudMan.inputText = "Back";
+		if (menuMan.show) {
+			menuMan.show = false;
+			menuMan.button = 0;
+			inputMan.menu = false;
+		}
+		else if (gameMan.scene == "rules") {
 			setScene("board");
 			hudMan.pageText = "";
 		}
 		else if (gameMan.tutorialStep >= 0) {
 			endTutorial();
 		}
-		else {
-			menuMan.show = false;
-			menuMan.button = 0;
-		}
+		break;
+	case 65:	// A
+	case 83:	// S
+	case 179:	// pause
+	case 228:	// forward
+		hudMan.inputText = "Menu";
+		menuMan.show = !menuMan.show;
+		inputMan.menu = menuMan.show;	// to highlight current button
 		break;
 	case 37:	// left
-		if (!keyPrev() && !menuMan.show) {
+		if (!keyPrev()) {
 			pan(dX, 0);
 		}
 		break;
 	case 38:	// up
-		if (!keyPrev() && !menuMan.show) {
+		if (!keyPrev()) {
 			pan(0, dX);
 		}
 		break;
 	case 39:	// right
-		if (!keyNext() && !menuMan.show) {
+		if (!keyNext()) {
 			pan(-dX, 0);
 		}
 		break;
 	case 40:	// down
-		if (!keyNext() && !menuMan.show) {
+		if (!keyNext()) {
 			pan(0, -dX);
 		}
 		break;
@@ -430,7 +428,14 @@ function keyDown(event) {
 
 function keyPrev() {
 	hudMan.inputText = "Prev";
-	if (gameMan.scene == "menus" && menus["title"].button > 0 && !menuMan.show) {
+
+	if (menuMan.show) {
+		if (menuMan.button < buttons.length-2) {
+			menuMan.button++;
+		}
+		return true;
+	}
+	else if (gameMan.scene == "menus" && menus["title"].button > 0) {
 		menus["title"].button--;
 		return true;
 	}
@@ -443,16 +448,19 @@ function keyPrev() {
 		prevTutorialPart();
 		return true;
 	}
-	else if (menuMan.show && menuMan.button < buttons.length-2) {
-		menuMan.button++;
-		return true;
-	}
 	return false;
 }
 
 function keyNext() {
 	hudMan.inputText = "Next";
-	if (gameMan.scene == "menus" && menus["title"].button < 4 && !menuMan.show) {
+
+	if (menuMan.show) {
+		if (menuMan.button > 0) {
+			menuMan.button--;
+		}
+		return true;
+	}
+	else if (gameMan.scene == "menus" && menus["title"].button < 4) {
 		menus["title"].button++;
 		return true;
 	}
@@ -463,10 +471,6 @@ function keyNext() {
 	}
 	else if (gameMan.tutorialStep >= 0) {
 		nextTutorialPart();
-		return true;
-	}
-	else if (menuMan.show && menuMan.button > 0) {
-		menuMan.button--;
 		return true;
 	}
 	return false;

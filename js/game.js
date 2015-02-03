@@ -305,8 +305,8 @@ function clearRallyHighlights() {
 	}
 }
 
-function menuButton(button) {
-	switch(button) {
+function menuButton(index) {
+	switch(index) {
 	case 0:
 		if (gameMan.scene == "rules") {
 			setScene("board");
@@ -345,6 +345,30 @@ function menuButton(button) {
 		else {
 			endTutorial();
 		}
+		break;
+	}
+}
+
+function menuTitle(index) {
+	switch(index) {
+	case 0:
+		setScene("board");
+		break;
+	case 1:
+		hudMan.inputText = "Resume Game";
+		break;
+	case 2:
+		setScene("board");
+		nextTutorialStep();
+		break;
+	case 3:
+		setScene("rules");
+		menuMan.show = false;
+		menuMan.button = 0;
+		hudMan.pageText = "Rule " + gameMan.rules;
+		break;
+	case 4:
+		hudMan.inputText = "Options";
 		break;
 	}
 }
