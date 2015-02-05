@@ -368,13 +368,15 @@ function keyDown(event) {
 		hudMan.inputText = "Enter";
 		if (menuMan.show) {
 			menuButton(menuMan.button);
-			inputMan.menu = menuMan.show;	// if menu was closed during menuButton()
 		}
 		else if (gameMan.scene == "menus") {
 			menuTitle(menus["title"].button);
 		}
 		else if (gameMan.tutorialStep >= 0) {
 			nextTutorialStep();
+		}
+		else if (gameMan.scene == "rules" || gameMan.scene == "board") {
+			menuButton(0);
 		}
 		break;
 	case 8: 	// backspace
@@ -385,7 +387,6 @@ function keyDown(event) {
 		if (menuMan.show) {
 			menuMan.show = false;
 			menuMan.button = 0;
-			inputMan.menu = false;
 		}
 		else if (gameMan.scene == "rules") {
 			setScene("board");
@@ -401,7 +402,7 @@ function keyDown(event) {
 	case 228:	// forward
 		hudMan.inputText = "Menu";
 		menuMan.show = !menuMan.show;
-		inputMan.menu = menuMan.show;	// to highlight current button
+		menuMan.button = 0;
 		break;
 	case 37:	// left
 		if (!keyPrev()) {
@@ -424,6 +425,8 @@ function keyDown(event) {
 		}
 		break;
 	}
+
+	inputMan.menu = menuMan.show || gameMan.scene == "rules" || gameMan.scene == "board" && gameMan.tutorialStep < 0;
 }
 
 function keyPrev() {
