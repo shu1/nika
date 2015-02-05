@@ -2,8 +2,8 @@
 
 function getXY(event) {
 	if (event.touches) {	// iOS and Android Touch API
-		var currentTouch = getCurrentTouch(event);
-		var secondTouch = getSecondTouch(event);
+		var currentTouch = getTouch(event, inputMan.currentTouchId);
+		var secondTouch = getTouch(event, inputMan.secondTouchId);
 		if (currentTouch) {
 			inputMan.x = currentTouch.pageX;
 			inputMan.y = currentTouch.pageY;
@@ -14,14 +14,14 @@ function getXY(event) {
 		}
 	}
 	else if (navigator.msPointerEnabled) { // Windows MSPointer API
-		if (isCurrentTouch(event)) {
+		if (isTouch(event, inputMan.currentTouchId)) {
 			inputMan.x = event.layerX;
 			inputMan.y = event.layerY;
 		}
-		if (isSecondTouch(event)) {
+		if (isTouch(event, inputMan.secondTouchId)) {
 			inputMan.x2 = event.layerX;
 			inputMan.y2 = event.layerY;
-			pinchStart(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+			setPinchInfo(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
 		}
 	}
 	else {	// Other (PC)
@@ -124,7 +124,7 @@ function mouseMove(event) {
 		getXY(event);
 		if (inputMan.secondTouchId > -1) {
 			pinch(event);
-		} else if (!inputMan.menu && gameMan.winner < 0 && isCurrentTouch(event)) {
+		} else if (!inputMan.menu && gameMan.winner < 0 && isTouch(event, inputMan.currentTouchId)) {
 			var scene = scenes[gameMan.scene];
 			getRowCol(scene);
 			var dX = inputMan.x - inputMan.pX;
@@ -155,10 +155,10 @@ function mouseMove(event) {
 }
 
 function mouseUp(event) {
-	if (isSecondTouch(event)) {
-		endSecondTouch(event);
+	if (isTouch(event, inputMan.secondTouchId)) {
+		endTouches();
 	}
-	if (isCurrentTouch(event)) {
+	if (isTouch(event, inputMan.currentTouchId)) {
 		hudMan.inputText += " up";
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
@@ -218,7 +218,7 @@ function mouseUp(event) {
 		}
 
 		clearRallyHighlights();
-		endCurrentTouch();
+		endTouches();
 		gameMan.selection = false;
 		inputMan.menu = false;
 		menuMan.button = 0;	// reset for key input
@@ -258,6 +258,7 @@ function setTouch(event) {
 	}
 	else {	// cancel all touches if touch API not supported
 		if (!inputMan.menu) {
+			// Prevents right clicks allowing rotates without using actions on PC
 			revertGrid();
 		}
 		inputMan.currentTouchId = 0;
@@ -266,67 +267,38 @@ function setTouch(event) {
 	return false;
 }
 
-function getCurrentTouch(event) {
+function getTouch(event, touchId) {
 	for (var i = event.touches.length-1; i >= 0; --i) {
-		if (event.touches[i].identifier == inputMan.currentTouchId) {
+		if (event.touches[i].identifier == touchId) {
 			return event.touches[i];
 		}
 	}
 }
 
-function getSecondTouch(event) {
-	for (var i = event.touches.length-1; i >= 0; --i) {
-		if (event.touches[i].identifier == inputMan.secondTouchId) {
-			return event.touches[i];
-		}
-	}
-}
-
-function endCurrentTouch(event) {
+function endTouches() {
 	inputMan.currentTouchId = -1;
 	inputMan.secondTouchId = -1;
 }
 
-function endSecondTouch(event) {
-	inputMan.currentTouchId = -1;
-	inputMan.secondTouchId = -1;
-}
-
-function isCurrentTouch(event) {
+function isTouch(event, touchId) {
 	if (event.changedTouches) {	// if touch API supported
 		for (var i = event.changedTouches.length-1; i >= 0; --i) {
-			if (event.changedTouches[i].identifier == inputMan.currentTouchId) {
+			if (event.changedTouches[i].identifier == touchId) {
 				return true;
 			}
 		}
 		return false;
 	}
 	else if (navigator.msPointerEnabled) {
-		return event.pointerId == inputMan.currentTouchId;
+		return event.pointerId == touchId;
 	}
-	return true;	// all touches are deemed to "match" if touch API is not supported
-}
-
-function isSecondTouch(event) {
-	if (event.changedTouches) {	// if touch API supported
-		for (var i = event.changedTouches.length-1; i >= 0; --i) {
-			if (event.changedTouches[i].identifier == inputMan.secondTouchId) {
-				return true;
-			}
-		}
-		return false;
-	}
-	else if (navigator.msPointerEnabled) {
-		return event.pointerId == inputMan.secondTouchId;
-	}
-
 	return true;	// all touches are deemed to "match" if touch API is not supported
 }
 
 function setPinchInfo(x1, y1, x2, y2) {
 	var dx = x2 - x1;
 	var dy = y2 - y1;
-	inputMan.pinchDistance = Math.sqrt(dx*dx + dy*dy);
+	inputMan.pinchDistance = Math.sqrt(dx*dx + dy*dy); // TODO: sqrt necessary?
 }
 
 function pinchStart(x1, y1, x2, y2) {
@@ -336,9 +308,7 @@ function pinchStart(x1, y1, x2, y2) {
 }
 
 function pinch(event) {
-	if (inputMan.currentTouchId > -1 && inputMan.secondTouchId > -1) {
-		pinchZoom(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
-	}
+	pinchZoom(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
 }
 
 function pinchZoom(x1, y1, x2, y2) {
