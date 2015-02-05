@@ -314,6 +314,7 @@ function menuButton(index) {
 		}
 		else {
 			menuMan.show = !menuMan.show;
+			menuMan.button = 0;
 		}
 		break;
 	case 1:
@@ -334,8 +335,6 @@ function menuButton(index) {
 		break;
 	case 6:
 		setScene("rules");
-		menuMan.show = false;
-		menuMan.button = 0;
 		hudMan.pageText = "Rule " + gameMan.rules;
 		break;
 	case 7:
@@ -363,8 +362,6 @@ function menuTitle(index) {
 		break;
 	case 3:
 		setScene("rules");
-		menuMan.show = false;
-		menuMan.button = 0;
 		hudMan.pageText = "Rule " + gameMan.rules;
 		break;
 	case 4:

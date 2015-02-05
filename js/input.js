@@ -219,9 +219,9 @@ function mouseUp(event) {
 
 		clearRallyHighlights();
 		endCurrentTouch();
-		menuMan.button = 0;	// reset for key input
 		gameMan.selection = false;
 		inputMan.menu = false;
+		menuMan.button = 0;	// reset for key input
 	}
 }
 
@@ -433,7 +433,7 @@ function keyPrev() {
 		if (menuMan.button < buttons.length-2) {
 			menuMan.button++;
 		}
-		return true;
+		return true;	// never pan when menu is showing
 	}
 	else if (gameMan.scene == "menus" && menus["title"].button > 0) {
 		menus["title"].button--;
@@ -458,7 +458,7 @@ function keyNext() {
 		if (menuMan.button > 0) {
 			menuMan.button--;
 		}
-		return true;
+		return true;	// never pan when menu is showing
 	}
 	else if (gameMan.scene == "menus" && menus["title"].button < 4) {
 		menus["title"].button++;

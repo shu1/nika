@@ -203,6 +203,8 @@ function setScene(sceneIndex) {
 	scene.y = (gpCanvas.height - scene.height * scene.scale)/2;
 
 	displayMan.zoom = 0;
+	menuMan.show = false;
+	menuMan.button = 0;
 }
 
 function zoom() {
