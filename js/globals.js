@@ -95,8 +95,9 @@ var buttons = [
 	"  Zoom",
 	"  Pass",
 	"  Undo",
-	"  Rules",
 	"Tutorial",
+	"  Rules",
+	"  Menu"
 ]
 
 var mainBoard = [

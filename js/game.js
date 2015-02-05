@@ -334,16 +334,25 @@ function menuButton(index) {
 		undo();
 		break;
 	case 6:
-		setScene("rules");
-		hudMan.pageText = "Rule " + gameMan.rules;
-		break;
-	case 7:
 		if (gameMan.tutorialStep < 0) {
 			nextTutorialStep();
 		}
 		else {
 			endTutorial();
 		}
+		break;
+	case 7:
+		if (gameMan.scene == "rules") {
+				setScene("board");
+				hudMan.pageText = "";
+			}
+		else {
+			setScene("rules");
+			hudMan.pageText = "Rule " + gameMan.rules;
+		}
+		break;
+	case 8:
+		setScene("menus");
 		break;
 	}
 }
