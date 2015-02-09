@@ -626,11 +626,15 @@ function drawMenu(context, dTime) {
 			}
 		}
 	}
-	else if (inputMan.menu && menuMan.button == 0) {
-		drawButton(context, 0, 0, (gameMan.scene == "rules" || gameMan.scene == "menus" && gameMan.menu == "option") ? buttons[0] : buttons[8], "black", "white");
-	}
 	else {
-		drawButton(context, 0, 0, (gameMan.scene == "rules" || gameMan.scene == "menus" && gameMan.menu == "option") ? buttons[0] : buttons[8], "white", "black");
+		var buttonText = (gameMan.scene == "rules") ? buttons[0] : (gameMan.scene == "menus" && gameMan.menu == "option") ? "  Back" : buttons[8];
+
+		if (inputMan.menu && menuMan.button == 0) {
+			drawButton(context, 0, 0, buttonText, "black", "white");
+		}
+		else {
+			drawButton(context, 0, 0, buttonText, "white", "black");
+		}
 	}
 }
 
