@@ -342,9 +342,6 @@ function keyDown(event) {
 		else if (gameMan.menu == "title" && menus["title"] < 5) {
 			menuTitle(menus["title"]);
 		}
-		else if (gameMan.tutorialStep >= 0) {
-			nextTutorialStep();
-		}
 		else {
 			menuButton(0);
 		}
@@ -487,7 +484,7 @@ function keyNext() {
 		return true;
 	}
 	else if (gameMan.tutorialStep >= 0) {
-		nextTutorialPart();
+		nextTutorialStep();
 		return true;
 	}
 	return false;
