@@ -339,7 +339,7 @@ function keyDown(event) {
 		if (menuMan.show) {
 			menuButton(menuMan.button);
 		}
-		else if (gameMan.menu == "title") {
+		else if (gameMan.menu == "title" && menus["title"] < 5) {
 			menuTitle(menus["title"]);
 		}
 		else if (gameMan.tutorialStep >= 0) {
@@ -439,7 +439,8 @@ function keyDown(event) {
 		break;
 	}
 
-	inputMan.menu = menuMan.show || gameMan.scene == "rules" || gameMan.scene == "board" && gameMan.tutorialStep < 0 || gameMan.menu == "option";
+	inputMan.menu = menuMan.show || gameMan.scene == "board" || gameMan.scene == "rules" ||
+		gameMan.menu == "title" && menus["title"] == 5 || gameMan.menu == "option";	// highlight menu button
 }
 
 function keyPrev() {
@@ -476,7 +477,7 @@ function keyNext() {
 		}
 		return true;	// never pan when menu is showing
 	}
-	else if (gameMan.menu == "title" && menus["title"] < 4) {
+	else if (gameMan.menu == "title" && menus["title"] < 5) {
 		menus["title"]++;
 		return true;
 	}

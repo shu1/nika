@@ -417,7 +417,9 @@ function drawContext(context, dTime, tv) {
 		case "title":
 			context.drawImage(images["menuTitle0"], x, y);
 			context.drawImage(images["menuTitle1"], x+1024, y);
-			context.drawImage(images["menuTitleActive"], x+80, y+330 + displayMan.activeHeight*menus["title"]);
+			if (menus["title"] < 5) {
+				context.drawImage(images["menuTitleActive"], x+80, y+330 + displayMan.activeHeight*menus["title"]);
+			}
 			break;
 		case "option":
 			context.drawImage(images["menuOption0"], x, y);
