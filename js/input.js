@@ -167,7 +167,7 @@ function mouseUp(event) {
 			var scene = scenes[gameMan.scene];
 			var x = (inputMan.x - scene.x) / scene.scale;
 			var y = (inputMan.y - scene.y) / scene.scale;
-			if (gameMan.scene == "menus") {
+			if (gameMan.menu == "title") {
 				x -= (scene.width - displayMan.screenWidth)/2 + 128;	// offset to coordinates of buttons
 				y -= (scene.height - displayMan.screenHeight)/2 + 330;
 				if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*5) {
@@ -339,7 +339,7 @@ function keyDown(event) {
 		if (menuMan.show) {
 			menuButton(menuMan.button);
 		}
-		else if (gameMan.scene == "menus" && gameMan.menu == "title") {
+		else if (gameMan.menu == "title") {
 			menuTitle(menus["title"].button);
 		}
 		else if (gameMan.tutorialStep >= 0) {
@@ -358,12 +358,12 @@ function keyDown(event) {
 			menuMan.show = false;
 			menuMan.button = 0;
 		}
+		else if (gameMan.menu == "option") {
+			gameMan.menu = "title";
+		}
 		else if (gameMan.scene == "rules") {
 			setScene("board");
 			hudMan.pageText = "";
-		}
-		else if (gameMan.menu == "option") {
-			gameMan.menu = "title";
 		}
 		else if (gameMan.tutorialStep >= 0) {
 			endTutorial();
@@ -378,7 +378,7 @@ function keyDown(event) {
 		menuMan.button = 0;
 		break;
 	case 37:	// left
-		if (!menuMan.show && gameMan.scene == "menus" && gameMan.menu == "option") {
+		if (!menuMan.show && gameMan.menu == "option") {
 			if (menus["option"] == 0 && audioMan.music > 0) {
 				audioMan.music -= 0.1;
 				if (audioMan.music < 0) {
@@ -398,7 +398,7 @@ function keyDown(event) {
 		}
 		break;
 	case 38:	// up
-		if (!menuMan.show && gameMan.scene == "menus" && gameMan.menu == "option") {
+		if (!menuMan.show && gameMan.menu == "option") {
 			if (menus["option"] > 0) {
 				menus["option"]--;
 			}
@@ -408,7 +408,7 @@ function keyDown(event) {
 		}
 		break;
 	case 39:	// right
-		if (!menuMan.show && gameMan.scene == "menus" && gameMan.menu == "option") {
+		if (!menuMan.show && gameMan.menu == "option") {
 			if (menus["option"] == 0 && audioMan.music < 1) {
 				audioMan.music += 0.1;
 				if (audioMan.music > 1) {
@@ -428,7 +428,7 @@ function keyDown(event) {
 		}
 		break;
 	case 40:	// down
-		if (!menuMan.show && gameMan.scene == "menus" && gameMan.menu == "option") {
+		if (!menuMan.show && gameMan.menu == "option") {
 			if (menus["option"] < 1) {
 				menus["option"]++;
 			}
@@ -439,7 +439,7 @@ function keyDown(event) {
 		break;
 	}
 
-	inputMan.menu = menuMan.show || gameMan.scene == "rules" || gameMan.scene == "board" && gameMan.tutorialStep < 0 || gameMan.scene == "menus" && gameMan.menu == "option";
+	inputMan.menu = menuMan.show || gameMan.scene == "rules" || gameMan.scene == "board" && gameMan.tutorialStep < 0 || gameMan.menu == "option";
 }
 
 function keyPrev() {
@@ -451,7 +451,7 @@ function keyPrev() {
 		}
 		return true;	// never pan when menu is showing
 	}
-	else if (gameMan.scene == "menus" && menus["title"].button > 0) {
+	else if (gameMan.menu == "title" && menus["title"].button > 0) {
 		menus["title"].button--;
 		return true;
 	}
@@ -476,7 +476,7 @@ function keyNext() {
 		}
 		return true;	// never pan when menu is showing
 	}
-	else if (gameMan.scene == "menus" && menus["title"].button < 4) {
+	else if (gameMan.menu == "title" && menus["title"].button < 4) {
 		menus["title"].button++;
 		return true;
 	}

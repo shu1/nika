@@ -202,6 +202,14 @@ function initScenes(canvas, maxScale, minScale, tv) {
 function setScene(sceneIndex) {
 	if (sceneIndex) {
 		gameMan.scene = sceneIndex;
+
+		if (sceneIndex == "menus") {
+			gameMan.menu = "title";
+			menus["title"].button = 1;
+		}
+		else {
+			gameMan.menu = "";
+		}
 	}
 
 	var scene = scenes[gameMan.scene];
@@ -627,7 +635,7 @@ function drawMenu(context, dTime) {
 		}
 	}
 	else {
-		var buttonText = (gameMan.scene == "rules") ? buttons[0] : (gameMan.scene == "menus" && gameMan.menu == "option") ? "  Back" : buttons[8];
+		var buttonText = (gameMan.scene == "rules") ? buttons[0] : (gameMan.menu == "option") ? "  Back" : buttons[8];
 
 		if (inputMan.menu && menuMan.button == 0) {
 			drawButton(context, 0, 0, buttonText, "black", "white");
