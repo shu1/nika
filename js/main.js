@@ -102,8 +102,7 @@ window.onload = function() {
 	menuMan.cols = 3;
 	menuMan.rows = Math.ceil(buttons.length / menuMan.cols);
 
-	menus["title"] = {};
-	menus["title"].button = 0;
+	menus["title"] = 0;
 	menus["option"] = 0;
 	gameMan.menu = "title";
 
@@ -205,7 +204,7 @@ function setScene(sceneIndex) {
 
 		if (sceneIndex == "menus") {
 			gameMan.menu = "title";
-			menus["title"].button = 1;
+			menus["title"] = 1;
 		}
 		else {
 			gameMan.menu = "";
@@ -418,7 +417,7 @@ function drawContext(context, dTime, tv) {
 		case "title":
 			context.drawImage(images["menuTitle0"], x, y);
 			context.drawImage(images["menuTitle1"], x+1024, y);
-			context.drawImage(images["menuTitleActive"], x+80, y+330 + displayMan.activeHeight*menus["title"].button);
+			context.drawImage(images["menuTitleActive"], x+80, y+330 + displayMan.activeHeight*menus["title"]);
 			break;
 		case "option":
 			context.drawImage(images["menuOption0"], x, y);
@@ -663,8 +662,7 @@ function drawHud(context, sceneIndex) {
 	hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[sceneIndex].scale + "x";
 	context.fillStyle = "white";
 	context.clearRect(0, 0, canvas.width, displayMan.hudHeight);
-	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText,
-		138, displayMan.hudFont);
+	context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, displayMan.hudFont);
 }
 
 // browser compatibility

@@ -340,7 +340,7 @@ function keyDown(event) {
 			menuButton(menuMan.button);
 		}
 		else if (gameMan.menu == "title") {
-			menuTitle(menus["title"].button);
+			menuTitle(menus["title"]);
 		}
 		else if (gameMan.tutorialStep >= 0) {
 			nextTutorialStep();
@@ -451,8 +451,8 @@ function keyPrev() {
 		}
 		return true;	// never pan when menu is showing
 	}
-	else if (gameMan.menu == "title" && menus["title"].button > 0) {
-		menus["title"].button--;
+	else if (gameMan.menu == "title" && menus["title"] > 0) {
+		menus["title"]--;
 		return true;
 	}
 	else if (gameMan.scene == "rules" && gameMan.rules > 0) {
@@ -476,8 +476,8 @@ function keyNext() {
 		}
 		return true;	// never pan when menu is showing
 	}
-	else if (gameMan.menu == "title" && menus["title"].button < 4) {
-		menus["title"].button++;
+	else if (gameMan.menu == "title" && menus["title"] < 4) {
+		menus["title"]++;
 		return true;
 	}
 	else if (gameMan.scene == "rules" && gameMan.rules < rulePages-1) {
