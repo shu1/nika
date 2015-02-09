@@ -363,10 +363,9 @@ function menuButton(index) {
 function menuTitle(index) {
 	switch(index) {
 	case 0:
-		setScene("board");
-		break;
+		newGame();	// no break to set scene to board
 	case 1:
-		hudMan.inputText = "Resume Game";
+		setScene("board");
 		break;
 	case 2:
 		setScene("board");
