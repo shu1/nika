@@ -96,7 +96,7 @@ window.onload = function() {
 	}
 
 	menuMan.cols = 3;
-	menuMan.rows = Math.ceil((buttons.length-1) / menuMan.cols);
+	menuMan.rows = Math.ceil(buttons.length / menuMan.cols);
 
 	menus["title"] = {};
 	menus["title"].button = 0;
@@ -595,25 +595,26 @@ function drawMenu(context, dTime) {
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
-				if (button < buttons.length-1) {
+				if (button < buttons.length) {
 					if (inputMan.menu && button == menuMan.button
 					|| button == 1 && gameMan.debug
 					|| button == 6 && gameMan.tutorialStep >= 0
 					|| button == 7 && gameMan.scene == "rules") {
-						drawButton(context, row, col, buttons[button+1], "black", "white");
+						drawButton(context, row, col, buttons[button], "black", "white");
 					}
 					else {
-						drawButton(context, row, col, buttons[button+1], "white", "black");
+						drawButton(context, row, col, buttons[button], "white", "black");
 					}
 				}
 			}
 		}
 	}
 	else if (inputMan.menu && menuMan.button == 0) {
-		drawButton(context, 0, 0, (gameMan.scene == "rules") ? buttons[1] : buttons[0], "black", "white");
+		drawButton(context, 0, 0, (gameMan.scene == "rules") ? buttons[0] : buttons[8], "black", "white");
 	}
 	else {
-		drawButton(context, 0, 0, (gameMan.scene == "rules") ? buttons[1] : buttons[0], "white", "black");
+		drawButton(context, 0, 0, (gameMan.scene == "rules") ? buttons[0] : buttons[8], "white", "black");
+
 	}
 }
 

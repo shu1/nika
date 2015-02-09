@@ -36,8 +36,8 @@ function getXY(event) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				if (inputMan.x > width - menuMan.bWidth * (col+1) && inputMan.y > height - menuMan.bHeight * (row+1)) {
 					menuMan.button = row * menuMan.cols + col;
-					if (menuMan.button < buttons.length-1) {
-						hudMan.inputText = buttons[menuMan.button+1];
+					if (menuMan.button < buttons.length) {
+						hudMan.inputText = buttons[menuMan.button];
 					}
 					return true;
 				}
@@ -403,7 +403,7 @@ function keyPrev() {
 	hudMan.inputText = "Prev";
 
 	if (menuMan.show) {
-		if (menuMan.button < buttons.length-2) {
+		if (menuMan.button < buttons.length-1) {
 			menuMan.button++;
 		}
 		return true;	// never pan when menu is showing

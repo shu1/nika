@@ -88,7 +88,6 @@ var	hudMan = {
 }
 
 var buttons = [
-	"  Menu",
 	"  Close",
 	" Debug",
 	"     AI",
