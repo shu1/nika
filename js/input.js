@@ -174,6 +174,14 @@ function mouseUp(event) {
 					menuTitle(Math.floor(y / displayMan.activeHeight));
 				}
 			}
+			else if (gameMan.menu == "option") {
+				x -= (scene.width - displayMan.screenWidth)/2;	// offset to coordinates of image
+				y -= (scene.height - displayMan.screenHeight)/2;
+				console.log(x + "," + y);
+				if (x > 656 && x < 888 && y > 868 && y < 924) {
+					gameMan.menu = "credit";
+				}
+			}
 			else if (gameMan.scene == "rules") {
 				if (y > (scene.height - displayMan.arrowHeight)/2 && y < (scene.height + displayMan.arrowHeight)/2) {
 					if (x > scene.width - displayMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
@@ -336,13 +344,16 @@ function keyDown(event) {
 	case 13:	// enter
 	case 90:	// Z
 		hudMan.inputText = "Enter";
-		if (menuMan.show) {
+		if (menuMan.show || gameMan.menu == "credit") {
 			menuButton(menuMan.button);
 		}
 		else if (gameMan.menu == "title" && menus["title"] < 5) {
 			menuTitle(menus["title"]);
 		}
-		else {
+		else if (gameMan.menu == "option" && menus["option"] == 2) {
+			gameMan.menu = "credit";
+		}
+		else if (!(gameMan.scene == "menus" && gameMan.menu == "option" && menus["option"] < 3)) {
 			menuButton(0);
 		}
 		break;
@@ -357,6 +368,9 @@ function keyDown(event) {
 		}
 		else if (gameMan.menu == "option") {
 			gameMan.menu = "title";
+		}
+		else if (gameMan.menu == "credit") {
+			gameMan.menu = "option";
 		}
 		else if (gameMan.scene == "rules") {
 			setScene("board");
@@ -426,7 +440,7 @@ function keyDown(event) {
 		break;
 	case 40:	// down
 		if (!menuMan.show && gameMan.menu == "option") {
-			if (menus["option"] < 1) {
+			if (menus["option"] < 3) {
 				menus["option"]++;
 			}
 		}
@@ -436,8 +450,8 @@ function keyDown(event) {
 		break;
 	}
 
-	inputMan.menu = menuMan.show || gameMan.scene == "board" || gameMan.scene == "rules" ||
-		gameMan.menu == "title" && menus["title"] == 5 || gameMan.menu == "option";	// highlight menu button
+	inputMan.menu = menuMan.show || gameMan.scene == "board" || gameMan.scene == "rules" || gameMan.menu == "credit" ||
+		gameMan.menu == "title" && menus["title"] == 5 || gameMan.menu == "option" && menus["option"] == 3;	// highlight menu button
 }
 
 function keyPrev() {

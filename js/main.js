@@ -30,6 +30,8 @@ window.onload = function() {
 	loadImage("menuOption0");
 	loadImage("menuOption1");
 	loadImage("menuOptionSlider");
+	loadImage("menuCredit0");
+	loadImage("menuCredit1");
 
 	for (var i = 0; i < rulePages; ++i) {
 		loadImage("rule" + i + "0");
@@ -427,6 +429,10 @@ function drawContext(context, dTime, tv) {
 			context.drawImage(images["menuOptionSlider"], x-40 + 1484*audioMan.music, y+384);
 			context.drawImage(images["menuOptionSlider"], x-40 + 1484*audioMan.sound, y+648);
 			break;
+		case "credit":
+			context.drawImage(images["menuCredit0"], x, y);
+			context.drawImage(images["menuCredit1"], x+1024, y);
+			break;
 		}
 		break;
 	}
@@ -636,7 +642,7 @@ function drawMenu(context, dTime) {
 		}
 	}
 	else {
-		var buttonText = (gameMan.scene == "rules") ? buttons[0] : (gameMan.menu == "option") ? "  Back" : buttons[8];
+		var buttonText = (gameMan.scene == "rules") ? buttons[0] : (gameMan.menu == "option" || gameMan.menu == "credit") ? "  Back" : buttons[8];
 
 		if (inputMan.menu && menuMan.button == 0) {
 			drawButton(context, 0, 0, buttonText, "black", "white");

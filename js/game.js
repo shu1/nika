@@ -315,6 +315,9 @@ function menuButton(index) {
 		else if (!menuMan.show && gameMan.menu == "option") {
 			gameMan.menu = "title";
 		}
+		else if (!menuMan.show && gameMan.menu == "credit") {
+			gameMan.menu = "option";
+		}
 		else {
 			menuMan.show = !menuMan.show;
 			menuMan.button = 0;
