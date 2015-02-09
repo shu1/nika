@@ -308,11 +308,11 @@ function clearRallyHighlights() {
 function menuButton(index) {
 	switch(index) {
 	case 0:
-		if (gameMan.scene == "rules") {
+		if (!menuMan.show && gameMan.scene == "rules") {
 			setScene("board");
 			hudMan.pageText = "";
 		}
-		else if (gameMan.menu == "option") {
+		else if (!menuMan.show && gameMan.menu == "option") {
 			gameMan.menu = "title";
 		}
 		else {
