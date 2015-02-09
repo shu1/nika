@@ -27,6 +27,9 @@ window.onload = function() {
 	loadImage("helmet2");
 	loadImage("arrowLeft");
 	loadImage("arrowRight");
+	loadImage("menuOption0");
+	loadImage("menuOption1");
+	loadImage("menuOptionSlider");
 
 	for (var i = 0; i < rulePages; ++i) {
 		loadImage("rule" + i + "0");
@@ -46,6 +49,7 @@ window.onload = function() {
 	loadAudio("rally",	"rout");
 	loadAudio("music",	"nika2", "ogg");
 
+	sounds["music"].volume = Math.pow(audioMan.music, 2);
 	sounds["music"].loop = true;
 	sounds["music"].play();
 
@@ -100,6 +104,8 @@ window.onload = function() {
 
 	menus["title"] = {};
 	menus["title"].button = 0;
+	menus["option"] = 0;
+	gameMan.menu = "title";
 
 	scenes["board"] = {};
 	scenes["menus"] = scenes["rules"] = {};	// menus and rules have the same properties for now
@@ -399,9 +405,20 @@ function drawContext(context, dTime, tv) {
 	case "menus":
 		context.fillStyle = "#0A3C51";
 		context.fillRect(0, 0, scene.width, scene.height);
-		context.drawImage(images["menuTitle0"], x, y);
-		context.drawImage(images["menuTitle1"], x+1024, y);
-		context.drawImage(images["menuTitleActive"], x+80, y+330 + displayMan.activeHeight*menus["title"].button);
+
+		switch (gameMan.menu) {
+		case "title":
+			context.drawImage(images["menuTitle0"], x, y);
+			context.drawImage(images["menuTitle1"], x+1024, y);
+			context.drawImage(images["menuTitleActive"], x+80, y+330 + displayMan.activeHeight*menus["title"].button);
+			break;
+		case "option":
+			context.drawImage(images["menuOption0"], x, y);
+			context.drawImage(images["menuOption1"], x+1024, y);
+			context.drawImage(images["menuOptionSlider"], x-40 + 1484*audioMan.music, y+384);
+			context.drawImage(images["menuOptionSlider"], x-40 + 1484*audioMan.sound, y+648);
+			break;
+		}
 		break;
 	}
 
@@ -610,11 +627,10 @@ function drawMenu(context, dTime) {
 		}
 	}
 	else if (inputMan.menu && menuMan.button == 0) {
-		drawButton(context, 0, 0, (gameMan.scene == "rules") ? buttons[0] : buttons[8], "black", "white");
+		drawButton(context, 0, 0, (gameMan.scene == "rules" || gameMan.scene == "menus" && gameMan.menu == "option") ? buttons[0] : buttons[8], "black", "white");
 	}
 	else {
-		drawButton(context, 0, 0, (gameMan.scene == "rules") ? buttons[0] : buttons[8], "white", "black");
-
+		drawButton(context, 0, 0, (gameMan.scene == "rules" || gameMan.scene == "menus" && gameMan.menu == "option") ? buttons[0] : buttons[8], "white", "black");
 	}
 }
 

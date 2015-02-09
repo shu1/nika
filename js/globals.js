@@ -25,8 +25,8 @@ var displayMan = {
 }
 
 var audioMan = {
-	sound:10,
-	music:10
+	music:0.5,
+	sound:0.5
 }
 
 var eventMan = {
@@ -45,6 +45,7 @@ var gameMan = {
 	actions:2,
 	player:0,
 	scene:"",
+	menu:"",
 	rules:0,
 	pRow:-1,
 	pCol:-1,

@@ -339,13 +339,13 @@ function keyDown(event) {
 		if (menuMan.show) {
 			menuButton(menuMan.button);
 		}
-		else if (gameMan.scene == "menus") {
+		else if (gameMan.scene == "menus" && gameMan.menu == "title") {
 			menuTitle(menus["title"].button);
 		}
 		else if (gameMan.tutorialStep >= 0) {
 			nextTutorialStep();
 		}
-		else if (gameMan.scene == "rules" || gameMan.scene == "board") {
+		else {
 			menuButton(0);
 		}
 		break;
@@ -362,6 +362,9 @@ function keyDown(event) {
 			setScene("board");
 			hudMan.pageText = "";
 		}
+		else if (gameMan.menu == "option") {
+			gameMan.menu = "title";
+		}
 		else if (gameMan.tutorialStep >= 0) {
 			endTutorial();
 		}
@@ -375,28 +378,68 @@ function keyDown(event) {
 		menuMan.button = 0;
 		break;
 	case 37:	// left
-		if (!keyPrev()) {
+		if (!menuMan.show && gameMan.scene == "menus" && gameMan.menu == "option") {
+			if (menus["option"] == 0 && audioMan.music > 0) {
+				audioMan.music -= 0.1;
+				if (audioMan.music < 0) {
+					audioMan.music = 0;
+				}
+				sounds["music"].volume = Math.pow(audioMan.music, 2);
+			}
+			else if (menus["option"] == 1 && audioMan.sound > 0) {
+				audioMan.sound -= 0.1;
+				if (audioMan.sound < 0) {
+					audioMan.sound = 0;
+				}
+			}
+		}
+		else if (!keyPrev()) {
 			pan(dX, 0);
 		}
 		break;
 	case 38:	// up
-		if (!keyPrev()) {
+		if (!menuMan.show && gameMan.scene == "menus" && gameMan.menu == "option") {
+			if (menus["option"] > 0) {
+				menus["option"]--;
+			}
+		}
+		else if (!keyPrev()) {
 			pan(0, dX);
 		}
 		break;
 	case 39:	// right
-		if (!keyNext()) {
+		if (!menuMan.show && gameMan.scene == "menus" && gameMan.menu == "option") {
+			if (menus["option"] == 0 && audioMan.music < 1) {
+				audioMan.music += 0.1;
+				if (audioMan.music > 1) {
+					audioMan.music = 1;
+				}
+				sounds["music"].volume = Math.pow(audioMan.music, 2);
+			}
+			else if (menus["option"] == 1 && audioMan.sound < 1) {
+				audioMan.sound += 0.1;
+				if (audioMan.sound > 1) {
+					audioMan.sound = 1;
+				}
+			}
+		}
+		else if (!keyNext()) {
 			pan(-dX, 0);
 		}
 		break;
 	case 40:	// down
-		if (!keyNext()) {
+		if (!menuMan.show && gameMan.scene == "menus" && gameMan.menu == "option") {
+			if (menus["option"] < 1) {
+				menus["option"]++;
+			}
+		}
+		else if (!keyNext()) {
 			pan(0, -dX);
 		}
 		break;
 	}
 
-	inputMan.menu = menuMan.show || gameMan.scene == "rules" || gameMan.scene == "board" && gameMan.tutorialStep < 0;
+	inputMan.menu = menuMan.show || gameMan.scene == "rules" || gameMan.scene == "board" && gameMan.tutorialStep < 0 || gameMan.scene == "menus" && gameMan.menu == "option";
 }
 
 function keyPrev() {

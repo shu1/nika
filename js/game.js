@@ -233,7 +233,7 @@ function playerAction() {
 
 function playSound(event) {
 	if (sounds[event]) {
-		sounds[event].volume = Math.pow(audioMan.sound / 10, 2);
+		sounds[event].volume = Math.pow(audioMan.sound, 2);
 		sounds[event].play();
 	}
 }
@@ -312,6 +312,9 @@ function menuButton(index) {
 			setScene("board");
 			hudMan.pageText = "";
 		}
+		else if (gameMan.menu == "option") {
+			gameMan.menu = "title";
+		}
 		else {
 			menuMan.show = !menuMan.show;
 			menuMan.button = 0;
@@ -374,7 +377,7 @@ function menuTitle(index) {
 		hudMan.pageText = "Rule " + gameMan.rules;
 		break;
 	case 4:
-		hudMan.inputText = "Options";
+		gameMan.menu = "option";
 		break;
 	}
 }
