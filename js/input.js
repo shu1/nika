@@ -185,10 +185,20 @@ function setTouch(event) {
 	else if (navigator.msPointerEnabled) {
 		if (inputMan.currentTouchId == -1) {
 			inputMan.currentTouchId = event.pointerId;
+			inputMan.x = event.layerX;
+			inputMan.y = event.layerY;
 			return true;
 		}
 		else if (inputMan.secondTouchId == -1) {
+			if (gameMan.scene == "board") {
+				phalanx.length = 0;
+				revertGrid();
+			}
+
 			inputMan.secondTouchId = event.pointerId;
+			inputMan.x2 = event.layerX;
+			inputMan.y2 = event.layerY;
+			setPinchDistance(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
 		}
 	}
 	else {	// cancel all touches if touch API not supported
@@ -231,11 +241,14 @@ function isTouch(event, touchId) {
 }
 
 function pinch(changedTouch) {
+	if (gameMan.scene == "board") {
+		phalanx.length = 0;
+		revertGrid();
+	}
+
 	inputMan.secondTouchId = changedTouch.identifier;
 	inputMan.x2 = changedTouch.pageX;
 	inputMan.y2 = changedTouch.pageY;
-	phalanx.length = 0;
-	revertGrid();
 	setPinchDistance(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
 }
 
@@ -284,7 +297,6 @@ function getXY(event) {
 		if (isTouch(event, inputMan.secondTouchId)) {
 			inputMan.x2 = event.layerX;
 			inputMan.y2 = event.layerY;
-			setPinchDistance(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);	// TODO does this make more sense somewhere else?
 		}
 	}
 	else {	// Other (PC)
