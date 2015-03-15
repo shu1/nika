@@ -126,6 +126,28 @@ function mouseMove(event) {
 			pinch(event);
 		} else if (!inputMan.menu && gameMan.winner < 0 && isTouch(event, inputMan.currentTouchId)) {
 			var scene = scenes[gameMan.scene];
+			if (gameMan.scene == "menus") {
+				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - displayMan.screenWidth)/2;
+				var y = (inputMan.y - scene.y) / scene.scale - (scene.height - displayMan.screenHeight)/2;
+				if (gameMan.menu == "title") {
+					x -= 128;	// offset to coordinates of buttons
+					y -= 330;
+					console.log(Math.floor(y / displayMan.activeHeight));
+					if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*5) {
+						menus["title"] = Math.floor(y / displayMan.activeHeight);
+					}
+				}
+				else if (gameMan.menu == "option") {
+					x += 40;	// offset to coordinates of image
+					if (x > 0 && x < 1484 && y > 384 && y < 508) {
+						audioMan.music = Math.round(x / 148.4) / 10;
+						sounds["music"].volume = Math.pow(audioMan.music, 2);
+					}
+					if (x > 0 && x < 1484 && y > 648 && y < 772) {
+						audioMan.sound = Math.round(x / 148.4) / 10;
+					}
+				}
+			}
 			getRowCol(scene);
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
