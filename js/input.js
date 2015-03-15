@@ -170,8 +170,8 @@ function setTouch(event) {
 	if (event.changedTouches && event.changedTouches.length > 0) {	// respect touch ID if touch API supported
 		if (inputMan.currentTouchId == -1) {
 			inputMan.currentTouchId = event.changedTouches[0].identifier;
-			inputMan.x1 = event.changedTouches[0].pageX;
-			inputMan.y1 = event.changedTouches[0].pageY;
+			inputMan.x = event.changedTouches[0].pageX;
+			inputMan.y = event.changedTouches[0].pageY;
 			if (event.changedTouches[1] && inputMan.secondTouchId == -1) { // if second touch hits simultaneously
 				pinch(event.changedTouches[1]);
 				return false;
