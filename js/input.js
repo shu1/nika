@@ -1,94 +1,5 @@
 "use strict";
 
-function getXY(event) {
-	if (event.touches) {	// iOS and Android Touch API
-		var currentTouch = getTouch(event, inputMan.currentTouchId);
-		var secondTouch = getTouch(event, inputMan.secondTouchId);
-		if (currentTouch) {
-			inputMan.x = currentTouch.pageX;
-			inputMan.y = currentTouch.pageY;
-		}
-		if (secondTouch) {
-			inputMan.x2 = secondTouch.pageX;
-			inputMan.y2 = secondTouch.pageY;
-		}
-	}
-	else if (navigator.msPointerEnabled) { // Windows MSPointer API
-		if (isTouch(event, inputMan.currentTouchId)) {
-			inputMan.x = event.layerX;
-			inputMan.y = event.layerY;
-		}
-		if (isTouch(event, inputMan.secondTouchId)) {
-			inputMan.x2 = event.layerX;
-			inputMan.y2 = event.layerY;
-			setPinchInfo(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
-		}
-	}
-	else {	// Other (PC)
-		inputMan.x = event.layerX;
-		inputMan.y = event.layerY;
-	}
-
-	var width = gpCanvas.width, height = gpCanvas.height;
-	if (inputMan.x < width && inputMan.x > width - menuMan.width
-	&& inputMan.y < height && inputMan.y > height - menuMan.height) {	// check menu
-		for (var row = 0; row < menuMan.rows; ++row) {
-			for (var col = 0; col < menuMan.cols; ++col) {
-				if (inputMan.x > width - menuMan.bWidth * (col+1) && inputMan.y > height - menuMan.bHeight * (row+1)) {
-					menuMan.button = row * menuMan.cols + col;
-					if (menuMan.button < buttons.length) {
-						hudMan.inputText = buttons[menuMan.button];
-					}
-					return true;
-				}
-			}
-		}
-	}
-	return false;
-}
-
-function getRowCol(scene) {
-	inputMan.col = Math.floor((inputMan.x - scene.x) / (displayMan.cellSize * scene.scale));
-	inputMan.row = Math.floor((inputMan.y - scene.y) / (displayMan.cellSize * scene.scale));
-	inputMan.rot = -1;
-	hudMan.inputText = inputMan.row + "," + inputMan.col;
-}
-
-function getRot(dX, dY) {
-	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {	// not for routed pieces
-		if (dX >= dY && dX <= -dY) {	// up
-			inputMan.rot = 0;
-		}
-		else if (dX >= dY && dX >= -dY) {	// right
-			inputMan.rot = 1;
-		}
-		else if (dX <= dY && dX >= -dY) {	// down
-			inputMan.rot = 2;
-		}
-		else {	// left
-			inputMan.rot = 3;
-		}
-
-		inputMan.row = gameMan.pRow;
-		inputMan.col = gameMan.pCol;
-		var radius = displayMan.cellSize * displayMan.cellSize * 3;
-		if (gameMan.pRot == inputMan.rot || dX*dX + dY*dY < radius) {	// forward or inside radius
-			if (inputMan.rot == 0) {
-				inputMan.row--;
-			}
-			else if (inputMan.rot == 1) {
-				inputMan.col++;
-			}
-			else if (inputMan.rot == 2) {
-				inputMan.row++;
-			}
-			else if (inputMan.rot == 3) {
-				inputMan.col--;
-			}
-		}
-	}
-}
-
 function mouseDown(event) {
 	var singleClick = setTouch(event);
 	inputMan.menu = getXY(event);
@@ -353,6 +264,95 @@ function pinchZoom(x1, y1, x2, y2) {
 	scene.y = centerY - (centerY - scene.y) * scene.scale / oldScale;
 
 	pan(0,0);
+}
+
+function getXY(event) {
+	if (event.touches) {	// iOS and Android Touch API
+		var currentTouch = getTouch(event, inputMan.currentTouchId);
+		var secondTouch = getTouch(event, inputMan.secondTouchId);
+		if (currentTouch) {
+			inputMan.x = currentTouch.pageX;
+			inputMan.y = currentTouch.pageY;
+		}
+		if (secondTouch) {
+			inputMan.x2 = secondTouch.pageX;
+			inputMan.y2 = secondTouch.pageY;
+		}
+	}
+	else if (navigator.msPointerEnabled) { // Windows MSPointer API
+		if (isTouch(event, inputMan.currentTouchId)) {
+			inputMan.x = event.layerX;
+			inputMan.y = event.layerY;
+		}
+		if (isTouch(event, inputMan.secondTouchId)) {
+			inputMan.x2 = event.layerX;
+			inputMan.y2 = event.layerY;
+			setPinchInfo(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+		}
+	}
+	else {	// Other (PC)
+		inputMan.x = event.layerX;
+		inputMan.y = event.layerY;
+	}
+
+	var width = gpCanvas.width, height = gpCanvas.height;
+	if (inputMan.x < width && inputMan.x > width - menuMan.width
+	&& inputMan.y < height && inputMan.y > height - menuMan.height) {	// check menu
+		for (var row = 0; row < menuMan.rows; ++row) {
+			for (var col = 0; col < menuMan.cols; ++col) {
+				if (inputMan.x > width - menuMan.bWidth * (col+1) && inputMan.y > height - menuMan.bHeight * (row+1)) {
+					menuMan.button = row * menuMan.cols + col;
+					if (menuMan.button < buttons.length) {
+						hudMan.inputText = buttons[menuMan.button];
+					}
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
+function getRowCol(scene) {
+	inputMan.col = Math.floor((inputMan.x - scene.x) / (displayMan.cellSize * scene.scale));
+	inputMan.row = Math.floor((inputMan.y - scene.y) / (displayMan.cellSize * scene.scale));
+	inputMan.rot = -1;
+	hudMan.inputText = inputMan.row + "," + inputMan.col;
+}
+
+function getRot(dX, dY) {
+	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {	// not for routed pieces
+		if (dX >= dY && dX <= -dY) {	// up
+			inputMan.rot = 0;
+		}
+		else if (dX >= dY && dX >= -dY) {	// right
+			inputMan.rot = 1;
+		}
+		else if (dX <= dY && dX >= -dY) {	// down
+			inputMan.rot = 2;
+		}
+		else {	// left
+			inputMan.rot = 3;
+		}
+
+		inputMan.row = gameMan.pRow;
+		inputMan.col = gameMan.pCol;
+		var radius = displayMan.cellSize * displayMan.cellSize * 3;
+		if (gameMan.pRot == inputMan.rot || dX*dX + dY*dY < radius) {	// forward or inside radius
+			if (inputMan.rot == 0) {
+				inputMan.row--;
+			}
+			else if (inputMan.rot == 1) {
+				inputMan.col++;
+			}
+			else if (inputMan.rot == 2) {
+				inputMan.row++;
+			}
+			else if (inputMan.rot == 3) {
+				inputMan.col--;
+			}
+		}
+	}
 }
 
 function keyDown(event) {
