@@ -123,7 +123,7 @@ function mouseMove(event) {
 	if (inputMan.currentTouchId > -1) {
 		getXY(event);
 		if (inputMan.secondTouchId > -1) {
-			pinch(event);
+			pinchZoom(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
 		} else if (!inputMan.menu && gameMan.winner < 0 && isTouch(event, inputMan.currentTouchId)) {
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == "menus") {
@@ -325,20 +325,16 @@ function isTouch(event, touchId) {
 	return true;	// all touches are deemed to "match" if touch API is not supported
 }
 
-function setPinchInfo(x1, y1, x2, y2) {
-	var dx = x2 - x1;
-	var dy = y2 - y1;
-	inputMan.pinchDistance = Math.sqrt(dx*dx + dy*dy); // TODO: sqrt necessary?
-}
-
 function pinchStart(x1, y1, x2, y2) {
 	phalanx.length = 0;
 	revertGrid();
 	setPinchInfo(x1, y1, x2, y2);
 }
 
-function pinch(event) {
-	pinchZoom(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+function setPinchInfo(x1, y1, x2, y2) {
+	var dx = x2 - x1;
+	var dy = y2 - y1;
+	inputMan.pinchDistance = Math.sqrt(dx*dx + dy*dy); // TODO: sqrt necessary?
 }
 
 function pinchZoom(x1, y1, x2, y2) {
