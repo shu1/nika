@@ -173,19 +173,13 @@ function setTouch(event) {
 			inputMan.x1 = event.changedTouches[0].pageX;
 			inputMan.y1 = event.changedTouches[0].pageY;
 			if (event.changedTouches[1] && inputMan.secondTouchId == -1) { // if second touch hits simultaneously
-				inputMan.secondTouchId = event.changedTouches[1].identifier;
-				inputMan.x2 = event.changedTouches[1].pageX;
-				inputMan.y2 = event.changedTouches[1].pageY;
-				pinchStart(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+				pinch(event.changedTouches[1]);
 				return false;
 			}
 			return true;
 		}
 		else if (inputMan.secondTouchId == -1) {
-			inputMan.secondTouchId = event.changedTouches[0].identifier;
-			inputMan.x2 = event.changedTouches[0].pageX;
-			inputMan.y2 = event.changedTouches[0].pageY;
-			pinchStart(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+			pinch(event.changedTouches[0]);
 		}
 	}
 	else if (navigator.msPointerEnabled) {
@@ -236,13 +230,16 @@ function isTouch(event, touchId) {
 	return true;	// all touches are deemed to "match" if touch API is not supported
 }
 
-function pinchStart(x1, y1, x2, y2) {
+function pinch(changedTouch) {
+	inputMan.secondTouchId = changedTouch.identifier;
+	inputMan.x2 = changedTouch.pageX;
+	inputMan.y2 = changedTouch.pageY;
 	phalanx.length = 0;
 	revertGrid();
-	setPinchInfo(x1, y1, x2, y2);
+	setPinchDistance(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
 }
 
-function setPinchInfo(x1, y1, x2, y2) {
+function setPinchDistance(x1, y1, x2, y2) {
 	var dx = x2 - x1;
 	var dy = y2 - y1;
 	inputMan.pinchDistance = Math.sqrt(dx*dx + dy*dy); // TODO: sqrt necessary?
@@ -287,7 +284,7 @@ function getXY(event) {
 		if (isTouch(event, inputMan.secondTouchId)) {
 			inputMan.x2 = event.layerX;
 			inputMan.y2 = event.layerY;
-			setPinchInfo(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+			setPinchDistance(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);	// TODO does this make more sense somewhere else?
 		}
 	}
 	else {	// Other (PC)
