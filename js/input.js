@@ -35,7 +35,8 @@ function mouseMove(event) {
 		getXY(event);
 		if (inputMan.secondTouchId > -1) {
 			pinchZoom(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
-		} else if (!inputMan.menu && gameMan.winner < 0 && isTouch(event, inputMan.currentTouchId)) {
+		}
+		else if (!inputMan.menu && isTouch(event, inputMan.currentTouchId)) {
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == "menus") {
 				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - displayMan.screenWidth)/2;
@@ -43,7 +44,6 @@ function mouseMove(event) {
 				if (gameMan.menu == "title") {
 					x -= 128;	// offset to coordinates of buttons
 					y -= 330;
-					console.log(Math.floor(y / displayMan.activeHeight));
 					if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*5) {
 						menus["title"] = Math.floor(y / displayMan.activeHeight);
 					}
@@ -59,29 +59,31 @@ function mouseMove(event) {
 					}
 				}
 			}
-			getRowCol(scene);
-			var dX = inputMan.x - inputMan.pX;
-			var dY = inputMan.y - inputMan.pY;
-			if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
-				dX /= scene.scale;
-				dY /= scene.scale;
-				if (Math.abs(dX) > displayMan.cellSize/2 || Math.abs(dY) > displayMan.cellSize/2) {	// inside cell is deadzone
-					getRot(dX, dY, scene);
-					rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
-				}
-				else {
-					resetRotation();
-					inputMan.row = gameMan.pRow;
-					inputMan.col = gameMan.pCol;
-				}
-				event.preventDefault();
-			}
-			else {	// pan
-				if (pan(dX, dY)) {
+			else if (gameMan.scene == "board" && gameMan.winner < 0) {
+				getRowCol(scene);
+				var dX = inputMan.x - inputMan.pX;
+				var dY = inputMan.y - inputMan.pY;
+				if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
+					dX /= scene.scale;
+					dY /= scene.scale;
+					if (Math.abs(dX) > displayMan.cellSize/2 || Math.abs(dY) > displayMan.cellSize/2) {	// inside cell is deadzone
+						getRot(dX, dY, scene);
+						rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
+					}
+					else {
+						resetRotation();
+						inputMan.row = gameMan.pRow;
+						inputMan.col = gameMan.pCol;
+					}
 					event.preventDefault();
 				}
-				inputMan.pX = inputMan.x;
-				inputMan.pY = inputMan.y;
+				else {	// pan
+					if (pan(dX, dY)) {
+						event.preventDefault();
+					}
+					inputMan.pX = inputMan.x;
+					inputMan.pY = inputMan.y;
+				}
 			}
 		}
 	}
@@ -110,7 +112,6 @@ function mouseUp(event) {
 			else if (gameMan.menu == "option") {
 				x -= (scene.width - displayMan.screenWidth)/2;	// offset to coordinates of image
 				y -= (scene.height - displayMan.screenHeight)/2;
-				console.log(x + "," + y);
 				if (x > 656 && x < 888 && y > 868 && y < 924) {
 					gameMan.menu = "credit";
 				}
@@ -201,10 +202,9 @@ function setTouch(event) {
 			setPinchDistance(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
 		}
 	}
-	else {	// cancel all touches if touch API not supported
-		if (!inputMan.menu) {
-			// Prevents right clicks allowing rotates without using actions on PC
-			revertGrid();
+	else {	// Cancel all touches if touch API not supported
+		if (gameMan.scene == "board" && !inputMan.menu) {	// "!inputMan.menu" is workaround for AI
+			revertGrid();	// Prevents right clicks allowing rotates without using actions on PC
 		}
 		inputMan.currentTouchId = 0;
 		return true;
@@ -260,8 +260,7 @@ function pinchZoom(x1, y1, x2, y2) {
 	var oldScale = scene.scale;
 
 	inputMan.pinchDistance = distance;
-
-	scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
+	scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));	// TODO min/maxScales need to be set for menus
 	scene.x = centerX - (centerX - scene.x) * scene.scale / oldScale;
 	scene.y = centerY - (centerY - scene.y) * scene.scale / oldScale;
 
