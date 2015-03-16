@@ -212,14 +212,6 @@ function setTouch(event) {
 	return false;
 }
 
-function getTouch(event, touchId) {
-	for (var i = event.touches.length-1; i >= 0; --i) {
-		if (event.touches[i].identifier == touchId) {
-			return event.touches[i];
-		}
-	}
-}
-
 function endTouches() {
 	inputMan.currentTouchId = -1;
 	inputMan.secondTouchId = -1;
@@ -278,8 +270,16 @@ function pinchZoom(x1, y1, x2, y2) {
 
 function getXY(event) {
 	if (event.touches) {	// iOS and Android Touch API
-		var currentTouch = getTouch(event, inputMan.currentTouchId);
-		var secondTouch = getTouch(event, inputMan.secondTouchId);
+		var currentTouch, secondTouch;
+		for (var i = event.touches.length-1; i >= 0; --i) {
+			if (event.touches[i].identifier == inputMan.currentTouchId) {
+				currentTouch = event.touches[i];
+			}
+			else if (event.touches[i].identifier == inputMan.secondTouchId) {
+				secondTouch = event.touches[i];
+			}
+		}
+
 		if (currentTouch) {
 			inputMan.x = currentTouch.pageX;
 			inputMan.y = currentTouch.pageY;
