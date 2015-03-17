@@ -450,7 +450,7 @@ function setRings() {
 		grid[phalanx[i].row][phalanx[i].col].ring = 0;
 	}
 
-	if (inputMan.currentTouchId > -1) {
+	if (inputMan.touchID >= 0) {
 		if (phalanx.length > 1) {
 			if (checkMovePhalanx(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 				var dRow = inputMan.row - gameMan.pRow;

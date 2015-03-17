@@ -53,7 +53,9 @@ var gameMan = {
 }
 
 var inputMan = {
-	click:false,
+	pinchDistance:0,
+	touchID2:-1,
+	touchID:-1,
 	menu:false,
 	time:0,
 	row:-1,
@@ -62,10 +64,7 @@ var inputMan = {
 	pX:0,
 	pY:0,
 	x:0,
-	y:0,
-	currentTouchId:-1,
-	secondTouchId: -1,
-	pinchDistance: 0
+	y:0
 }
 
 var menuMan = {

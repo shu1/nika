@@ -31,12 +31,12 @@ function mouseDown(event) {
 }
 
 function mouseMove(event) {
-	if (inputMan.currentTouchId > -1) {
+	if (inputMan.touchID >= 0) {
 		getXY(event);
-		if (inputMan.secondTouchId > -1) {
+		if (inputMan.touchID2 >= 0) {
 			pinchZoom(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
 		}
-		else if (!inputMan.menu && isTouch(event, inputMan.currentTouchId)) {
+		else if (!inputMan.menu && isTouch(event, inputMan.touchID)) {
 			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == "menus") {
 				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - displayMan.screenWidth)/2;
@@ -90,10 +90,10 @@ function mouseMove(event) {
 }
 
 function mouseUp(event) {
-	if (isTouch(event, inputMan.secondTouchId)) {
+	if (isTouch(event, inputMan.touchID2)) {
 		endTouches();
 	}
-	if (isTouch(event, inputMan.currentTouchId)) {
+	if (isTouch(event, inputMan.touchID)) {
 		hudMan.inputText += " up";
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
@@ -169,34 +169,34 @@ function mouseUp(event) {
 
 function setTouch(event) {
 	if (event.changedTouches && event.changedTouches.length > 0) {	// respect touch ID if touch API supported
-		if (inputMan.currentTouchId == -1) {
-			inputMan.currentTouchId = event.changedTouches[0].identifier;
+		if (inputMan.touchID < 0) {
+			inputMan.touchID = event.changedTouches[0].identifier;
 			inputMan.x = event.changedTouches[0].pageX;
 			inputMan.y = event.changedTouches[0].pageY;
-			if (event.changedTouches[1] && inputMan.secondTouchId == -1) { // if second touch hits simultaneously
+			if (event.changedTouches[1] && inputMan.touchID2 < 0) { // if second touch hits simultaneously
 				pinch(event.changedTouches[1]);
 				return false;
 			}
 			return true;
 		}
-		else if (inputMan.secondTouchId == -1) {
+		else if (inputMan.touchID2 < 0) {
 			pinch(event.changedTouches[0]);
 		}
 	}
 	else if (navigator.msPointerEnabled) {
-		if (inputMan.currentTouchId == -1) {
-			inputMan.currentTouchId = event.pointerId;
+		if (inputMan.touchID < 0) {
+			inputMan.touchID = event.pointerId;
 			inputMan.x = event.layerX;
 			inputMan.y = event.layerY;
 			return true;
 		}
-		else if (inputMan.secondTouchId == -1) {
+		else if (inputMan.touchID2 < 0) {
 			if (gameMan.scene == "board") {
 				phalanx.length = 0;
 				revertGrid();
 			}
 
-			inputMan.secondTouchId = event.pointerId;
+			inputMan.touchID2 = event.pointerId;
 			inputMan.x2 = event.layerX;
 			inputMan.y2 = event.layerY;
 			setPinchDistance(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
@@ -206,28 +206,28 @@ function setTouch(event) {
 		if (gameMan.scene == "board" && !inputMan.menu) {	// "!inputMan.menu" is workaround for AI
 			revertGrid();	// Prevents right clicks allowing rotates without using actions on PC
 		}
-		inputMan.currentTouchId = 0;
+		inputMan.touchID = 0;
 		return true;
 	}
 	return false;
 }
 
 function endTouches() {
-	inputMan.currentTouchId = -1;
-	inputMan.secondTouchId = -1;
+	inputMan.touchID = -1;
+	inputMan.touchID2 = -1;
 }
 
-function isTouch(event, touchId) {
+function isTouch(event, touchID) {
 	if (event.changedTouches) {	// if touch API supported
 		for (var i = event.changedTouches.length-1; i >= 0; --i) {
-			if (event.changedTouches[i].identifier == touchId) {
+			if (event.changedTouches[i].identifier == touchID) {
 				return true;
 			}
 		}
 		return false;
 	}
 	else if (navigator.msPointerEnabled) {
-		return event.pointerId == touchId;
+		return event.pointerId == touchID;
 	}
 	return true;	// all touches are deemed to "match" if touch API is not supported
 }
@@ -238,7 +238,7 @@ function pinch(changedTouch) {
 		revertGrid();
 	}
 
-	inputMan.secondTouchId = changedTouch.identifier;
+	inputMan.touchID2 = changedTouch.identifier;
 	inputMan.x2 = changedTouch.pageX;
 	inputMan.y2 = changedTouch.pageY;
 	setPinchDistance(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
@@ -271,10 +271,10 @@ function getXY(event) {
 	if (event.touches) {	// iOS and Android Touch API
 		var currentTouch, secondTouch;
 		for (var i = event.touches.length-1; i >= 0; --i) {
-			if (event.touches[i].identifier == inputMan.currentTouchId) {
+			if (event.touches[i].identifier == inputMan.touchID) {
 				currentTouch = event.touches[i];
 			}
-			else if (event.touches[i].identifier == inputMan.secondTouchId) {
+			else if (event.touches[i].identifier == inputMan.touchID2) {
 				secondTouch = event.touches[i];
 			}
 		}
@@ -289,11 +289,11 @@ function getXY(event) {
 		}
 	}
 	else if (navigator.msPointerEnabled) { // Windows MSPointer API
-		if (isTouch(event, inputMan.currentTouchId)) {
+		if (isTouch(event, inputMan.touchID)) {
 			inputMan.x = event.layerX;
 			inputMan.y = event.layerY;
 		}
-		if (isTouch(event, inputMan.secondTouchId)) {
+		if (isTouch(event, inputMan.touchID2)) {
 			inputMan.x2 = event.layerX;
 			inputMan.y2 = event.layerY;
 		}
