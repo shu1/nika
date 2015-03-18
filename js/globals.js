@@ -1,15 +1,16 @@
 "use strict";
 
-var gpCanvas, gpContext, muralCanvas, tvContext, grid, images={}, sounds={}, scenes={}, gameStates=[], phalanx=[], murals=[];
+var gpCanvas, gpContext, muralCanvas, tvContext, grid, images={}, sounds={}, scenes={}, menus={}, gameStates=[], phalanx=[], murals=[];
 
 var displayMan = {
 	cellSize:96,
 	boardWidth:2016,
 	boardHeight:1440,
-	ruleWidth:1536,
-	ruleHeight:1024,
+	screenWidth:1536,
+	screenHeight:1024,
 	arrowWidth:96,
 	arrowHeight:416,
+	activeHeight:110,
 	muralX:628,
 	muralY:624,
 	muralWidth:758,
@@ -24,8 +25,8 @@ var displayMan = {
 }
 
 var audioMan = {
-	sound:10,
-	music:10
+	music:0.5,
+	sound:0.5
 }
 
 var eventMan = {
@@ -44,6 +45,7 @@ var gameMan = {
 	actions:2,
 	player:0,
 	scene:"",
+	menu:"",
 	rules:0,
 	pRow:-1,
 	pCol:-1,
@@ -51,7 +53,9 @@ var gameMan = {
 }
 
 var inputMan = {
-	click:false,
+	pinchDistance:0,
+	touchID2:-1,
+	touchID:-1,
 	menu:false,
 	time:0,
 	row:-1,
@@ -60,10 +64,7 @@ var inputMan = {
 	pX:0,
 	pY:0,
 	x:0,
-	y:0,
-	currentTouchId:-1,
-	secondTouchId: -1,
-	pinchDistance: 0
+	y:0
 }
 
 var menuMan = {
@@ -87,15 +88,15 @@ var	hudMan = {
 }
 
 var buttons = [
-	"  Menu",
 	"  Close",
 	" Debug",
 	"     AI",
 	"  Zoom",
 	"  Pass",
 	"  Undo",
-	"  Rules",
 	"Tutorial",
+	"  Rules",
+	"  Menu"
 ]
 
 var mainBoard = [

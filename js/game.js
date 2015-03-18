@@ -233,7 +233,7 @@ function playerAction() {
 
 function playSound(event) {
 	if (sounds[event]) {
-		sounds[event].volume = Math.pow(audioMan.sound / 10, 2);
+		sounds[event].volume = Math.pow(audioMan.sound, 2);
 		sounds[event].play();
 	}
 }
@@ -305,15 +305,22 @@ function clearRallyHighlights() {
 	}
 }
 
-function menuButton(button) {
-	switch(button) {
+function menuButton(index) {
+	switch(index) {
 	case 0:
-		if (gameMan.scene == "rules") {
+		if (!menuMan.show && gameMan.scene == "rules") {
 			setScene("board");
 			hudMan.pageText = "";
 		}
+		else if (!menuMan.show && gameMan.menu == "option") {
+			gameMan.menu = "title";
+		}
+		else if (!menuMan.show && gameMan.menu == "credit") {
+			gameMan.menu = "option";
+		}
 		else {
 			menuMan.show = !menuMan.show;
+			menuMan.button = 0;
 		}
 		break;
 	case 1:
@@ -333,18 +340,46 @@ function menuButton(button) {
 		undo();
 		break;
 	case 6:
-		setScene("rules");
-		menuMan.show = false;
-		menuMan.button = 0;
-		hudMan.pageText = "Rule " + gameMan.rules;
-		break;
-	case 7:
 		if (gameMan.tutorialStep < 0) {
 			nextTutorialStep();
 		}
 		else {
 			endTutorial();
 		}
+		break;
+	case 7:
+		if (gameMan.scene == "rules") {
+				setScene("board");
+				hudMan.pageText = "";
+			}
+		else {
+			setScene("rules");
+			hudMan.pageText = "Rule " + gameMan.rules;
+		}
+		break;
+	case 8:
+		setScene("menus");
+		break;
+	}
+}
+
+function menuTitle(index) {
+	switch(index) {
+	case 0:
+		newGame();	// no break to set scene to board
+	case 1:
+		setScene("board");
+		break;
+	case 2:
+		setScene("board");
+		nextTutorialStep();
+		break;
+	case 3:
+		setScene("rules");
+		hudMan.pageText = "Rule " + gameMan.rules;
+		break;
+	case 4:
+		gameMan.menu = "option";
 		break;
 	}
 }
