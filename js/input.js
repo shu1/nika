@@ -168,22 +168,7 @@ function mouseUp(event) {
 }
 
 function setTouch(event) {
-	if (event.changedTouches && event.changedTouches.length > 0) {
-		if (inputMan.touchID < 0) {
-			inputMan.touchID = event.changedTouches[0].identifier;
-			inputMan.x = event.changedTouches[0].pageX;
-			inputMan.y = event.changedTouches[0].pageY;
-			if (event.changedTouches[1] && inputMan.touchID2 < 0) {	// if second touch hits simultaneously
-				pinch(event.changedTouches[1]);
-				return false;
-			}
-			return true;
-		}
-		else if (inputMan.touchID2 < 0) {
-			pinch(event.changedTouches[0]);
-		}
-	}
-	else if (navigator.msPointerEnabled) {
+	if (navigator.msPointerEnabled) {
 		if (inputMan.touchID < 0) {
 			inputMan.touchID = event.pointerId;
 			inputMan.x = event.layerX;
@@ -200,6 +185,21 @@ function setTouch(event) {
 			inputMan.x2 = event.layerX;
 			inputMan.y2 = event.layerY;
 			setPinchDistance(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+		}
+	}
+	else if (event.changedTouches && event.changedTouches.length > 0) {
+		if (inputMan.touchID < 0) {
+			inputMan.touchID = event.changedTouches[0].identifier;
+			inputMan.x = event.changedTouches[0].pageX;
+			inputMan.y = event.changedTouches[0].pageY;
+			if (event.changedTouches[1] && inputMan.touchID2 < 0) {	// if second touch hits simultaneously
+				pinch(event.changedTouches[1]);
+				return false;
+			}
+			return true;
+		}
+		else if (inputMan.touchID2 < 0) {
+			pinch(event.changedTouches[0]);
 		}
 	}
 	else {	// mouse
