@@ -142,6 +142,7 @@ function reSize() {
 		gpCanvas.width = window.innerWidth;
 		gpCanvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 	}
+	displayMan.screenDistance = Math.sqrt(gpCanvas.width*gpCanvas.width + gpCanvas.height*gpCanvas.height);
 
 	var minScale = 1/2, maxScale = 2/3;	// defaults for browser and ipad
 	if (gpCanvas.width == 2048 && gpCanvas.height == 1536) {	// ipad retina

@@ -327,22 +327,21 @@ function setPinch(changedTouch) {
 }
 
 function setPinchDistance(x1, y1, x2, y2) {
-	inputMan.pinchDistance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)); // TODO sqrt() necessary?
+	inputMan.pinchDistance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
 }
 
 function pinchZoom(x1, y1, x2, y2) {
-	var distance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+	var distance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)); // TODO sqrt necessary?
 	var centerX = (x1 + x2) / 2;
-	var centerY = (y1 +	y2) / 2;
-
+	var centerY = (y1 + y2) / 2;
 	var scene = scenes[gameMan.scene];
-	var dScale = (distance - inputMan.pinchDistance) / 500;
-	var oldScale = scene.scale;
+	var pScale = scene.scale;
+	var dScale = (distance - inputMan.pinchDistance) / displayMan.screenDistance;	// TODO check on this scaling algorithm
 
 	inputMan.pinchDistance = distance;
 	scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));	// TODO min/maxScales need to be set for menus
-	scene.x = centerX - (centerX - scene.x) * scene.scale / oldScale;
-	scene.y = centerY - (centerY - scene.y) * scene.scale / oldScale;
+	scene.x = centerX - (centerX - scene.x) * scene.scale / pScale;
+	scene.y = centerY - (centerY - scene.y) * scene.scale / pScale;
 
 	pan(0,0);
 }
