@@ -91,7 +91,7 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	if (isTouch(event, inputMan.touchID2)) {
-		endTouches();
+		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 	}
 	if (isTouch(event, inputMan.touchID)) {
 		hudMan.inputText += " up";
@@ -160,8 +160,8 @@ function mouseUp(event) {
 		}
 
 		clearRallyHighlights();
-		endTouches();
-		gameMan.selection = false;
+		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
+		gameMan.selection = false;	
 		inputMan.menu = false;
 		menuMan.button = 0;	// reset for key input
 	}
@@ -212,13 +212,11 @@ function setTouch(event) {
 	return false;
 }
 
-function endTouches() {
-	inputMan.touchID = -1;
-	inputMan.touchID2 = -1;
-}
-
 function isTouch(event, touchID) {
-	if (event.changedTouches) {	// if touch API supported
+	if (navigator.msPointerEnabled) {
+		return event.pointerId == touchID;
+	}
+	else if (event.changedTouches) {
 		for (var i = event.changedTouches.length-1; i >= 0; --i) {
 			if (event.changedTouches[i].identifier == touchID) {
 				return true;
@@ -226,10 +224,7 @@ function isTouch(event, touchID) {
 		}
 		return false;
 	}
-	else if (navigator.msPointerEnabled) {
-		return event.pointerId == touchID;
-	}
-	return true;	// all touches are deemed to "match" if touch API is not supported
+	return true;	// PC, so all mouse clicks are valid
 }
 
 function pinch(changedTouch) {
@@ -268,37 +263,39 @@ function pinchZoom(x1, y1, x2, y2) {
 }
 
 function getXY(event) {
-	if (event.touches) {	// iOS and Android Touch API
-		var currentTouch, secondTouch;
-		for (var i = event.touches.length-1; i >= 0; --i) {
-			if (event.touches[i].identifier == inputMan.touchID) {
-				currentTouch = event.touches[i];
-			}
-			else if (event.touches[i].identifier == inputMan.touchID2) {
-				secondTouch = event.touches[i];
-			}
-		}
-
-		if (currentTouch) {
-			inputMan.x = currentTouch.pageX;
-			inputMan.y = currentTouch.pageY;
-		}
-		if (secondTouch) {
-			inputMan.x2 = secondTouch.pageX;
-			inputMan.y2 = secondTouch.pageY;
-		}
-	}
-	else if (navigator.msPointerEnabled) { // Windows MSPointer API
+	if (navigator.msPointerEnabled) {
 		if (isTouch(event, inputMan.touchID)) {
 			inputMan.x = event.layerX;
 			inputMan.y = event.layerY;
 		}
+
 		if (isTouch(event, inputMan.touchID2)) {
 			inputMan.x2 = event.layerX;
 			inputMan.y2 = event.layerY;
 		}
 	}
-	else {	// Other (PC)
+	else if (event.touches) {
+		var touch, touch2;
+		for (var i = event.touches.length-1; i >= 0; --i) {
+			if (event.touches[i].identifier == inputMan.touchID) {
+				touch = event.touches[i];
+			}
+			else if (event.touches[i].identifier == inputMan.touchID2) {
+				touch2 = event.touches[i];
+			}
+		}
+
+		if (touch) {
+			inputMan.x = touch.pageX;
+			inputMan.y = touch.pageY;
+		}
+
+		if (touch2) {
+			inputMan.x2 = touch2.pageX;
+			inputMan.y2 = touch2.pageY;
+		}
+	}
+	else {	// PC
 		inputMan.x = event.layerX;
 		inputMan.y = event.layerY;
 	}
