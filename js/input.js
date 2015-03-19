@@ -276,53 +276,50 @@ function setTouch(event) {
 	if (navigator.msPointerEnabled) {
 		if (inputMan.touchID < 0) {
 			inputMan.touchID = event.pointerId;
-			inputMan.x = event.layerX;
-			inputMan.y = event.layerY;
-			return true;
 		}
-		else if (inputMan.touchID2 < 0) {
-			if (gameMan.scene == "board") {
-				phalanx.length = 0;
-				revertGrid();
-			}
-
+		else if (inputMan.touchID2 < 0) {	// 2nd touch
+			setTouch2();
 			inputMan.touchID2 = event.pointerId;
 			inputMan.x2 = event.layerX;
 			inputMan.y2 = event.layerY;
 			setPinchDistance(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+			return false;
 		}
 	}
-	else if (event.changedTouches && event.changedTouches.length > 0) {
+	else if (event.changedTouches) {
 		if (inputMan.touchID < 0) {
 			inputMan.touchID = event.changedTouches[0].identifier;
 			inputMan.x = event.changedTouches[0].pageX;
 			inputMan.y = event.changedTouches[0].pageY;
-			if (event.changedTouches[1] && inputMan.touchID2 < 0) {	// if second touch hits simultaneously
-				pinch(event.changedTouches[1]);
+
+			if (event.changedTouches[1] && inputMan.touchID2 < 0) {	// if 2nd touch hits simultaneously
+				setPinch(event.changedTouches[1]);
 				return false;
 			}
-			return true;
 		}
 		else if (inputMan.touchID2 < 0) {
-			pinch(event.changedTouches[0]);
+			setPinch(event.changedTouches[0]);
+			return false;
 		}
 	}
 	else {	// mouse
+		inputMan.touchID = 0;	// set arbitrary ID greater than -1
 		if (gameMan.scene == "board" && !inputMan.menu) {	// TODO "!inputMan.menu" is workaround for AI
 			revertGrid();	// prevent right click allowing rotate without using actions
 		}
-		inputMan.touchID = 0;	// set arbitrary ID greater than -1
-		return true;
 	}
-	return false;
+	return true;
 }
 
-function pinch(changedTouch) {
-	if (gameMan.scene == "board") {
+function setTouch2() {
+	if (gameMan.scene == "board") {	// reset game actions for zoom
 		phalanx.length = 0;
 		revertGrid();
 	}
+}
 
+function setPinch(changedTouch) {
+	setTouch2();
 	inputMan.touchID2 = changedTouch.identifier;
 	inputMan.x2 = changedTouch.pageX;
 	inputMan.y2 = changedTouch.pageY;
@@ -330,9 +327,7 @@ function pinch(changedTouch) {
 }
 
 function setPinchDistance(x1, y1, x2, y2) {
-	var dx = x2 - x1;
-	var dy = y2 - y1;
-	inputMan.pinchDistance = Math.sqrt(dx*dx + dy*dy); // TODO sqrt necessary?
+	inputMan.pinchDistance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)); // TODO sqrt() necessary?
 }
 
 function pinchZoom(x1, y1, x2, y2) {
