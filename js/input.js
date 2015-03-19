@@ -275,24 +275,16 @@ function getXY(event) {
 		}
 	}
 	else if (event.touches) {
-		var touch, touch2;
 		for (var i = event.touches.length-1; i >= 0; --i) {
-			if (event.touches[i].identifier == inputMan.touchID) {
-				touch = event.touches[i];
+			var touch = event.touches[i];
+			if (touch.identifier == inputMan.touchID) {
+				inputMan.x = touch.pageX;
+				inputMan.y = touch.pageY;
 			}
-			else if (event.touches[i].identifier == inputMan.touchID2) {
-				touch2 = event.touches[i];
+			else if (touch.identifier == inputMan.touchID2) {
+				inputMan.x2 = touch.pageX;
+				inputMan.y2 = touch.pageY;
 			}
-		}
-
-		if (touch) {
-			inputMan.x = touch.pageX;
-			inputMan.y = touch.pageY;
-		}
-
-		if (touch2) {
-			inputMan.x2 = touch2.pageX;
-			inputMan.y2 = touch2.pageY;
 		}
 	}
 	else {	// PC
