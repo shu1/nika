@@ -148,7 +148,7 @@ function mouseUp(event) {
 			 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
 			 	checkTutorialSelection();
 			}
-			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {	// TODO: change order of this else if?
+			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {	// TODO change order of this else if?
 			}
 			else if (gameMan.selection && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
 				togglePhalanxPiece(inputMan.row, inputMan.col);
@@ -168,12 +168,12 @@ function mouseUp(event) {
 }
 
 function setTouch(event) {
-	if (event.changedTouches && event.changedTouches.length > 0) {	// respect touch ID if touch API supported
+	if (event.changedTouches && event.changedTouches.length > 0) {
 		if (inputMan.touchID < 0) {
 			inputMan.touchID = event.changedTouches[0].identifier;
 			inputMan.x = event.changedTouches[0].pageX;
 			inputMan.y = event.changedTouches[0].pageY;
-			if (event.changedTouches[1] && inputMan.touchID2 < 0) { // if second touch hits simultaneously
+			if (event.changedTouches[1] && inputMan.touchID2 < 0) {	// if second touch hits simultaneously
 				pinch(event.changedTouches[1]);
 				return false;
 			}
@@ -202,11 +202,11 @@ function setTouch(event) {
 			setPinchDistance(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
 		}
 	}
-	else {	// Cancel all touches if touch API not supported
-		if (gameMan.scene == "board" && !inputMan.menu) {	// "!inputMan.menu" is workaround for AI
-			revertGrid();	// Prevents right clicks allowing rotates without using actions on PC
+	else {	// mouse
+		if (gameMan.scene == "board" && !inputMan.menu) {	// TODO "!inputMan.menu" is workaround for AI
+			revertGrid();	// prevent right click allowing rotate without using actions
 		}
-		inputMan.touchID = 0;
+		inputMan.touchID = 0;	// set arbitrary ID greater than -1
 		return true;
 	}
 	return false;
@@ -224,7 +224,7 @@ function isTouch(event, touchID) {
 		}
 		return false;
 	}
-	return true;	// PC, so all mouse clicks are valid
+	return true;	// mouse, all clicks are valid
 }
 
 function pinch(changedTouch) {
@@ -242,7 +242,7 @@ function pinch(changedTouch) {
 function setPinchDistance(x1, y1, x2, y2) {
 	var dx = x2 - x1;
 	var dy = y2 - y1;
-	inputMan.pinchDistance = Math.sqrt(dx*dx + dy*dy); // TODO: sqrt necessary?
+	inputMan.pinchDistance = Math.sqrt(dx*dx + dy*dy); // TODO sqrt necessary?
 }
 
 function pinchZoom(x1, y1, x2, y2) {
@@ -287,7 +287,7 @@ function getXY(event) {
 			}
 		}
 	}
-	else {	// PC
+	else {	// mouse
 		inputMan.x = event.layerX;
 		inputMan.y = event.layerY;
 	}
@@ -465,13 +465,13 @@ function keyDown(event) {
 		break;
 	}
 
+	// highlight menu button
 	inputMan.menu = menuMan.show || gameMan.scene == "board" || gameMan.scene == "rules" || gameMan.menu == "credit" ||
-		gameMan.menu == "title" && menus["title"] == 5 || gameMan.menu == "option" && menus["option"] == 3;	// highlight menu button
+		gameMan.menu == "title" && menus["title"] == 5 || gameMan.menu == "option" && menus["option"] == 3;
 }
 
 function keyPrev() {
 	hudMan.inputText = "Prev";
-
 	if (menuMan.show) {
 		if (menuMan.button < buttons.length-1) {
 			menuMan.button++;
@@ -496,7 +496,6 @@ function keyPrev() {
 
 function keyNext() {
 	hudMan.inputText = "Next";
-
 	if (menuMan.show) {
 		if (menuMan.button > 0) {
 			menuMan.button--;

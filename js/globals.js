@@ -57,7 +57,6 @@ var inputMan = {
 	touchID2:-1,
 	touchID:-1,
 	menu:false,
-	time:0,
 	row:-1,
 	col:-1,
 	rot:-1,
