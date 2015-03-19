@@ -274,9 +274,9 @@ function getXY(event) {
 			inputMan.y2 = event.layerY;
 		}
 	}
-	else if (event.touches) {
-		for (var i = event.touches.length-1; i >= 0; --i) {
-			var touch = event.touches[i];
+	else if (event.changedTouches) {
+		for (var i = event.changedTouches.length-1; i >= 0; --i) {
+			var touch = event.changedTouches[i];
 			if (touch.identifier == inputMan.touchID) {
 				inputMan.x = touch.pageX;
 				inputMan.y = touch.pageY;
