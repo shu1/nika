@@ -264,12 +264,12 @@ function pinchZoom(x1, y1, x2, y2) {
 
 function getXY(event) {
 	if (navigator.msPointerEnabled) {
-		if (isTouch(event, inputMan.touchID)) {
+		if (event.pointerId == inputMan.touchID) {
 			inputMan.x = event.layerX;
 			inputMan.y = event.layerY;
 		}
 
-		if (isTouch(event, inputMan.touchID2)) {
+		if (event.pointerId == inputMan.touchID2) {
 			inputMan.x2 = event.layerX;
 			inputMan.y2 = event.layerY;
 		}
