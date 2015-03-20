@@ -339,7 +339,7 @@ function pinchZoom(x1, y1, x2, y2) {
 	var dScale = (distance - inputMan.pinchDistance) / displayMan.screenDistance;	// TODO check on this scaling algorithm
 
 	inputMan.pinchDistance = distance;
-	scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));	// TODO min/maxScales need to be set for menus
+	scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
 	scene.x = centerX - (centerX - scene.x) * scene.scale / pScale;
 	scene.y = centerY - (centerY - scene.y) * scene.scale / pScale;
 
