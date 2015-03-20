@@ -38,11 +38,23 @@ function mouseDown(event) {
 function mouseMove(event) {
 	if (inputMan.touchID >= 0) {
 		getXY(event);
+		var scene = scenes[gameMan.scene];
+
 		if (inputMan.touchID2 >= 0) {
-			pinchZoom(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+			var pDistance = inputMan.pinchDistance;
+			setPinchDistance();
+
+			var pScale = scene.scale;
+			var dScale = (inputMan.pinchDistance - pDistance) / displayMan.screenDistance;	// TODO check on this scaling algorithm
+			scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
+
+			var x = (inputMan.x + inputMan.x2) / 2;	// center of pinch
+			var y = (inputMan.y + inputMan.y2) / 2;
+			scene.x = x - (x - scene.x) * scene.scale / pScale;
+			scene.y = y - (y - scene.y) * scene.scale / pScale;
+			pan(0,0);
 		}
 		else if (!inputMan.menu && isTouch(event, inputMan.touchID)) {
-			var scene = scenes[gameMan.scene];
 			if (gameMan.scene == "menus") {
 				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - displayMan.screenWidth)/2;
 				var y = (inputMan.y - scene.y) / scene.scale - (scene.height - displayMan.screenHeight)/2;
@@ -337,22 +349,6 @@ function setPinchDistance() {
 	var dX = inputMan.x2 - inputMan.x;
 	var dY = inputMan.y2 - inputMan.y;
 	inputMan.pinchDistance = Math.sqrt(dX*dX + dY*dY); // TODO sqrt necessary?
-}
-
-function pinchZoom(x1, y1, x2, y2) {
-	var distance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1)); // TODO sqrt necessary?
-	var centerX = (x1 + x2) / 2;
-	var centerY = (y1 + y2) / 2;
-	var scene = scenes[gameMan.scene];
-	var pScale = scene.scale;
-	var dScale = (distance - inputMan.pinchDistance) / displayMan.screenDistance;	// TODO check on this scaling algorithm
-
-	inputMan.pinchDistance = distance;
-	scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
-	scene.x = centerX - (centerX - scene.x) * scene.scale / pScale;
-	scene.y = centerY - (centerY - scene.y) * scene.scale / pScale;
-
-	pan(0,0);
 }
 
 
