@@ -196,7 +196,8 @@ function initScenes(canvas, maxScale, minScale, tv) {
 	scene = scenes[tv + "rules"];
 	scene.height = (canvas.height <= 480) ? displayMan.screenHeight : (ratio >= 1.5) ? 1152 : 1536;
 	scene.width = scene.height * ratio;
-	scene.maxScale = scene.minScale = scene.scale = canvas.height / scene.height;
+	scene.minScale = scene.scale = canvas.height / scene.height;
+	scene.maxScale = Math.max(maxScale, scene.scale);
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 }
