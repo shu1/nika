@@ -6,6 +6,7 @@ function mouseDown(event) {
 		inputMan.menu = getXY(event);
 		if (!inputMan.menu) {
 			var handled = false;
+
 			if (gameMan.scene == "board" && gameMan.winner < 0) {
 				var scene = scenes["board"];
 				getRowCol(scene);
@@ -171,6 +172,7 @@ function mouseUp(event) {
 	}
 }
 
+
 function getXY(event) {
 	if (navigator.msPointerEnabled) {
 		if (event.pointerId == inputMan.touchID) {
@@ -261,6 +263,7 @@ function getRot(dX, dY) {
 	}
 }
 
+
 function isTouch(event, touchID) {
 	if (navigator.msPointerEnabled) {
 		return event.pointerId == touchID;
@@ -286,7 +289,7 @@ function setTouch(event) {
 			inputMan.touchID2 = event.pointerId;
 			inputMan.x2 = event.layerX;
 			inputMan.y2 = event.layerY;
-			setPinchDistance(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+			setPinchDistance();
 			return false;
 		}
 	}
@@ -327,11 +330,13 @@ function setPinch(changedTouch) {
 	inputMan.touchID2 = changedTouch.identifier;
 	inputMan.x2 = changedTouch.pageX;
 	inputMan.y2 = changedTouch.pageY;
-	setPinchDistance(inputMan.x, inputMan.y, inputMan.x2, inputMan.y2);
+	setPinchDistance();
 }
 
-function setPinchDistance(x1, y1, x2, y2) {
-	inputMan.pinchDistance = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+function setPinchDistance() {
+	var dX = inputMan.x2 - inputMan.x;
+	var dY = inputMan.y2 - inputMan.y;
+	inputMan.pinchDistance = Math.sqrt(dX*dX + dY*dY); // TODO sqrt necessary?
 }
 
 function pinchZoom(x1, y1, x2, y2) {
@@ -349,6 +354,7 @@ function pinchZoom(x1, y1, x2, y2) {
 
 	pan(0,0);
 }
+
 
 function keyDown(event) {
 	var dX = 8;
