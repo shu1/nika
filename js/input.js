@@ -1,33 +1,37 @@
 "use strict";
 
 function mouseDown(event) {
-	var singleClick = setTouch(event);
-	inputMan.menu = getXY(event);
-	if (singleClick) {
-		hudMan.inputText = "";
-		if (!inputMan.menu && gameMan.winner < 0) {
-			var scene = scenes[gameMan.scene];
-			getRowCol(scene);
+	hudMan.inputText = "";
+	if (setTouch(event)) {
+		inputMan.menu = getXY(event);
+		if (!inputMan.menu) {
+			var handled = false;
+			if (gameMan.scene == "board" && gameMan.winner < 0) {
+				var scene = scenes["board"];
+				getRowCol(scene);
+				getPiece(inputMan.row, inputMan.col);
+				if (phalanx.length > 0) {
+					setRallyHighlights(phalanx[0].row, phalanx[0].col);
+				}
 
-			getPiece(inputMan.row, inputMan.col);
-			if (phalanx.length > 0) {
-				setRallyHighlights(phalanx[0].row, phalanx[0].col);
+				if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
+					inputMan.pX = scene.x + (gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
+					inputMan.pY = scene.y + (gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
+					handled = true;
+				}
+				else {
+					gameMan.selection = false;	// back to normal selection if you deselect pieces
+					phalanx.length = 0;
+				}
 			}
 
-			if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
-				inputMan.pX = scene.x + (gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
-				inputMan.pY = scene.y + (gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
-				event.preventDefault();
-			}
-			else {
+			if (!handled) {	// prepare for pan or zoom
 				inputMan.pX = inputMan.x;
 				inputMan.pY = inputMan.y;
-				gameMan.selection = false;	// back to normal selection if you deselect pieces
-				phalanx.length = 0;
 			}
 		}
-		hudMan.inputText += " down";
 	}
+	hudMan.inputText += " down";
 }
 
 function mouseMove(event) {
@@ -90,11 +94,11 @@ function mouseMove(event) {
 }
 
 function mouseUp(event) {
+	hudMan.inputText += " up";
 	if (isTouch(event, inputMan.touchID2)) {
 		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 	}
 	if (isTouch(event, inputMan.touchID)) {
-		hudMan.inputText += " up";
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
 		}
