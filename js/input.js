@@ -26,7 +26,7 @@ function mouseDown(event) {
 				}
 			}
 
-			if (!handled) {	// prepare for pan or zoom
+			if (!handled) {	// prepare for pan
 				inputMan.pX = inputMan.x;
 				inputMan.pY = inputMan.y;
 			}
@@ -38,6 +38,7 @@ function mouseDown(event) {
 function mouseMove(event) {
 	if (inputMan.touchID >= 0) {
 		getXY(event);
+		var handled = false;
 		var scene = scenes[gameMan.scene];
 
 		if (inputMan.touchID2 >= 0) {	// 2nd touch is down, so pinch
@@ -53,9 +54,13 @@ function mouseMove(event) {
 			scene.x = x - (x - scene.x) * scene.scale / pScale;
 			scene.y = y - (y - scene.y) * scene.scale / pScale;
 			pan(0,0);
-			event.preventDefault();
+			handled = true;
 		}
 		else if (!inputMan.menu && isTouch(event, inputMan.touchID)) {
+			var preventPan = false;
+			var dX = inputMan.x - inputMan.pX;
+			var dY = inputMan.y - inputMan.pY;
+
 			if (gameMan.scene == "menus") {
 				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - displayMan.screenWidth)/2;
 				var y = (inputMan.y - scene.y) / scene.scale - (scene.height - displayMan.screenHeight)/2;
@@ -65,6 +70,7 @@ function mouseMove(event) {
 					y -= 330;
 					if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*5) {
 						menus["title"] = Math.floor(y / displayMan.activeHeight);
+						handled = true;
 					}
 				}
 				else if (gameMan.menu == "option") {
@@ -78,14 +84,13 @@ function mouseMove(event) {
 						else {
 							audioMan.sound = Math.round(x / 148.4) / 10;
 						}
+						handled = true;
 					}
 				}
 			}
 			else if (gameMan.scene == "board" && gameMan.winner < 0) {
 				getRowCol(scene);
-				var dX = inputMan.x - inputMan.pX;
-				var dY = inputMan.y - inputMan.pY;
-				if (gameMan.scene == "board" && gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
+				if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
 					dX /= scene.scale;
 					dY /= scene.scale;
 					if (Math.abs(dX) > displayMan.cellSize/2 || Math.abs(dY) > displayMan.cellSize/2) {	// inside cell is deadzone
@@ -97,16 +102,23 @@ function mouseMove(event) {
 						inputMan.row = gameMan.pRow;
 						inputMan.col = gameMan.pCol;
 					}
-					event.preventDefault();
-				}
-				else {	// pan
-					if (pan(dX, dY)) {
-						event.preventDefault();
-					}
-					inputMan.pX = inputMan.x;
-					inputMan.pY = inputMan.y;
+					handled = true;
+					preventPan = true;
 				}
 			}
+
+			if (!handled && pan(dX, dY)) {	// if not handled then pan
+				handled = true;
+			}
+
+			if (!preventPan) {
+				inputMan.pX = inputMan.x;
+				inputMan.pY = inputMan.y;
+			}
+		}
+
+		if (handled) {
+			event.preventDefault();			
 		}
 	}
 }
