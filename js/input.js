@@ -6,9 +6,9 @@ function mouseDown(event) {
 		inputMan.menu = getXY(event);
 		if (!inputMan.menu) {
 			var handled = false;
+			var scene = scenes[gameMan.scene];
 
 			if (gameMan.scene == "board" && gameMan.winner < 0) {
-				var scene = scenes["board"];
 				getRowCol(scene);
 				getPiece(inputMan.row, inputMan.col);
 				if (phalanx.length > 0) {
@@ -40,7 +40,7 @@ function mouseMove(event) {
 		getXY(event);
 		var scene = scenes[gameMan.scene];
 
-		if (inputMan.touchID2 >= 0) {
+		if (inputMan.touchID2 >= 0) {	// 2nd touch is down, so pinch
 			var pDistance = inputMan.pinchDistance;
 			setPinchDistance();
 
@@ -53,11 +53,13 @@ function mouseMove(event) {
 			scene.x = x - (x - scene.x) * scene.scale / pScale;
 			scene.y = y - (y - scene.y) * scene.scale / pScale;
 			pan(0,0);
+			event.preventDefault();
 		}
 		else if (!inputMan.menu && isTouch(event, inputMan.touchID)) {
 			if (gameMan.scene == "menus") {
 				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - displayMan.screenWidth)/2;
 				var y = (inputMan.y - scene.y) / scene.scale - (scene.height - displayMan.screenHeight)/2;
+
 				if (gameMan.menu == "title") {
 					x -= 128;	// offset to coordinates of buttons
 					y -= 330;
@@ -66,13 +68,16 @@ function mouseMove(event) {
 					}
 				}
 				else if (gameMan.menu == "option") {
-					x += 40;	// offset to coordinates of image
-					if (x > 0 && x < 1484 && y > 384 && y < 508) {
-						audioMan.music = Math.round(x / 148.4) / 10;
-						sounds["music"].volume = Math.pow(audioMan.music, 2);
-					}
-					if (x > 0 && x < 1484 && y > 648 && y < 772) {
-						audioMan.sound = Math.round(x / 148.4) / 10;
+					var buttonSize = 124
+					x += 40 - buttonSize/2;	// offset to x of volume line
+					if (x > 0 && x < 1484 && y > 446 - buttonSize && y < 710 + buttonSize) {
+						if (y < (446 + 710)/2) {	// halfway between music and sound lines
+							audioMan.music = Math.round(x / 148.4) / 10;
+							sounds["music"].volume = Math.pow(audioMan.music, 2);
+						}
+						else {
+							audioMan.sound = Math.round(x / 148.4) / 10;
+						}
 					}
 				}
 			}
