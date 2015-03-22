@@ -8,7 +8,28 @@ function mouseDown(event) {
 			var handled = false;
 			var scene = scenes[gameMan.scene];
 
-			if (gameMan.scene == "board" && gameMan.winner < 0) {
+			if (gameMan.scene == "menus") {
+				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - displayMan.screenWidth)/2;
+				var y = (inputMan.y - scene.y) / scene.scale - (scene.height - displayMan.screenHeight)/2;
+
+				if (gameMan.menu == "option") {
+					var buttonRadius = 124;	// made radius bigger for fat fingers
+					x += 40;	// offset to x of volume line
+
+					var buttonX = 1484 * audioMan.music;
+					if (x > buttonX - buttonRadius && x < buttonX + buttonRadius && y > 446 - buttonRadius && y < 446 + buttonRadius) {
+						inputMan.drag = "music";	// only drag if touch started on button
+						handled = true;
+					}
+
+					buttonX = 1484 * audioMan.sound;
+					if (x > buttonX - buttonRadius && x < buttonX + buttonRadius && y > 710 - buttonRadius && y < 710 + buttonRadius) {
+						inputMan.drag = "sound";
+						handled = true;
+					}
+				}
+			}
+			else if (gameMan.scene == "board" && gameMan.winner < 0) {
 				getRowCol(scene);
 				getPiece(inputMan.row, inputMan.col);
 				if (phalanx.length > 0) {
@@ -74,16 +95,15 @@ function mouseMove(event) {
 					}
 				}
 				else if (gameMan.menu == "option") {
-					var buttonSize = 124
-					x += 40 - buttonSize/2;	// offset to x of volume line
-					if (x > 0 && x < 1484 && y > 446 - buttonSize && y < 710 + buttonSize) {
-						if (y < (446 + 710)/2) {	// halfway between music and sound lines
-							audioMan.music = Math.round(x / 148.4) / 10;
-							sounds["music"].volume = Math.pow(audioMan.music, 2);
-						}
-						else {
-							audioMan.sound = Math.round(x / 148.4) / 10;
-						}
+					x += 40 - 62;	// offset to x of volume line - buttonRadius
+					if (inputMan.drag == "music") {
+						audioMan.music = Math.max(0, Math.min(1, Math.round(x / 148.4) / 10));
+						sounds["music"].volume = Math.pow(audioMan.music, 2);
+						handled = true;
+					}
+					else if (inputMan.drag == "sound") {
+						audioMan.sound = Math.max(0, Math.min(1, Math.round(x / 148.4) / 10));
+						sounds["sound"].volume = Math.pow(audioMan.sound, 2);
 						handled = true;
 					}
 				}
@@ -195,8 +215,9 @@ function mouseUp(event) {
 
 		clearRallyHighlights();
 		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
-		gameMan.selection = false;	
+		inputMan.drag = "";
 		inputMan.menu = false;
+		gameMan.selection = false;	
 		menuMan.button = 0;	// reset for key input
 	}
 }
