@@ -213,72 +213,82 @@ function	getValue(state,pieces){
 		}
 		//Adjacent	Check
 		var	adj	=	[];
-		adj[0] = grid[pieces[i].row-1][pieces[i].col];//N
-		adj[1] = grid[pieces[i].row][pieces[i].col+1];//E
-		adj[2] = grid[pieces[i].row+1][pieces[i].col];//S
-		adj[3] = grid[pieces[i].row][pieces[i].col-1];//W
+		if(pieces[i].row-1>-1){
+			adj[0] = grid[pieces[i].row-1][pieces[i].col];//N
+		}
+		if(pieces[i].col+1<grid[pieces[i].row].length){
+			adj[1] = grid[pieces[i].row][pieces[i].col+1];//E
+		}
+		if(pieces[i].row+1<grid.length){
+			adj[2] = grid[pieces[i].row+1][pieces[i].col];//S
+		}
+		if(pieces[i].col-1>0){
+			adj[3] = grid[pieces[i].row][pieces[i].col-1];//W
+		}
 		//TODO:	Check	everything	to	make	sure	on	field.
 		for(var	j=0;	j<4;	j++){
-			if(adj[j].kind!=-1){
-				//Is	a	piece
-				if(adj[j].player>-1){
-					//Own
-					if(adj[j].player==pieces[i].player){
-						if(adj[j].rot==pieces[i].rot){
-							val+=6;//In	Phalanx
-						}
-						else{
-							val+=2;//Not in Phalanx
-						}
-					}
-					//Ally
-					else if(Math.abs((adj[j].player-pieces[i].player)%2)==0){
-						if(adj[j].rot==pieces[i].rot){
-							val+=3;//Facing	Same	dir
-						}
-						else{
-							val+=1;//Diff	dir
-						}
-					}
-					//Enemy
-					else{
-						if(pieces[i].rot == j && Math.abs((adj[j].rot-j)%2)==0){
-							//Facing	each	other
-							//TODO BROKEN Will return true for pieces facing away from eachother too.
-							val-=1
-						}
-						else if(pieces[i].rot==j){
-							//If	piece	is	facing	adj,	but	they	aren't	facing	eachother,	then	adj	is	routable
-							if(gameMan.actions>1){
-								val+=5;
+			if(adj[j]!=undefined){
+				if(adj[j].kind!=-1){
+					//Is	a	piece
+					if(adj[j].player>-1){
+						//Own
+						if(adj[j].player==pieces[i].player){
+							if(adj[j].rot==pieces[i].rot){
+								val+=2;//In	Phalanx
 							}
 							else{
-								val+=2;
+								val+=1;//Not in Phalanx
 							}
 						}
-						else if(Math.abs((adj[j].rot-j)%2)==0){
-							//Else if	we're	not	facing	adjacent,	check	if	he's	facing	us.
-							if(gameMan.actions>1){
-								val-=5;
+						//Ally
+						else if(Math.abs((adj[j].player-pieces[i].player)%2)==0){
+							if(adj[j].rot==pieces[i].rot){
+								val+=3;//Facing	Same	dir
 							}
 							else{
-								val-=12;
+								val+=1;//Diff	dir
 							}
 						}
+						//Enemy
 						else{
-							//Adjacent	but	not	facing	each	other.
-							if(gameMan.actions>1){
-								val+=2;
+							if(pieces[i].rot == j && Math.abs((adj[j].rot-j)%2)==0){
+								//Facing	each	other
+								//TODO BROKEN Will return true for pieces facing away from eachother too.
+								val-=1
+							}
+							else if(pieces[i].rot==j){
+								//If	piece	is	facing	adj,	but	they	aren't	facing	eachother,	then	adj	is	routable
+								if(gameMan.actions>1){
+									val+=5;
+								}
+								else{
+									val+=2;
+								}
+							}
+							else if(Math.abs((adj[j].rot-j)%2)==0){
+								//Else if	we're	not	facing	adjacent,	check	if	he's	facing	us.
+								if(gameMan.actions>1){
+									val-=5;
+								}
+								else{
+									val-=12;
+								}
 							}
 							else{
-								val-=8;
+								//Adjacent	but	not	facing	each	other.
+								if(gameMan.actions>1){
+									val+=2;
+								}
+								else{
+									val-=8;
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-		val-=5*getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
+		val-=10*getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
 		state.value+=val; //Adds piece	value	to	total	value
 	}
 	//Subtract for every piece on	the	board
