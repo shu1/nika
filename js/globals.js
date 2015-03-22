@@ -1,18 +1,20 @@
 "use strict";
 
-var gpCanvas, gpContext, muralCanvas, tvContext, grid, images={}, sounds={}, scenes={}, gameStates=[], phalanx=[], murals=[];
+var gpCanvas, gpContext, muralCanvas, tvContext, grid, images={}, sounds={}, scenes={}, menus={}, gameStates=[], phalanx=[], murals=[];
 
 var displayMan = {
 	cellSize:96,
-	pieceSize:80,
 	boardWidth:2016,
 	boardHeight:1440,
-	ruleWidth:2016,
-	ruleHeight:1024,
-	dialogX:628,
-	dialogY:624,
-	dialogWidth:758,
-	dialogHeight:192,
+	screenWidth:1536,
+	screenHeight:1024,
+	arrowWidth:96,
+	arrowHeight:416,
+	activeHeight:110,
+	muralX:628,
+	muralY:624,
+	muralWidth:758,
+	muralHeight:192,
 	tutorialOffset:152,
 	menu:false,
 	helmetTheta:0,
@@ -23,9 +25,8 @@ var displayMan = {
 }
 
 var audioMan = {
-	sound:10,
-	music:10,
-	play:true
+	music:0.5,
+	sound:0.5
 }
 
 var eventMan = {
@@ -37,12 +38,14 @@ var eventMan = {
 
 var gameMan = {
 	tutorialStep:-1,
+	tutorialPart:-1,
 	selection:false,
 	debug:false,
 	winner:-1,
 	actions:2,
 	player:0,
 	scene:"",
+	menu:"",
 	rules:0,
 	pRow:-1,
 	pCol:-1,
@@ -50,17 +53,18 @@ var gameMan = {
 }
 
 var inputMan = {
-	click:false,
+	pinchDistance:0,
+	touchID2:-1,
+	touchID:-1,
 	menu:false,
-	time:0,
+	drag:"",
 	row:-1,
 	col:-1,
 	rot:-1,
 	pX:0,
 	pY:0,
 	x:0,
-	y:0,
-	currentTouchId:-1
+	y:0
 }
 
 var menuMan = {
@@ -84,15 +88,15 @@ var	hudMan = {
 }
 
 var buttons = [
-	"  Menu",
 	"  Close",
 	" Debug",
 	"     AI",
 	"  Zoom",
 	"  Pass",
 	"  Undo",
-	"  Rules",
 	"Tutorial",
+	"  Rules",
+	"  Menu"
 ]
 
 var mainBoard = [
@@ -344,7 +348,7 @@ var tutorialTexts = [[
 ],[
 	"Strategos! While we were dealing with","that Spartan, a contingent of Thebans","has approached us from behind.","Two of our men are in danger!"
 ],[
-	"We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, ending your touch","several spaces away. Rotate this piece","so that it faces the right."
+	"We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, and end your touch","more than a space away. Rotate this","piece so that it faces the right."
 ],[
 	"Excellent! Now, rotate our other soldier","to face the Theban. Since the Theban is","blocking its movement, our piece will","rotate even if you try to move in that","direction."
 ],[
@@ -433,3 +437,5 @@ var tutorialInputs = [
 	true,	true,	true,	false,	false,	true,	true,	false,	true,	true,
 	true,	false,	true,	true,	true,	true,	true,	true
 ]
+
+var tutorialParts = [2, 4, 6, 8, 10, 17, 27, 31, 38, 41, 46, 49]
