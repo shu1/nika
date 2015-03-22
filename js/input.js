@@ -2,7 +2,45 @@
 
 function mouseDown(event) {
 	hudMan.inputText = "";
-	if (setTouch(event)) {
+
+	var touch2 = false;
+	if (navigator.msPointerEnabled) {
+		if (inputMan.touchID < 0) {
+			inputMan.touchID = event.pointerId;
+		}
+		else if (inputMan.touchID2 < 0) {	// 2nd touch
+			resetState();
+			inputMan.touchID2 = event.pointerId;
+			inputMan.x2 = event.layerX;
+			inputMan.y2 = event.layerY;
+			setPinchDistance();
+			touch2 = true;
+		}
+	}
+	else if (event.changedTouches) {
+		if (inputMan.touchID < 0) {
+			inputMan.touchID = event.changedTouches[0].identifier;
+			inputMan.x = event.changedTouches[0].pageX;
+			inputMan.y = event.changedTouches[0].pageY;
+
+			if (event.changedTouches[1] && inputMan.touchID2 < 0) {	// if 2nd touch hits simultaneously
+				setPinch(event.changedTouches[1]);
+				touch2 = true;
+			}
+		}
+		else if (inputMan.touchID2 < 0) {
+			setPinch(event.changedTouches[0]);
+			touch2 = true;
+		}
+	}
+	else {	// mouse
+		inputMan.touchID = 0;	// set some arbitrary ID greater than -1
+		if (gameMan.scene == "board" && !inputMan.menu) {	// TODO "!inputMan.menu" is workaround for AI
+			revertGrid();	// prevent right click allowing rotate without using actions
+		}
+	}
+
+	if (!touch2) {
 		inputMan.menu = getXY(event);
 		if (!inputMan.menu) {
 			var handled = false;
@@ -326,54 +364,8 @@ function isTouch(event, touchID) {
 	return true;	// mouse, all clicks are valid
 }
 
-function setTouch(event) {
-	if (navigator.msPointerEnabled) {
-		if (inputMan.touchID < 0) {
-			inputMan.touchID = event.pointerId;
-		}
-		else if (inputMan.touchID2 < 0) {	// 2nd touch
-			setTouch2();
-			inputMan.touchID2 = event.pointerId;
-			inputMan.x2 = event.layerX;
-			inputMan.y2 = event.layerY;
-			setPinchDistance();
-			return false;
-		}
-	}
-	else if (event.changedTouches) {
-		if (inputMan.touchID < 0) {
-			inputMan.touchID = event.changedTouches[0].identifier;
-			inputMan.x = event.changedTouches[0].pageX;
-			inputMan.y = event.changedTouches[0].pageY;
-
-			if (event.changedTouches[1] && inputMan.touchID2 < 0) {	// if 2nd touch hits simultaneously
-				setPinch(event.changedTouches[1]);
-				return false;
-			}
-		}
-		else if (inputMan.touchID2 < 0) {
-			setPinch(event.changedTouches[0]);
-			return false;
-		}
-	}
-	else {	// mouse
-		inputMan.touchID = 0;	// set some arbitrary ID greater than -1
-		if (gameMan.scene == "board" && !inputMan.menu) {	// TODO "!inputMan.menu" is workaround for AI
-			revertGrid();	// prevent right click allowing rotate without using actions
-		}
-	}
-	return true;
-}
-
-function setTouch2() {
-	if (gameMan.scene == "board") {	// reset game actions for zoom
-		phalanx.length = 0;
-		revertGrid();
-	}
-}
-
 function setPinch(changedTouch) {
-	setTouch2();
+	resetState();
 	inputMan.touchID2 = changedTouch.identifier;
 	inputMan.x2 = changedTouch.pageX;
 	inputMan.y2 = changedTouch.pageY;

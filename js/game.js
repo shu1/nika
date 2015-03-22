@@ -305,6 +305,13 @@ function clearRallyHighlights() {
 	}
 }
 
+function resetState() {
+	if (gameMan.scene == "board") {	// reset game actions for zoom
+		phalanx.length = 0;
+		revertGrid();
+	}
+}
+
 function menuButton(index) {
 	switch(index) {
 	case 0:
