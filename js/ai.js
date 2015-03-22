@@ -4,26 +4,20 @@ defGrid = null;
 
 function	newState	(){
 	var	s	=	{
-		//action	:	-1	//Action	taken
 		value	:	0,	//Value	of	state	after	board	state	adjustments
-		//totalValue	:	0,	//Total	value	of	all	the	pieces
 		board : grid //grid object, state of board after this move, will be applied to board upon ai exit.
-		//pieces	:	[],	//All	the	pieces	and	their	properties
-		//pieceValues	:	[]
 	};
 	return s;
 }
 
 function	ai(){
 	storeGrid();
-	//setGrid(grid,defGrid)
 	var	pieces	=	[];
 	pieces = getAIPieces();
 
 	//Checks	if	any	pieces	are	close	enough	to	win.
 	for	(var	i	=	0;	i<6;	i++){
 		var	d	=	getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
-		//console.log(d);
 		if(d<=2){
 			if(d==1){
 				//1	move
@@ -38,8 +32,6 @@ function	ai(){
 
 	//Creates the default state in which all other states are compared to.
 	var	defaultState	=	newState();
-	//defaultState.board	=	grid;
-	//console.log("Default init: " + defaultState.value);
 	getValue(defaultState,pieces);
 	console.log("For Player"	+	gameMan.player	+	", the value of	this state is	"	+	defaultState.value);
 	var bestState = defaultState; //Stores best state, which is default at this point. Altough we might be better off just setting best state.
@@ -60,13 +52,12 @@ function	ai(){
 				//Value	piece.	Make	separate	functions	for	checking	adjacent,	rot,	whatever.
 				//Then check	distance	to	goal,	to	ensure	frontmost	placement.	Although	there	could	be	a	more	efficient	way	of	doing	this.
 				//OR	JUST	GET	THE	SPACE	FARTHEST	FROM	THE	EDGE	(Athens	farthest	from	bottom,	sparta	from	left,	etc...)
-			}
+			} 7
 		}
 		else{
 			//	Do	normal	move	check,	which	means	rotation,	then	movement.
 			origRot = pieces[i].rot;
 			for	(var	rot	=	0;	rot<4;	rot++){
-				//var	tempState	=	defaultState;
 				if(rot!=origRot){
 					pieces[i].rot=rot;
 					var temp = copyState(defaultState);
@@ -79,7 +70,6 @@ function	ai(){
 			}
 			setGrid(defGrid,grid);
 			pieces = getAIPieces();
-			//pieces[i].rot=origRot;
 			for (var dir = 0; dir<4; dir++){
 				//Check moves in each direction
 				var incRow; //Increment row by this
@@ -140,26 +130,27 @@ function	ai(){
 		if(same_dir.length>1){
 			combinations = getCombinations(same_dir);
 			combinations.forEach(function(e){
-				phalanx.length=0;
+				phalanx = [];
 				phalanx = e.slice(0);
-				if(isPhalanx()){
-					for(var rot=0;rot<4;rot++){
-						if(rot!=i){
-							rotatePiece(phalanx[0].row, phalanx[0].col, rot);
-							pieces = getAIPieces();
-							var temp = copyState(defaultState);
-							getValue(temp,pieces);
-							if(temp.value>bestState.value){
-								bestState=temp;
-								console.log("Found better state by ROTATING A PHALANX with a value of: " + bestState.value);
+				if(phalanx.length>1){
+					if(isPhalanx()){
+						for(var rot=0;rot<4;rot++){
+							if(rot!=i){
+								rotatePiece(phalanx[0].row, phalanx[0].col, rot);
+								pieces = getAIPieces();
+								var temp = copyState(defaultState);
+								getValue(temp,pieces);
+								if(temp.value>bestState.value){
+									bestState=temp;
+									console.log("Found better state by ROTATING A PHALANX with a value of: " + bestState.value);
+								}
+								setGrid(defGrid,grid);
+								pieces = getAIPieces();
 							}
-							setGrid(defGrid,grid);
-							pieces = getAIPieces();
 						}
-					}
-					for(var rot=0;rot<4;rot++){
 						setGrid(defGrid,grid);
 						pieces = getAIPieces();
+						var rot = phalanx[0].rot;
 						var incRow; //Increment row by this
 						var incCol; //Increment col by this
 						switch(rot){
@@ -204,7 +195,6 @@ function	ai(){
 	//AFTER ALL CHECKING IS DONE ===========
 	setGrid(bestState.board,grid);
 	phalanx=[];
-	//grid=bestState;
 	if(gameMan.actions>1){
 		useAction();
 	}
@@ -217,89 +207,92 @@ function	ai(){
 
 function	getValue(state,pieces){
 	for	(var	i	=	0;	i<6;	i++){
-	//	console.log("Piece " + i +  ", Row: " + pieces[i].row + ", Col: " + pieces[i].col + ".");
 		var	val	=	0;
 		//Piece	on	Board
 		if(pieces[i].kind!=3){
-		//	console.log(i);
 			val+=5;
 		}
 		//Adjacent	Check
 		var	adj	=	[];
-		adj[0] = grid[pieces[i].row-1][pieces[i].col];//N
-		adj[1] = grid[pieces[i].row][pieces[i].col+1];//E
-		adj[2] = grid[pieces[i].row+1][pieces[i].col];//S
-		adj[3] = grid[pieces[i].row][pieces[i].col-1];//W
+		if(pieces[i].row-1>-1){
+			adj[0] = grid[pieces[i].row-1][pieces[i].col];//N
+		}
+		if(pieces[i].col+1<grid[pieces[i].row].length){
+			adj[1] = grid[pieces[i].row][pieces[i].col+1];//E
+		}
+		if(pieces[i].row+1<grid.length){
+			adj[2] = grid[pieces[i].row+1][pieces[i].col];//S
+		}
+		if(pieces[i].col-1>0){
+			adj[3] = grid[pieces[i].row][pieces[i].col-1];//W
+		}
 		//TODO:	Check	everything	to	make	sure	on	field.
 		for(var	j=0;	j<4;	j++){
-			if(adj[j].kind!=-1){
-				//Is	a	piece
-				if(adj[j].player>-1){
-					//Own
-					if(adj[j].player==pieces[i].player){
-					// console.log("Adjacent " + j + " is own.");
-						if(adj[j].rot==pieces[i].rot){
-						// console.log("Adjacent " + j + " is in phalanx");
-							val+=6;//In	Phalanx
-						}
-						else{
-						// console.log("Adjacent " + j + " is not in phalanx");
-							val+=2;//Not in Phalanx
-						}
-					}
-					//Ally
-					else if(Math.abs((adj[j].player-pieces[i].player)%2)==0){
-						if(adj[j].rot==pieces[i].rot){
-							val+=3;//Facing	Same	dir
-						}
-						else{
-							val+=1;//Diff	dir
-						}
-					}
-					//Enemy
-					else{
-						if(pieces[i].rot == j && Math.abs((adj[j].rot-j)%2)==0){
-							//Facing	each	other
-							//TODO BROKEN Will return true for pieces facing away from eachother too.
-							val-=1
-						}
-						else if(pieces[i].rot==j){
-							//If	piece	is	facing	adj,	but	they	aren't	facing	eachother,	then	adj	is	routable
-							if(gameMan.actions>1){
-								val+=5;
+			if(adj[j]!=undefined){
+				if(adj[j].kind!=-1){
+					//Is	a	piece
+					if(adj[j].player>-1){
+						//Own
+						if(adj[j].player==pieces[i].player){
+							if(adj[j].rot==pieces[i].rot){
+								val+=2;//In	Phalanx
 							}
 							else{
-								val+=2;
+								val+=1;//Not in Phalanx
 							}
 						}
-						else if(Math.abs((adj[j].rot-j)%2)==0){
-							//Else if	we're	not	facing	adjacent,	check	if	he's	facing	us.
-							if(gameMan.actions>1){
-								val-=5;
+						//Ally
+						else if(Math.abs((adj[j].player-pieces[i].player)%2)==0){
+							if(adj[j].rot==pieces[i].rot){
+								val+=2;//Facing	Same	dir
 							}
 							else{
-								val-=12;
+								val+=1;//Diff	dir
 							}
 						}
+						//Enemy
 						else{
-							//Adjacent	but	not	facing	each	other.
-							if(gameMan.actions>1){
-								val+=2;
+							if(pieces[i].rot == j && Math.abs((adj[j].rot-j)%2)==0){
+								//Facing	each	other
+								//TODO BROKEN Will return true for pieces facing away from eachother too.
+								val-=1
+							}
+							else if(pieces[i].rot==j){
+								//If	piece	is	facing	adj,	but	they	aren't	facing	eachother,	then	adj	is	routable
+								if(gameMan.actions>1){
+									val+=5;
+								}
+								else{
+									val+=2;
+								}
+							}
+							else if(Math.abs((adj[j].rot-j)%2)==0){
+								//Else if	we're	not	facing	adjacent,	check	if	he's	facing	us.
+								if(gameMan.actions>1){
+									val-=5;
+								}
+								else{
+									val-=12;
+								}
 							}
 							else{
-								val-=8;
+								//Adjacent	but	not	facing	each	other.
+								if(gameMan.actions>1){
+									val+=2;
+								}
+								else{
+									val-=8;
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-		val-=5*getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
+		val-=10*getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
 		state.value+=val; //Adds piece	value	to	total	value
-		//console.log("State Value: " + state.value);
 	}
 	//Subtract for every piece on	the	board
-	//state.value=state.totalValue;
 	for	(var	row	=	0;	row	<	15;	++row)	{
 		for	(var	col	=	0;	col	<	21;	++col)	{
 			if	(grid[row][col].player>-1	&& Math.abs(gameMan.player-grid[row][col].player)%2!=0	&&	grid[row][col].kind!=3)	{
@@ -307,9 +300,6 @@ function	getValue(state,pieces){
 			}
 		}
 	}
-	//state.board=(grid);
-	//useAction(1);
-	//displayMan.draw=true;
 }
 
 function copyState(original){
@@ -339,9 +329,6 @@ function copyState(original){
 function setGrid(gFrom, gTo){
 	for	(var row =	0; row	<	15;	++row){
 		for	(var col = 0; col	<	21;	++col){
-			// if(grid[row][col].player != board[row][col].player){
-			// 	console.log("Player moved");
-			// }
 			gTo[row][col].row=row;
 			gTo[row][col].col=col;
 			gTo[row][col].checked=gFrom[row][col].checked;
@@ -357,8 +344,6 @@ function setGrid(gFrom, gTo){
 
 // get distance to goal - to be used in ai evaluation
 function getDistanceFromGoal(row, col, player) {
-
-	//resetPieces(row, col);
 
 	if (player == 0) {
 		if (row <= 5 && col >= 9 && col <= 11) { // in 3x3 square in front of goal
