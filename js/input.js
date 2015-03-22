@@ -144,10 +144,7 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	hudMan.inputText += " up";
-	if (isTouch(event, inputMan.touchID2)) {
-		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
-	}
-	if (isTouch(event, inputMan.touchID)) {
+	if (!isTouch(event, inputMan.touchID2) && isTouch(event, inputMan.touchID)) {
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
 		}
@@ -155,6 +152,7 @@ function mouseUp(event) {
 			var scene = scenes[gameMan.scene];
 			var x = (inputMan.x - scene.x) / scene.scale;
 			var y = (inputMan.y - scene.y) / scene.scale;
+
 			if (gameMan.menu == "title") {
 				x -= (scene.width - displayMan.screenWidth)/2 + 128;	// offset to coordinates of buttons
 				y -= (scene.height - displayMan.screenHeight)/2 + 330;
@@ -212,13 +210,13 @@ function mouseUp(event) {
 			}
 		}
 
-		clearRallyHighlights();
-		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
-		inputMan.drag = "";
-		inputMan.menu = false;
+		clearRallyHighlights();	// TODO refactor highlights?
 		gameMan.selection = false;	
 		menuMan.button = 0;	// reset for key input
+		inputMan.menu = false;
+		inputMan.drag = "";
 	}
+	inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 }
 
 
@@ -359,7 +357,7 @@ function setTouch(event) {
 		}
 	}
 	else {	// mouse
-		inputMan.touchID = 0;	// set arbitrary ID greater than -1
+		inputMan.touchID = 0;	// set some arbitrary ID greater than -1
 		if (gameMan.scene == "board" && !inputMan.menu) {	// TODO "!inputMan.menu" is workaround for AI
 			revertGrid();	// prevent right click allowing rotate without using actions
 		}
@@ -385,7 +383,7 @@ function setPinch(changedTouch) {
 function setPinchDistance() {
 	var dX = inputMan.x2 - inputMan.x;
 	var dY = inputMan.y2 - inputMan.y;
-	inputMan.pinchDistance = Math.sqrt(dX*dX + dY*dY); // TODO sqrt necessary?
+	inputMan.pinchDistance = Math.sqrt(dX*dX + dY*dY);	// TODO sqrt necessary?
 }
 
 
