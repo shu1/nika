@@ -52,7 +52,7 @@ function	ai(){
 				//Value	piece.	Make	separate	functions	for	checking	adjacent,	rot,	whatever.
 				//Then check	distance	to	goal,	to	ensure	frontmost	placement.	Although	there	could	be	a	more	efficient	way	of	doing	this.
 				//OR	JUST	GET	THE	SPACE	FARTHEST	FROM	THE	EDGE	(Athens	farthest	from	bottom,	sparta	from	left,	etc...)
-			}
+			} 7
 		}
 		else{
 			//	Do	normal	move	check,	which	means	rotation,	then	movement.
@@ -130,26 +130,27 @@ function	ai(){
 		if(same_dir.length>1){
 			combinations = getCombinations(same_dir);
 			combinations.forEach(function(e){
-				phalanx.length=0;
+				phalanx = [];
 				phalanx = e.slice(0);
-				if(isPhalanx()){
-					for(var rot=0;rot<4;rot++){
-						if(rot!=i){
-							rotatePiece(phalanx[0].row, phalanx[0].col, rot);
-							pieces = getAIPieces();
-							var temp = copyState(defaultState);
-							getValue(temp,pieces);
-							if(temp.value>bestState.value){
-								bestState=temp;
-								console.log("Found better state by ROTATING A PHALANX with a value of: " + bestState.value);
+				if(phalanx.length>1){
+					if(isPhalanx()){
+						for(var rot=0;rot<4;rot++){
+							if(rot!=i){
+								rotatePiece(phalanx[0].row, phalanx[0].col, rot);
+								pieces = getAIPieces();
+								var temp = copyState(defaultState);
+								getValue(temp,pieces);
+								if(temp.value>bestState.value){
+									bestState=temp;
+									console.log("Found better state by ROTATING A PHALANX with a value of: " + bestState.value);
+								}
+								setGrid(defGrid,grid);
+								pieces = getAIPieces();
 							}
-							setGrid(defGrid,grid);
-							pieces = getAIPieces();
 						}
-					}
-					for(var rot=0;rot<4;rot++){
 						setGrid(defGrid,grid);
 						pieces = getAIPieces();
+						var rot = phalanx[0].rot;
 						var incRow; //Increment row by this
 						var incCol; //Increment col by this
 						switch(rot){
@@ -243,7 +244,7 @@ function	getValue(state,pieces){
 						//Ally
 						else if(Math.abs((adj[j].player-pieces[i].player)%2)==0){
 							if(adj[j].rot==pieces[i].rot){
-								val+=3;//Facing	Same	dir
+								val+=2;//Facing	Same	dir
 							}
 							else{
 								val+=1;//Diff	dir
