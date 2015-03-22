@@ -103,7 +103,6 @@ function mouseMove(event) {
 					}
 					else if (inputMan.drag == "sound") {
 						audioMan.sound = Math.max(0, Math.min(1, Math.round(x / 148.4) / 10));
-						sounds["sound"].volume = Math.pow(audioMan.sound, 2);
 						handled = true;
 					}
 				}
