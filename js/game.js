@@ -156,27 +156,36 @@ function getWinnerText(player) {
 	return getCity(player) + "and " + getCity(getPartner(player)) + "win!";
 }
 
-function pushGameState() {
-	var pGrid = new Array(15);
-	for (var row = 0; row < 15; ++row) {
-		pGrid[row] = new Array(21);
-		for (var col = 0; col < 21; ++col) {
-			var cell = {
-				checked: grid[row][col].checked,
-				player : grid[row][col].player,
-				kind   : grid[row][col].kind,
-				city   : grid[row][col].city,
-				rot    : grid[row][col].rot,
-				ring   : grid[row][col].ring
-			}
-			pGrid[row][col] = cell;
-		}
-	}
-
+function pushGameState(ai) {
 	var state = {
-		grid:pGrid,
-		player:gameMan.player,
-		actions:gameMan.actions
+	  player: gameMan.player,
+	  actions: gameMan.actions,
+	  ai: ai,
+	  pieces: [],
+	  prompts: []
+	};
+
+	for (var row = 0; row < 15; ++row) {
+	  for (var col = 0; col < 21; ++col) {
+			var cell = grid[row][col];
+
+			if (cell.player > -1) {
+				state.pieces.push({
+					row: row,
+					col: col,
+					rot: cell.rot,
+					player: cell.player
+				});
+			}
+
+			if (cell.prompt > -1) {
+				state.prompts.push({
+					row: row,
+					col: col,
+					prompt: cell.prompt
+				});
+			}
+	  }
 	}
 
 	gameStates.push(state);
@@ -195,18 +204,27 @@ function undo() {
 	}
 }
 
-function revertGrid() {
-	var pGrid = gameStates[gameStates.length-1].grid;
-	for (var row = 0; row < 15; ++row) {
-		for (var col = 0; col < 21; ++col) {
-			grid[row][col].checked = pGrid[row][col].checked;
-			grid[row][col].player  = pGrid[row][col].player;
-			grid[row][col].kind    = pGrid[row][col].kind;
-			grid[row][col].city    = pGrid[row][col].city;
-			grid[row][col].rot     = pGrid[row][col].rot;
-			grid[row][col].ring    = pGrid[row][col].ring;
-		}
+function loadGameState(state) {
+	generateGrid(emptyBoard);
+
+	gameMan.player = state.player;
+	gameMan.actions = state.actions;
+
+	for (var i = state.pieces.length-1; i >= 0; --i) {
+		var piece = state.pieces[i];
+		grid[piece.row][piece.col].player = piece.player;
+		grid[piece.row][piece.col].rot = piece.rot;
 	}
+
+	for (var i = state.prompts.length-1; i >= 0; --i) {
+		var prompt = state.prompts[i];
+		grid[prompt.row][prompt.col].prompt = prompt.prompt;
+	}
+}
+
+function revertGrid() {
+	var state = gameStates[gameStates.length-1];
+	loadGameState(state);
 }
 
 function checkWin() {

@@ -117,6 +117,41 @@ var mainBoard = [
 	"......dddccc........."
 ]
 
+var emptyBoard = [
+	".........kkklll......",
+	".........kkklll......",
+	".........jjj.........",
+	"hh.eeeiiiiiiiiimmm...",
+	"hh.eeeiiiiiiiiimmm...",
+	"hh.eeeiiiiiiiiimmm...",
+	"ggfeee.........mmmnoo",
+	"ggfeee.........mmmnoo",
+	"ggfeee.........mmmnoo",
+	"...eeeaaaaaaaaammm.pp",
+	"...eeeaaaaaaaaammm.pp",
+	"...eeeaaaaaaaaammm.pp",
+	".........bbb.........",
+	"......dddccc.........",
+	"......dddccc........."
+]
+
+// Sample tutorial board
+// ---------------------
+// var newTutorialBoards = [
+// 	{
+// 		player: 0,
+// 		actions: 2,
+// 		pieces: [
+// 			{row:3,col:10,rot:0,player:0}
+// 		],
+// 		prompts: [
+// 			{row:3,col:10,prompt:0},
+// 			{row:2,col:10,prompt:2}
+// 			{row:2,col:10,prompt:2}
+// 		]
+// 	}
+// ]
+
 var tutorialBoards = [[	// 2 Athens Victory
 	".........kkklll......",
 	".........kkklll......",
