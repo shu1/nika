@@ -34,10 +34,7 @@ function mouseDown(event) {
 		}
 	}
 	else {	// mouse
-		inputMan.touchID = 0;	// set some arbitrary ID greater than -1
-		if (gameMan.scene == "board" && !inputMan.menu) {	// TODO "!inputMan.menu" is workaround for AI
-			revertGrid();	// prevent right click allowing rotate without using actions
-		}
+		inputMan.touchID = event.which;
 	}
 
 	if (!touch2) {
