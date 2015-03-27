@@ -34,7 +34,11 @@ function mouseDown(event) {
 		}
 	}
 	else {	// mouse
-		inputMan.touchID = event.which;
+		if (inputMan.touchID < 0) {
+			inputMan.touchID = event.which;
+		} else {
+			resetState();
+		}
 	}
 
 	if (!touch2) {
@@ -172,7 +176,7 @@ function mouseMove(event) {
 		}
 
 		if (handled) {
-			event.preventDefault();			
+			event.preventDefault();
 		}
 	}
 }
@@ -250,7 +254,7 @@ function mouseUp(event) {
 		}
 
 		clearRallyHighlights();	// TODO refactor highlights?
-		gameMan.selection = false;	
+		gameMan.selection = false;
 		menuMan.button = 0;	// reset for key input
 		inputMan.menu = false;
 		inputMan.drag = "";
@@ -361,8 +365,9 @@ function isTouch(event, touchID) {
 			}
 		}
 		return false;
+	} else {
+		return event.which == touchID;
 	}
-	return true;	// mouse, all clicks are valid
 }
 
 function setPinch(changedTouch) {
