@@ -135,22 +135,253 @@ var emptyBoard = [
 	"......dddccc........."
 ]
 
-// Sample tutorial board
-// ---------------------
-// var newTutorialBoards = [
-// 	{
-// 		player: 0,
-// 		actions: 2,
-// 		pieces: [
-// 			{row:3,col:10,rot:0,player:0}
-// 		],
-// 		prompts: [
-// 			{row:3,col:10,prompt:0},
-// 			{row:2,col:10,prompt:2}
-// 			{row:2,col:10,prompt:2}
-// 		]
-// 	}
-// ]
+var newTutorialBoards = [
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:9,rot:3,player:0},
+			{row:10,col:9,rot:3,player:0},
+			{row:11,col:9,rot:3,player:0},
+			{row:10,col:10,rot:0,player:0},
+			{row:11,col:10,rot:0,player:0},
+			{row:11,col:11,rot:1,player:0},
+			{row:6,col:5,rot:0,player:1},
+			{row:6,col:4,rot:0,player:1},
+			{row:6,col:3,rot:0,player:1},
+			{row:7,col:4,rot:1,player:1},
+			{row:7,col:3,rot:1,player:1},
+			{row:8,col:3,rot:2,player:1},
+			{row:5,col:11,rot:1,player:2},
+			{row:4,col:11,rot:1,player:2},
+			{row:3,col:11,rot:1,player:2},
+			{row:4,col:10,rot:2,player:2},
+			{row:3,col:10,rot:2,player:2},
+			{row:3,col:9,rot:3,player:2},
+			{row:8,col:15,rot:2,player:3},
+			{row:8,col:16,rot:2,player:3},
+			{row:8,col:17,rot:2,player:3},
+			{row:7,col:16,rot:3,player:3},
+			{row:7,col:17,rot:3,player:3},
+			{row:6,col:17,rot:0,player:3}
+		],
+		prompts: [
+			{row:9,col:9,prompt:1},
+			{row:10,col:9,prompt:1},
+			{row:11,col:9,prompt:1},
+			{row:10,col:10,prompt:1},
+			{row:11,col:10,prompt:1},
+			{row:11,col:11,prompt:1}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:9,rot:3,player:0},
+			{row:10,col:9,rot:3,player:0},
+			{row:11,col:9,rot:3,player:0},
+			{row:10,col:10,rot:0,player:0},
+			{row:11,col:10,rot:0,player:0},
+			{row:11,col:11,rot:1,player:0},
+			{row:6,col:5,rot:0,player:1},
+			{row:6,col:4,rot:0,player:1},
+			{row:6,col:3,rot:0,player:1},
+			{row:7,col:4,rot:1,player:1},
+			{row:7,col:3,rot:1,player:1},
+			{row:8,col:3,rot:2,player:1},
+			{row:5,col:11,rot:1,player:2},
+			{row:4,col:11,rot:1,player:2},
+			{row:3,col:11,rot:1,player:2},
+			{row:4,col:10,rot:2,player:2},
+			{row:3,col:10,rot:2,player:2},
+			{row:3,col:9,rot:3,player:2},
+			{row:8,col:15,rot:2,player:3},
+			{row:8,col:16,rot:2,player:3},
+			{row:8,col:17,rot:2,player:3},
+			{row:7,col:16,rot:3,player:3},
+			{row:7,col:17,rot:3,player:3},
+			{row:6,col:17,rot:0,player:3}
+		],
+		prompts: [
+			{row:2,col:9,prompt:2},
+			{row:2,col:10,prompt:2},
+			{row:2,col:11,prompt:2}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:3,col:10,rot:0,player:0}
+		],
+		prompts: [
+			{row:3,col:10,prompt:0},
+			{row:2,col:10,prompt:2}
+		]
+	},
+	{
+		player: 0,
+		actions: 1,
+		pieces: [
+			{row:2,col:10,rot:0,player:0}
+		],
+		prompts: [
+			{row:2,col:10,prompt:1}
+		]
+	},
+	{
+		player: 2,
+		actions: 2,
+		pieces: [
+			{row:11,col:10,rot:2,player:2}
+		],
+		prompts: [
+			{row:11,col:10,prompt:1},
+			{row:12,col:9,prompt:2},
+			{row:12,col:10,prompt:2},
+			{row:12,col:11,prompt:2}
+		]
+	},
+	{
+		player: 2,
+		actions: 1,
+		pieces: [
+			{row:12,col:10,rot:2,player:2}
+		],
+		prompts: [
+			{row:12,col:10,prompt:1}
+		]
+	},
+	{
+		player: 1,
+		actions: 2,
+		pieces: [
+			{row:7,col:17,rot:1,player:1}
+		],
+		prompts: [
+			{row:7,col:17,prompt:1},
+			{row:6,col:18,prompt:2},
+			{row:7,col:18,prompt:2},
+			{row:8,col:18,prompt:2}
+		]
+	},
+	{
+		player: 1,
+		actions: 1,
+		pieces: [
+			{row:7,col:18,rot:1,player:1}
+		],
+		prompts: [
+			{row:7,col:18,prompt:1}
+		]
+	},
+	{
+		player: 3,
+		actions: 2,
+		pieces: [
+			{row:7,col:3,rot:3,player:3}
+		],
+		prompts: [
+			{row:7,col:3,prompt:1},
+			{row:6,col:2,prompt:2},
+			{row:7,col:2,prompt:2},
+			{row:8,col:2,prompt:2}
+		]
+	},
+	{
+		player: 3,
+		actions: 1,
+		pieces: [
+			{row:7,col:2,rot:3,player:3}
+		],
+		prompts: [
+			{row:7,col:2,prompt:1}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:10,col:5,rot:1,player:0},
+			{row:9,col:7,rot:3,player:0},
+			{row:9,col:6,rot:1,player:1}
+		],
+		prompts: [
+			{row:9,col:6,prompt:1}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:10,col:5,rot:1,player:0},
+			{row:9,col:7,rot:3,player:0},
+			{row:9,col:6,rot:1,player:1}
+		],
+		prompts: []
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:10,col:5,rot:1,player:0},
+			{row:9,col:7,rot:3,player:0},
+			{row:9,col:6,rot:1,player:1}
+		],
+		prompts: [
+			{row:9,col:7,prompt:1}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:10,col:5,rot:1,player:0},
+			{row:9,col:7,rot:3,player:0},
+			{row:9,col:6,rot:1,player:1}
+		],
+		prompts: [
+			{row:10,col:5,prompt:0},
+			{row:10,col:6,prompt:2}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:10,col:6,rot:1,player:0},
+			{row:9,col:7,rot:3,player:0},
+			{row:9,col:6,rot:1,player:1}
+		],
+		prompts: []
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:10,col:6,rot:1,player:0},
+			{row:9,col:7,rot:3,player:0},
+			{row:9,col:6,rot:1,player:1}
+		],
+		prompts: [
+			{row:10,col:6,prompt:0},
+			{row:9,col:6,prompt:2}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:6,rot:0,player:0},
+			{row:9,col:7,rot:3,player:0},
+			{row:3,col:1,rot:1,player:1}
+		],
+		prompts: [
+			{row:9,col:6,prompt:1}
+		]
+	},
+]
 
 var tutorialBoards = [[	// 2 Athens Victory
 	".........kkklll......",
