@@ -16,24 +16,11 @@ function	ai(){
 	pieces = getAIPieces();
 
 	//Checks	if	any	pieces	are	close	enough	to	win.
-	for	(var	i	=	0;	i<6;	i++){
-		var	d	=	getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
-		if(d<=2){
-			if(d==1){
-				//1	move
-				console.log("1 space away.");
-			}
-			else if(d==2){
-				//2	moves
-				console.log("2 spaces away.");
-			}
-		}
-	}
+	checkIfPiecesCanWin(pieces);
 
 	//Creates the default state in which all other states are compared to.
 	var	defaultState	=	newState();
 	getValue(defaultState,pieces);
-	console.log("For Player"	+	gameMan.player	+	", the value of	this state is	"	+	defaultState.value);
 	var bestState = defaultState; //Stores best state, which is default at this point. Altough we might be better off just setting best state.
 
 	var	rallySpots	=	[];
@@ -49,10 +36,8 @@ function	ai(){
 	for(var	i	=	0;	i<6;	i++){
 		if(pieces[i].kind	==	3){
 			for(var	j	=	0;	j<rallySpots.length;	j++){
-				//Value	piece.	Make	separate	functions	for	checking	adjacent,	rot,	whatever.
-				//Then check	distance	to	goal,	to	ensure	frontmost	placement.	Although	there	could	be	a	more	efficient	way	of	doing	this.
-				//OR	JUST	GET	THE	SPACE	FARTHEST	FROM	THE	EDGE	(Athens	farthest	from	bottom,	sparta	from	left,	etc...)
-			} 7
+				//Get rally spots
+			}
 		}
 		else{
 			//	Do	normal	move	check,	which	means	rotation,	then	movement.
@@ -72,46 +57,22 @@ function	ai(){
 			pieces = getAIPieces();
 			for (var dir = 0; dir<4; dir++){
 				//Check moves in each direction
-				var incRow; //Increment row by this
-				var incCol; //Increment col by this
-				switch(dir){
-					case 0:
-						incRow = -1;
-						incCol = 0;
-						break;
-					case 1:
-						incRow = 0;
-						incCol = 1;
-						break;
-					case 2:
-						incRow = 1;
-						incCol = 0;
-						break;
-					case 3:
-						incRow = 0;
-						incCol = -1;
-						break;
-				}
-
 				phalanx=[pieces[i]];
-				var pRow = pieces[i].row;
-				var pCol = pieces[i].col;
-				var tRow = pieces[i].row+incRow;
-				var tCol = pieces[i].col+incCol;
-				var origRot = pieces[i].rot;
-				if(checkMove(pRow,pCol,tRow,tCol)){
-					if(pushPiece(pRow,pCol,tRow,tCol,pieces[i],1)){
-						moveOnePiece(pRow, pCol, tRow, tCol);
-						pieces = getAIPieces();
-						var temp = copyState(defaultState);
-						getValue(temp,pieces);
-						if(temp.value>bestState.value){
-							bestState=temp;
-							console.log("Found better state by MOVEMENT with a value of: " + bestState.value);
-						}
-						setGrid(defGrid,grid);
-						pieces = getAIPieces();
+
+				var move = getMoveArguments(phalanx[0],dir);
+				var origRot = phalanx[0].rot;
+				
+				if(checkMove(move.pRow,move.pCol,move.tRow,move.tCol) && pushPiece(move.pRow,move.pCol,move.tRow,move.tCol,phalanx[0],1)){
+					moveOnePiece(move.pRow, move.pCol, move.tRow, move.tCol);
+					pieces = getAIPieces();
+					var temp = copyState(defaultState);
+					getValue(temp,pieces);
+					if(temp.value>bestState.value){
+						bestState=temp;
+						console.log("Found better state by MOVEMENT with a value of: " + bestState.value);
 					}
+					setGrid(defGrid,grid);
+					pieces = getAIPieces();
 				}
 				phalanx=[];
 			}
@@ -119,6 +80,7 @@ function	ai(){
 	}
 
 	setGrid(defGrid,grid);
+
 	//PHALANX CHECKING =====================
 	for(var i=0; i<4; i++){
 		same_dir=[];
@@ -132,61 +94,39 @@ function	ai(){
 			combinations.forEach(function(e){
 				phalanx = [];
 				phalanx = e.slice(0);
-				if(phalanx.length>1){
-					if(isPhalanx()){
-						for(var rot=0;rot<4;rot++){
-							if(rot!=i){
-								rotatePiece(phalanx[0].row, phalanx[0].col, rot);
-								pieces = getAIPieces();
-								var temp = copyState(defaultState);
-								getValue(temp,pieces);
-								if(temp.value>bestState.value){
-									bestState=temp;
-									console.log("Found better state by ROTATING A PHALANX with a value of: " + bestState.value);
-								}
-								setGrid(defGrid,grid);
-								pieces = getAIPieces();
+				if(phalanx.length>1 && isPhalanx()){
+					for(var rot=0;rot<4;rot++){
+						if(rot!=i){
+							rotatePiece(phalanx[0].row, phalanx[0].col, rot);
+							pieces = getAIPieces();
+							var temp = copyState(defaultState);
+							getValue(temp,pieces);
+							if(temp.value>bestState.value){
+								bestState=temp;
+								console.log("Found better state by ROTATING A PHALANX with a value of: " + bestState.value);
 							}
+							setGrid(defGrid,grid);
+							pieces = getAIPieces();
 						}
-						setGrid(defGrid,grid);
-						pieces = getAIPieces();
-						var rot = phalanx[0].rot;
-						var incRow; //Increment row by this
-						var incCol; //Increment col by this
-						switch(rot){
-							case 0:
-								incRow = -1;
-								incCol = 0;
-								break;
-							case 1:
-								incRow = 0;
-								incCol = 1;
-								break;
-							case 2:
-								incRow = 1;
-								incCol = 0;
-								break;
-							case 3:
-								incRow = 0;
-								incCol = -1;
-								break;
-						}
-						var pRow = phalanx[0].row;
-						var pCol = phalanx[0].col;
-						var tRow = phalanx[0].row+incRow;
-						var tCol = phalanx[0].col+incCol;
-						movePiece(pRow,pCol,tRow,tCol,true);
-						phalanx = e.slice(0);
-						pieces = getAIPieces();
-						var temp = copyState(defaultState);
-						getValue(temp,pieces);
-						if(temp.value>bestState.value){
-							bestState=temp;
-							console.log("Found better state by MOVING A PHALANX with a value of: " + bestState.value);
-						}
-						setGrid(defGrid,grid);
-						pieces = getAIPieces();
 					}
+					setGrid(defGrid,grid);
+					pieces = getAIPieces();
+					var rot = phalanx[0].rot;
+
+					var move = getMoveArguments(phalanx[0],rot);
+					movePiece(move.pRow,move.pCol,move.tRow,move.tCol,true);
+
+					phalanx = e.slice(0);
+					pieces = getAIPieces();
+
+					var temp = copyState(defaultState);
+					getValue(temp,pieces);
+					if(temp.value>bestState.value){
+						bestState=temp;
+						console.log("Found better state by MOVING A PHALANX with a value of: " + bestState.value);
+					}
+					setGrid(defGrid,grid);
+					pieces = getAIPieces();
 				}
 			});
 		}
@@ -206,97 +146,65 @@ function	ai(){
 }
 
 function	getValue(state,pieces){
-	for	(var	i	=	0;	i<6;	i++){
-		var	val	=	0;
+	for	(var i=0; i<6; i++){
+
+		var	val	= 0;
+
 		//Piece	on	Board
-		if(pieces[i].kind!=3){
-			val+=5;
-		}
+		if(pieces[i].kind!=3){ val+=5; }
+
 		//Adjacent	Check
-		var	adj	=	[];
-		if(pieces[i].row-1>-1){
-			adj[0] = grid[pieces[i].row-1][pieces[i].col];//N
-		}
-		if(pieces[i].col+1<grid[pieces[i].row].length){
-			adj[1] = grid[pieces[i].row][pieces[i].col+1];//E
-		}
-		if(pieces[i].row+1<grid.length){
-			adj[2] = grid[pieces[i].row+1][pieces[i].col];//S
-		}
-		if(pieces[i].col-1>0){
-			adj[3] = grid[pieces[i].row][pieces[i].col-1];//W
-		}
-		//TODO:	Check	everything	to	make	sure	on	field.
+		var	adj	= [];
+		if(pieces[i].row-1>-1){	adj[0] = grid[pieces[i].row-1][pieces[i].col]; }//N
+		if(pieces[i].col+1<grid[pieces[i].row].length){ adj[1] = grid[pieces[i].row][pieces[i].col+1]; } //E
+		if(pieces[i].row+1<grid.length){ adj[2] = grid[pieces[i].row+1][pieces[i].col]; } //S
+		if(pieces[i].col-1>0){ adj[3] = grid[pieces[i].row][pieces[i].col-1]; }//W
+
 		for(var	j=0;	j<4;	j++){
-			if(adj[j]!=undefined){
-				if(adj[j].kind!=-1){
-					//Is	a	piece
-					if(adj[j].player>-1){
-						//Own
-						if(adj[j].player==pieces[i].player){
-							if(adj[j].rot==pieces[i].rot){
-								val+=2;//In	Phalanx
-							}
-							else{
-								val+=1;//Not in Phalanx
-							}
-						}
-						//Ally
-						else if(Math.abs((adj[j].player-pieces[i].player)%2)==0){
-							if(adj[j].rot==pieces[i].rot){
-								val+=2;//Facing	Same	dir
-							}
-							else{
-								val+=1;//Diff	dir
-							}
-						}
-						//Enemy
-						else{
-							if(pieces[i].rot == j && Math.abs((adj[j].rot-j)%2)==0){
-								//Facing	each	other
-								//TODO BROKEN Will return true for pieces facing away from eachother too.
-								val-=1
-							}
-							else if(pieces[i].rot==j){
-								//If	piece	is	facing	adj,	but	they	aren't	facing	eachother,	then	adj	is	routable
-								if(gameMan.actions>1){
-									val+=5;
-								}
-								else{
-									val+=2;
-								}
-							}
-							else if(Math.abs((adj[j].rot-j)%2)==0){
-								//Else if	we're	not	facing	adjacent,	check	if	he's	facing	us.
-								if(gameMan.actions>1){
-									val-=5;
-								}
-								else{
-									val-=12;
-								}
-							}
-							else{
-								//Adjacent	but	not	facing	each	other.
-								if(gameMan.actions>1){
-									val+=2;
-								}
-								else{
-									val-=8;
-								}
-							}
-						}
+			if(adj[j]!=undefined && adj[j].kind!=-1 && adj[j].player>-1){
+				//Own
+				if(adj[j].player==pieces[i].player){
+					if(adj[j].rot==pieces[i].rot){ val+=2; }//In	Phalanx
+					else{ val+=1; }//Not in Phalanx
+				}
+
+				//Ally
+				else if(Math.abs((adj[j].player-pieces[i].player)%2)==0){
+					if(adj[j].rot==pieces[i].rot){val+=2;} //Same Dir
+					else{val+=1;} //Diff Dir
+				}
+
+				//Enemy
+				else{
+					if(pieces[i].rot == j && Math.abs((adj[j].rot-j)%2)==0){
+						val-=1; //Facing eachother.	
+					}
+					else if(pieces[i].rot==j){
+						//If piece is facing adj, but they aren't facing eachother, then adj is routable
+						if(gameMan.actions>1){ val+=5; }
+						else{ val+=2; }
+					}
+					else if(Math.abs((adj[j].rot-j)%2)==0){
+						//Else if	we're	not	facing	adjacent,	check	if	he's	facing	us.
+						if(gameMan.actions>1){ val-=5; }
+						else{ val-=12;}
+					}
+					else{
+						//Adjacent	but	not	facing	each	other.
+						if(gameMan.actions>1){ val+=2; }
+						else { val-=8; }
 					}
 				}
 			}
 		}
-		val-=10*getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
+		val-=8*getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
 		state.value+=val; //Adds piece	value	to	total	value
 	}
 	//Subtract for every piece on	the	board
 	for	(var	row	=	0;	row	<	15;	++row)	{
 		for	(var	col	=	0;	col	<	21;	++col)	{
 			if	(grid[row][col].player>-1	&& Math.abs(gameMan.player-grid[row][col].player)%2!=0	&&	grid[row][col].kind!=3)	{
-				state.value-=5;
+				state.value-=20;
 			}
 		}
 	}
@@ -475,4 +383,60 @@ function getCombinations(pieces) {
   }
   f([], pieces);
   return result;
+}
+
+function checkIfPiecesCanWin(pieces){
+	for	(var	i	=	0;	i<6;	i++){
+		var	d	=	getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
+		if(d<=2){
+			if(d==1){
+				//1	move
+				console.log("1 space away.");
+				return true;
+			}
+			else if(d==2){
+				//2	moves
+				console.log("2 spaces away.");
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+function getDirection(dir){
+	var incRow = 0;
+	var incCol = 0;
+	switch(dir){
+		case 0:
+			incRow = -1;
+			incCol = 0;
+			break;
+		case 1:
+			incRow = 0;
+			incCol = 1;
+			break;
+		case 2:
+			incRow = 1;
+			incCol = 0;
+			break;
+		case 3:
+			incRow = 0;
+			incCol = -1;
+			break;
+	}
+	return {row:incRow,col:incCol};
+}
+
+function getMoveArguments(p,dir){
+	var d = getDirection(dir);
+	var newRow = p.row+d.row;
+	var newCol = p.col+d.col;
+	return {
+		pRow : p.row,
+		pCol : p.col,
+		tRow : newRow,
+		tCol : newCol
+	}
 }
