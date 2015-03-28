@@ -222,6 +222,17 @@ function mouseUp(event) {
 					}
 				}
 			}
+			else if (inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// menu buttons
+				if (inputMan.x < menuMan.bWidth) {
+					setScene("menus");
+				}
+				else if (inputMan.x < menuMan.bWidth * 2) {
+					pass();
+				}
+				else {
+					undo();
+				}
+			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
 				if (x > displayMan.muralX && x < displayMan.muralX + displayMan.muralWidth
 				&& y > displayMan.muralY && y < displayMan.muralY + displayMan.muralHeight) {
