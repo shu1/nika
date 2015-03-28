@@ -183,11 +183,11 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	hudMan.inputText += " up";
-    if (isTouch(event, inputMan.touchID2)) {
-        inputMan.touchID2 = inputMan.touchID = -1;    // end touches
-    }
+	if (isTouch(event, inputMan.touchID2)) {
+		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
+	}
 
-    if (isTouch(event, inputMan.touchID)) {
+	if (isTouch(event, inputMan.touchID)) {
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
 		}
@@ -365,7 +365,8 @@ function isTouch(event, touchID) {
 			}
 		}
 		return false;
-	} else {
+	}
+	else {
 		return event.which == touchID;
 	}
 }
