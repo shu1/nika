@@ -381,6 +381,369 @@ var newTutorialBoards = [
 			{row:9,col:6,prompt:1}
 		]
 	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:11,rot:3,player:0},
+			{row:10,col:11,rot:0,player:0},
+			{row:13,col:8,rot:0,player:0},
+			{row:9,col:12,rot:3,player:3},
+			{row:9,col:14,rot:3,player:3},
+			{row:11,col:14,rot:3,player:3}
+		],
+		prompts: [
+			{row:9,col:11,prompt:1},
+			{row:10,col:11,prompt:1}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:11,rot:3,player:0},
+			{row:10,col:11,rot:0,player:0},
+			{row:13,col:8,rot:0,player:0},
+			{row:9,col:12,rot:3,player:3},
+			{row:9,col:14,rot:3,player:3},
+			{row:11,col:14,rot:3,player:3}
+		],
+		prompts: [
+			{row:10,col:11,prompt:0}
+		]
+	},
+	{
+		player: 0,
+		actions: 1,
+		pieces: [
+			{row:9,col:11,rot:3,player:0},
+			{row:10,col:11,rot:1,player:0},
+			{row:13,col:8,rot:0,player:0},
+			{row:9,col:12,rot:3,player:3},
+			{row:9,col:14,rot:3,player:3},
+			{row:11,col:14,rot:3,player:3}
+		],
+		prompts: [
+			{row:9,col:11,prompt:0}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:11,rot:1,player:0},
+			{row:10,col:11,rot:1,player:0},
+			{row:13,col:8,rot:0,player:0},
+			{row:9,col:12,rot:3,player:3},
+			{row:9,col:14,rot:3,player:3},
+			{row:11,col:14,rot:3,player:3}
+		],
+		prompts: [
+			{row:9,col:11,prompt:1},
+			{row:10,col:11,prompt:1}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:11,rot:1,player:0},
+			{row:10,col:11,rot:1,player:0},
+			{row:13,col:8,rot:0,player:0},
+			{row:9,col:12,rot:3,player:3},
+			{row:9,col:14,rot:3,player:3},
+			{row:11,col:12,rot:3,player:3}
+		],
+		prompts: []
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:11,rot:1,player:0},
+			{row:10,col:11,rot:1,player:0},
+			{row:13,col:8,rot:0,player:0},
+			{row:9,col:12,rot:3,player:3},
+			{row:9,col:14,rot:3,player:3},
+			{row:11,col:12,rot:3,player:3}
+		],
+		prompts: [
+			{row:13,col:8,prompt:1},
+			{row:13,col:9,prompt:2},
+			{row:13,col:10,prompt:2},
+			{row:13,col:11,prompt:2},
+			{row:14,col:9,prompt:2},
+			{row:14,col:10,prompt:2},
+			{row:14,col:11,prompt:2}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:11,rot:1,player:0},
+			{row:10,col:11,rot:1,player:0},
+			{row:13,col:8,rot:0,player:0},
+			{row:9,col:12,rot:3,player:3},
+			{row:9,col:14,rot:3,player:3},
+			{row:11,col:12,rot:3,player:3}
+		],
+		prompts: [
+			{row:13,col:8,prompt:0},
+			{row:13,col:11,prompt:2}
+		]
+	},
+	{
+		player: 0,
+		actions: 1,
+		pieces: [
+			{row:9,col:11,rot:1,player:0},
+			{row:10,col:11,rot:1,player:0},
+			{row:13,col:11,rot:0,player:0},
+			{row:9,col:12,rot:3,player:3},
+			{row:9,col:14,rot:3,player:3},
+			{row:11,col:12,rot:3,player:3}
+		],
+		prompts: [
+			{row:12,col:9,prompt:1},
+			{row:12,col:10,prompt:1},
+			{row:12,col:11,prompt:1}
+		]
+	},
+	{
+		player: 0,
+		actions: 1,
+		pieces: [
+			{row:9,col:11,rot:1,player:0},
+			{row:10,col:11,rot:1,player:0},
+			{row:13,col:11,rot:0,player:0},
+			{row:9,col:12,rot:3,player:3},
+			{row:9,col:14,rot:3,player:3},
+			{row:11,col:12,rot:3,player:3}
+		],
+		prompts: [
+			{row:13,col:11,prompt:0},
+			{row:12,col:11,prompt:2}
+		]
+	},
+	{
+		player: 3,
+		actions: 2,
+		pieces: [
+			{row:9,col:11,rot:1,player:0},
+			{row:10,col:11,rot:1,player:0},
+			{row:12,col:11,rot:0,player:0},
+			{row:9,col:12,rot:3,player:3},
+			{row:9,col:14,rot:3,player:3},
+			{row:11,col:12,rot:3,player:3}
+		],
+		prompts: []
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:6,rot:3,player:0},
+			{row:10,col:6,rot:3,player:0},
+			{row:7,col:5,rot:2,player:1}
+		],
+		prompts: [
+			{row:9,col:6,prompt:1},
+			{row:10,col:6,prompt:1}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:6,rot:3,player:0},
+			{row:10,col:6,rot:3,player:0},
+			{row:7,col:5,rot:2,player:1}
+		],
+		prompts: [
+			{row:9,col:6,prompt:0},
+			{row:10,col:6,prompt:0},
+			{row:9,col:5,prompt:2},
+			{row:10,col:5,prompt:2}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:5,rot:3,player:0},
+			{row:10,col:5,rot:3,player:0},
+			{row:7,col:5,rot:2,player:1}
+		],
+		prompts: [
+			{row:9,col:5,prompt:0},
+			{row:10,col:5,prompt:0}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:5,rot:0,player:0},
+			{row:10,col:5,rot:0,player:0},
+			{row:7,col:5,rot:2,player:1}
+		],
+		prompts: []
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:14,rot:1,player:0},
+			{row:10,col:14,rot:1,player:0},
+			{row:11,col:14,rot:1,player:0},
+			{row:11,col:15,rot:1,player:0},
+			{row:10,col:16,rot:3,player:3},
+			{row:7,col:15,rot:2,player:3},
+			{row:7,col:16,rot:2,player:3},
+			{row:8,col:16,rot:2,player:3}
+
+		],
+		prompts: [
+			{row:9,col:14,prompt:1}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:14,rot:1,player:0},
+			{row:10,col:14,rot:1,player:0},
+			{row:11,col:14,rot:1,player:0},
+			{row:11,col:15,rot:1,player:0},
+			{row:10,col:16,rot:3,player:3},
+			{row:7,col:15,rot:2,player:3},
+			{row:7,col:16,rot:2,player:3},
+			{row:8,col:16,rot:2,player:3}
+
+		],
+		prompts: [
+			{row:10,col:14,prompt:0},
+			{row:11,col:14,prompt:0},
+			{row:11,col:15,prompt:0}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:14,rot:1,player:0},
+			{row:10,col:14,rot:1,player:0},
+			{row:11,col:14,rot:1,player:0},
+			{row:11,col:15,rot:1,player:0},
+			{row:10,col:16,rot:3,player:3},
+			{row:7,col:15,rot:2,player:3},
+			{row:7,col:16,rot:2,player:3},
+			{row:8,col:16,rot:2,player:3}
+
+		],
+		prompts: [
+			{row:10,col:14,prompt:0},
+			{row:11,col:14,prompt:0},
+			{row:11,col:15,prompt:0}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:14,rot:1,player:0},
+			{row:10,col:14,rot:1,player:0},
+			{row:11,col:14,rot:1,player:0},
+			{row:11,col:15,rot:1,player:0},
+			{row:10,col:16,rot:3,player:3},
+			{row:7,col:15,rot:2,player:3},
+			{row:7,col:16,rot:2,player:3},
+			{row:8,col:16,rot:2,player:3}
+
+		],
+		prompts: [
+			{row:10,col:14,prompt:0},
+			{row:11,col:14,prompt:0},
+			{row:11,col:15,prompt:0}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:14,rot:1,player:0},
+			{row:10,col:14,rot:1,player:0},
+			{row:11,col:14,rot:1,player:0},
+			{row:11,col:15,rot:1,player:0},
+			{row:10,col:16,rot:3,player:3},
+			{row:7,col:15,rot:2,player:3},
+			{row:7,col:16,rot:2,player:3},
+			{row:8,col:16,rot:2,player:3}
+
+		],
+		prompts: [
+			{row:10,col:14,prompt:0},
+			{row:11,col:14,prompt:0},
+			{row:11,col:15,prompt:0}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:14,rot:1,player:0},
+			{row:10,col:15,rot:1,player:0},
+			{row:11,col:15,rot:1,player:0},
+			{row:11,col:16,rot:1,player:0},
+			{row:10,col:16,rot:3,player:3},
+			{row:7,col:15,rot:2,player:3},
+			{row:7,col:16,rot:2,player:3},
+			{row:8,col:16,rot:2,player:3}
+
+		],
+		prompts: [
+			{row:11,col:16,prompt:0},
+			{row:10,col:16,prompt:2}
+		]
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:14,rot:1,player:0},
+			{row:10,col:15,rot:1,player:0},
+			{row:11,col:15,rot:1,player:0},
+			{row:10,col:16,rot:0,player:0},
+			{row:11,col:19,rot:3,player:3},
+			{row:7,col:15,rot:2,player:3},
+			{row:7,col:16,rot:2,player:3},
+			{row:8,col:16,rot:2,player:3}
+
+		],
+		prompts: []
+	},
+	{
+		player: 0,
+		actions: 2,
+		pieces: [
+			{row:9,col:14,rot:1,player:0},
+			{row:10,col:14,rot:1,player:0},
+			{row:11,col:14,rot:1,player:0},
+			{row:11,col:15,rot:1,player:0},
+			{row:10,col:16,rot:3,player:3},
+			{row:7,col:15,rot:2,player:3},
+			{row:7,col:16,rot:2,player:3},
+			{row:8,col:16,rot:2,player:3}
+
+		],
+		prompts: [
+			{row:10,col:14,prompt:0},
+			{row:11,col:14,prompt:0},
+			{row:11,col:15,prompt:0}
+		]
+	}
+
 ]
 
 var tutorialBoards = [[	// 2 Athens Victory
