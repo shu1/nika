@@ -63,12 +63,12 @@ function mouseDown(event) {
 
 					buttonX = 1484 * audioMan.sound;
 					if (x > buttonX - radius && x < buttonX + radius && y > 710 - radius && y < 710 + radius) {
-						inputMan.drag = "sound";
+						inputMan.drag = "sound";	// TODO repurpose drag to general mouseDown string
 						handled = true;
 					}
 				}
 			}
-			else if (gameMan.scene == "board" && gameMan.winner < 0) {
+			else if (gameMan.scene == "board" && gameMan.menu != "popup" && gameMan.winner < 0) {
 				getRowCol(scene);
 				getPiece(inputMan.row, inputMan.col);
 				if (phalanx.length > 0) {
@@ -196,7 +196,19 @@ function mouseUp(event) {
 			var x = (inputMan.x - scene.x) / scene.scale;
 			var y = (inputMan.y - scene.y) / scene.scale;
 
-			if (gameMan.menu == "title") {
+			if (gameMan.scene == "rules") {
+				if (y > (scene.height - displayMan.arrowHeight)/2 && y < (scene.height + displayMan.arrowHeight)/2) {
+					if (x > scene.width - displayMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
+						gameMan.rules++;
+						hudMan.pageText = "Rule " + gameMan.rules;
+					}
+					else if (x < displayMan.arrowWidth*1.5 && gameMan.rules > 0) {
+						gameMan.rules--;
+						hudMan.pageText = "Rule " + gameMan.rules;
+					}
+				}
+			}
+			else if (gameMan.menu == "title") {
 				x -= (scene.width - displayMan.screenWidth)/2 + 128;	// offset to coordinates of buttons
 				y -= (scene.height - displayMan.screenHeight)/2 + 330;
 				if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*5) {
@@ -210,21 +222,28 @@ function mouseUp(event) {
 					gameMan.menu = "credit";
 				}
 			}
-			else if (gameMan.scene == "rules") {
-				if (y > (scene.height - displayMan.arrowHeight)/2 && y < (scene.height + displayMan.arrowHeight)/2) {
-					if (x > scene.width - displayMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
-						gameMan.rules++;
-						hudMan.pageText = "Rule " + gameMan.rules;
+			else if (gameMan.menu == "popup") {
+				var top = (gpCanvas.height - menuMan.pHeight)/2;
+				if (inputMan.x > (gpCanvas.width - menuMan.pWidth)/2 && inputMan.x < (gpCanvas.width + menuMan.pWidth)/2
+				&& inputMan.y > top && inputMan.y < top + menuMan.pHeight) {
+					if (inputMan.y < top + menuMan.pHeight/4) {
+						gameMan.menu = "";
 					}
-					else if (x < displayMan.arrowWidth*1.5 && gameMan.rules > 0) {
-						gameMan.rules--;
-						hudMan.pageText = "Rule " + gameMan.rules;
+					else if (inputMan.y < top + menuMan.pHeight/2) {
+						setScene("rules");
+					}
+					else if (inputMan.y < top + menuMan.pHeight*3/4) {
+						setScene("menus");
+						gameMan.menu = "option";
+					}
+					else {
+						setScene("menus");
 					}
 				}
 			}
 			else if (inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// menu buttons
 				if (inputMan.x < menuMan.bWidth) {
-					setScene("menus");
+					gameMan.menu = "popup";
 				}
 				else if (inputMan.x < menuMan.bWidth * 2) {
 					pass();

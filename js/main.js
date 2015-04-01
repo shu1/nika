@@ -28,6 +28,7 @@ window.onload = function() {
 	loadImage("buttonMenu");
 	loadImage("buttonPass");
 	loadImage("buttonUndo");
+	loadImage("menuPopup");
 	loadImage("arrowLeft");
 	loadImage("arrowRight");
 	loadImage("menuOption0");
@@ -179,6 +180,8 @@ function reSize() {
 	menuMan.bHeight = menuMan.bWidth/2;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
+	menuMan.pWidth = 1024 * minScale;
+	menuMan.pHeight = 512 * minScale;
 
 	initScenes(gpCanvas, maxScale, minScale);
 	setScene();
@@ -453,6 +456,10 @@ function drawContext(context, dTime, tv) {
 		drawButtons(context);
 	}
 
+	if (gameMan.menu == "popup") {
+		drawPopup(context);
+	}
+
 	drawMenu(context, dTime);
 
 	if (gameMan.debug) {
@@ -568,6 +575,11 @@ function drawHelmets(context, dTime) {
 	context.globalAlpha = (Math.sin(displayMan.helmetTheta % (Math.PI*2))+1)/4 + 0.5;
 	context.drawImage(images["helmet" + gameMan.actions], -128, -128);
 	context.restore();
+}
+
+function drawPopup(context) {
+	context.drawImage(images["menuPopup"], (gpCanvas.width - menuMan.pWidth)/2, (gpCanvas.height - menuMan.pHeight)/2,
+		menuMan.pWidth, menuMan.pHeight);
 }
 
 function drawRules(context, scene) {

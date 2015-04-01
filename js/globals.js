@@ -75,7 +75,9 @@ var menuMan = {
 	height:0,
 	bWidth:0,
 	bHeight:0,
-	button:0
+	button:0,
+	pWidth:0,
+	pHeight:0
 }
 
 var	hudMan = {
