@@ -3,7 +3,7 @@
 function mouseDown(event) {
 	hudMan.inputText = "";
 
-	var touch2 = false;
+	var multiTouch = false;
 	if (navigator.msPointerEnabled) {
 		if (inputMan.touchID < 0) {
 			inputMan.touchID = event.pointerId;
@@ -14,7 +14,7 @@ function mouseDown(event) {
 			inputMan.x2 = event.layerX;
 			inputMan.y2 = event.layerY;
 			setPinchDistance();
-			touch2 = true;
+			multiTouch = true;
 		}
 	}
 	else if (event.changedTouches) {
@@ -25,12 +25,12 @@ function mouseDown(event) {
 
 			if (event.changedTouches[1] && inputMan.touchID2 < 0) {	// if 2nd touch hits simultaneously
 				setPinch(event.changedTouches[1]);
-				touch2 = true;
+				multiTouch = true;
 			}
 		}
 		else if (inputMan.touchID2 < 0) {
 			setPinch(event.changedTouches[0]);
-			touch2 = true;
+			multiTouch = true;
 		}
 	}
 	else {	// mouse
@@ -41,7 +41,7 @@ function mouseDown(event) {
 		}
 	}
 
-	if (!touch2) {
+	if (!multiTouch) {
 		inputMan.menu = getXY(event);
 		if (!inputMan.menu) {
 			var handled = false;

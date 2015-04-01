@@ -215,7 +215,11 @@ function setScene(sceneIndex) {
 			menus["title"] = 1;
 		}
 		else {
-			gameMan.menu = "";
+			gameMan.menu = "";	// TODO rethink scene/menu differentiation
+
+			if (sceneIndex == "rules") {
+				hudMan.pageText = "Rule " + gameMan.rules;
+			}
 		}
 	}
 

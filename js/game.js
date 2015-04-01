@@ -361,7 +361,6 @@ function menuButton(index) {
 			}
 		else {
 			setScene("rules");
-			hudMan.pageText = "Rule " + gameMan.rules;
 		}
 		break;
 	case 8:
@@ -383,7 +382,6 @@ function menuTitle(index) {
 		break;
 	case 3:
 		setScene("rules");
-		hudMan.pageText = "Rule " + gameMan.rules;
 		break;
 	case 4:
 		gameMan.menu = "option";
