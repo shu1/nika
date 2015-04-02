@@ -22,15 +22,19 @@ function endTutorial() {
 }
 
 function nextTutorialPart() {
-	nextTutorialStep();
+	do {
+		nextTutorialStep();
+	} while (tutorialBoards[gameMan.tutorialStep].skip)
 }
 
 function prevTutorialPart() {
-	if (gameMan.tutorialStep > 0) {
-		gameMan.tutorialStep--;
-		hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
-		setupTutorial(gameMan.tutorialStep);
-	}
+	do {
+		if (gameMan.tutorialStep > 0) {
+			gameMan.tutorialStep--;
+			hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
+			setupTutorial(gameMan.tutorialStep);
+		}
+	} while (tutorialBoards[gameMan.tutorialStep].skip)
 }
 
 function resetActions(player) {
