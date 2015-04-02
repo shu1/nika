@@ -669,7 +669,7 @@ function drawMenu(context, dTime) {
 		}
 	}
 	else {
-		var buttonText = (gameMan.scene == "rules") ? buttons[0] : (gameMan.menu == "option" || gameMan.menu == "credit") ? "  Back" : buttons[8];
+		var buttonText = (gameMan.scene == "rules") ? buttons[0] : (gameMan.menu == "option" || gameMan.menu == "credit") ? "  Back" : buttons[1];
 
 		if (inputMan.menu && menuMan.button == 0) {
 			drawButton(context, 0, 0, buttonText, "black", "white");
