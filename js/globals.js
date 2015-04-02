@@ -230,7 +230,8 @@ var tutorialBoards = [
 		],
 		prompts: [
 			{row:2,col:10,prompt:1}
-		]
+		],
+		skip: true
 	},
 	{
 		player: 2,
@@ -253,7 +254,8 @@ var tutorialBoards = [
 		],
 		prompts: [
 			{row:12,col:10,prompt:1}
-		]
+		],
+		skip: true
 	},
 	{
 		player: 1,
@@ -276,7 +278,8 @@ var tutorialBoards = [
 		],
 		prompts: [
 			{row:7,col:18,prompt:1}
-		]
+		],
+		skip: true
 	},
 	{
 		player: 3,
@@ -299,7 +302,8 @@ var tutorialBoards = [
 		],
 		prompts: [
 			{row:7,col:2,prompt:1}
-		]
+		],
+		skip: true
 	},
 	{
 		player: 0,
@@ -539,7 +543,8 @@ var tutorialBoards = [
 			{row:9,col:14,rot:3,player:3},
 			{row:11,col:12,rot:3,player:3}
 		],
-		prompts: []
+		prompts: [],
+		skip: true
 	},
 	{
 		player: 0,
@@ -723,7 +728,8 @@ var tutorialBoards = [
 			{row:8,col:16,rot:2,player:3}
 
 		],
-		prompts: []
+		prompts: [],
+		skip: true
 	},
 	{
 		player: 0,
@@ -832,7 +838,8 @@ var tutorialBoards = [
 			{row:11,col:19,rot:3,player:3},
 			{row:7,col:16,rot:2,player:3}
 		],
-		prompts: []
+		prompts: [],
+		skip: true
 	},
 	{
 		player: 0,
