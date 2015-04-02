@@ -575,8 +575,10 @@ function keyNext() {
 		hudMan.pageText = "Rule " + gameMan.rules;
 		return true;
 	}
-	else if (gameMan.tutorialStep >= 0) {
-		nextTutorialStep();
+	else if (gameMan.scene == "board" && gameMan.tutorialStep >= 0) {
+		if (tutorialInputs[gameMan.tutorialStep]) {
+			nextTutorialStep();
+		}
 		return true;
 	}
 	return false;
