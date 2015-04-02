@@ -137,7 +137,7 @@ var emptyBoard = [
 	"......dddccc........."
 ]
 
-var newTutorialBoards = [
+var tutorialBoards = [
 	{
 		player: 0,
 		actions: 2,

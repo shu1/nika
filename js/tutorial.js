@@ -39,7 +39,7 @@ function resetActions(player) {
 }
 
 function setupTutorial() {
-	var board = newTutorialBoards[gameMan.tutorialStep];
+	var board = tutorialBoards[gameMan.tutorialStep];
 	if (board) {
 		loadGameState(board);
 	} else {
@@ -50,8 +50,8 @@ function setupTutorial() {
 function checkTutorialMove(moved) {
 	var correct = true;
 	var nextStep = gameMan.tutorialStep + 1;
-	if (newTutorialBoards[nextStep]) {
-		var pieces = newTutorialBoards[nextStep].pieces;
+	if (tutorialBoards[nextStep]) {
+		var pieces = tutorialBoards[nextStep].pieces;
 		for (var i = pieces.length - 1; i >= 0; --i) {
 			var p = pieces[i];
 			if (grid[p.row][p.col].rot != p.rot || grid[p.row][p.col].player != p.player) {
