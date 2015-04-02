@@ -1221,5 +1221,3 @@ var tutorialInputs = [
 	true,	true,	true,	false,	false,	true,	true,	false,	true,	true,
 	true,	false,	true,	true,	true,	true,	true,	true
 ]
-
-var tutorialParts = [2, 4, 6, 8, 10, 17, 27, 31, 38, 41, 46, 49]
