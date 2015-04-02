@@ -545,7 +545,7 @@ function keyNext() {
 		return true;
 	}
 	else if (gameMan.tutorialStep >= 0) {
-		nextTutorialStep();
+		nextTutorialPart();
 		return true;
 	}
 	return false;
