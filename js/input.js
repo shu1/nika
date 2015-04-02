@@ -136,12 +136,12 @@ function mouseMove(event) {
 				else if (gameMan.menu == "option") {
 					x += 40 - 62;	// offset to x of volume line - button radius
 					if (inputMan.drag == "music") {
-						audioMan.music = Math.max(0, Math.min(1, Math.round(x / 148.4) / 10));
+						audioMan.music = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
 						sounds["music"].volume = Math.pow(audioMan.music, 2);
 						handled = true;
 					}
 					else if (inputMan.drag == "sound") {
-						audioMan.sound = Math.max(0, Math.min(1, Math.round(x / 148.4) / 10));
+						audioMan.sound = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
 						handled = true;
 					}
 				}
