@@ -3,7 +3,7 @@
 function mouseDown(event) {
 	hudMan.inputText = "";
 
-	var touch2 = false;
+	var multiTouch = false;
 	if (navigator.msPointerEnabled) {
 		if (inputMan.touchID < 0) {
 			inputMan.touchID = event.pointerId;
@@ -14,7 +14,7 @@ function mouseDown(event) {
 			inputMan.x2 = event.layerX;
 			inputMan.y2 = event.layerY;
 			setPinchDistance();
-			touch2 = true;
+			multiTouch = true;
 		}
 	}
 	else if (event.changedTouches) {
@@ -25,12 +25,12 @@ function mouseDown(event) {
 
 			if (event.changedTouches[1] && inputMan.touchID2 < 0) {	// if 2nd touch hits simultaneously
 				setPinch(event.changedTouches[1]);
-				touch2 = true;
+				multiTouch = true;
 			}
 		}
 		else if (inputMan.touchID2 < 0) {
 			setPinch(event.changedTouches[0]);
-			touch2 = true;
+			multiTouch = true;
 		}
 	}
 	else {	// mouse
@@ -41,7 +41,7 @@ function mouseDown(event) {
 		}
 	}
 
-	if (!touch2) {
+	if (!multiTouch) {
 		inputMan.menu = getXY(event);
 		if (!inputMan.menu) {
 			var handled = false;
@@ -63,12 +63,12 @@ function mouseDown(event) {
 
 					buttonX = 1484 * audioMan.sound;
 					if (x > buttonX - radius && x < buttonX + radius && y > 710 - radius && y < 710 + radius) {
-						inputMan.drag = "sound";
+						inputMan.drag = "sound";	// TODO repurpose drag to general mouseDown string
 						handled = true;
 					}
 				}
 			}
-			else if (gameMan.scene == "board" && gameMan.winner < 0) {
+			else if (gameMan.scene == "board" && gameMan.menu != "popup" && gameMan.winner < 0) {
 				getRowCol(scene);
 				getPiece(inputMan.row, inputMan.col);
 				if (phalanx.length > 0) {
@@ -136,12 +136,12 @@ function mouseMove(event) {
 				else if (gameMan.menu == "option") {
 					x += 40 - 62;	// offset to x of volume line - button radius
 					if (inputMan.drag == "music") {
-						audioMan.music = Math.max(0, Math.min(1, Math.round(x / 148.4) / 10));
+						audioMan.music = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
 						sounds["music"].volume = Math.pow(audioMan.music, 2);
 						handled = true;
 					}
 					else if (inputMan.drag == "sound") {
-						audioMan.sound = Math.max(0, Math.min(1, Math.round(x / 148.4) / 10));
+						audioMan.sound = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
 						handled = true;
 					}
 				}
@@ -183,11 +183,11 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	hudMan.inputText += " up";
-    if (isTouch(event, inputMan.touchID2)) {
-        inputMan.touchID2 = inputMan.touchID = -1;    // end touches
-    }
+	if (isTouch(event, inputMan.touchID2)) {
+		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
+	}
 
-    if (isTouch(event, inputMan.touchID)) {
+	if (isTouch(event, inputMan.touchID)) {
 		if (inputMan.menu) {
 			menuButton(menuMan.button);
 		}
@@ -196,7 +196,19 @@ function mouseUp(event) {
 			var x = (inputMan.x - scene.x) / scene.scale;
 			var y = (inputMan.y - scene.y) / scene.scale;
 
-			if (gameMan.menu == "title") {
+			if (gameMan.scene == "rules") {
+				if (y > (scene.height - displayMan.arrowHeight)/2 && y < (scene.height + displayMan.arrowHeight)/2) {
+					if (x > scene.width - displayMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
+						gameMan.rules++;
+						hudMan.pageText = "Rule " + gameMan.rules;
+					}
+					else if (x < displayMan.arrowWidth*1.5 && gameMan.rules > 0) {
+						gameMan.rules--;
+						hudMan.pageText = "Rule " + gameMan.rules;
+					}
+				}
+			}
+			else if (gameMan.menu == "title") {
 				x -= (scene.width - displayMan.screenWidth)/2 + 128;	// offset to coordinates of buttons
 				y -= (scene.height - displayMan.screenHeight)/2 + 330;
 				if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*5) {
@@ -210,16 +222,34 @@ function mouseUp(event) {
 					gameMan.menu = "credit";
 				}
 			}
-			else if (gameMan.scene == "rules") {
-				if (y > (scene.height - displayMan.arrowHeight)/2 && y < (scene.height + displayMan.arrowHeight)/2) {
-					if (x > scene.width - displayMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
-						gameMan.rules++;
-						hudMan.pageText = "Rule " + gameMan.rules;
+			else if (gameMan.menu == "popup") {
+				var top = (gpCanvas.height - menuMan.pHeight)/2;
+				if (inputMan.x > (gpCanvas.width - menuMan.pWidth)/2 && inputMan.x < (gpCanvas.width + menuMan.pWidth)/2
+				&& inputMan.y > top && inputMan.y < top + menuMan.pHeight) {
+					if (inputMan.y < top + menuMan.pHeight/4) {
+						gameMan.menu = "";
 					}
-					else if (x < displayMan.arrowWidth*1.5 && gameMan.rules > 0) {
-						gameMan.rules--;
-						hudMan.pageText = "Rule " + gameMan.rules;
+					else if (inputMan.y < top + menuMan.pHeight/2) {
+						setScene("rules");
 					}
+					else if (inputMan.y < top + menuMan.pHeight*3/4) {
+						setScene("menus");
+						gameMan.menu = "option";
+					}
+					else {
+						setScene("menus");
+					}
+				}
+			}
+			else if (inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// menu buttons
+				if (inputMan.x < menuMan.bWidth) {
+					gameMan.menu = "popup";
+				}
+				else if (inputMan.x < menuMan.bWidth * 2) {
+					pass();
+				}
+				else {
+					undo();
 				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
@@ -365,7 +395,8 @@ function isTouch(event, touchID) {
 			}
 		}
 		return false;
-	} else {
+	}
+	else {
 		return event.which == touchID;
 	}
 }

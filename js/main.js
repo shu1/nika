@@ -25,6 +25,10 @@ window.onload = function() {
 	loadImage("greenShadow");
 	loadImage("helmet1");
 	loadImage("helmet2");
+	loadImage("buttonMenu");
+	loadImage("buttonPass");
+	loadImage("buttonUndo");
+	loadImage("menuPopup");
 	loadImage("arrowLeft");
 	loadImage("arrowRight");
 	loadImage("menuOption0");
@@ -176,6 +180,8 @@ function reSize() {
 	menuMan.bHeight = menuMan.bWidth/2;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
+	menuMan.pWidth = 1024 * minScale;
+	menuMan.pHeight = 512 * minScale;
 
 	initScenes(gpCanvas, maxScale, minScale);
 	setScene();
@@ -212,7 +218,11 @@ function setScene(sceneIndex) {
 			menus["title"] = 1;
 		}
 		else {
-			gameMan.menu = "";
+			gameMan.menu = "";	// TODO rethink scene/menu differentiation
+
+			if (sceneIndex == "rules") {
+				hudMan.pageText = "Rule " + gameMan.rules;
+			}
 		}
 	}
 
@@ -441,6 +451,15 @@ function drawContext(context, dTime, tv) {
 	}
 
 	context.restore();
+
+	if (gameMan.scene == "board") {
+		drawButtons(context);
+	}
+
+	if (gameMan.menu == "popup") {
+		drawPopup(context);
+	}
+
 	drawMenu(context, dTime);
 
 	if (gameMan.debug) {
@@ -558,6 +577,11 @@ function drawHelmets(context, dTime) {
 	context.restore();
 }
 
+function drawPopup(context) {
+	context.drawImage(images["menuPopup"], (gpCanvas.width - menuMan.pWidth)/2, (gpCanvas.height - menuMan.pHeight)/2,
+		menuMan.pWidth, menuMan.pHeight);
+}
+
 function drawRules(context, scene) {
 	if (scene.height > 1024) {	// only draw border if screen isn't small
 		var padding      = displayMan.arrowWidth/6;
@@ -666,6 +690,13 @@ function drawButton(context, row, col, text, textColor, bgColor) {
 	}
 	context.fillStyle = textColor;
 	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);
+}
+
+function drawButtons(context) {
+	var y = context.canvas.height - menuMan.bHeight;
+	context.drawImage(images["buttonMenu"], 0, y, menuMan.bWidth, menuMan.bHeight);
+	context.drawImage(images["buttonPass"], menuMan.bWidth, y, menuMan.bWidth, menuMan.bHeight);
+	context.drawImage(images["buttonUndo"], menuMan.bWidth*2, y, menuMan.bWidth, menuMan.bHeight);
 }
 
 function drawHud(context, sceneIndex) {
