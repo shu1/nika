@@ -102,7 +102,7 @@ function clearChecked() {
 }
 
 function newGame() {
-	generateGrid(mainBoard);
+	generateGrid(newBoard);
 	gameStates = [];
 	phalanx = [];
 	pushGameState();

@@ -101,7 +101,7 @@ var buttons = [
 	"  Menu"
 ]
 
-var mainBoard = [
+var newBoard = [
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
