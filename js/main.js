@@ -331,7 +331,7 @@ function draw(time) {
 	}
 	hudMan.fpsCount++;
 
-	if (gameMan.scene == "board") {
+	if (gameMan.scene == "board" && gameMan.menu != "popup") {
 		drawMural(muralCanvas.getContext("2d"), dTime);	// draw mural to buffer
 	}
 
@@ -412,7 +412,9 @@ function drawContext(context, dTime, tv) {
 	switch (gameMan.scene) {
 	case "board":
 		context.drawImage(images["board"], 0, 0);
-		context.drawImage(muralCanvas, displayMan.muralX, displayMan.muralY);
+		if (gameMan.menu != "popup") {
+			context.drawImage(muralCanvas, displayMan.muralX, displayMan.muralY);
+		}
 		setRings();
 		drawPieces(context);
 		drawHelmets(context, dTime);
