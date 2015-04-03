@@ -3,20 +3,20 @@
 window.onload = function() {
 	newGame();
 
-	function loadImage(name) {
-		images[name] = document.createElement("img");
-		images[name].src = "images/" + name + ".png";
+	function loadImage(name, i) {
+		i = i ? i : "";
+		do {
+			images[name + i] = document.createElement("img");
+			images[name + i].src = "images/" + name + i + ".png";
+			--i;	// exploiting decrementing an empty string becomes -1
+		} while (i >= 0);
 	}
 
-	loadImage("menuTitle0");
-	loadImage("menuTitle1");
+	loadImage("menuTitle", 1);
 	loadImage("menuTitleActive");
 	loadImage("board");
 	loadImage("mural");
-	loadImage("player0");
-	loadImage("player1");
-	loadImage("player2");
-	loadImage("player3");
+	loadImage("player", 3);
 	loadImage("sheen");
 	loadImage("shadow");
 	loadImage("goldRing");
@@ -31,15 +31,12 @@ window.onload = function() {
 	loadImage("menuPopup");
 	loadImage("arrowLeft");
 	loadImage("arrowRight");
-	loadImage("menuOption0");
-	loadImage("menuOption1");
+	loadImage("menuOption", 1);
 	loadImage("menuOptionSlider");
-	loadImage("menuCredit0");
-	loadImage("menuCredit1");
+	loadImage("menuCredit", 1);
 
 	for (var i = 0; i < rulePages; ++i) {
-		loadImage("rule" + i + "0");
-		loadImage("rule" + i + "1");
+		loadImage("rule" + i, 1);
 	}
 
 	function loadAudio(name, file, type) {
