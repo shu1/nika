@@ -113,7 +113,7 @@ function mouseMove(event) {
 			var y = (inputMan.y + inputMan.y2) / 2;
 			scene.x = x - (x - scene.x) * scene.scale / pScale;
 			scene.y = y - (y - scene.y) * scene.scale / pScale;
-			pan(0,0);
+			pan(0, 0);
 			handled = true;
 		}
 		else if (!inputMan.menu && isTouch(event, inputMan.touchID)) {
@@ -292,7 +292,6 @@ function mouseUp(event) {
 	inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 }
 
-
 function getXY(event) {
 	if (navigator.msPointerEnabled) {
 		if (event.pointerId == inputMan.touchID) {
@@ -383,7 +382,6 @@ function getRot(dX, dY) {
 	}
 }
 
-
 function isTouch(event, touchID) {
 	if (navigator.msPointerEnabled) {
 		return event.pointerId == touchID;
@@ -414,7 +412,6 @@ function setPinchDistance() {
 	var dY = inputMan.y2 - inputMan.y;
 	inputMan.pinchDistance = Math.sqrt(dX*dX + dY*dY);	// TODO sqrt necessary?
 }
-
 
 function keyDown(event) {
 	var dX = 8;
