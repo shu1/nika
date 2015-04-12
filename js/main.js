@@ -28,6 +28,7 @@ window.onload = function() {
 	loadImage("buttonMenu");
 	loadImage("buttonPass");
 	loadImage("buttonUndo");
+	loadImage("buttonClose");
 	loadImage("menuPopup");
 	loadImage("arrowLeft");
 	loadImage("arrowRight");
@@ -451,8 +452,11 @@ function drawContext(context, dTime, tv) {
 
 	context.restore();
 
-	if (gameMan.scene == "board") {
-		var y = context.canvas.height - menuMan.bHeight;
+	var y = context.canvas.height - menuMan.bHeight;
+	if (gameMan.scene == "rules" || gameMan.menu == "option" || gameMan.menu == "credit" || gameMan.menu == "popup") {
+		context.drawImage(images["buttonClose"], 0, y, menuMan.bWidth, menuMan.bHeight);
+	}
+	else if (gameMan.scene == "board") {
 		context.drawImage(images["buttonMenu"], 0, y, menuMan.bWidth, menuMan.bHeight);
 		context.drawImage(images["buttonPass"], menuMan.bWidth, y, menuMan.bWidth, menuMan.bHeight);
 		context.drawImage(images["buttonUndo"], menuMan.bWidth*2, y, menuMan.bWidth, menuMan.bHeight);

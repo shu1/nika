@@ -197,7 +197,11 @@ function mouseUp(event) {
 			var y = (inputMan.y - scene.y) / scene.scale;
 
 			if (gameMan.scene == "rules") {
-				if (y > (scene.height - displayMan.arrowHeight)/2 && y < (scene.height + displayMan.arrowHeight)/2) {
+				if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
+					setScene("board");
+					hudMan.pageText = "";	// TODO put this into setScene()
+				}
+				else if (y > (scene.height - displayMan.arrowHeight)/2 && y < (scene.height + displayMan.arrowHeight)/2) {
 					if (x > scene.width - displayMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
 						gameMan.rules++;
 						hudMan.pageText = "Rule " + gameMan.rules;
@@ -218,13 +222,25 @@ function mouseUp(event) {
 			else if (gameMan.menu == "option") {
 				x -= (scene.width - displayMan.screenWidth)/2;	// offset to coordinates of image
 				y -= (scene.height - displayMan.screenHeight)/2;
-				if (x > 656 && x < 888 && y > 868 && y < 924) {
+
+				if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
+					gameMan.menu = "title";
+				}
+				else if (x > 656 && x < 888 && y > 868 && y < 924) {
 					gameMan.menu = "credit";
+				}
+			}
+			else if (gameMan.menu == "credit") {
+				if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
+					gameMan.menu = "option";
 				}
 			}
 			else if (gameMan.menu == "popup") {
 				var top = (gpCanvas.height - menuMan.pHeight)/2;
-				if (inputMan.x > (gpCanvas.width - menuMan.pWidth)/2 && inputMan.x < (gpCanvas.width + menuMan.pWidth)/2
+				if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
+					gameMan.menu = "";
+				}
+				else if (inputMan.x > (gpCanvas.width - menuMan.pWidth)/2 && inputMan.x < (gpCanvas.width + menuMan.pWidth)/2
 				&& inputMan.y > top && inputMan.y < top + menuMan.pHeight) {
 					if (inputMan.y < top + menuMan.pHeight/4) {
 						gameMan.menu = "";
