@@ -160,41 +160,6 @@ function pass() {
 }
 
 
-function getCity(player) {
-	switch (player) {
-	case 0:
-		return "Athens ";
-	case 1:
-		return "Sparta ";
-	case 2:
-		return "Messene ";
-	case 3:
-		return "Thebes ";
-	}
-}
-
-function getPartner(player) {
-	return (player + 2) % 4;
-}
-
-function getWinnerText(player) {
-	return getCity(player) + "and " + getCity(getPartner(player)) + "win!";
-}
-
-function checkWin() {
-	for (var row = 0; row < 15; ++row) {
-		for (var col = 0; col < 21; ++col) {
-			if (grid[row][col].kind == 1 && grid[row][col].player >= 0 && grid[row][col].player != grid[row][col].city
-			 && gameMan.tutorialStep < 0) {
-				gameMan.winner = grid[row][col].player;
-				murals[gameMan.winner].setAnim("victory");
-				murals[getPartner(gameMan.winner)].setAnim("victory");
-			}
-		}
-	}
-}
-
-
 function pushState(ai) {
 	var state = {
 	  player: gameMan.player,
@@ -271,6 +236,41 @@ function loadState(state) {
 }
 
 
+function getCity(player) {
+	switch (player) {
+	case 0:
+		return "Athens ";
+	case 1:
+		return "Sparta ";
+	case 2:
+		return "Messene ";
+	case 3:
+		return "Thebes ";
+	}
+}
+
+function getPartner(player) {
+	return (player + 2) % 4;
+}
+
+function getWinnerText(player) {
+	return getCity(player) + "and " + getCity(getPartner(player)) + "win!";
+}
+
+function checkWin() {
+	for (var row = 0; row < 15; ++row) {
+		for (var col = 0; col < 21; ++col) {
+			if (grid[row][col].kind == 1 && grid[row][col].player >= 0 && grid[row][col].player != grid[row][col].city
+			 && gameMan.tutorialStep < 0) {
+				gameMan.winner = grid[row][col].player;
+				murals[gameMan.winner].setAnim("victory");
+				murals[getPartner(gameMan.winner)].setAnim("victory");
+			}
+		}
+	}
+}
+
+
 function playerAction() {
 	for (var player = 0; player < 4; ++player) {
 		var priorityEvent = getPriorityEvent(eventMan[player]);
@@ -278,6 +278,16 @@ function playerAction() {
 		playAnimation(player, priorityEvent);
 		eventMan[player] = [];
 	}
+}
+
+function getPriorityEvent(events) {
+	var precedence = ["pushed", "routed", "rally", "rotate", "move", "push", "rout"];
+	for (var j = precedence.length-1; j >= 0; --j) {
+		if (events.indexOf(precedence[j]) > -1) {
+			return precedence[j];
+		}
+	}
+	return "";
 }
 
 function playSound(event) {
@@ -291,16 +301,6 @@ function playAnimation(player, event) {
 	if (["push", "pushed", "rout", "routed", "rally"].indexOf(event) > -1) {
 		murals[player].setAnim(event);
 	}
-}
-
-function getPriorityEvent(events) {
-	var precedence = ["pushed", "routed", "rally", "rotate", "move", "push", "rout"];
-	for (var j = precedence.length-1; j >= 0; --j) {
-		if (events.indexOf(precedence[j]) > -1) {
-			return precedence[j];
-		}
-	}
-	return "";
 }
 
 function resetAnimations() {
