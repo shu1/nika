@@ -265,7 +265,7 @@ function mouseUp(event) {
 					pass();
 				}
 				else {
-					undo();
+					popState();
 				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial

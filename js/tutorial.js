@@ -45,7 +45,7 @@ function resetActions(player) {
 function setupTutorial() {
 	var board = tutorialBoards[gameMan.tutorialStep];
 	if (board) {
-		loadGameState(board);
+		loadState(board);
 	} else {
 		endTutorial();
 	}

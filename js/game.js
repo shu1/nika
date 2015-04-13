@@ -127,15 +127,14 @@ function clearRallyHighlights() {
 
 function newGame() {
 	generateGrid(newBoard);
-	gameStates = [];
+	states = [];
 	phalanx = [];
-	pushGameState();
+	pushState();
 	gameMan.winner = -1;
 	gameMan.player = 0;
 	gameMan.actions = 2;
 	useAction(0);
 }
-
 
 function useAction(n) {
 	if (n === undefined) {
@@ -156,7 +155,7 @@ function useAction(n) {
 }
 
 function pass() {
-	pushGameState();
+	pushState();
 	useAction(2);
 }
 
@@ -196,7 +195,7 @@ function checkWin() {
 }
 
 
-function pushGameState(ai) {
+function pushState(ai) {
 	var state = {
 	  player: gameMan.player,
 	  actions: gameMan.actions,
@@ -228,15 +227,15 @@ function pushGameState(ai) {
 	  }
 	}
 
-	gameStates.push(state);
-	while (gameStates.length > 16) {	// number of undos to hold
-		gameStates.shift();
+	states.push(state);
+	while (states.length > 16) {	// number of undos to hold
+		states.shift();
 	}
 }
 
-function undo() {
-	if (gameStates.length > 1) {
-		gameStates.pop();
+function popState() {
+	if (states.length > 1) {
+		states.pop();
 		resetState();
 	}
 }
@@ -244,16 +243,16 @@ function undo() {
 function resetState() {
 	if (gameMan.scene == "board") {	// reset game actions for zoom
 		phalanx.length = 0;
-		revertGrid();
+		revertState();
 	}
 }
 
-function revertGrid() {
-	var state = gameStates[gameStates.length-1];
-	loadGameState(state);
+function revertState() {
+	var state = states[states.length-1];
+	loadState(state);
 }
 
-function loadGameState(state) {
+function loadState(state) {
 	generateGrid(emptyBoard);
 
 	gameMan.player = state.player;
@@ -366,7 +365,7 @@ function menuButton(index) {
 		pass();
 		break;
 	case 5:
-		undo();
+		popState();
 		break;
 	case 6:
 		if (gameMan.tutorialStep < 0) {

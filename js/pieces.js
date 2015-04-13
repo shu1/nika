@@ -113,7 +113,7 @@ function movePiece(pRow, pCol, row, col, isAI) {
 			if (!gameMan.debug) {
 				useAction();
 			}
-			pushGameState();
+			pushState();
 			playerAction();
 		}
 
@@ -342,7 +342,7 @@ function movePhalanx(pRow, pCol, row, col) {
 				moved = true;
 			}
 			else {
-				revertGrid();
+				revertState();
 				moved = false;
 				eventMan[currentPlayer] = [];
 				flag = false;

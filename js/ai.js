@@ -140,7 +140,7 @@ function	ai(){
 	}
 	else{
 		useAction();
-		pushGameState();
+		pushState();
 	}
 	displayMan.draw=true;
 }
