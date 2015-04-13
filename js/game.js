@@ -93,13 +93,37 @@ function debugGrid() {
 	}
 }
 
-function clearChecked() {
+
+function clearChecked() {	// phalanxes
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			grid[row][col].checked = false;
 		}
 	}
 }
+
+function setRallyHighlights(pRow, pCol) {
+	if (gameMan.tutorialStep < 0 && routedCell(pRow, pCol)) {
+		for (var row = 0; row < 15; ++row) {
+			for (var col = 0; col < 21; ++col) {
+				if (emptyRallyCell(row, col, grid[pRow][pCol].player)) {
+					grid[row][col].prompt = 2;
+				}
+			}
+		}
+	}
+}
+
+function clearRallyHighlights() {
+	if (gameMan.tutorialStep < 0) {
+		for (var row = 0; row < 15; ++row) {
+			for (var col = 0; col < 21; ++col) {
+				grid[row][col].prompt = -1;
+			}
+		}
+	}
+}
+
 
 function newGame() {
 	generateGrid(newBoard);
@@ -111,6 +135,7 @@ function newGame() {
 	gameMan.actions = 2;
 	useAction(0);
 }
+
 
 function useAction(n) {
 	if (n === undefined) {
@@ -135,6 +160,7 @@ function pass() {
 	useAction(2);
 }
 
+
 function getCity(player) {
 	switch (player) {
 	case 0:
@@ -155,6 +181,20 @@ function getPartner(player) {
 function getWinnerText(player) {
 	return getCity(player) + "and " + getCity(getPartner(player)) + "win!";
 }
+
+function checkWin() {
+	for (var row = 0; row < 15; ++row) {
+		for (var col = 0; col < 21; ++col) {
+			if (grid[row][col].kind == 1 && grid[row][col].player >= 0 && grid[row][col].player != grid[row][col].city
+			 && gameMan.tutorialStep < 0) {
+				gameMan.winner = grid[row][col].player;
+				murals[gameMan.winner].setAnim("victory");
+				murals[getPartner(gameMan.winner)].setAnim("victory");
+			}
+		}
+	}
+}
+
 
 function pushGameState(ai) {
 	var state = {
@@ -197,11 +237,20 @@ function pushGameState(ai) {
 function undo() {
 	if (gameStates.length > 1) {
 		gameStates.pop();
-		revertGrid();
-		gameMan.player = gameStates[gameStates.length-1].player;
-		gameMan.actions = gameStates[gameStates.length-1].actions;
-		phalanx = [];
+		resetState();
 	}
+}
+
+function resetState() {
+	if (gameMan.scene == "board") {	// reset game actions for zoom
+		phalanx.length = 0;
+		revertGrid();
+	}
+}
+
+function revertGrid() {
+	var state = gameStates[gameStates.length-1];
+	loadGameState(state);
 }
 
 function loadGameState(state) {
@@ -222,23 +271,6 @@ function loadGameState(state) {
 	}
 }
 
-function revertGrid() {
-	var state = gameStates[gameStates.length-1];
-	loadGameState(state);
-}
-
-function checkWin() {
-	for (var row = 0; row < 15; ++row) {
-		for (var col = 0; col < 21; ++col) {
-			if (grid[row][col].kind == 1 && grid[row][col].player >= 0 && grid[row][col].player != grid[row][col].city
-			 && gameMan.tutorialStep < 0) {
-				gameMan.winner = grid[row][col].player;
-				murals[gameMan.winner].setAnim("victory");
-				murals[getPartner(gameMan.winner)].setAnim("victory");
-			}
-		}
-	}
-}
 
 function playerAction() {
 	for (var player = 0; player < 4; ++player) {
@@ -301,34 +333,6 @@ function setIdleAnimation(player) {
 	}
 }
 
-function setRallyHighlights(pRow, pCol) {
-	if (gameMan.tutorialStep < 0 && routedCell(pRow, pCol)) {
-		for (var row = 0; row < 15; ++row) {
-			for (var col = 0; col < 21; ++col) {
-				if (emptyRallyCell(row, col, grid[pRow][pCol].player)) {
-					grid[row][col].prompt = 2;
-				}
-			}
-		}
-	}
-}
-
-function clearRallyHighlights() {
-	if (gameMan.tutorialStep < 0) {
-		for (var row = 0; row < 15; ++row) {
-			for (var col = 0; col < 21; ++col) {
-				grid[row][col].prompt = -1;
-			}
-		}
-	}
-}
-
-function resetState() {
-	if (gameMan.scene == "board") {	// reset game actions for zoom
-		phalanx.length = 0;
-		revertGrid();
-	}
-}
 
 function menuButton(index) {
 	switch(index) {
