@@ -338,6 +338,14 @@ function draw(time) {
 		drawContext(tvContext, dTime, "tv");	// draw tv
 	}
 
+	if (gameMan.ai[gameMan.player] && !gameMan.thinking) {
+		gameMan.thinking = true;
+		setTimeout(function() {
+			ai();
+			gameMan.thinking = false;
+		}, 1200);
+	}
+
 	window.requestAnimationFrame(draw);
 }
 

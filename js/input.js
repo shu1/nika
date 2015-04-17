@@ -3,6 +3,8 @@
 function mouseDown(event) {
 	hudMan.inputText = "";
 
+	if (gameMan.thinking) return;
+
 	var multiTouch = false;
 	if (navigator.msPointerEnabled) {
 		if (inputMan.touchID < 0) {
