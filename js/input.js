@@ -219,6 +219,29 @@ function mouseUp(event) {
 					menuTitle(Math.floor(y / displayMan.activeHeight));
 				}
 			}
+			else if (gameMan.menu == "setup") {
+				x -= (scene.width - displayMan.screenWidth)/2;	// offset to coordinates of image
+				y -= (scene.height - displayMan.screenHeight)/2;
+
+				if (y > 220 && y < 610) {
+					if (x > 20 & x < 240) {
+						gameMan.ais[0] = !gameMan.ais[0];
+					}
+					else if (x > 320 & x < 540) {
+						gameMan.ais[1] = !gameMan.ais[1];
+					}
+					else if (x > 1000 & x < 1220) {
+						gameMan.ais[2] = !gameMan.ais[2];
+					}
+					else if (x > 1280 & x < 1500) {
+						gameMan.ais[3] = !gameMan.ais[3];
+					}
+				}
+				else if (x > 480 && x < 1050 && y > 750 && y < 900) {
+					newGame();
+					setScene("board");
+				}
+			}
 			else if (gameMan.menu == "option") {
 				x -= (scene.width - displayMan.screenWidth)/2;	// offset to coordinates of image
 				y -= (scene.height - displayMan.screenHeight)/2;

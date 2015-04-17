@@ -50,6 +50,7 @@ var gameMan = {
 	pRow:-1,
 	pCol:-1,
 	pRot:-1,
+	ais:[false, true, false, true]
 }
 
 var inputMan = {
