@@ -395,7 +395,8 @@ function menuButton(index) {
 function menuTitle(index) {
 	switch(index) {
 	case 0:
-		newGame();	// no break to set scene to board
+		gameMan.menu = "setup";
+		break;
 	case 1:
 		setScene("board");
 		break;

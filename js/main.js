@@ -32,6 +32,9 @@ window.onload = function() {
 	loadImage("menuPopup");
 	loadImage("arrowLeft");
 	loadImage("arrowRight");
+	loadImage("menuSetup", 1);
+	loadImage("menuSetupHuman");
+	loadImage("menuSetupCPU");
 	loadImage("menuOption", 1);
 	loadImage("menuOptionSlider");
 	loadImage("menuCredit", 1);
@@ -443,6 +446,14 @@ function drawContext(context, dTime, tv) {
 			if (menus["title"] < 5) {
 				context.drawImage(images["menuTitleActive"], x+80, y+330 + displayMan.activeHeight*menus["title"]);
 			}
+			break;
+		case "setup":
+			context.drawImage(images["menuSetup0"], x, y);
+			context.drawImage(images["menuSetup1"], x+1024, y);
+			context.drawImage(gameMan.ais[0] ? images["menuSetupCPU"] : images["menuSetupHuman"], x+50, y+550);
+			context.drawImage(gameMan.ais[1] ? images["menuSetupCPU"] : images["menuSetupHuman"], x+340, y+550);
+			context.drawImage(gameMan.ais[2] ? images["menuSetupCPU"] : images["menuSetupHuman"], x+1020, y+550);
+			context.drawImage(gameMan.ais[3] ? images["menuSetupCPU"] : images["menuSetupHuman"], x+1310, y+550);
 			break;
 		case "option":
 			context.drawImage(images["menuOption0"], x, y);
