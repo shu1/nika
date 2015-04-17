@@ -338,7 +338,7 @@ function draw(time) {
 		drawContext(tvContext, dTime, "tv");	// draw tv
 	}
 
-	if (gameMan.ais[gameMan.player] && !gameMan.thinking) {
+	if (gameMan.scene == "board" && gameMan.ais[gameMan.player] && !gameMan.thinking) {
 		gameMan.thinking = true;
 		setTimeout(function() {
 			ai();
