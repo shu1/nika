@@ -3,8 +3,6 @@
 function mouseDown(event) {
 	hudMan.inputText = "";
 
-	if (gameMan.thinking) return;
-
 	var multiTouch = false;
 	if (navigator.msPointerEnabled) {
 		if (inputMan.touchID < 0) {
@@ -70,7 +68,7 @@ function mouseDown(event) {
 					}
 				}
 			}
-			else if (gameMan.scene == "board" && gameMan.menu != "popup" && gameMan.winner < 0) {
+			else if (gameMan.scene == "board" && gameMan.menu != "popup" && gameMan.winner < 0 && !gameMan.thinking) {
 				getRowCol(scene);
 				getPiece(inputMan.row, inputMan.col);
 				if (phalanx.length > 0) {
@@ -98,8 +96,6 @@ function mouseDown(event) {
 }
 
 function mouseMove(event) {
-	if (gameMan.thinking) return;
-
 	if (inputMan.touchID >= 0) {
 		getXY(event);
 		var handled = false;
@@ -187,8 +183,6 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	hudMan.inputText += " up";
-
-	if (gameMan.thinking) return;
 	
 	if (isTouch(event, inputMan.touchID2)) {
 		inputMan.touchID2 = inputMan.touchID = -1;	// end touches

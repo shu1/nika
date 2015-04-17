@@ -61,7 +61,7 @@ function	ai(){
 
 				var move = getMoveArguments(phalanx[0],dir);
 				var origRot = phalanx[0].rot;
-				
+
 				if(checkMove(move.pRow,move.pCol,move.tRow,move.tCol) && pushPiece(move.pRow,move.pCol,move.tRow,move.tCol,phalanx[0],1)){
 					moveOnePiece(move.pRow, move.pCol, move.tRow, move.tCol);
 					pieces = getAIPieces();
@@ -135,13 +135,8 @@ function	ai(){
 	//AFTER ALL CHECKING IS DONE ===========
 	setGrid(bestState.board,grid);
 	phalanx=[];
-	if(gameMan.actions>1){
-		useAction();
-	}
-	else{
-		useAction();
-		pushState();
-	}
+	useAction();
+	pushState();
 	displayMan.draw=true;
 }
 
@@ -177,7 +172,7 @@ function	getValue(state,pieces){
 				//Enemy
 				else{
 					if(pieces[i].rot == j && Math.abs((adj[j].rot-j)%2)==0){
-						val-=1; //Facing eachother.	
+						val-=1; //Facing eachother.
 					}
 					else if(pieces[i].rot==j){
 						//If piece is facing adj, but they aren't facing eachother, then adj is routable

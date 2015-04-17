@@ -50,7 +50,7 @@ var gameMan = {
 	pRow:-1,
 	pCol:-1,
 	pRot:-1,
-	ai: [false, true, false, true],
+	ais: [false, true, false, true],
 	thinking: false
 }
 

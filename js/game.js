@@ -200,8 +200,10 @@ function pushState(ai) {
 
 function popState() {
 	if (states.length > 1) {
-		states.pop();
-		resetState();
+		do {
+			states.pop();
+			resetState();
+		} while (gameMan.ais[gameMan.player] && states.length > 1)
 	}
 }
 
