@@ -98,6 +98,8 @@ function mouseDown(event) {
 }
 
 function mouseMove(event) {
+	if (gameMan.thinking) return;
+
 	if (inputMan.touchID >= 0) {
 		getXY(event);
 		var handled = false;
@@ -185,6 +187,9 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	hudMan.inputText += " up";
+
+	if (gameMan.thinking) return;
+	
 	if (isTouch(event, inputMan.touchID2)) {
 		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 	}
