@@ -229,10 +229,10 @@ function mouseUp(event) {
 						gameMan.ais[0] = !gameMan.ais[0];
 					}
 					else if (x > 320 & x < 540) {
-						gameMan.ais[1] = !gameMan.ais[1];
+						gameMan.ais[2] = !gameMan.ais[2];
 					}
 					else if (x > 1000 & x < 1220) {
-						gameMan.ais[2] = !gameMan.ais[2];
+						gameMan.ais[1] = !gameMan.ais[1];
 					}
 					else if (x > 1280 & x < 1500) {
 						gameMan.ais[3] = !gameMan.ais[3];
