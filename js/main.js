@@ -471,6 +471,13 @@ function drawContext(context, dTime, tv) {
 
 	context.restore();
 
+	if (gameMan.menu == "popup") {
+		context.fillStyle = "rgba(0,0,0,0.5)";
+		context.fillRect(0, 0, canvas.width, canvas.height);
+		context.drawImage(images["menuPopup"], (gpCanvas.width - menuMan.pWidth)/2, (gpCanvas.height - menuMan.pHeight)/2,
+			menuMan.pWidth, menuMan.pHeight);
+	}
+
 	var y = context.canvas.height - menuMan.bHeight;
 	if (gameMan.scene == "rules" || gameMan.menu == "option" || gameMan.menu == "credit" || gameMan.menu == "popup") {
 		context.drawImage(images["buttonClose"], 0, y, menuMan.bWidth, menuMan.bHeight);
@@ -479,11 +486,6 @@ function drawContext(context, dTime, tv) {
 		context.drawImage(images["buttonMenu"], 0, y, menuMan.bWidth, menuMan.bHeight);
 		context.drawImage(images["buttonPass"], menuMan.bWidth, y, menuMan.bWidth, menuMan.bHeight);
 		context.drawImage(images["buttonUndo"], menuMan.bWidth*2, y, menuMan.bWidth, menuMan.bHeight);
-	}
-
-	if (gameMan.menu == "popup") {
-		context.drawImage(images["menuPopup"], (gpCanvas.width - menuMan.pWidth)/2, (gpCanvas.height - menuMan.pHeight)/2,
-			menuMan.pWidth, menuMan.pHeight);
 	}
 
 	drawMenu(context, dTime);
