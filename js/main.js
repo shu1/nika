@@ -33,8 +33,7 @@ window.onload = function() {
 	loadImage("arrowLeft");
 	loadImage("arrowRight");
 	loadImage("menuSetup", 1);
-	loadImage("menuSetupHuman");
-	loadImage("menuSetupCPU");
+	loadImage("menuSetupAI", 2);
 	loadImage("menuOption", 1);
 	loadImage("menuOptionSlider");
 	loadImage("menuCredit", 1);
@@ -450,10 +449,10 @@ function drawContext(context, dTime, tv) {
 		case "setup":
 			context.drawImage(images["menuSetup0"], x, y);
 			context.drawImage(images["menuSetup1"], x+1024, y);
-			context.drawImage(gameMan.ais[0] ? images["menuSetupCPU"] : images["menuSetupHuman"], x+50, y+550);
-			context.drawImage(gameMan.ais[2] ? images["menuSetupCPU"] : images["menuSetupHuman"], x+340, y+550);
-			context.drawImage(gameMan.ais[1] ? images["menuSetupCPU"] : images["menuSetupHuman"], x+1020, y+550);
-			context.drawImage(gameMan.ais[3] ? images["menuSetupCPU"] : images["menuSetupHuman"], x+1310, y+550);
+			context.drawImage(images["menuSetupAI" + gameMan.ais[0]], x+50, y+540);
+			context.drawImage(images["menuSetupAI" + gameMan.ais[2]], x+340, y+540);
+			context.drawImage(images["menuSetupAI" + gameMan.ais[1]], x+1020, y+540);
+			context.drawImage(images["menuSetupAI" + gameMan.ais[3]], x+1310, y+540);
 			break;
 		case "option":
 			context.drawImage(images["menuOption0"], x, y);

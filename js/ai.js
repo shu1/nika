@@ -10,7 +10,7 @@ function	newState	(){
 	return s;
 }
 
-function	ai(){
+function	aiNeil(){
 	storeGrid();
 	var	pieces	=	[];
 	pieces = getAIPieces();

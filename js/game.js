@@ -412,3 +412,14 @@ function menuTitle(index) {
 		break;
 	}
 }
+
+function ai() {
+	switch (gameMan.ais[gameMan.player]) {
+	case 1:
+		aiNeil();
+		break;
+	case 2:
+		aiShu();
+		break;
+	}
+}
