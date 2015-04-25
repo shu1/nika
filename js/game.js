@@ -346,7 +346,7 @@ function menuButton(index) {
 			gameMan.menu = "title";
 		}
 		else if (!menuMan.show && gameMan.menu == "credit") {
-			gameMan.menu = "option";
+			gameMan.menu = "title";
 		}
 		else {
 			menuMan.show = !menuMan.show;
@@ -409,6 +409,9 @@ function menuTitle(index) {
 		break;
 	case 4:
 		gameMan.menu = "option";
+		break;
+	case 5:
+		gameMan.menu = "credit";
 		break;
 	}
 }

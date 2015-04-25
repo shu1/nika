@@ -128,7 +128,7 @@ function mouseMove(event) {
 				if (gameMan.menu == "title") {
 					x -= 128;	// offset to coordinates of buttons
 					y -= 330;
-					if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*5) {
+					if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*6) {
 						menus["title"] = Math.floor(y / displayMan.activeHeight);
 						handled = true;
 					}
@@ -216,7 +216,7 @@ function mouseUp(event) {
 			else if (gameMan.menu == "title") {
 				x -= (scene.width - displayMan.screenWidth)/2 + 128;	// offset to coordinates of buttons
 				y -= (scene.height - displayMan.screenHeight)/2 + 330;
-				if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*5) {
+				if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*6) {
 					menuTitle(Math.floor(y / displayMan.activeHeight));
 				}
 			}
@@ -263,7 +263,7 @@ function mouseUp(event) {
 			}
 			else if (gameMan.menu == "credit") {
 				if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
-					gameMan.menu = "option";
+					gameMan.menu = "title";
 				}
 			}
 			else if (gameMan.menu == "popup") {
@@ -470,7 +470,7 @@ function keyDown(event) {
 		if (menuMan.show || gameMan.menu == "credit") {
 			menuButton(menuMan.button);
 		}
-		else if (gameMan.menu == "title" && menus["title"] < 5) {
+		else if (gameMan.menu == "title" && menus["title"] < 6) {
 			menuTitle(menus["title"]);
 		}
 		else if (gameMan.menu == "option" && menus["option"] == 2) {
@@ -575,7 +575,7 @@ function keyDown(event) {
 
 	// highlight menu button
 	inputMan.menu = menuMan.show || gameMan.scene == "board" || gameMan.scene == "rules" || gameMan.menu == "credit" ||
-		gameMan.menu == "title" && menus["title"] == 5 || gameMan.menu == "option" && menus["option"] == 3;
+		gameMan.menu == "title" && menus["title"] == 6 || gameMan.menu == "option" && menus["option"] == 3;
 }
 
 function keyPrev() {
@@ -610,7 +610,7 @@ function keyNext() {
 		}
 		return true;	// never pan when menu is showing
 	}
-	else if (gameMan.menu == "title" && menus["title"] < 5) {
+	else if (gameMan.menu == "title" && menus["title"] < 6) {
 		menus["title"]++;
 		return true;
 	}
