@@ -28,6 +28,7 @@ window.onload = function() {
 	loadImage("buttonMenu");
 	loadImage("buttonPass");
 	loadImage("buttonUndo");
+	loadImage("buttonBack");
 	loadImage("buttonClose");
 	loadImage("menuPopup");
 	loadImage("arrowLeft");
@@ -405,7 +406,7 @@ function drawMural(context, dTime) {
 function drawContext(context, dTime, tv) {
 	tv = tv ? tv : "";
 	var canvas = context.canvas;
-	context.clearRect(0, 0, canvas.width, canvas.height);
+	context.clearRect(0, 0, canvas.width, canvas.height);	// TODO change color depending on scene
 	if (displayMan.zoom) {
 		zooming(dTime);
 	}
@@ -475,8 +476,11 @@ function drawContext(context, dTime, tv) {
 	}
 
 	var y = context.canvas.height - menuMan.bHeight;
-	if (gameMan.scene == "rules" || gameMan.menu == "option" || gameMan.menu == "credit" || gameMan.menu == "popup") {
+	if (gameMan.scene == "rules" || gameMan.menu == "popup") {
 		context.drawImage(images["buttonClose"], 0, y, menuMan.bWidth, menuMan.bHeight);
+	}
+	else if (gameMan.menu == "option" || gameMan.menu == "credit") {
+		context.drawImage(images["buttonBack"], 0, y, menuMan.bWidth, menuMan.bHeight);
 	}
 	else if (gameMan.scene == "board") {
 		context.drawImage(images["buttonMenu"], 0, y, menuMan.bWidth, menuMan.bHeight);
