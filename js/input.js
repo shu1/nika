@@ -183,7 +183,14 @@ function mouseMove(event) {
 
 function mouseUp(event) {
 	hudMan.inputText += " up";
-	
+
+	function setAI(i) {
+		gameMan.ais[i]++;
+		if (gameMan.ais[i] > 2) {
+			gameMan.ais[i] = 0;
+		}
+	}
+
 	if (isTouch(event, inputMan.touchID2)) {
 		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 	}
@@ -223,13 +230,6 @@ function mouseUp(event) {
 			else if (gameMan.menu == "setup") {
 				x -= (scene.width - displayMan.screenWidth)/2;	// offset to coordinates of image
 				y -= (scene.height - displayMan.screenHeight)/2;
-
-				function setAI(i) {
-					gameMan.ais[i]++;
-					if (gameMan.ais[i] > 2) {
-						gameMan.ais[i] = 0;
-					}
-				}
 
 				if (y > 220 && y < 610) {
 					if (x > 20 & x < 240) {
