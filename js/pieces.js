@@ -187,7 +187,18 @@ function pushPiece(pRow, pCol, row, col, pusher, weight) {
 		return false;
 	}
 	else {	// enemy piece
-		if ((grid[pRow][pCol].rot+2)%4 != grid[row][col].rot && grid[pRow][pCol].player == pusher) {	// not facing enemy
+		var comingFrom; // Which rotation direction the offensive piece is coming from
+		if (pRow < row) {
+			comingFrom = 0;
+		} else if (pRow > row) {
+			comingFrom = 2;
+		} else if (pCol > col) {
+			comingFrom = 1;
+		} else {
+			comingFrom = 3;
+		}
+
+		if (grid[row][col].rot != comingFrom && grid[pRow][pCol].player == pusher) {	// not facing enemy
 			routPiece(row,col, currentPlayer);
 			return true;
 		}
