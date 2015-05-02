@@ -193,7 +193,7 @@ function pushState(ai) {
 	}
 
 	states.push(state);
-	while (states.length > 16) {	// number of undos to hold
+	while (states.length > 1000) {	// number of undos to hold
 		states.shift();
 	}
 }
