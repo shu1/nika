@@ -464,6 +464,10 @@ function keyDown(event) {
 	var dX = 8;
 
 	switch (event.keyCode) {
+	case 68:	// D
+		gameMan.debug = !gameMan.debug;
+		initAnimations();
+		break;
 	case 13:	// enter
 	case 90:	// Z
 		hudMan.inputText = "Enter";
