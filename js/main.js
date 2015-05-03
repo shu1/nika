@@ -1,7 +1,7 @@
 "use strict";
 
 window.onload = function() {
-	newGame();
+	generateGrid(newBoard); // TODO Make this unnecessary in onload
 
 	function loadImage(name, i) {
 		i = i ? i : "";
@@ -707,7 +707,7 @@ function drawMenu(context, dTime) {
 }
 
 function drawButton(context, row, col, text, textColor, bgColor) {
-	var padding = 4;	// TODO: put in displayMan and calculate in reSize()
+	var padding = 4;	// TODO put in displayMan and calculate in reSize()
 	var canvas = context.canvas;
 	if (bgColor) {
 		context.fillStyle = bgColor;

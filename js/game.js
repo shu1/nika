@@ -196,6 +196,7 @@ function pushState(ai) {
 	while (states.length > 1000) {	// number of undos to hold
 		states.shift();
 	}
+	saveGame();
 }
 
 function popState() {
@@ -205,6 +206,7 @@ function popState() {
 			resetState();
 		} while (gameMan.ais[gameMan.player] && states.length > 1)
 	}
+	saveGame();
 }
 
 function resetState() {
@@ -215,8 +217,7 @@ function resetState() {
 }
 
 function revertState() {
-	var state = states[states.length-1];
-	loadState(state);
+	loadState(states[states.length-1]);
 }
 
 function loadState(state) {
@@ -237,6 +238,13 @@ function loadState(state) {
 	}
 }
 
+function saveGame() {
+	var savedGame = {
+		states: states,
+		ais: gameMan.ais
+	}
+	localStorage.setItem("nikaSavedGame", JSON.stringify(savedGame));
+}
 
 function getCity(player) {
 	switch (player) {
@@ -398,6 +406,12 @@ function menuTitle(index) {
 		gameMan.menu = "setup";
 		break;
 	case 1:
+		var savedGame = JSON.parse(localStorage.getItem("nikaSavedGame"));
+		if (savedGame) {
+			states = savedGame.states;
+			gameMan.ais = savedGame.ais;
+			revertState();
+		}
 		setScene("board");
 		break;
 	case 2:
