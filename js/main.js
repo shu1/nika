@@ -703,13 +703,11 @@ function drawMenu(context, dTime) {
 		}
 	}
 	else {
-		var buttonText = (gameMan.scene == "rules") ? buttons[0] : (gameMan.menu == "option" || gameMan.menu == "credit") ? "  Back" : buttons[1];
-
 		if (inputMan.menu && menuMan.button == 0) {
-			drawButton(context, 0, 0, buttonText, "black", "white");
+			drawButton(context, 0, 0, buttons[1], "black", "white");
 		}
 		else {
-			drawButton(context, 0, 0, buttonText, "white", "black");
+			drawButton(context, 0, 0, buttons[1], "white", "black");
 		}
 	}
 }

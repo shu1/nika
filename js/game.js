@@ -346,20 +346,8 @@ function setIdleAnimation(player) {
 function menuButton(index) {
 	switch(index) {
 	case 0:
-		if (!menuMan.show && gameMan.scene == "rules") {
-			setScene("board");
-			hudMan.pageText = "";
-		}
-		else if (!menuMan.show && gameMan.menu == "option") {
-			gameMan.menu = "title";
-		}
-		else if (!menuMan.show && gameMan.menu == "credit") {
-			gameMan.menu = "title";
-		}
-		else {
-			menuMan.show = !menuMan.show;
-			menuMan.button = 0;
-		}
+		menuMan.show = !menuMan.show;
+		menuMan.button = 0;
 		break;
 	case 1:
 		gameMan.debug = !gameMan.debug;
