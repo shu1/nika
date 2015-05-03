@@ -109,10 +109,17 @@ function mouseMove(event) {
 			var dScale = (inputMan.pinchDistance - pDistance) / displayMan.screenDistance;	// TODO check on this scaling algorithm
 			scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
 
-			var x = (inputMan.x + inputMan.x2) / 2;	// center of pinch
-			var y = (inputMan.y + inputMan.y2) / 2;
-			scene.x = x - (x - scene.x) * scene.scale / pScale;
-			scene.y = y - (y - scene.y) * scene.scale / pScale;
+			var x, y;
+			x = (inputMan.x + inputMan.x2) / 2;	// center of pinch
+			y = (inputMan.y + inputMan.y2) / 2;
+
+			if (screenType == 2) {
+				scene.x -= scene.width * (scene.scale - pScale) / 2;
+				scene.y -= scene.height * (scene.scale - pScale) / 2;
+			} else {
+				scene.x = x - (x - scene.x) * scene.scale / pScale;
+				scene.y = y - (y - scene.y) * scene.scale / pScale;
+			}
 			pan(0, 0);
 			handled = true;
 		}
