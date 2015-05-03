@@ -524,7 +524,8 @@ function drawPieces(context) {
 	if (inputMan.touchID >= 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && inPhalanx(gameMan.pRow, gameMan.pCol)) {
 		context.fillStyle = "rgba(191,191,191,0.5)";
 		context.beginPath();
-		context.arc(gameMan.pCol * 96 + 48, gameMan.pRow * 96 + 48, 192, 0, Math.PI*2);
+		context.arc(gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2, gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2,
+			displayMan.cellSize * 2, 0, Math.PI*2);
 		context.fill();
 	}
 

@@ -365,7 +365,7 @@ function movePhalanx(pRow, pCol, row, col) {
 }
 
 function checkMovePhalanx(pRow, pCol, row, col) {
-	if (outOfBounds(pRow, pCol) || outOfBounds(row, col)) {	// TODO: check if this is still necessary
+	if (outOfBounds(pRow, pCol) || outOfBounds(row, col)) {	// TODO check if this is still necessary
 		return false;
 	}
 

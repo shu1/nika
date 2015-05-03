@@ -1,6 +1,6 @@
 "use strict";
 
-// TODO: should refactor so this isn't necessary in AI code
+// TODO should refactor so this isn't necessary in AI code
 function resetPieces(row, col) {
 		phalanx.length = 0;
 		phalanx.push({row:row, col:col});
