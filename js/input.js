@@ -51,7 +51,15 @@ function mouseDown(event) {
 				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - displayMan.screenWidth)/2;
 				var y = (inputMan.y - scene.y) / scene.scale - (scene.height - displayMan.screenHeight)/2;
 
-				if (gameMan.menu == "option") {
+				if (gameMan.menu == "title") {
+					x -= 128;	// offset to coordinates of buttons
+					y -= 330;
+					if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*6) {
+						menus["title"] = Math.floor(y / displayMan.activeHeight);
+						handled = true;
+					}
+				}
+				else if (gameMan.menu == "option") {
 					var radius = 93;	// bigger radius for fat fingers
 					x += 40 - 62;	// offset to x of volume line - button radius
 
