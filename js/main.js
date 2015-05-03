@@ -479,7 +479,7 @@ function drawContext(context, dTime, tv) {
 	if (gameMan.scene == "rules" || gameMan.menu == "popup") {
 		context.drawImage(images["buttonClose"], 0, y, menuMan.bWidth, menuMan.bHeight);
 	}
-	else if (gameMan.menu == "option" || gameMan.menu == "credit") {
+	else if (gameMan.menu == "setup" || gameMan.menu == "option" || gameMan.menu == "credit") {
 		context.drawImage(images["buttonBack"], 0, y, menuMan.bWidth, menuMan.bHeight);
 	}
 	else if (gameMan.scene == "board") {

@@ -256,6 +256,9 @@ function mouseUp(event) {
 					newGame();
 					setScene("board");
 				}
+				else if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
+					gameMan.menu = "title";
+				}
 			}
 			else if (gameMan.menu == "option") {
 				x -= (scene.width - displayMan.screenWidth)/2;	// offset to coordinates of image
