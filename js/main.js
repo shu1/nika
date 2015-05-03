@@ -521,6 +521,13 @@ function setRings() {
 }
 
 function drawPieces(context) {
+	if (inputMan.touchID >= 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && inPhalanx(gameMan.pRow, gameMan.pCol)) {
+		context.fillStyle = "rgba(191,191,191,0.5)";
+		context.beginPath();
+		context.arc(gameMan.pCol * 96 + 48, gameMan.pRow * 96 + 48, 192, 0, Math.PI*2);
+		context.fill();
+	}
+
 	var pieceSize = 80;
 	var theta = displayMan.time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
