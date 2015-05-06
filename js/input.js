@@ -23,7 +23,7 @@ function mouseDown(event) {
 			inputMan.x = event.changedTouches[0].pageX;
 			inputMan.y = event.changedTouches[0].pageY;
 
-			if (event.changedTouches[1] && inputMan.touchID2 < 0) {	// if 2nd touch hits simultaneously
+			if (event.changedTouches[1] && inputMan.touchID2 < 0) {	// 2nd touch hit simultaneously
 				setPinch(event.changedTouches[1]);
 				multiTouch = true;
 			}
@@ -48,14 +48,14 @@ function mouseDown(event) {
 			var scene = scenes[gameMan.scene];
 
 			if (gameMan.scene == "menus") {
-				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - displayMan.screenWidth)/2;
-				var y = (inputMan.y - scene.y) / scene.scale - (scene.height - displayMan.screenHeight)/2;
+				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
+				var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
 
 				if (gameMan.menu == "title") {
 					x -= 128;	// offset to coordinates of buttons
 					y -= 330;
-					if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*6) {
-						menus["title"] = Math.floor(y / displayMan.activeHeight);
+					if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
+						menus["title"] = Math.floor(y / drawMan.activeHeight);
 						handled = true;
 					}
 				}
@@ -63,13 +63,13 @@ function mouseDown(event) {
 					var radius = 93;	// bigger radius for fat fingers
 					x += 40 - 62;	// offset to x of volume line - button radius
 
-					var buttonX = 1484 * audioMan.music;
+					var buttonX = 1484 * soundMan.music;
 					if (x > buttonX - radius && x < buttonX + radius && y > 446 - radius && y < 446 + radius) {
 						inputMan.drag = "music";	// only drag if touch started on button
 						handled = true;
 					}
 
-					buttonX = 1484 * audioMan.sound;
+					buttonX = 1484 * soundMan.sound;
 					if (x > buttonX - radius && x < buttonX + radius && y > 710 - radius && y < 710 + radius) {
 						inputMan.drag = "sound";	// TODO repurpose drag to general mouseDown string
 						handled = true;
@@ -84,8 +84,8 @@ function mouseDown(event) {
 				}
 
 				if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
-					inputMan.pX = scene.x + (gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
-					inputMan.pY = scene.y + (gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2) * scene.scale;
+					inputMan.pX = scene.x + (gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
+					inputMan.pY = scene.y + (gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
 					handled = true;
 				}
 				else {
@@ -114,7 +114,7 @@ function mouseMove(event) {
 			setPinchDistance();
 
 			var pScale = scene.scale;
-			var dScale = (inputMan.pinchDistance - pDistance) / displayMan.screenDistance;	// TODO check on this scaling algorithm
+			var dScale = (inputMan.pinchDistance - pDistance) / drawMan.screenDistance;	// TODO check on this scaling algorithm
 			scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
 
 			var x, y;
@@ -137,26 +137,26 @@ function mouseMove(event) {
 			var dY = inputMan.y - inputMan.pY;
 
 			if (gameMan.scene == "menus") {
-				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - displayMan.screenWidth)/2;
-				var y = (inputMan.y - scene.y) / scene.scale - (scene.height - displayMan.screenHeight)/2;
+				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
+				var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
 
 				if (gameMan.menu == "title") {
 					x -= 128;	// offset to coordinates of buttons
 					y -= 330;
-					if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*6) {
-						menus["title"] = Math.floor(y / displayMan.activeHeight);
+					if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
+						menus["title"] = Math.floor(y / drawMan.activeHeight);
 						handled = true;
 					}
 				}
 				else if (gameMan.menu == "option") {
 					x += 40 - 62;	// offset to x of volume line - button radius
 					if (inputMan.drag == "music") {
-						audioMan.music = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
-						sounds["music"].volume = Math.pow(audioMan.music, 2);
+						soundMan.music = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
+						sounds["music"].volume = Math.pow(soundMan.music, 2);
 						handled = true;
 					}
 					else if (inputMan.drag == "sound") {
-						audioMan.sound = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
+						soundMan.sound = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
 						handled = true;
 					}
 				}
@@ -166,7 +166,7 @@ function mouseMove(event) {
 				if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
 					dX /= scene.scale;
 					dY /= scene.scale;
-					if (Math.abs(dX) > displayMan.cellSize/2 || Math.abs(dY) > displayMan.cellSize/2) {	// inside cell is deadzone
+					if (Math.abs(dX) > drawMan.cellSize/2 || Math.abs(dY) > drawMan.cellSize/2) {	// inside cell is deadzone
 						getRot(dX, dY, scene);
 						rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 					}
@@ -224,27 +224,27 @@ function mouseUp(event) {
 					setScene("board");
 					hudMan.pageText = "";	// TODO put this into setScene()
 				}
-				else if (y > (scene.height - displayMan.arrowHeight)/2 && y < (scene.height + displayMan.arrowHeight)/2) {
-					if (x > scene.width - displayMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
+				else if (y > (scene.height - drawMan.arrowHeight)/2 && y < (scene.height + drawMan.arrowHeight)/2) {
+					if (x > scene.width - drawMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
 						gameMan.rules++;
 						hudMan.pageText = "Rule " + gameMan.rules;
 					}
-					else if (x < displayMan.arrowWidth*1.5 && gameMan.rules > 0) {
+					else if (x < drawMan.arrowWidth*1.5 && gameMan.rules > 0) {
 						gameMan.rules--;
 						hudMan.pageText = "Rule " + gameMan.rules;
 					}
 				}
 			}
 			else if (gameMan.menu == "title") {
-				x -= (scene.width - displayMan.screenWidth)/2 + 128;	// offset to coordinates of buttons
-				y -= (scene.height - displayMan.screenHeight)/2 + 330;
-				if (x > 0 && x < 400 && y > 0 && y < displayMan.activeHeight*6) {
-					menuTitle(Math.floor(y / displayMan.activeHeight));
+				x -= (scene.width - drawMan.screenWidth)/2 + 128;	// offset to coordinates of buttons
+				y -= (scene.height - drawMan.screenHeight)/2 + 330;
+				if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
+					menuTitle(Math.floor(y / drawMan.activeHeight));
 				}
 			}
 			else if (gameMan.menu == "setup") {
-				x -= (scene.width - displayMan.screenWidth)/2;	// offset to coordinates of image
-				y -= (scene.height - displayMan.screenHeight)/2;
+				x -= (scene.width - drawMan.screenWidth)/2;	// offset to coordinates of image
+				y -= (scene.height - drawMan.screenHeight)/2;
 
 				if (y > 220 && y < 610) {
 					if (x > 20 & x < 240) {
@@ -269,8 +269,8 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.menu == "option") {
-				x -= (scene.width - displayMan.screenWidth)/2;	// offset to coordinates of image
-				y -= (scene.height - displayMan.screenHeight)/2;
+				x -= (scene.width - drawMan.screenWidth)/2;	// offset to coordinates of image
+				y -= (scene.height - drawMan.screenHeight)/2;
 
 				if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
 					gameMan.menu = "title";
@@ -318,14 +318,14 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
-				if (x > displayMan.muralX && x < displayMan.muralX + displayMan.muralWidth
-				&& y > displayMan.muralY && y < displayMan.muralY + displayMan.muralHeight) {
+				if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
+				&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
 					nextTutorialStep();
 				}
 			}
 			else if (gameMan.winner >= 0) {	// win screen
-				if (x > displayMan.muralX && x < displayMan.muralX + displayMan.muralWidth
-				&& y > displayMan.muralY && y < displayMan.muralY + displayMan.muralHeight) {
+				if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
+				&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
 					newGame();
 				}
 			}
@@ -406,8 +406,8 @@ function getXY(event) {
 }
 
 function getRowCol(scene) {
-	inputMan.col = Math.floor((inputMan.x - scene.x) / (displayMan.cellSize * scene.scale));
-	inputMan.row = Math.floor((inputMan.y - scene.y) / (displayMan.cellSize * scene.scale));
+	inputMan.col = Math.floor((inputMan.x - scene.x) / (drawMan.cellSize * scene.scale));
+	inputMan.row = Math.floor((inputMan.y - scene.y) / (drawMan.cellSize * scene.scale));
 	inputMan.rot = -1;
 	hudMan.inputText = inputMan.row + "," + inputMan.col;
 }
@@ -429,7 +429,7 @@ function getRot(dX, dY) {
 
 		inputMan.row = gameMan.pRow;
 		inputMan.col = gameMan.pCol;
-		var radius = displayMan.cellSize * displayMan.cellSize * 4;
+		var radius = drawMan.cellSize * drawMan.cellSize * 4;
 		if (dX*dX + dY*dY > radius) {
 			if (inputMan.rot == 0) {
 				inputMan.row--;
@@ -535,17 +535,17 @@ function keyDown(event) {
 		break;
 	case 37:	// left
 		if (!menuMan.show && gameMan.menu == "option") {
-			if (menus["option"] == 0 && audioMan.music > 0) {
-				audioMan.music -= 0.1;
-				if (audioMan.music < 0) {
-					audioMan.music = 0;
+			if (menus["option"] == 0 && soundMan.music > 0) {
+				soundMan.music -= 0.1;
+				if (soundMan.music < 0) {
+					soundMan.music = 0;
 				}
-				sounds["music"].volume = Math.pow(audioMan.music, 2);
+				sounds["music"].volume = Math.pow(soundMan.music, 2);
 			}
-			else if (menus["option"] == 1 && audioMan.sound > 0) {
-				audioMan.sound -= 0.1;
-				if (audioMan.sound < 0) {
-					audioMan.sound = 0;
+			else if (menus["option"] == 1 && soundMan.sound > 0) {
+				soundMan.sound -= 0.1;
+				if (soundMan.sound < 0) {
+					soundMan.sound = 0;
 				}
 			}
 		}
@@ -565,17 +565,17 @@ function keyDown(event) {
 		break;
 	case 39:	// right
 		if (!menuMan.show && gameMan.menu == "option") {
-			if (menus["option"] == 0 && audioMan.music < 1) {
-				audioMan.music += 0.1;
-				if (audioMan.music > 1) {
-					audioMan.music = 1;
+			if (menus["option"] == 0 && soundMan.music < 1) {
+				soundMan.music += 0.1;
+				if (soundMan.music > 1) {
+					soundMan.music = 1;
 				}
-				sounds["music"].volume = Math.pow(audioMan.music, 2);
+				sounds["music"].volume = Math.pow(soundMan.music, 2);
 			}
-			else if (menus["option"] == 1 && audioMan.sound < 1) {
-				audioMan.sound += 0.1;
-				if (audioMan.sound > 1) {
-					audioMan.sound = 1;
+			else if (menus["option"] == 1 && soundMan.sound < 1) {
+				soundMan.sound += 0.1;
+				if (soundMan.sound > 1) {
+					soundMan.sound = 1;
 				}
 			}
 		}

@@ -137,7 +137,6 @@ function	aiNeil(){
 	phalanx=[];
 	useAction();
 	pushState();
-	displayMan.draw=true;
 }
 
 function	getValue(state,pieces){

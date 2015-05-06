@@ -1,7 +1,7 @@
 "use strict";
 
 window.onload = function() {
-	generateGrid(newBoard); // TODO Make this unnecessary in onload
+	generateGrid(newBoard); // TODO make this unnecessary in onload
 
 	function loadImage(name, i) {
 		i = i ? i : "";
@@ -56,7 +56,7 @@ window.onload = function() {
 	loadAudio("rally",	"rout");
 	loadAudio("music",	"nika2", "ogg");
 
-	sounds["music"].volume = Math.pow(audioMan.music, 2);
+	sounds["music"].volume = Math.pow(soundMan.music, 2);
 	sounds["music"].loop = true;
 	sounds["music"].play();
 
@@ -64,8 +64,8 @@ window.onload = function() {
 	gpContext = gpCanvas.getContext("2d");	// TODO maybe don't need context in global var
 
 	muralCanvas = document.createElement("canvas");	// buffer
-	muralCanvas.width = displayMan.muralWidth;
-	muralCanvas.height = displayMan.muralHeight;
+	muralCanvas.width = drawMan.muralWidth;
+	muralCanvas.height = drawMan.muralHeight;
 
 	var view_2d = new fo.view_2d(muralCanvas);
 
@@ -120,7 +120,7 @@ window.onload = function() {
 	reSize();
 
 	if (window.nwf) {
-		var tvDisplay = nwf.display.DisplayManager.getInstance().getTVDisplay();
+		var tvDisplay = nwf.display.drawManager.getInstance().getTVDisplay();
 
 		tvDisplay.addEventListener("load", function() {
 			var tvCanvas = tvDisplay.window.document.getElementById("canvas");
@@ -130,7 +130,7 @@ window.onload = function() {
 
 			scenes["tvboard"] = {};
 			scenes["tvmenus"] = scenes["tvrules"] = {};
-			var scale = tvCanvas.height / displayMan.boardHeight;
+			var scale = tvCanvas.height / drawMan.boardHeight;
 			initScenes(tvCanvas, scale, scale, "tv");
 
 			draw(0);
@@ -148,7 +148,7 @@ function reSize() {
 		gpCanvas.width = window.innerWidth;
 		gpCanvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 	}
-	displayMan.screenDistance = Math.sqrt(gpCanvas.width*gpCanvas.width + gpCanvas.height*gpCanvas.height);
+	drawMan.screenDistance = Math.sqrt(gpCanvas.width*gpCanvas.width + gpCanvas.height*gpCanvas.height);
 
 	var minScale = 1/2, maxScale = 2/3;	// defaults for browser and ipad
 	if (gpCanvas.width == 2048 && gpCanvas.height == 1536) {	// ipad retina
@@ -156,12 +156,12 @@ function reSize() {
 		maxScale = 4/3;
 	}
 	else if (screenType == 2) {	// tablet or tv
-		minScale = gpCanvas.height / displayMan.boardHeight;
-		maxScale = gpCanvas.width / displayMan.boardWidth;
+		minScale = gpCanvas.height / drawMan.boardHeight;
+		maxScale = gpCanvas.width / drawMan.boardWidth;
 	}
 	else if (gpCanvas.width != 1024 || gpCanvas.height != 768) {	// else if not ipad then it's a phone
-		minScale = gpCanvas.width / displayMan.boardWidth;
-		maxScale = minScale * displayMan.boardWidth / 1281;	// make maxScale = 2/3 on WiiU gamepad
+		minScale = gpCanvas.width / drawMan.boardWidth;
+		maxScale = minScale * drawMan.boardWidth / 1281;	// make maxScale = 2/3 on WiiU gamepad
 		if (maxScale > 0.9 && maxScale < 1.1) {
 			maxScale = 1;
 		}
@@ -173,11 +173,11 @@ function reSize() {
 		}
 	}
 
-	displayMan.hudHeight = Math.floor(44*minScale);
-	displayMan.hudFont = Math.floor(32*minScale);
-	gpContext.font = displayMan.hudFont + "px sans-serif";
+	drawMan.hudHeight = Math.floor(44*minScale);
+	drawMan.hudFont = Math.floor(32*minScale);
+	gpContext.font = drawMan.hudFont + "px sans-serif";
 
-	menuMan.bWidth = displayMan.cellSize*2 * minScale;
+	menuMan.bWidth = drawMan.cellSize*2 * minScale;
 	menuMan.bHeight = menuMan.bWidth/2;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
@@ -192,8 +192,8 @@ function initScenes(canvas, maxScale, minScale, tv) {
 	tv = tv ? tv : "";
 
 	var scene = scenes[tv + "board"];
-	scene.width = displayMan.boardWidth;
-	scene.height = displayMan.boardHeight;
+	scene.width = drawMan.boardWidth;
+	scene.height = drawMan.boardHeight;
 	scene.maxScale = maxScale;
 	scene.minScale = minScale;
 	scene.scale = minScale;
@@ -202,7 +202,7 @@ function initScenes(canvas, maxScale, minScale, tv) {
 
 	var ratio = canvas.width / canvas.height;
 	scene = scenes[tv + "rules"];
-	scene.height = (canvas.height <= 480) ? displayMan.screenHeight : (ratio >= 1.5) ? 1152 : 1536;
+	scene.height = (canvas.height <= 480) ? drawMan.screenHeight : (ratio >= 1.5) ? 1152 : 1536;
 	scene.width = scene.height * ratio;
 	scene.minScale = scene.scale = canvas.height / scene.height;
 	scene.maxScale = Math.max(maxScale, scene.scale);
@@ -231,7 +231,7 @@ function setScene(sceneIndex) {
 	scene.x = (gpCanvas.width - scene.width * scene.scale)/2;
 	scene.y = (gpCanvas.height - scene.height * scene.scale)/2;
 
-	displayMan.zoom = 0;
+	drawMan.zoom = 0;
 	menuMan.show = false;
 	menuMan.button = 0;
 }
@@ -239,25 +239,25 @@ function setScene(sceneIndex) {
 function zoom() {
 	var scene = scenes[gameMan.scene];
 	if (scene.scale == scene.minScale) {
-		displayMan.zoom = 1;
+		drawMan.zoom = 1;
 	}
 	else {
-		displayMan.zoom = -1;
+		drawMan.zoom = -1;
 	}
 }
 
 function zooming(dTime) {
 	var scene = scenes[gameMan.scene];
-	var speed = (scene.maxScale - scene.minScale) * dTime/250 * displayMan.zoom;	// set positive/negative
+	var speed = (scene.maxScale - scene.minScale) * dTime/250 * drawMan.zoom;	// set positive/negative
 
-	if (displayMan.zoom > 0) {
+	if (drawMan.zoom > 0) {
 		if (scene.scale + speed < scene.maxScale) {
 			scene.scale += speed;
 		}
 		else {
 			speed = scene.maxScale - scene.scale;	// move exactly the remainder of the animation
 			scene.scale = scene.maxScale;
-			displayMan.zoom = 0;
+			drawMan.zoom = 0;
 		}
 	}
 	else {
@@ -267,7 +267,7 @@ function zooming(dTime) {
 		else {
 			speed = scene.minScale - scene.scale;	// move exactly the remainder of the animation
 			scene.scale = scene.minScale;
-			displayMan.zoom = 0;
+			drawMan.zoom = 0;
 		}
 	}
 
@@ -322,8 +322,8 @@ function pan(dX, dY) {
 }
 
 function draw(time) {
-	var dTime = time - displayMan.time;
-	displayMan.time = time;
+	var dTime = time - drawMan.time;
+	drawMan.time = time;
 
 	if (time - hudMan.fpsTime > 984) {
 		hudMan.fpsText = hudMan.fpsCount + "fps";
@@ -368,7 +368,7 @@ function drawMural(context, dTime) {
 	}
 	else {	// draw dialog
 		context.fillStyle = "#221E1F";
-		context.fillRect(displayMan.tutorialOffset, 0, displayMan.muralWidth - displayMan.tutorialOffset, displayMan.muralHeight);
+		context.fillRect(drawMan.tutorialOffset, 0, drawMan.muralWidth - drawMan.tutorialOffset, drawMan.muralHeight);
 		context.fillStyle = "#E0D9B3";
 
 		var lines;
@@ -392,12 +392,12 @@ function drawMural(context, dTime) {
 		}
 
 		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], displayMan.tutorialOffset+8, topPadding + spacing * i);
+			context.fillText(lines[i], drawMan.tutorialOffset+8, topPadding + spacing * i);
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
-			context.globalAlpha = (Math.sin(displayMan.time/250 % (Math.PI*2))+1)/4 + 0.5;
+			context.globalAlpha = (Math.sin(drawMan.time/250 % (Math.PI*2))+1)/4 + 0.5;
 			context.fillStyle = "white";
-			context.fillText("Next", nextX, displayMan.muralHeight - bottomPadding);
+			context.fillText("Next", nextX, drawMan.muralHeight - bottomPadding);
 			context.globalAlpha = 1;
 		}
 	}
@@ -407,7 +407,7 @@ function drawContext(context, dTime, tv) {
 	tv = tv ? tv : "";
 	var canvas = context.canvas;
 	context.clearRect(0, 0, canvas.width, canvas.height);	// TODO change color depending on scene
-	if (displayMan.zoom) {
+	if (drawMan.zoom) {
 		zooming(dTime);
 	}
 
@@ -416,13 +416,13 @@ function drawContext(context, dTime, tv) {
 	context.translate(scene.x, scene.y);
 	context.scale(scene.scale, scene.scale);
 
-	var x = (scene.width - displayMan.screenWidth)/2;
-	var y = (scene.height - displayMan.screenHeight)/2;
+	var x = (scene.width - drawMan.screenWidth)/2;
+	var y = (scene.height - drawMan.screenHeight)/2;
 	switch (gameMan.scene) {
 	case "board":
 		context.drawImage(images["board"], 0, 0);
 		if (gameMan.menu != "popup") {
-			context.drawImage(muralCanvas, displayMan.muralX, displayMan.muralY);
+			context.drawImage(muralCanvas, drawMan.muralX, drawMan.muralY);
 		}
 		setRings();
 		drawPieces(context);
@@ -441,7 +441,7 @@ function drawContext(context, dTime, tv) {
 			context.drawImage(images["menuTitle0"], x, y);
 			context.drawImage(images["menuTitle1"], x+512, y);
 			if (menus["title"] < 6) {
-				context.drawImage(images["menuTitleActive"], x+82, y+282 + displayMan.activeHeight*menus["title"]);
+				context.drawImage(images["menuTitleActive"], x+82, y+282 + drawMan.activeHeight*menus["title"]);
 			}
 			break;
 		case "setup":
@@ -455,8 +455,8 @@ function drawContext(context, dTime, tv) {
 		case "option":
 			context.drawImage(images["menuOption0"], x, y);
 			context.drawImage(images["menuOption1"], x+512, y);
-			context.drawImage(images["menuOptionSlider"], x-40 + 1484*audioMan.music, y+384);
-			context.drawImage(images["menuOptionSlider"], x-40 + 1484*audioMan.sound, y+648);
+			context.drawImage(images["menuOptionSlider"], x-40 + 1484*soundMan.music, y+384);
+			context.drawImage(images["menuOptionSlider"], x-40 + 1484*soundMan.sound, y+648);
 			break;
 		case "credit":
 			context.drawImage(images["menuCredit0"], x, y);
@@ -493,8 +493,8 @@ function drawContext(context, dTime, tv) {
 	if (gameMan.debug) {
 		hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[tv + gameMan.scene].scale + "x";
 		context.fillStyle = "white";
-		context.clearRect(0, 0, canvas.width, displayMan.hudHeight);
-		context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, displayMan.hudFont);
+		context.clearRect(0, 0, canvas.width, drawMan.hudHeight);
+		context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, drawMan.hudFont);
 	}
 }
 
@@ -524,19 +524,19 @@ function drawPieces(context) {
 	if (inputMan.touchID >= 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && inPhalanx(gameMan.pRow, gameMan.pCol)) {
 		context.fillStyle = "rgba(191,191,191,0.5)";
 		context.beginPath();
-		context.arc(gameMan.pCol * displayMan.cellSize + displayMan.cellSize/2, gameMan.pRow * displayMan.cellSize + displayMan.cellSize/2,
-			displayMan.cellSize * 2, 0, Math.PI*2);
+		context.arc(gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2, gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2,
+			drawMan.cellSize * 2, 0, Math.PI*2);
 		context.fill();
 	}
 
 	var pieceSize = 80;
-	var theta = displayMan.time/500 % (Math.PI*2);
+	var theta = drawMan.time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			var cell = grid[row][col];
 			if (cell.player >= 0 || cell.ring >= 0 || cell.prompt >= 0) {
 				context.save();
-				context.translate(col * displayMan.cellSize + displayMan.cellSize/2, row * displayMan.cellSize + displayMan.cellSize/2);
+				context.translate(col * drawMan.cellSize + drawMan.cellSize/2, row * drawMan.cellSize + drawMan.cellSize/2);
 
 				if (cell.player >= 0) {
 					context.rotate(cell.rot * Math.PI/2);
@@ -552,7 +552,7 @@ function drawPieces(context) {
 				}
 				else if (cell.prompt == 1) {
 					context.rotate(theta);
-					context.drawImage(images["greenRing"], -displayMan.cellSize/2, -displayMan.cellSize/2);
+					context.drawImage(images["greenRing"], -drawMan.cellSize/2, -drawMan.cellSize/2);
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 2) {
@@ -561,7 +561,7 @@ function drawPieces(context) {
 
 				if (cell.ring == 0) {
 					context.rotate(theta);
-					context.drawImage(images["goldRing"], -displayMan.cellSize/2, -displayMan.cellSize/2);
+					context.drawImage(images["goldRing"], -drawMan.cellSize/2, -drawMan.cellSize/2);
 					context.rotate(-theta);
 				}
 				else if (cell.ring == 1) {
@@ -582,47 +582,47 @@ function drawHelmets(context, dTime) {
 	context.save();
 	switch (gameMan.player) {
 	case 0:
-		context.translate(displayMan.cellSize * 13.5, displayMan.cellSize * 14);
+		context.translate(drawMan.cellSize * 13.5, drawMan.cellSize * 14);
 		break;
 	case 1:
-		context.translate(displayMan.cellSize, displayMan.cellSize * 10.5);
+		context.translate(drawMan.cellSize, drawMan.cellSize * 10.5);
 		break;
 	case 2:
-		context.translate(displayMan.cellSize * 7.5, displayMan.cellSize);
+		context.translate(drawMan.cellSize * 7.5, drawMan.cellSize);
 		break;
 	case 3:
-		context.translate(displayMan.cellSize * 20, displayMan.cellSize * 4.5);
+		context.translate(drawMan.cellSize * 20, drawMan.cellSize * 4.5);
 		break;
 	}
-	displayMan.helmetTheta += dTime/400;
-	if (displayMan.helmetScale == 1) {
-		displayMan.helmetTheta = 0;	// reset alpha every zoom
+	drawMan.helmetTheta += dTime/400;
+	if (drawMan.helmetScale == 1) {
+		drawMan.helmetTheta = 0;	// reset alpha every zoom
 	}
-	if (displayMan.helmetScale > 0) {
-		var scale = 1 + displayMan.helmetScale*7;
+	if (drawMan.helmetScale > 0) {
+		var scale = 1 + drawMan.helmetScale*7;
 		context.scale(scale, scale);
-		displayMan.helmetScale -= dTime/400;
-		if (displayMan.helmetScale <= 0) {
-			displayMan.helmetFlash = 1;
+		drawMan.helmetScale -= dTime/400;
+		if (drawMan.helmetScale <= 0) {
+			drawMan.helmetFlash = 1;
 		}
 	}
-	if (displayMan.helmetFlash > 0) {
-		displayMan.helmetFlash -= dTime/600;
-		displayMan.helmetTheta += dTime/50;
+	if (drawMan.helmetFlash > 0) {
+		drawMan.helmetFlash -= dTime/600;
+		drawMan.helmetTheta += dTime/50;
 	}
 	context.rotate(gameMan.player * Math.PI/2);
-	context.globalAlpha = (Math.sin(displayMan.helmetTheta % (Math.PI*2))+1)/4 + 0.5;
+	context.globalAlpha = (Math.sin(drawMan.helmetTheta % (Math.PI*2))+1)/4 + 0.5;
 	context.drawImage(images["helmet" + gameMan.actions], -128, -128);
 	context.restore();
 }
 
 function drawRules(context, scene) {
 	if (scene.height > 1024) {	// only draw border if screen isn't small
-		var padding      = displayMan.arrowWidth/6;
-		var borderX      = displayMan.arrowWidth*1.1;
+		var padding      = drawMan.arrowWidth/6;
+		var borderX      = drawMan.arrowWidth*1.1;
 		var borderWidth  =  scene.width  - borderX*2;
-		var borderHeight = (scene.height + displayMan.screenHeight)/2;
-		var borderY      = (scene.height - displayMan.screenHeight)/4;
+		var borderHeight = (scene.height + drawMan.screenHeight)/2;
+		var borderY      = (scene.height - drawMan.screenHeight)/4;
 
 		context.strokeStyle = "#E0D9B3";
 		context.lineCap = "square";
@@ -632,24 +632,24 @@ function drawRules(context, scene) {
 		context.strokeRect(borderX + padding, borderY + padding, borderWidth - padding*2, borderHeight - padding*2);
 	}
 
-	var arrowY = (scene.height - displayMan.arrowHeight)/2;
+	var arrowY = (scene.height - drawMan.arrowHeight)/2;
 	if (gameMan.rules > 0) {
-		context.drawImage(images["arrowLeft"], displayMan.arrowWidth/2, arrowY);
+		context.drawImage(images["arrowLeft"], drawMan.arrowWidth/2, arrowY);
 	}
 	if (gameMan.rules < rulePages-1) {
-		context.drawImage(images["arrowRight"], scene.width - displayMan.arrowWidth*1.5, arrowY);
+		context.drawImage(images["arrowRight"], scene.width - drawMan.arrowWidth*1.5, arrowY);
 	}
 }
 
 function drawMenu(context, dTime) {
 	var duration = 1;	// no background to animate anymore
-	displayMan.menu = false;	// whether menu is animating
+	drawMan.menu = false;	// whether menu is animating
 
 	if (menuMan.show && (menuMan.width < menuMan.bWidth * menuMan.cols || menuMan.height < menuMan.bHeight * menuMan.rows)) {
 		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / duration;
 		if (menuMan.width + speed < menuMan.bWidth * menuMan.cols) {
 			menuMan.width += speed;
-			displayMan.menu = true;
+			drawMan.menu = true;
 		}
 		else {
 			menuMan.width = menuMan.bWidth * menuMan.cols;
@@ -658,7 +658,7 @@ function drawMenu(context, dTime) {
 		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / duration;
 		if (menuMan.height + speed < menuMan.bHeight * menuMan.rows) {
 			menuMan.height += speed;
-			displayMan.menu = true;
+			drawMan.menu = true;
 		}
 		else {
 			menuMan.height = menuMan.bHeight * menuMan.rows;
@@ -668,7 +668,7 @@ function drawMenu(context, dTime) {
 		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / duration;
 		if (menuMan.width - speed > menuMan.bWidth) {
 			menuMan.width -= speed;
-			displayMan.menu = true;
+			drawMan.menu = true;
 		}
 		else {
 			menuMan.width = menuMan.bWidth;
@@ -677,14 +677,14 @@ function drawMenu(context, dTime) {
 		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / duration;
 		if (menuMan.height - speed > menuMan.bHeight) {
 			menuMan.height -= speed;
-			displayMan.menu = true;
+			drawMan.menu = true;
 		}
 		else {
 			menuMan.height = menuMan.bHeight;
 		}
 	}
 
-	if (menuMan.show && !displayMan.menu) {
+	if (menuMan.show && !drawMan.menu) {
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
@@ -713,7 +713,7 @@ function drawMenu(context, dTime) {
 }
 
 function drawButton(context, row, col, text, textColor, bgColor) {
-	var padding = 4;	// TODO put in displayMan and calculate in reSize()
+	var padding = 4;	// TODO put in drawMan and calculate in reSize()
 	var canvas = context.canvas;
 	if (bgColor) {
 		context.fillStyle = bgColor;

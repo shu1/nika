@@ -2,7 +2,7 @@
 
 var gpCanvas, gpContext, muralCanvas, tvContext, grid, images={}, sounds={}, scenes={}, menus={}, states=[], phalanx=[], murals=[];
 
-var displayMan = {
+var drawMan = {
 	cellSize:96,
 	boardWidth:2016,
 	boardHeight:1440,
@@ -24,7 +24,7 @@ var displayMan = {
 	time:0
 }
 
-var audioMan = {
+var soundMan = {
 	music:0.5,
 	sound:0.5
 }
@@ -50,7 +50,7 @@ var gameMan = {
 	pRow:-1,
 	pCol:-1,
 	pRot:-1,
-	ais:[0, 1, 0, 1],
+	ais:[0,1,0,1],
 	thinking: false
 }
 

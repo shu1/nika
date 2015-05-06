@@ -145,11 +145,11 @@ function useAction(n) {
 		gameMan.actions = 2;
 		gameMan.player = (gameMan.player + 1) % 4;
 		if (gameMan.tutorialStep < 0) {
-			displayMan.helmetScale = 1;	// zoom helmets
+			drawMan.helmetScale = 1;	// zoom helmets
 		}
 	}
 	else if (gameMan.tutorialStep != 2) {	// hack
-		displayMan.helmetFlash = 1;	// flash helmet
+		drawMan.helmetFlash = 1;	// flash helmet
 	}
 	checkWin();
 }
@@ -302,7 +302,7 @@ function getPriorityEvent(events) {
 
 function playSound(event) {
 	if (sounds[event]) {
-		sounds[event].volume = Math.pow(audioMan.sound, 2);
+		sounds[event].volume = Math.pow(soundMan.sound, 2);
 		sounds[event].play();
 	}
 }
