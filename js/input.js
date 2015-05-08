@@ -430,7 +430,7 @@ function getRot(dX, dY) {
 		inputMan.row = gameMan.pRow;
 		inputMan.col = gameMan.pCol;
 		var radius = drawMan.cellSize * drawMan.cellSize * 4;
-		if (dX*dX + dY*dY > radius) {
+		if (dX*dX + dY*dY < radius) {
 			if (inputMan.rot == 0) {
 				inputMan.row--;
 			}
