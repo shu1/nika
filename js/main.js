@@ -120,7 +120,7 @@ window.onload = function() {
 	reSize();
 
 	if (window.nwf) {
-		var tvDisplay = nwf.display.drawManager.getInstance().getTVDisplay();
+		var tvDisplay = nwf.display.DisplayManager.getInstance().getTVDisplay();
 
 		tvDisplay.addEventListener("load", function() {
 			var tvCanvas = tvDisplay.window.document.getElementById("canvas");
