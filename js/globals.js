@@ -55,7 +55,7 @@ var gameMan = {
 }
 
 var inputMan = {
-	pinchDistance:0,
+	pDistance:0,
 	touchID2:-1,
 	touchID:-1,
 	menu:false,

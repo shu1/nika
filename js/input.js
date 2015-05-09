@@ -110,11 +110,11 @@ function mouseMove(event) {
 		var scene = scenes[gameMan.scene];
 
 		if (inputMan.touchID2 >= 0) {	// 2nd touch is down, so pinch
-			var pDistance = inputMan.pinchDistance;
+			var pDistance = inputMan.pDistance;
 			setPinchDistance();
 
 			var pScale = scene.scale;
-			var dScale = (inputMan.pinchDistance - pDistance) / drawMan.screenDistance;	// TODO check on this scaling algorithm
+			var dScale = (inputMan.pDistance - pDistance) / drawMan.screenDistance;	// TODO check on this scaling algorithm
 			scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
 
 			var x, y;
@@ -475,7 +475,7 @@ function setPinch(changedTouch) {
 function setPinchDistance() {
 	var dX = inputMan.x2 - inputMan.x;
 	var dY = inputMan.y2 - inputMan.y;
-	inputMan.pinchDistance = Math.sqrt(dX*dX + dY*dY);	// TODO sqrt necessary?
+	inputMan.pDistance = Math.sqrt(dX*dX + dY*dY);	// TODO sqrt necessary?
 }
 
 function keyDown(event) {
