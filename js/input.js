@@ -46,31 +46,28 @@ function mouseDown(event) {
 		if (!inputMan.menu) {
 			var handled = false;
 			var scene = scenes[gameMan.scene];
+			var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
+			var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
 
-			if (gameMan.scene == "menus") {
-				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
-				var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
-
-				if (gameMan.menu == "title") {
-					x -= 128;	// offset to coordinates of buttons
-					y -= 330;
-					if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
-						menus["title"] = Math.floor(y / drawMan.activeHeight);
-						handled = true;
-					}
+			if (gameMan.menu == "title") {
+				x -= 128;	// offset to coordinates of buttons
+				y -= 330;
+				if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
+					menus["title"] = Math.floor(y / drawMan.activeHeight);
+					handled = true;
 				}
-				else if (gameMan.menu == "option") {
-					x += 40 - 62;	// offset to x of volume line - button radius
-					var radius = 93;	// bigger radius for fat fingers
-					var musicX = 1484 * soundMan.music, soundX = 1484 * soundMan.sound;
-					if (x > musicX - radius && x < musicX + radius && y > 446 - radius && y < 446 + radius) {
-						inputMan.drag = "music";	// only drag if touch started on button
-						handled = true;
-					}
-					else if (x > soundX - radius && x < soundX + radius && y > 710 - radius && y < 710 + radius) {
-						inputMan.drag = "sound";	// TODO repurpose drag to general mouseDown string
-						handled = true;
-					}
+			}
+			else if (gameMan.menu == "option") {
+				x += 40 - 62;	// offset to x of volume line - button radius
+				var radius = 93;	// bigger radius for fat fingers
+				var musicX = 1484 * soundMan.music, soundX = 1484 * soundMan.sound;
+				if (x > musicX - radius && x < musicX + radius && y > 446 - radius && y < 446 + radius) {
+					inputMan.drag = "music";	// only drag if touch started on button
+					handled = true;
+				}
+				else if (x > soundX - radius && x < soundX + radius && y > 710 - radius && y < 710 + radius) {
+					inputMan.drag = "sound";	// TODO repurpose drag to general mouseDown string
+					handled = true;
 				}
 			}
 			else if (gameMan.scene == "board" && gameMan.menu != "popup" && gameMan.winner < 0 && !gameMan.thinking) {
@@ -131,30 +128,27 @@ function mouseMove(event) {
 			var preventPan = false;
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
+			var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
+			var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
 
-			if (gameMan.scene == "menus") {
-				var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
-				var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
-
-				if (gameMan.menu == "title") {
-					x -= 128;	// offset to coordinates of buttons
-					y -= 330;
-					if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
-						menus["title"] = Math.floor(y / drawMan.activeHeight);
-						handled = true;
-					}
+			if (gameMan.menu == "title") {
+				x -= 128;	// offset to coordinates of buttons
+				y -= 330;
+				if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
+					menus["title"] = Math.floor(y / drawMan.activeHeight);
+					handled = true;
 				}
-				else if (gameMan.menu == "option") {
-					x += 40 - 62;	// offset to x of volume line - button radius
-					if (inputMan.drag == "music") {
-						soundMan.music = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
-						sounds["music"].volume = Math.pow(soundMan.music, 2);
-						handled = true;
-					}
-					else if (inputMan.drag == "sound") {
-						soundMan.sound = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
-						handled = true;
-					}
+			}
+			else if (gameMan.menu == "option") {
+				x += 40 - 62;	// offset to x of volume line - button radius
+				if (inputMan.drag == "music") {
+					soundMan.music = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
+					sounds["music"].volume = Math.pow(soundMan.music, 2);
+					handled = true;
+				}
+				else if (inputMan.drag == "sound") {
+					soundMan.sound = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
+					handled = true;
 				}
 			}
 			else if (gameMan.scene == "board" && gameMan.winner < 0) {
