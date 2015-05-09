@@ -46,6 +46,8 @@ function setupTutorial() {
 	var board = tutorialBoards[gameMan.tutorialStep];
 	if (board) {
 		loadState(board);
+		states = [];
+		pushState();
 	} else {
 		endTutorial();
 	}
