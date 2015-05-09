@@ -211,7 +211,7 @@ function mouseUp(event) {
 
 	if (isTouch(event, inputMan.touchID)) {
 		if (inputMan.menu) {
-			menuButton(menuMan.button);
+			menuButton(menus["debug"]);
 		}
 		else {
 			var scene = scenes[gameMan.scene];
@@ -349,9 +349,9 @@ function mouseUp(event) {
 
 		clearRallyHighlights();	// TODO refactor highlights?
 		gameMan.selection = false;
-		menuMan.button = 0;	// reset for key input
 		inputMan.menu = false;
 		inputMan.drag = "";
+		menus["debug"] = 0;	// reset for key input
 	}
 	inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 }
@@ -392,9 +392,9 @@ function getXY(event) {
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				if (inputMan.x > gpCanvas.width - menuMan.bWidth * (col+1) && inputMan.y > gpCanvas.height - menuMan.bHeight * (row+1)) {
-					menuMan.button = row * menuMan.cols + col;
-					if (menuMan.button < buttons.length) {
-						hudMan.inputText = buttons[menuMan.button];
+					menus["debug"] = row * menuMan.cols + col;
+					if (menus["debug"] < buttons.length) {
+						hudMan.inputText = buttons[menus["debug"]];
 					}
 					return true;
 				}
@@ -489,7 +489,7 @@ function keyDown(event) {
 	case 90:	// Z
 		hudMan.inputText = "Enter";
 		if (menuMan.show || gameMan.menu == "credit") {
-			menuButton(menuMan.button);
+			menuButton(menus["debug"]);
 		}
 		else if (gameMan.menu == "title" && menus["title"] < 6) {
 			menuTitle(menus["title"]);
@@ -508,7 +508,7 @@ function keyDown(event) {
 		hudMan.inputText = "Back";
 		if (menuMan.show) {
 			menuMan.show = false;
-			menuMan.button = 0;
+			menus["debug"] = 0;
 		}
 		else if (gameMan.menu == "option") {
 			gameMan.menu = "title";
@@ -530,7 +530,7 @@ function keyDown(event) {
 	case 228:	// forward
 		hudMan.inputText = "Menu";
 		menuMan.show = !menuMan.show;
-		menuMan.button = 0;
+		menus["debug"] = 0;
 		break;
 	case 37:	// left
 		if (!menuMan.show && gameMan.menu == "option") {
@@ -602,8 +602,8 @@ function keyDown(event) {
 function keyPrev() {
 	hudMan.inputText = "Prev";
 	if (menuMan.show) {
-		if (menuMan.button < buttons.length-1) {
-			menuMan.button++;
+		if (menus["debug"] < buttons.length-1) {
+			menus["debug"]++;
 		}
 		return true;	// never pan when menu is showing
 	}
@@ -626,8 +626,8 @@ function keyPrev() {
 function keyNext() {
 	hudMan.inputText = "Next";
 	if (menuMan.show) {
-		if (menuMan.button > 0) {
-			menuMan.button--;
+		if (menus["debug"] > 0) {
+			menus["debug"]--;
 		}
 		return true;	// never pan when menu is showing
 	}

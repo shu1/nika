@@ -347,7 +347,7 @@ function menuButton(index) {
 	switch(index) {
 	case 0:
 		menuMan.show = !menuMan.show;
-		menuMan.button = 0;
+		menus["debug"] = 0;
 		break;
 	case 1:
 		gameMan.debug = !gameMan.debug;
