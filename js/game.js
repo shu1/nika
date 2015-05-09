@@ -396,6 +396,7 @@ function menuTitle(index) {
 	case 1:
 		var savedGame = JSON.parse(localStorage.getItem("nikaSavedGame"));
 		if (savedGame) {
+			gameMan.tutorialStep = -1;
 			states = savedGame.states;
 			gameMan.ais = savedGame.ais;
 			revertState();
