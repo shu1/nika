@@ -60,17 +60,14 @@ function mouseDown(event) {
 					}
 				}
 				else if (gameMan.menu == "option") {
-					var radius = 93;	// bigger radius for fat fingers
 					x += 40 - 62;	// offset to x of volume line - button radius
-
-					var buttonX = 1484 * soundMan.music;
-					if (x > buttonX - radius && x < buttonX + radius && y > 446 - radius && y < 446 + radius) {
+					var radius = 93;	// bigger radius for fat fingers
+					var musicX = 1484 * soundMan.music, soundX = 1484 * soundMan.sound;
+					if (x > musicX - radius && x < musicX + radius && y > 446 - radius && y < 446 + radius) {
 						inputMan.drag = "music";	// only drag if touch started on button
 						handled = true;
 					}
-
-					buttonX = 1484 * soundMan.sound;
-					if (x > buttonX - radius && x < buttonX + radius && y > 710 - radius && y < 710 + radius) {
+					else if (x > soundX - radius && x < soundX + radius && y > 710 - radius && y < 710 + radius) {
 						inputMan.drag = "sound";	// TODO repurpose drag to general mouseDown string
 						handled = true;
 					}
