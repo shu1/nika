@@ -133,6 +133,7 @@ function newGame() {
 	gameMan.winner = -1;
 	gameMan.player = 0;
 	gameMan.actions = 2;
+	gameMan.tutorialStep = -1;
 	useAction(0);
 }
 

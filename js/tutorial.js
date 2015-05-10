@@ -15,7 +15,6 @@ function nextTutorialStep() {
 }
 
 function endTutorial() {
-	gameMan.tutorialStep = -1;
 	hudMan.pageText = "";
 	newGame();
 	resetAnimations();
