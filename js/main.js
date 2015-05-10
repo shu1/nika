@@ -96,7 +96,6 @@ window.onload = function() {
 	murals[3].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
 
 	if (navigator.msPointerEnabled) {
-		gpCanvas.style.msTouchAction = "none";
 		gpCanvas.addEventListener("MSPointerDown", mouseDown);
 		gpCanvas.addEventListener("MSPointerMove", mouseMove);
 		window.addEventListener("MSPointerUp", mouseUp);
