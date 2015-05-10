@@ -336,6 +336,11 @@ function mouseUp(event) {
 			if (phalanx.length > 0 && grid[phalanx[0].row][phalanx[0].col].kind == 3) {
 				phalanx.length = 0;
 			}
+
+			if (gameMan.scene == "board") {
+				revertState();
+			}
+
 		}
 
 		clearRallyHighlights();	// TODO refactor highlights?
