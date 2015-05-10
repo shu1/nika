@@ -109,7 +109,6 @@ window.onload = function() {
 	else {
 		gpCanvas.addEventListener("mousedown", mouseDown);
 		gpCanvas.addEventListener("mousemove", mouseMove);
-		gpCanvas.addEventListener('contextmenu', function(e) { e.preventDefault(); });
 		window.addEventListener("mouseup", mouseUp);
 	}
 	window.addEventListener("keydown", keyDown);
