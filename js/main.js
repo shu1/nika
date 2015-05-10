@@ -1,6 +1,11 @@
 "use strict";
 
 window.onload = function() {
+	var sound = JSON.parse(localStorage.getItem("nikaSound"));
+	if (sound) {
+		soundMan = sound;
+	}
+
 	generateGrid(newBoard); // TODO make this unnecessary in onload
 
 	function loadImage(name, i) {
