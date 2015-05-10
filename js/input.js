@@ -348,8 +348,8 @@ function mouseUp(event) {
 		inputMan.menu = false;
 		inputMan.drag = "";
 		menus["debug"] = 0;	// reset for key input
+		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 	}
-	inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 }
 
 function getXY(event) {
