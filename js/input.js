@@ -296,48 +296,48 @@ function mouseUp(event) {
 					}
 				}
 			}
-			else if (inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// menu buttons
-				if (inputMan.x < menuMan.bWidth) {
-					gameMan.menu = "popup";
+			else if (gameMan.scene == "board") {
+				if (inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// menu buttons
+					if (inputMan.x < menuMan.bWidth) {
+						gameMan.menu = "popup";
+					}
+					else if (inputMan.x < menuMan.bWidth * 2) {
+						pass();
+					}
+					else {
+						popState();
+					}
 				}
-				else if (inputMan.x < menuMan.bWidth * 2) {
-					pass();
+				else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
+					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
+					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
+						nextTutorialStep();
+					}
 				}
-				else {
-					popState();
+				else if (gameMan.winner >= 0) {	// win screen
+					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
+					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
+						newGame();
+					}
 				}
-			}
-			else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
-				if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
-				&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
-					nextTutorialStep();
+				else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol
+				&& grid[gameMan.pRow][gameMan.pCol].rot == gameMan.pRot) {	// one-click selection
+				 	if (!gameMan.selection) {
+				 		phalanx.length = 0;
+				 	}
+				 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
+				 	checkTutorialSelection();
 				}
-			}
-			else if (gameMan.winner >= 0) {	// win screen
-				if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
-				&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
-					newGame();
+				else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {	// TODO change order of this else if?
 				}
-			}
-			else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol
-			&& grid[gameMan.pRow][gameMan.pCol].rot == gameMan.pRot) {	// one-click selection
-			 	if (!gameMan.selection) {
-			 		phalanx.length = 0;
-			 	}
-			 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
-			 	checkTutorialSelection();
-			}
-			else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {	// TODO change order of this else if?
-			}
-			else if (gameMan.selection && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
-				togglePhalanxPiece(inputMan.row, inputMan.col);
-			}
+				else if (gameMan.selection && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
+					togglePhalanxPiece(inputMan.row, inputMan.col);
+				}
 
-			if (phalanx.length > 0 && grid[phalanx[0].row][phalanx[0].col].kind == 3) {
-				phalanx.length = 0;
-			}
+				if (phalanx.length > 0 && grid[phalanx[0].row][phalanx[0].col].kind == 3) {
+					phalanx.length = 0;
+				}
 
-			if (gameMan.scene == "board") {
 				revertState();
 			}
 
