@@ -263,7 +263,7 @@ function mouseUp(event) {
 				y -= (scene.height - drawMan.screenHeight)/2;
 
 				if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
-					localStorage.setItem("nikaSound", JSON.stringify(soundMan));
+					localStorage.setItem("nikaSoundSave", JSON.stringify(soundMan));
 					gameMan.menu = "title";
 				}
 				else if (x > 656 && x < 888 && y > 868 && y < 924) {

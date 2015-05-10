@@ -240,11 +240,11 @@ function loadState(state) {
 }
 
 function saveGame() {
-	var savedGame = {
+	var gameSave = {
 		states: states,
 		ais: gameMan.ais
 	}
-	localStorage.setItem("nikaSavedGame", JSON.stringify(savedGame));
+	localStorage.setItem("nikaGameSave", JSON.stringify(gameSave));
 }
 
 function getCity(player) {
@@ -395,14 +395,22 @@ function menuTitle(index) {
 		gameMan.menu = "setup";
 		break;
 	case 1:
-		var savedGame = JSON.parse(localStorage.getItem("nikaSavedGame"));
-		if (savedGame) {
+		var gameSave;
+		try {
+			gameSave = JSON.parse(localStorage.getItem("nikaGameSave"));
+		} catch(e) {
+			console.log("Error: nikaGameSave corrupt");
+		}
+
+		if (gameSave) {
 			gameMan.tutorialStep = -1;
-			states = savedGame.states;
-			gameMan.ais = savedGame.ais;
+			states = gameSave.states;
+			gameMan.ais = gameSave.ais;
 			revertState();
 		}
-		setScene("board");
+		else {
+			gameMan.menu = "setup";
+		}
 		break;
 	case 2:
 		setScene("board");
