@@ -1,15 +1,13 @@
 "use strict";
 
 window.onload = function() {
-	var soundSave;
 	try {
-		soundSave = JSON.parse(localStorage.getItem("nikaSoundSave"));
-	} catch(e) {
+		var soundSave = JSON.parse(localStorage.getItem("nikaSoundSave"));
+		if (soundSave) {
+			soundMan = soundSave;
+		}
+	} catch (e) {
 		console.log('Error: nikaSoundSave corrupt');
-	}
-
-	if (soundSave) {
-		soundMan = soundSave;
 	}
 
 	generateGrid(newBoard); // TODO make this unnecessary in onload

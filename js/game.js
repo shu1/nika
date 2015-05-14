@@ -398,7 +398,7 @@ function menuTitle(index) {
 		var gameSave;
 		try {
 			gameSave = JSON.parse(localStorage.getItem("nikaGameSave"));
-		} catch(e) {
+		} catch (e) {
 			console.log("Error: nikaGameSave corrupt");
 		}
 
@@ -407,8 +407,7 @@ function menuTitle(index) {
 			states = gameSave.states;
 			gameMan.ais = gameSave.ais;
 			revertState();
-		}
-		else {
+		} else {
 			gameMan.menu = "setup";
 		}
 		break;
