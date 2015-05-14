@@ -23,7 +23,7 @@ window.onload = function() {
 
 	loadImage("menuTitle", 1);
 	loadImage("menuTitleActive");
-	loadImage("board");
+	loadImage("board", 1);
 	loadImage("mural");
 	loadImage("player", 3);
 	loadImage("sheen");
@@ -427,7 +427,8 @@ function drawContext(context, dTime, tv) {
 	var y = (scene.height - drawMan.screenHeight)/2;
 	switch (gameMan.scene) {
 	case "board":
-		context.drawImage(images["board"], 0, 0);
+		context.drawImage(images["board0"], 0, 0);
+		context.drawImage(images["board1"], 0, 960);
 		if (gameMan.menu != "popup") {
 			context.drawImage(muralCanvas, drawMan.muralX, drawMan.muralY);
 		}
