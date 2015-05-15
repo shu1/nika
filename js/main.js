@@ -39,14 +39,15 @@ window.onload = function() {
 	loadImage("buttonUndo");
 	loadImage("buttonBack");
 	loadImage("buttonClose");
+	loadImage("buttonActive");
 	loadImage("menuPopup");
-	loadImage("arrowLeft");
-	loadImage("arrowRight");
 	loadImage("menuSetup", 1);
 	loadImage("menuSetupAI", 2);
 	loadImage("menuOption", 1);
 	loadImage("menuOptionSlider");
 	loadImage("menuCredit", 1);
+	loadImage("arrowLeft");
+	loadImage("arrowRight");	// TODO rename to ruleArrow0,1
 
 	for (var i = 0; i < rulePages; ++i) {
 		loadImage("rule" + i, 1);
@@ -494,6 +495,10 @@ function drawContext(context, dTime, tv) {
 		context.drawImage(images["buttonMenu"], 0, y, menuMan.bWidth, menuMan.bHeight);
 		context.drawImage(images["buttonPass"], menuMan.bWidth, y, menuMan.bWidth, menuMan.bHeight);
 		context.drawImage(images["buttonUndo"], menuMan.bWidth*2, y, menuMan.bWidth, menuMan.bHeight);
+
+		if (inputMan.drag == "button" && menus["button"] >= 0) {
+			context.drawImage(images["buttonActive"], menuMan.bWidth * menus["button"], y, menuMan.bWidth, menuMan.bHeight);
+		}
 	}
 
 	drawMenu(context, dTime);

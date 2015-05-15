@@ -42,9 +42,8 @@ function mouseDown(event) {
 	}
 
 	if (!multiTouch) {
-		inputMan.menu = getXY(event);
-		if (!inputMan.menu) {
-			var handled = false;
+		var handled = getXY(event, true);
+		if (!handled) {
 			var scene = scenes[gameMan.scene];
 			var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
 			var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
@@ -99,8 +98,7 @@ function mouseDown(event) {
 
 function mouseMove(event) {
 	if (inputMan.touchID >= 0) {
-		getXY(event);
-		var handled = false;
+		var handled = getXY(event);
 		var scene = scenes[gameMan.scene];
 
 		if (inputMan.touchID2 >= 0) {	// 2nd touch is down, so pinch
@@ -298,15 +296,17 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.scene == "board") {
-				if (inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// menu buttons
-					if (inputMan.x < menuMan.bWidth) {
+				if (inputMan.drag == "button") {
+					switch (menus["button"]) {
+					case 0:
 						gameMan.menu = "popup";
-					}
-					else if (inputMan.x < menuMan.bWidth * 2) {
+						break;
+					case 1:
 						pass();
-					}
-					else {
+						break;
+					case 2:
 						popState();
+						break;
 					}
 				}
 				else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
@@ -349,11 +349,12 @@ function mouseUp(event) {
 		inputMan.menu = false;
 		inputMan.drag = "";
 		menus["debug"] = 0;	// reset for key input
+		menus["button"] = -1;
 		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 	}
 }
 
-function getXY(event) {
+function getXY(event, down) {
 	if (navigator.msPointerEnabled) {
 		if (event.pointerId == inputMan.touchID) {
 			inputMan.x = event.layerX;
@@ -383,9 +384,8 @@ function getXY(event) {
 		inputMan.y = event.layerY;
 	}
 
-	// check debug menu
 	if (inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - menuMan.width
-	&& inputMan.y < gpCanvas.height && inputMan.y > gpCanvas.height - menuMan.height) {
+	&& inputMan.y < gpCanvas.height && inputMan.y > gpCanvas.height - menuMan.height) {	// debug menu
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				if (inputMan.x > gpCanvas.width - menuMan.bWidth * (col+1) && inputMan.y > gpCanvas.height - menuMan.bHeight * (row+1)) {
@@ -393,11 +393,27 @@ function getXY(event) {
 					if (menus["debug"] < buttons.length) {
 						hudMan.inputText = buttons[menus["debug"]];
 					}
-					return true;
+					if (down) {
+						inputMan.menu = true;	// TODO convert to inputMan.drag = "debug"
+					}
+					return down;
 				}
 			}
 		}
+	} else {
+		menus["debug"] = -1;
 	}
+
+	if (gameMan.scene == "board" && inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// board buttons
+		menus["button"] = Math.floor(inputMan.x / menuMan.bWidth);
+		if (down) {
+			inputMan.drag = "button";
+		}
+		return down;
+	} else {
+		menus["button"] = -1;
+	}
+
 	return false;
 }
 
