@@ -151,7 +151,7 @@ function moveOnePiece(pRow, pCol, row, col) {
 function checkMove(pRow, pCol, row, col) {
 	if (outOfBounds(pRow, pCol) || outOfBounds(row, col)
 	|| invalidCell(row, col)
-	|| (grid[pRow][pCol].kind != 3 && Math.abs(row - pRow) + Math.abs(col - pCol) > 1)	// adjacent cell
+	|| (grid[pRow][pCol].kind != 3 && Math.abs(row - pRow) + Math.abs(col - pCol) > 1)	// non adjacent cell
 	|| (grid[row][col].kind == 1 && (grid[row][col].city - grid[pRow][pCol].player)%2 != 0 )	// opponent win cell
 	|| (routedCell(pRow, pCol) && (grid[row][col].kind != 2 || grid[pRow][pCol].player != grid[row][col].city))
 	|| (grid[row][col].player >= 0 && (grid[row][col].player - grid[pRow][pCol].player)%2 == 0)	// same team

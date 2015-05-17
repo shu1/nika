@@ -62,18 +62,16 @@ function	aiNeil(){
 				var move = getMoveArguments(phalanx[0],dir);
 				var origRot = phalanx[0].rot;
 
-				if(checkMove(move.pRow,move.pCol,move.tRow,move.tCol) && pushPiece(move.pRow,move.pCol,move.tRow,move.tCol,phalanx[0],1)){
-					moveOnePiece(move.pRow, move.pCol, move.tRow, move.tCol);
-					pieces = getAIPieces();
-					var temp = copyState(defaultState);
-					getValue(temp,pieces);
-					if(temp.value>bestState.value){
-						bestState=temp;
-						console.log("Found better state by MOVEMENT with a value of: " + bestState.value);
-					}
-					setGrid(defGrid,grid);
-					pieces = getAIPieces();
+				movePiece(move.pRow,move.pCol,move.tRow,move.tCol,true);
+				pieces = getAIPieces();
+				var temp = copyState(defaultState);
+				getValue(temp,pieces);
+				if(temp.value>bestState.value){
+					bestState=temp;
+					console.log("Found better state by MOVEMENT with a value of: " + bestState.value);
 				}
+				setGrid(defGrid,grid);
+				pieces = getAIPieces();
 				phalanx=[];
 			}
 		}
@@ -197,8 +195,8 @@ function	getValue(state,pieces){
 	//Subtract for every piece on	the	board
 	for	(var	row	=	0;	row	<	15;	++row)	{
 		for	(var	col	=	0;	col	<	21;	++col)	{
-			if	(grid[row][col].player>-1	&& Math.abs(gameMan.player-grid[row][col].player)%2!=0	&&	grid[row][col].kind!=3)	{
-				state.value-=20;
+			if	(grid[row][col].player>-1 && Math.abs(gameMan.player-grid[row][col].player)%2!=0 && grid[row][col].kind==3)	{
+				state.value+=10000;
 			}
 		}
 	}
