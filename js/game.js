@@ -156,8 +156,8 @@ function useAction(n) {
 }
 
 function pass() {
-	pushState();
 	useAction(2);
+	pushState();
 }
 
 
