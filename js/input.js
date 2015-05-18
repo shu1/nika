@@ -35,7 +35,7 @@ function mouseDown(event) {
 	}
 	else {	// mouse
 		if (inputMan.touchID < 0) {
-			inputMan.touchID = event.which;
+			inputMan.touchID = 1;
 		} else {
 			resetState();
 		}
@@ -470,7 +470,7 @@ function isTouch(event, touchID) {
 		return false;
 	}
 	else {
-		return event.which == touchID;
+		return touchID == 1;
 	}
 }
 
