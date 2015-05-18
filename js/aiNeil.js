@@ -1,48 +1,48 @@
-"use	strict";
+"use strict";
 
-defGrid = null;
+var defGrid = null;
 
-function	newState	(){
-	var	s	=	{
-		value	:	0,	//Value	of	state	after	board	state	adjustments
+function newState (){
+	var s = {
+		value : 0, //Value of state after board state adjustments
 		board : grid //grid object, state of board after this move, will be applied to board upon ai exit.
 	};
 	return s;
 }
 
-function	aiNeil(){
+function aiNeil(){
 	storeGrid();
-	var	pieces	=	[];
+	var pieces = [];
 	pieces = getAIPieces();
 
-	//Checks	if	any	pieces	are	close	enough	to	win.
+	//Checks if any pieces are close enough to win.
 	checkIfPiecesCanWin(pieces);
 
 	//Creates the default state in which all other states are compared to.
-	var	defaultState	=	newState();
+	var defaultState = newState();
 	getValue(defaultState,pieces);
 	var bestState = defaultState; //Stores best state, which is default at this point. Altough we might be better off just setting best state.
 
-	var	rallySpots	=	[];
-	for	(var	row	=	0	;	row	<	15;	++row)	{
-		for	(var	col	=	0;	col	<	21;	++col)	{
-			if(grid[row][col].kind	==	3	&&	grid[row][col].city	==	pieces[0].player	&&	grid[row][col]	<	0){
+	var rallySpots = [];
+	for (var row = 0 ; row < 15; ++row) {
+		for (var col = 0; col < 21; ++col) {
+			if(grid[row][col].kind == 3 && grid[row][col].city == pieces[0].player && grid[row][col] < 0){
 				rallySpots.push(grid[row][col]);
 			}
 		}
 	}
 
 	//EACH PIECE CHECKING =============
-	for(var	i	=	0;	i<6;	i++){
-		if(pieces[i].kind	==	3){
-			for(var	j	=	0;	j<rallySpots.length;	j++){
+	for(var i = 0; i<6; i++){
+		if(pieces[i].kind == 3){
+			for(var j = 0; j<rallySpots.length; j++){
 				//Get rally spots
 			}
 		}
 		else{
-			//	Do	normal	move	check,	which	means	rotation,	then	movement.
+			// Do normal move check, which means rotation, then movement.
 			origRot = pieces[i].rot;
-			for	(var	rot	=	0;	rot<4;	rot++){
+			for (var rot = 0; rot<4; rot++){
 				if(rot!=origRot){
 					pieces[i].rot=rot;
 					var temp = copyState(defaultState);
@@ -81,14 +81,14 @@ function	aiNeil(){
 
 	//PHALANX CHECKING =====================
 	for(var i=0; i<4; i++){
-		same_dir=[];
-		for	(var p=0;	p<6; p++){
+		var sameDir=[];
+		for (var p=0; p<6; p++){
 			if(pieces[p].rot==i){
-				same_dir.push(pieces[p]);
+				sameDir.push(pieces[p]);
 			}
 		}
-		if(same_dir.length>1){
-			combinations = getCombinations(same_dir);
+		if(sameDir.length>1){
+			var combinations = getCombinations(sameDir);
 			combinations.forEach(function(e){
 				phalanx = [];
 				phalanx = e.slice(0);
@@ -137,26 +137,26 @@ function	aiNeil(){
 	pushState();
 }
 
-function	getValue(state,pieces){
-	for	(var i=0; i<6; i++){
+function getValue(state,pieces){
+	for (var i=0; i<6; i++){
 
-		var	val	= 0;
+		var val = 0;
 
-		//Piece	on	Board
+		//Piece on Board
 		if(pieces[i].kind!=3){ val+=5; }
 
-		//Adjacent	Check
-		var	adj	= [];
-		if(pieces[i].row-1>-1){	adj[0] = grid[pieces[i].row-1][pieces[i].col]; }//N
+		//Adjacent Check
+		var adj = [];
+		if(pieces[i].row-1>-1){ adj[0] = grid[pieces[i].row-1][pieces[i].col]; }//N
 		if(pieces[i].col+1<grid[pieces[i].row].length){ adj[1] = grid[pieces[i].row][pieces[i].col+1]; } //E
 		if(pieces[i].row+1<grid.length){ adj[2] = grid[pieces[i].row+1][pieces[i].col]; } //S
 		if(pieces[i].col-1>0){ adj[3] = grid[pieces[i].row][pieces[i].col-1]; }//W
 
-		for(var	j=0;	j<4;	j++){
+		for(var j=0; j<4; j++){
 			if(adj[j]!=undefined && adj[j].kind!=-1 && adj[j].player>-1){
 				//Own
 				if(adj[j].player==pieces[i].player){
-					if(adj[j].rot==pieces[i].rot){ val+=2; }//In	Phalanx
+					if(adj[j].rot==pieces[i].rot){ val+=2; }//In Phalanx
 					else{ val+=1; }//Not in Phalanx
 				}
 
@@ -177,12 +177,12 @@ function	getValue(state,pieces){
 						else{ val+=2; }
 					}
 					else if(Math.abs((adj[j].rot-j)%2)==0){
-						//Else if	we're	not	facing	adjacent,	check	if	he's	facing	us.
+						//Else if we're not facing adjacent, check if he's facing us.
 						if(gameMan.actions>1){ val-=5; }
 						else{ val-=12;}
 					}
 					else{
-						//Adjacent	but	not	facing	each	other.
+						//Adjacent but not facing each other.
 						if(gameMan.actions>1){ val+=2; }
 						else { val-=8; }
 					}
@@ -190,12 +190,12 @@ function	getValue(state,pieces){
 			}
 		}
 		val-=8*getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
-		state.value+=val; //Adds piece	value	to	total	value
+		state.value+=val; //Adds piece value to total value
 	}
-	//Subtract for every piece on	the	board
-	for	(var	row	=	0;	row	<	15;	++row)	{
-		for	(var	col	=	0;	col	<	21;	++col)	{
-			if	(grid[row][col].player>-1 && Math.abs(gameMan.player-grid[row][col].player)%2!=0 && grid[row][col].kind==3)	{
+	//Subtract for every piece on the board
+	for (var row = 0; row < 15; ++row) {
+		for (var col = 0; col < 21; ++col) {
+			if (grid[row][col].player>-1 && Math.abs(gameMan.player-grid[row][col].player)%2!=0 && grid[row][col].kind==3) {
 				state.value+=10000;
 			}
 		}
@@ -205,10 +205,10 @@ function	getValue(state,pieces){
 function copyState(original){
 	var o = original.board;
 	var s = newState();
-	b=new Array(15);
-	for	(var row =	0; row	<	15;	++row){
+	var b = new Array(15);
+	for (var row = 0; row < 15; ++row){
 		b[row]=new Array(21);
-		for	(var col = 0; col	<	21;	++col){
+		for (var col = 0; col < 21; ++col){
 			var p = {}
 			p.row=row;
 			p.col=col;
@@ -227,15 +227,15 @@ function copyState(original){
 }
 
 function setGrid(gFrom, gTo){
-	for	(var row =	0; row	<	15;	++row){
-		for	(var col = 0; col	<	21;	++col){
+	for (var row = 0; row < 15; ++row){
+		for (var col = 0; col < 21; ++col){
 			gTo[row][col].row=row;
 			gTo[row][col].col=col;
 			gTo[row][col].checked=gFrom[row][col].checked;
 			gTo[row][col].player=gFrom[row][col].player;
 			gTo[row][col].kind=gFrom[row][col].kind;
 			gTo[row][col].city=gFrom[row][col].city;
-			gTo[row][col].rot=gFrom[row][col].rot	;
+			gTo[row][col].rot=gFrom[row][col].rot ;
 			gTo[row][col].ring=gFrom[row][col].ring;
 			gTo[row][col].prompt=gFrom[row][col].prompt;
 		}
@@ -273,7 +273,7 @@ function getDistanceFromGoal(row, col, player) {
 		if (row >= 6 && row <= 8 && col >= 15) { // in 3x3 square in front of goal
 			return (18-col);
 		}
-		if (row >= 3 && row <= 5 && col >= 3) {	// in long rectangle "north" of goal
+		if (row >= 3 && row <= 5 && col >= 3) { // in long rectangle "north" of goal
 			return (5-row) + (17-col) + 2;
 		}
 		if (row >= 9 && row <= 11 && col >= 3) { // in long rectangle "south" of goal
@@ -312,7 +312,7 @@ function getDistanceFromGoal(row, col, player) {
 	}
 
 	if (player == 3) {
-		if (row >= 6 && row <= 8 && col <= 5) {	// in 3x3 square in front of goal
+		if (row >= 6 && row <= 8 && col <= 5) { // in 3x3 square in front of goal
 			return (col-2);
 		}
 		if (row >= 3 && row <= 5 && col <= 17) { // in long rectangle "north" of goal
@@ -330,7 +330,6 @@ function getDistanceFromGoal(row, col, player) {
 	}
 
 	return -1;
-
 }
 
 function storeGrid(){
@@ -354,9 +353,9 @@ function storeGrid(){
 
 function getAIPieces(){
 	var p = [];
-	for	(var	row	=	0;	row	<	15;	++row)	{
-		for	(var	col	=	0;	col	<	21;	++col)	{
-			if	(grid[row][col].player	==	gameMan.player)	{
+	for (var row = 0; row < 15; ++row) {
+		for (var col = 0; col < 21; ++col) {
+			if (grid[row][col].player == gameMan.player) {
 				p.push(grid[row][col]);
 			}
 		}
@@ -365,29 +364,30 @@ function getAIPieces(){
 }
 
 function getCombinations(pieces) {
-  var result = [];
+	var result = [];
 
-  var f = function(prefix, checking) {
-    for (var i = 0; i < checking.length; i++) {
-      result.push(prefix.concat(checking[i]));
-      f(prefix.concat(checking[i]), checking.slice(i + 1));
-    }
-  }
-  f([], pieces);
-  return result;
+	var f = function(prefix, checking) {
+		for (var i = 0; i < checking.length; i++) {
+			result.push(prefix.concat(checking[i]));
+			f(prefix.concat(checking[i]), checking.slice(i + 1));
+		}
+	}
+
+	f([], pieces);
+	return result;
 }
 
 function checkIfPiecesCanWin(pieces){
-	for	(var	i	=	0;	i<6;	i++){
-		var	d	=	getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
+	for (var i = 0; i<6; i++){
+		var d = getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
 		if(d<=2){
 			if(d==1){
-				//1	move
+				//1 move
 				console.log("1 space away.");
 				return true;
 			}
 			else if(d==2){
-				//2	moves
+				//2 moves
 				console.log("2 spaces away.");
 				return true;
 			}
@@ -401,22 +401,22 @@ function getDirection(dir){
 	var incRow = 0;
 	var incCol = 0;
 	switch(dir){
-		case 0:
-			incRow = -1;
-			incCol = 0;
-			break;
-		case 1:
-			incRow = 0;
-			incCol = 1;
-			break;
-		case 2:
-			incRow = 1;
-			incCol = 0;
-			break;
-		case 3:
-			incRow = 0;
-			incCol = -1;
-			break;
+	case 0:
+		incRow = -1;
+		incCol = 0;
+		break;
+	case 1:
+		incRow = 0;
+		incCol = 1;
+		break;
+	case 2:
+		incRow = 1;
+		incCol = 0;
+		break;
+	case 3:
+		incRow = 0;
+		incCol = -1;
+		break;
 	}
 	return {row:incRow,col:incCol};
 }
