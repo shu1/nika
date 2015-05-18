@@ -329,10 +329,8 @@ function mouseUp(event) {
 				 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
 				 	checkTutorialSelection();
 				}
-				else if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {	// TODO change order of this else if?
-				}
-				else if (gameMan.selection && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol) { // remove from phalanx
-					togglePhalanxPiece(inputMan.row, inputMan.col);
+				else {
+					movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col);
 				}
 
 				if (phalanx.length > 0 && grid[phalanx[0].row][phalanx[0].col].kind == 3) {
