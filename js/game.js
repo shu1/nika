@@ -407,6 +407,7 @@ function menuTitle(index) {
 			states = gameSave.states;
 			gameMan.ais = gameSave.ais;
 			revertState();
+			setScene("board");
 		} else {
 			gameMan.menu = "setup";
 		}
