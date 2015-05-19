@@ -603,7 +603,17 @@ function keyDown(event) {
 			pan(0, -dX);
 		}
 		break;
+	case 82: // R
+		replay();
+		break;
+	case 84: // T
+		replayPrev();
+		break;
+	case 89: // Y
+		replayNext();
+		break;
 	}
+
 
 	// highlight menu button
 	inputMan.menu = menuMan.show || gameMan.scene == "board" || gameMan.scene == "rules" || gameMan.menu == "credit" ||

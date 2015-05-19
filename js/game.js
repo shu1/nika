@@ -429,3 +429,28 @@ function ai() {
 		break;
 	}
 }
+
+function replay() {
+	gameMan.replaying = !gameMan.replaying;
+	if (gameMan.replaying) {
+		gameMan.replay = states;
+		gameMan.replayTurn = 0;
+		loadReplayTurn();
+	} else {
+		revertState();
+	}
+}
+
+function replayNext() {
+	gameMan.replayTurn = Math.min(gameMan.replayTurn + 1, gameMan.replay.length - 1);
+	loadReplayTurn();
+}
+
+function replayPrev() {
+	gameMan.replayTurn = Math.max(gameMan.replayTurn - 1, 0);
+	loadReplayTurn();
+}
+
+function loadReplayTurn() {
+	loadState(gameMan.replay[gameMan.replayTurn]);
+}

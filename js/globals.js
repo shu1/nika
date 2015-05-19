@@ -51,7 +51,8 @@ var gameMan = {
 	pCol:-1,
 	pRot:-1,
 	ais:[0,1,0,1],
-	thinking: false
+	thinking: false,
+	replaying: false
 }
 
 var inputMan = {
