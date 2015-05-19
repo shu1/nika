@@ -59,7 +59,7 @@ function checkTutorialMove(moved) {
 		var pieces = tutorialBoards[nextStep].pieces;
 		for (var i = pieces.length - 1; i >= 0; --i) {
 			var p = pieces[i];
-			if (grid[p.row][p.col].rot != p.rot || grid[p.row][p.col].player != p.player) {
+			if (grid[p[1]][p[2]].rot != p[3] || grid[p[1]][p[2]].player != p[0]) {
 				correct = false;
 			}
 		}

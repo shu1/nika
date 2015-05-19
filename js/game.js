@@ -175,20 +175,11 @@ function pushState(ai) {
 			var cell = grid[row][col];
 
 			if (cell.player > -1) {
-				state.pieces.push({
-					row: row,
-					col: col,
-					rot: cell.rot,
-					player: cell.player
-				});
+				state.pieces.push([cell.player, row, col, cell.rot]);
 			}
 
 			if (cell.prompt > -1) {
-				state.prompts.push({
-					row: row,
-					col: col,
-					prompt: cell.prompt
-				});
+				state.prompts.push([row, col, cell.prompt]);
 			}
 	  }
 	}
@@ -229,13 +220,13 @@ function loadState(state) {
 
 	for (var i = state.pieces.length-1; i >= 0; --i) {
 		var piece = state.pieces[i];
-		grid[piece.row][piece.col].player = piece.player;
-		grid[piece.row][piece.col].rot = piece.rot;
+		grid[piece[1]][piece[2]].player = piece[0];
+		grid[piece[1]][piece[2]].rot = piece[3];
 	}
 
 	for (var i = state.prompts.length-1; i >= 0; --i) {
 		var prompt = state.prompts[i];
-		grid[prompt.row][prompt.col].prompt = prompt.prompt;
+		grid[prompt[0]][prompt[1]].prompt = prompt[2];
 	}
 }
 
