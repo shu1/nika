@@ -338,11 +338,10 @@ function mouseUp(event) {
 				}
 
 				revertState();
+				clearRallyHighlights();	// TODO refactor highlights?
 			}
-
 		}
 
-		clearRallyHighlights();	// TODO refactor highlights?
 		gameMan.selection = false;
 		inputMan.menu = false;
 		inputMan.drag = "";

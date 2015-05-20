@@ -10,8 +10,6 @@ window.onload = function() {
 		console.log('Error: nikaSoundSave corrupt');
 	}
 
-	generateGrid(newBoard); // TODO make this unnecessary in onload
-
 	function loadImage(name, i) {
 		i = i ? i : "";
 		do {
