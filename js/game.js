@@ -433,6 +433,7 @@ function ai() {
 function replay() {
 	gameMan.replaying = !gameMan.replaying;
 	if (gameMan.replaying) {
+		gameMan.thinking = false;
 		gameMan.replay = states;
 		gameMan.replayTurn = 0;
 		loadReplayTurn();

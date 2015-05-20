@@ -349,11 +349,13 @@ function draw(time) {
 		drawContext(tvContext, dTime, "tv");	// draw tv
 	}
 
-	if (gameMan.scene == "board" && gameMan.tutorialStep < 0 && gameMan.ais[gameMan.player] && !gameMan.thinking) {
+	if (gameMan.scene == "board" && gameMan.tutorialStep < 0 && gameMan.ais[gameMan.player] && !gameMan.thinking && !gameMan.replaying) {
 		gameMan.thinking = true;
 		setTimeout(function() {
-			ai();
-			gameMan.thinking = false;
+			if (gameMan.thinking) {
+				ai();
+				gameMan.thinking = false;
+			}
 		}, 1200);
 	}
 
