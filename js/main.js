@@ -495,10 +495,10 @@ function drawContext(context, dTime, tv) {
 		context.drawImage(images["buttonMenu"], 0, y, menuMan.bWidth, menuMan.bHeight);
 		context.drawImage(images["buttonPass"], menuMan.bWidth, y, menuMan.bWidth, menuMan.bHeight);
 		context.drawImage(images["buttonUndo"], menuMan.bWidth*2, y, menuMan.bWidth, menuMan.bHeight);
+	}
 
-		if (inputMan.drag == "button" && menus["button"] >= 0) {
-			context.drawImage(images["buttonActive"], menuMan.bWidth * menus["button"], y, menuMan.bWidth, menuMan.bHeight);
-		}
+	if (inputMan.drag == "button" && menus["button"] >= 0) {
+		context.drawImage(images["buttonActive"], menuMan.bWidth * menus["button"], y, menuMan.bWidth, menuMan.bHeight);
 	}
 
 	drawMenu(context, dTime);

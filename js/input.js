@@ -411,6 +411,17 @@ function getXY(event, down) {
 		menus["button"] = -1;
 	}
 
+	if ((gameMan.scene == "rules" || gameMan.menu == "popup" || gameMan.menu == "setup" || gameMan.menu == "option" || gameMan.menu == "credit")
+	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth) {	// close/back button
+		menus["button"] = 0;
+		if (down) {
+			inputMan.drag = "button";
+		}
+		return down;
+	} else {
+		menus["button"] = -1;
+	}
+
 	return false;
 }
 
