@@ -39,6 +39,7 @@ window.onload = function() {
 	loadImage("buttonClose");
 	loadImage("buttonActive");
 	loadImage("menuPopup");
+	loadImage("menuPopupActive");
 	loadImage("menuSetup", 1);
 	loadImage("menuSetupAI", 2);
 	loadImage("menuOption", 1);
@@ -477,14 +478,19 @@ function drawContext(context, dTime, tv) {
 
 	context.restore();
 
+	var x = (canvas.width - menuMan.pWidth)/2;
+	var y = (canvas.height - menuMan.pHeight)/2;
 	if (gameMan.menu == "popup") {
 		context.fillStyle = "rgba(0,0,0,0.5)";
 		context.fillRect(0, 0, canvas.width, canvas.height);
-		context.drawImage(images["menuPopup"], (gpCanvas.width - menuMan.pWidth)/2, (gpCanvas.height - menuMan.pHeight)/2,
-			menuMan.pWidth, menuMan.pHeight);
+		context.drawImage(images["menuPopup"], x, y, menuMan.pWidth, menuMan.pHeight);
+
+		if (inputMan.drag == "popup" && menus["popup"] >= 0) {
+			context.drawImage(images["menuPopupActive"], x, y + menuMan.pHeight/4 * menus["popup"], menuMan.pWidth, menuMan.pHeight/4);
+		}
 	}
 
-	var y = context.canvas.height - menuMan.bHeight;
+	y = canvas.height - menuMan.bHeight;
 	if (gameMan.scene == "rules" || gameMan.menu == "popup") {
 		context.drawImage(images["buttonClose"], 0, y, menuMan.bWidth, menuMan.bHeight);
 	}

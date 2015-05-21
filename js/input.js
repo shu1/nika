@@ -274,24 +274,24 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.menu == "popup") {
-				var top = (gpCanvas.height - menuMan.pHeight)/2;
-				if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
+				if (inputMan.drag == "button" && menus["button"] >= 0) {
 					gameMan.menu = "";
 				}
-				else if (inputMan.x > (gpCanvas.width - menuMan.pWidth)/2 && inputMan.x < (gpCanvas.width + menuMan.pWidth)/2
-				&& inputMan.y > top && inputMan.y < top + menuMan.pHeight) {
-					if (inputMan.y < top + menuMan.pHeight/4) {
+				else if (inputMan.drag == "popup") {
+					switch (menus["popup"]) {
+					case 0:
 						gameMan.menu = "";
-					}
-					else if (inputMan.y < top + menuMan.pHeight/2) {
+						break;
+					case 1:
 						setScene("rules");
-					}
-					else if (inputMan.y < top + menuMan.pHeight*3/4) {
+						break;
+					case 2:
 						setScene("menus");
 						gameMan.menu = "option";
-					}
-					else {
+						break;
+					case 3:
 						setScene("menus");
+						break;
 					}
 				}
 			}
@@ -401,7 +401,20 @@ function getXY(event, down) {
 		menus["debug"] = -1;
 	}
 
-	if (gameMan.scene == "board" && inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// board buttons
+	var x = inputMan.x - (gpCanvas.width - menuMan.pWidth)/2;	// offset to topleft of popup
+	var y = inputMan.y - (gpCanvas.height - menuMan.pHeight)/2;
+	if (gameMan.menu == "popup" && x > 0 && x < menuMan.pWidth && y > 0 && y < menuMan.pHeight) {	// popup
+		menus["popup"] = Math.floor(y / (menuMan.pHeight/4));
+		if (down) {
+			inputMan.drag = "popup";
+		}
+		return down;
+	} else {
+		menus["popup"] = -1;
+	}
+
+	if (gameMan.scene == "board" && gameMan.menu != "popup"
+	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// board buttons
 		menus["button"] = Math.floor(inputMan.x / menuMan.bWidth);
 		if (down) {
 			inputMan.drag = "button";
