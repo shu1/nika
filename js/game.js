@@ -380,6 +380,38 @@ function menuDebug(index) {
 	}
 }
 
+function menuButton(index) {
+	switch (index) {
+	case 0:
+		gameMan.menu = "popup";
+		break;
+	case 1:
+		pass();
+		break;
+	case 2:
+		popState();
+		break;
+	}
+}
+
+function menuPopup(index) {
+	switch (index) {
+	case 0:
+		gameMan.menu = "";
+		break;
+	case 1:
+		setScene("rules");
+		break;
+	case 2:
+		setScene("menus");
+		gameMan.menu = "option";
+		break;
+	case 3:
+		setScene("menus");
+		break;
+	}
+}
+
 function menuTitle(index) {
 	switch (index) {
 	case 0:

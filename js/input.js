@@ -278,36 +278,12 @@ function mouseUp(event) {
 					gameMan.menu = "";
 				}
 				else if (inputMan.drag == "popup") {
-					switch (menus["popup"]) {
-					case 0:
-						gameMan.menu = "";
-						break;
-					case 1:
-						setScene("rules");
-						break;
-					case 2:
-						setScene("menus");
-						gameMan.menu = "option";
-						break;
-					case 3:
-						setScene("menus");
-						break;
-					}
+					menuPopup(menus["popup"]);
 				}
 			}
 			else if (gameMan.scene == "board") {
 				if (inputMan.drag == "button") {
-					switch (menus["button"]) {
-					case 0:
-						gameMan.menu = "popup";
-						break;
-					case 1:
-						pass();
-						break;
-					case 2:
-						popState();
-						break;
-					}
+					menuButton(menus["button"]);
 				}
 				else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
 					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
