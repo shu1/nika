@@ -269,7 +269,7 @@ var tutorialInputs = [
 var tutorialBoards = [{
 	player:0,
 	actions:2,
-	pieces:[	// TODO make these into arrays?
+	pieces:[
 		[0,9,9,3],
 		[0,10,9,3],
 		[0,11,9,3],

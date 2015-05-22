@@ -200,7 +200,7 @@ function mouseUp(event) {
 
 	if (isTouch(event, inputMan.touchID)) {
 		if (inputMan.menu) {
-			menuButton(menus["debug"]);
+			menuDebug(menus["debug"]);
 		}
 		else {
 			var scene = scenes[gameMan.scene];
@@ -523,7 +523,7 @@ function keyDown(event) {
 	case 90:	// Z
 		hudMan.inputText = "Enter";
 		if (menuMan.show || gameMan.menu == "credit") {
-			menuButton(menus["debug"]);
+			menuDebug(menus["debug"]);
 		}
 		else if (gameMan.menu == "title" && menus["title"] < 6) {
 			menuTitle(menus["title"]);
@@ -532,7 +532,7 @@ function keyDown(event) {
 			gameMan.menu = "credit";
 		}
 		else if (!(gameMan.scene == "menus" && gameMan.menu == "option" && menus["option"] < 3)) {
-			menuButton(0);
+			menuDebug(0);
 		}
 		break;
 	case 8: 	// backspace

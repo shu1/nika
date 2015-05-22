@@ -335,8 +335,8 @@ function setIdleAnimation(player) {
 }
 
 
-function menuButton(index) {
-	switch(index) {
+function menuDebug(index) {
+	switch (index) {
 	case 0:
 		menuMan.show = !menuMan.show;
 		menus["debug"] = 0;
@@ -381,7 +381,7 @@ function menuButton(index) {
 }
 
 function menuTitle(index) {
-	switch(index) {
+	switch (index) {
 	case 0:
 		gameMan.menu = "setup";
 		break;
