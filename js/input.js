@@ -389,9 +389,9 @@ function getXY(event, down) {
 		menus["popup"] = -1;
 	}
 
-	if (gameMan.scene == "board" && gameMan.menu != "popup"
-	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// board buttons
-		menus["button"] = Math.floor(inputMan.x / menuMan.bWidth);
+	if ((gameMan.scene == "rules" || gameMan.menu == "popup" || gameMan.menu == "setup" || gameMan.menu == "option" || gameMan.menu == "credit")
+	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth) {	// close/back button
+		menus["button"] = 0;
 		if (down) {
 			inputMan.drag = "button";
 		}
@@ -400,9 +400,9 @@ function getXY(event, down) {
 		menus["button"] = -1;
 	}
 
-	if ((gameMan.scene == "rules" || gameMan.menu == "popup" || gameMan.menu == "setup" || gameMan.menu == "option" || gameMan.menu == "credit")
-	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth) {	// close/back button
-		menus["button"] = 0;
+	if (gameMan.scene == "board" && gameMan.menu != "popup"
+	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// board buttons
+		menus["button"] = Math.floor(inputMan.x / menuMan.bWidth);
 		if (down) {
 			inputMan.drag = "button";
 		}
@@ -494,6 +494,15 @@ function keyDown(event) {
 	case 68:	// D
 		gameMan.debug = !gameMan.debug;
 		initAnimations();
+		break;
+	case 82:	// R
+		replay();
+		break;
+	case 84:	// T
+		replayPrev();
+		break;
+	case 89:	// Y
+		replayNext();
 		break;
 	case 13:	// enter
 	case 90:	// Z
@@ -601,15 +610,6 @@ function keyDown(event) {
 		else if (!keyNext()) {
 			pan(0, -dX);
 		}
-		break;
-	case 82: // R
-		replay();
-		break;
-	case 84: // T
-		replayPrev();
-		break;
-	case 89: // Y
-		replayNext();
 		break;
 	}
 
