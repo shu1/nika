@@ -122,7 +122,7 @@ function mouseMove(event) {
 			pan(0, 0);
 			handled = true;
 		}
-		else if (!inputMan.drag && isTouch(event, inputMan.touchID)) {
+		else if (!handled && isTouch(event, inputMan.touchID)) {
 			var preventPan = false;
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
@@ -338,7 +338,7 @@ function getXY(event, down) {
 					if (down) {
 						inputMan.drag = "debug";
 					}
-					return down;
+					return down || inputMan.drag == "debug";
 				}
 			}
 		}
@@ -353,7 +353,7 @@ function getXY(event, down) {
 		if (down) {
 			inputMan.drag = "popup";
 		}
-		return down;
+		return down || inputMan.drag == "popup";
 	} else {
 		menus["popup"] = -1;
 	}
@@ -364,7 +364,7 @@ function getXY(event, down) {
 		if (down) {
 			inputMan.drag = "button";
 		}
-		return down;
+		return down || inputMan.drag == "button";
 	} else {
 		menus["button"] = -1;
 	}
@@ -375,12 +375,12 @@ function getXY(event, down) {
 		if (down) {
 			inputMan.drag = "button";
 		}
-		return down;
+		return down || inputMan.drag == "button";
 	} else {
 		menus["button"] = -1;
 	}
 
-	return false;
+	return inputMan.drag == "debug" || inputMan.drag == "popup" || inputMan.drag == "button";	// TODO figure out why I need the returns above
 }
 
 function getRowCol(scene) {
