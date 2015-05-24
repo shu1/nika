@@ -218,41 +218,40 @@ function mouseUp(event) {
 					}
 				}
 			}
-			else if (gameMan.menu == "title") {
-				x -= (scene.width - drawMan.screenWidth)/2 + 128;	// offset to coordinates of buttons
-				y -= (scene.height - drawMan.screenHeight)/2 + 330;
-				if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
-					menuTitle(Math.floor(y / drawMan.activeHeight));
-				}
-			}
-			else if (gameMan.menu == "setup") {
+			else if (gameMan.scene == "menus") {
 				x -= (scene.width - drawMan.screenWidth)/2;	// offset to coordinates of image
 				y -= (scene.height - drawMan.screenHeight)/2;
 
-				if (y > 220 && y < 610) {
-					if (x > 20 & x < 240) {
-						menuSetup(0);
-					}
-					else if (x > 320 & x < 540) {
-						menuSetup(2);
-					}
-					else if (x > 1000 & x < 1220) {
-						menuSetup(1);
-					}
-					else if (x > 1280 & x < 1500) {
-						menuSetup(3);
+				if (gameMan.menu == "title") {
+					x -= 128;	// offset to coordinates of buttons
+					y -= 330;
+					if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
+						menuTitle(Math.floor(y / drawMan.activeHeight));
 					}
 				}
-				else if (x > 480 && x < 1050 && y > 750 && y < 900) {
-					menuSetup(4);
+				else if (gameMan.menu == "setup") {
+					if (y > 220 && y < 610) {
+						if (x > 20 & x < 240) {
+							menuSetup(0);
+						}
+						else if (x > 320 & x < 540) {
+							menuSetup(2);
+						}
+						else if (x > 1000 & x < 1220) {
+							menuSetup(1);
+						}
+						else if (x > 1280 & x < 1500) {
+							menuSetup(3);
+						}
+					}
+					else if (x > 480 && x < 1050 && y > 750 && y < 900) {
+						menuSetup(4);
+					}
 				}
-			}
-			else if (gameMan.menu == "option") {
-				x -= (scene.width - drawMan.screenWidth)/2;	// offset to coordinates of image
-				y -= (scene.height - drawMan.screenHeight)/2;
-
-				if (x > 656 && x < 888 && y > 868 && y < 924) {
-					gameMan.menu = "credit";
+				else if (gameMan.menu == "option") {
+					if (x > 656 && x < 888 && y > 868 && y < 924) {
+						gameMan.menu = "credit";
+					}
 				}
 			}
 			else if (gameMan.scene == "board") {
