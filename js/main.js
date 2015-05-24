@@ -708,7 +708,7 @@ function drawMenu(context, dTime) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length) {
-					if (inputMan.menu && button == menus["debug"]
+					if (inputMan.drag == "debug" && button == menus["debug"]
 					|| button == 1 && gameMan.debug
 					|| button == 6 && gameMan.tutorialStep >= 0
 					|| button == 7 && gameMan.scene == "rules") {
@@ -722,7 +722,7 @@ function drawMenu(context, dTime) {
 		}
 	}
 	else {
-		if (inputMan.menu && menus["debug"] == 0) {
+		if (inputMan.drag == "debug" && menus["debug"] == 0) {
 			drawButton(context, 0, 0, buttons[1], "black", "white");
 		}
 		else {

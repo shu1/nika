@@ -122,7 +122,7 @@ function mouseMove(event) {
 			pan(0, 0);
 			handled = true;
 		}
-		else if (!inputMan.menu && isTouch(event, inputMan.touchID)) {
+		else if (!inputMan.drag && isTouch(event, inputMan.touchID)) {
 			var preventPan = false;
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
@@ -192,7 +192,7 @@ function mouseUp(event) {
 	}
 
 	if (isTouch(event, inputMan.touchID)) {
-		if (inputMan.menu) {
+		if (inputMan.drag == "debug") {
 			menuDebug(menus["debug"]);
 		}
 		else if (inputMan.drag == "button") {
@@ -289,7 +289,6 @@ function mouseUp(event) {
 		}
 
 		gameMan.selection = false;
-		inputMan.menu = false;
 		inputMan.drag = "";
 		menus["debug"] = 0;	// reset for key input
 		menus["button"] = -1;
@@ -337,7 +336,7 @@ function getXY(event, down) {
 						hudMan.inputText = buttons[menus["debug"]];
 					}
 					if (down) {
-						inputMan.menu = true;	// TODO convert to inputMan.drag = "debug"
+						inputMan.drag = "debug";
 					}
 					return down;
 				}
@@ -583,10 +582,12 @@ function keyDown(event) {
 		break;
 	}
 
-
-	// highlight menu button
-	inputMan.menu = menuMan.show || gameMan.scene == "board" || gameMan.scene == "rules" || gameMan.menu == "credit" ||
-		gameMan.menu == "title" && menus["title"] == 6 || gameMan.menu == "option" && menus["option"] == 3;
+	if (menuMan.show || gameMan.scene == "board" || gameMan.scene == "rules" || gameMan.menu == "credit"
+	|| gameMan.menu == "title" && menus["title"] == 6 || gameMan.menu == "option" && menus["option"] == 3) {
+		inputMan.drag = "debug";	// highlight menu button
+	} else {
+		inputMan.drag = "";
+	}
 }
 
 function keyPrev() {
