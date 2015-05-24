@@ -256,10 +256,7 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.scene == "board") {
-				if (inputMan.drag == "button") {
-					menuButton(menus["button"]);
-				}
-				else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
+				if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {	// tutorial
 					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
 					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
 						nextTutorialStep();
