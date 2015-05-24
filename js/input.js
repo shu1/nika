@@ -195,17 +195,16 @@ function mouseUp(event) {
 		if (inputMan.menu) {
 			menuDebug(menus["debug"]);
 		}
+		else if (inputMan.drag == "button") {
+			menuButton(menus["button"]);
+		}
 		else {
 			var scene = scenes[gameMan.scene];
 			var x = (inputMan.x - scene.x) / scene.scale;
 			var y = (inputMan.y - scene.y) / scene.scale;
 
 			if (gameMan.scene == "rules") {
-				if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
-					setScene("board");
-					hudMan.pageText = "";	// TODO put this into setScene()
-				}
-				else if (y > (scene.height - drawMan.arrowHeight)/2 && y < (scene.height + drawMan.arrowHeight)/2) {
+				if (y > (scene.height - drawMan.arrowHeight)/2 && y < (scene.height + drawMan.arrowHeight)/2) {
 					if (x > scene.width - drawMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
 						gameMan.rules++;
 						hudMan.pageText = "Rule " + gameMan.rules;
@@ -244,32 +243,17 @@ function mouseUp(event) {
 				else if (x > 480 && x < 1050 && y > 750 && y < 900) {
 					menuSetup(4);
 				}
-				else if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
-					gameMan.menu = "title";
-				}
 			}
 			else if (gameMan.menu == "option") {
 				x -= (scene.width - drawMan.screenWidth)/2;	// offset to coordinates of image
 				y -= (scene.height - drawMan.screenHeight)/2;
 
-				if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
-					localStorage.setItem("nikaSoundSave", JSON.stringify(soundMan));
-					gameMan.menu = "title";
-				}
-				else if (x > 656 && x < 888 && y > 868 && y < 924) {
+				if (x > 656 && x < 888 && y > 868 && y < 924) {
 					gameMan.menu = "credit";
 				}
 			}
-			else if (gameMan.menu == "credit") {
-				if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
-					gameMan.menu = "title";
-				}
-			}
 			else if (gameMan.menu == "popup") {
-				if (inputMan.drag == "button" && menus["button"] >= 0) {
-					gameMan.menu = "";
-				}
-				else if (inputMan.drag == "popup") {
+				if (inputMan.drag == "popup") {
 					menuPopup(menus["popup"]);
 				}
 			}

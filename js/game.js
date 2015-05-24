@@ -383,7 +383,23 @@ function menuDebug(index) {
 function menuButton(index) {
 	switch (index) {
 	case 0:
-		gameMan.menu = "popup";
+		if (gameMan.scene == "rules") {
+			setScene("menus");
+			hudMan.pageText = "";
+		}
+		else if (gameMan.menu == "option") {
+			localStorage.setItem("nikaSoundSave", JSON.stringify(soundMan));
+			gameMan.menu = "title";
+		}
+		else if (gameMan.menu == "setup" || gameMan.menu == "credit") {
+			gameMan.menu = "title";
+		}
+		else if (gameMan.menu == "popup") {
+			gameMan.menu = "";
+		}
+		else if (gameMan.scene == "board") {
+			gameMan.menu = "popup";
+		}
 		break;
 	case 1:
 		pass();
