@@ -104,22 +104,12 @@ function mouseMove(event) {
 		if (inputMan.touchID2 >= 0) {	// 2nd touch is down, so pinch
 			var pDistance = inputMan.pDistance;
 			setPinchDistance();
-
-			var pScale = scene.scale;
 			var dScale = (inputMan.pDistance - pDistance) / drawMan.screenDistance;	// TODO check on this scaling algorithm
-			scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
+			// center of pinch
+			var x = (inputMan.x + inputMan.x2) / 2;
+			var y = (inputMan.y + inputMan.y2) / 2;
 
-			if (screenType == 2) {	// zoom center of screen
-				scene.x -= scene.width * (scene.scale - pScale) / 2;
-				scene.y -= scene.height * (scene.scale - pScale) / 2;
-			}
-			else {	// zoom center of pinch
-				var x = (inputMan.x + inputMan.x2) / 2;
-				var y = (inputMan.y + inputMan.y2) / 2;
-				scene.x = x - (x - scene.x) * scene.scale / pScale;
-				scene.y = y - (y - scene.y) * scene.scale / pScale;
-			}
-			pan(0, 0);
+			pinch(scene, dScale, x, y);
 			handled = true;
 		}
 		else if (!handled && isTouch(event, inputMan.touchID)) {
@@ -296,6 +286,14 @@ function mouseUp(event) {
 	}
 }
 
+function mouseWheel(e) {
+	var sensitivity = 30;
+	var scene = scenes[gameMan.scene];
+	var dScale = (-sensitivity * Math.sign(e.deltaY)) / drawMan.screenDistance;
+	pinch(scene, dScale, e.layerX, e.layerY);
+	e.preventDefault();
+}
+
 function getXY(event, down) {
 	if (navigator.msPointerEnabled) {
 		if (event.pointerId == inputMan.touchID) {
@@ -454,6 +452,21 @@ function setPinchDistance() {
 	var dX = inputMan.x2 - inputMan.x;
 	var dY = inputMan.y2 - inputMan.y;
 	inputMan.pDistance = Math.sqrt(dX*dX + dY*dY);	// TODO sqrt necessary?
+}
+
+function pinch(scene, dScale, x, y) {
+	var pScale = scene.scale;
+	scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
+
+	if (screenType == 2) {	// zoom center of screen
+		scene.x -= scene.width * (scene.scale - pScale) / 2;
+		scene.y -= scene.height * (scene.scale - pScale) / 2;
+	}
+	else {	// zoom center of pinc
+		scene.x = x - (x - scene.x) * scene.scale / pScale;
+		scene.y = y - (y - scene.y) * scene.scale / pScale;
+	}
+	pan(0, 0);
 }
 
 function keyDown(event) {
