@@ -451,6 +451,19 @@ function menuTitle(index) {
 	}
 }
 
+function menuSetup(index) {
+	if (index >= 0 && index < 4) {
+		gameMan.ais[index]++;
+		if (gameMan.ais[index] > 2) {
+			gameMan.ais[index] = 0;
+		}
+	}
+	else if (index == 4) {
+		newGame();
+		setScene("board");
+	}
+}
+
 function ai() {
 	switch (gameMan.ais[gameMan.player]) {
 	case 1:

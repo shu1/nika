@@ -187,13 +187,6 @@ function mouseMove(event) {
 function mouseUp(event) {
 	hudMan.inputText += " up";
 
-	function setAI(i) {
-		gameMan.ais[i]++;
-		if (gameMan.ais[i] > 2) {
-			gameMan.ais[i] = 0;
-		}
-	}
-
 	if (isTouch(event, inputMan.touchID2)) {
 		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 	}
@@ -236,21 +229,20 @@ function mouseUp(event) {
 
 				if (y > 220 && y < 610) {
 					if (x > 20 & x < 240) {
-						setAI(0);
+						menuSetup(0);
 					}
 					else if (x > 320 & x < 540) {
-						setAI(2);
+						menuSetup(2);
 					}
 					else if (x > 1000 & x < 1220) {
-						setAI(1);
+						menuSetup(1);
 					}
 					else if (x > 1280 & x < 1500) {
-						setAI(3);
+						menuSetup(3);
 					}
 				}
 				else if (x > 480 && x < 1050 && y > 750 && y < 900) {
-					newGame();
-					setScene("board");
+					menuSetup(4);
 				}
 				else if (inputMan.x < menuMan.bWidth && inputMan.y > gpCanvas.height - menuMan.bHeight) {
 					gameMan.menu = "title";
