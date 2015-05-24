@@ -198,6 +198,9 @@ function mouseUp(event) {
 		else if (inputMan.drag == "button") {
 			menuButton(menus["button"]);
 		}
+		else if (inputMan.drag == "popup") {
+			menuPopup(menus["popup"]);
+		}
 		else {
 			var scene = scenes[gameMan.scene];
 			var x = (inputMan.x - scene.x) / scene.scale;
@@ -250,11 +253,6 @@ function mouseUp(event) {
 
 				if (x > 656 && x < 888 && y > 868 && y < 924) {
 					gameMan.menu = "credit";
-				}
-			}
-			else if (gameMan.menu == "popup") {
-				if (inputMan.drag == "popup") {
-					menuPopup(menus["popup"]);
 				}
 			}
 			else if (gameMan.scene == "board") {
