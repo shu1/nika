@@ -69,7 +69,7 @@ function mouseDown(event) {
 					handled = true;
 				}
 			}
-			else if (gameMan.scene == "board" && gameMan.menu != "popup" && gameMan.winner < 0 && !gameMan.thinking) {
+			else if (gameMan.scene == "board" && gameMan.winner < 0 && !gameMan.thinking) {
 				getRowCol(scene);
 				getPiece(inputMan.row, inputMan.col);
 				if (phalanx.length > 0) {
@@ -324,6 +324,8 @@ function getXY(event, down) {
 		inputMan.y = event.layerY;
 	}
 
+	var handled = inputMan.drag == "debug" || inputMan.drag == "button" || inputMan.drag == "popup" || gameMan.menu == "popup";
+
 	if (inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - menuMan.width
 	&& inputMan.y < gpCanvas.height && inputMan.y > gpCanvas.height - menuMan.height) {	// debug menu
 		for (var row = 0; row < menuMan.rows; ++row) {
@@ -336,7 +338,7 @@ function getXY(event, down) {
 					if (down) {
 						inputMan.drag = "debug";
 					}
-					return down || inputMan.drag == "debug";
+					return down || handled;
 				}
 			}
 		}
@@ -351,7 +353,7 @@ function getXY(event, down) {
 		if (down) {
 			inputMan.drag = "popup";
 		}
-		return down || inputMan.drag == "popup";
+		return down || handled;
 	} else {
 		menus["popup"] = -1;
 	}
@@ -362,7 +364,7 @@ function getXY(event, down) {
 		if (down) {
 			inputMan.drag = "button";
 		}
-		return down || inputMan.drag == "button";
+		return down || handled;
 	} else {
 		menus["button"] = -1;
 	}
@@ -373,12 +375,12 @@ function getXY(event, down) {
 		if (down) {
 			inputMan.drag = "button";
 		}
-		return down || inputMan.drag == "button";
+		return down || handled;
 	} else {
 		menus["button"] = -1;
 	}
 
-	return inputMan.drag == "debug" || inputMan.drag == "popup" || inputMan.drag == "button";	// TODO figure out why I need the returns above
+	return handled;	// TODO figure out why the above returns are necessary
 }
 
 function getRowCol(scene) {
