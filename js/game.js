@@ -156,8 +156,10 @@ function useAction(n) {
 }
 
 function pass() {
-	useAction(2);
-	pushState();
+	if (gameMan.winner < 0) {
+		useAction(2);
+		pushState();
+	}
 }
 
 
@@ -228,6 +230,8 @@ function loadState(state) {
 		var prompt = state.prompts[i];
 		grid[prompt[0]][prompt[1]].prompt = prompt[2];
 	}
+
+	checkWin();
 }
 
 function saveGame() {
@@ -267,9 +271,11 @@ function checkWin() {
 				gameMan.winner = grid[row][col].player;
 				murals[gameMan.winner].setAnim("victory");
 				murals[getPartner(gameMan.winner)].setAnim("victory");
+				return;
 			}
 		}
 	}
+	gameMan.winner = -1;
 }
 
 
