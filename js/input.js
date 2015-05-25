@@ -254,7 +254,7 @@ function mouseUp(event) {
 				else if (gameMan.winner >= 0) {	// win screen
 					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
 					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
-						newGame();
+						setScene("menus");
 					}
 				}
 				else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol
