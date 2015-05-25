@@ -359,7 +359,7 @@ function menuDebug(index) {
 		break;
 	case 6:
 		if (gameMan.tutorialStep < 0) {
-			nextTutorialStep();
+			initTutorial();
 		}
 		else {
 			endTutorial();
@@ -453,7 +453,7 @@ function menuTitle(index) {
 		break;
 	case 2:
 		setScene("board");
-		nextTutorialStep();
+		initTutorial();
 		break;
 	case 3:
 		setScene("rules");

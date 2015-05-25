@@ -437,7 +437,9 @@ function drawContext(context, dTime, tv) {
 		}
 		setRings();
 		drawPieces(context);
-		drawHelmets(context, dTime);
+		if (gameMan.winner < 0) {
+			drawHelmets(context, dTime);
+		}
 		break;
 	case "rules":
 		context.fillStyle = "black";

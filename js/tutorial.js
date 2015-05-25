@@ -8,6 +8,12 @@ function clearTutorialRings() {
 	}
 }
 
+function initTutorial() {
+	gameMan.winner = -1;
+	gameMan.tutorialStep = -1;
+	nextTutorialStep();
+}
+
 function nextTutorialStep() {
 	gameMan.tutorialStep++;
 	hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
