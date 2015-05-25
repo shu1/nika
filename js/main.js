@@ -186,6 +186,7 @@ function reSize() {
 
 	menuMan.bWidth = drawMan.cellSize*2 * minScale;
 	menuMan.bHeight = menuMan.bWidth/2;
+	menuMan.bPadding = 4 * minScale;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 	menuMan.pWidth = 1024 * minScale;
@@ -724,12 +725,11 @@ function drawMenu(context, dTime) {
 }
 
 function drawButton(context, row, col, text, textColor, bgColor) {
-	var padding = 4;	// TODO put in drawMan and calculate in reSize()
 	var canvas = context.canvas;
 	if (bgColor) {
 		context.fillStyle = bgColor;
-		context.fillRect(canvas.width - menuMan.bWidth * (col+1) + padding, canvas.height - menuMan.bHeight * (row+1) + padding,
-			menuMan.bWidth - padding*2, menuMan.bHeight - padding*2);
+		context.fillRect(canvas.width - menuMan.bWidth * (col+1) + menuMan.bPadding, canvas.height - menuMan.bHeight * (row+1) + menuMan.bPadding,
+			menuMan.bWidth - menuMan.bPadding*2, menuMan.bHeight - menuMan.bPadding*2);
 	}
 	context.fillStyle = textColor;
 	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);

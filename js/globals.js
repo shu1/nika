@@ -79,10 +79,11 @@ var menuMan = {
 	bWidth:0,
 	bHeight:0,
 	pWidth:0,
-	pHeight:0
+	pHeight:0,
+	bPadding:0
 }
 
-var	hudMan = {
+var hudMan = {
 	fpsTime:0,
 	fpsCount:0,
 	fpsText:"",
