@@ -65,7 +65,7 @@ function mouseDown(event) {
 					handled = true;
 				}
 				else if (x > soundX - radius && x < soundX + radius && y > 710 - radius && y < 710 + radius) {
-					inputMan.drag = "sound";	// TODO repurpose drag to general mouseDown string
+					inputMan.drag = "sound";
 					handled = true;
 				}
 			}
@@ -104,11 +104,10 @@ function mouseMove(event) {
 		if (inputMan.touchID2 >= 0) {	// 2nd touch is down, so pinch
 			var pDistance = inputMan.pDistance;
 			setPinchDistance();
-			var dScale = (inputMan.pDistance - pDistance) / drawMan.screenDistance;	// TODO check on this scaling algorithm
-			// center of pinch
-			var x = (inputMan.x + inputMan.x2) / 2;
-			var y = (inputMan.y + inputMan.y2) / 2;
 
+			var dScale = (inputMan.pDistance - pDistance) / drawMan.screenDistance;	// TODO check on this scaling algorithm
+			var x = (inputMan.x + inputMan.x2) / 2;	// center of pinch
+			var y = (inputMan.y + inputMan.y2) / 2;
 			pinch(scene, dScale, x, y);
 			handled = true;
 		}
