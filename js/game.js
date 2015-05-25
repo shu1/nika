@@ -93,7 +93,6 @@ function debugGrid() {
 	}
 }
 
-
 function clearChecked() {	// phalanxes
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
@@ -123,7 +122,6 @@ function clearRallyHighlights() {
 		}
 	}
 }
-
 
 function newGame() {
 	generateGrid(newBoard);
@@ -162,18 +160,17 @@ function pass() {
 	}
 }
 
-
 function pushState(ai, dontSave) {
 	var state = {
-	  player: gameMan.player,
-	  actions: gameMan.actions,
-	  ai: ai,
-	  pieces: [],
-	  prompts: []
+		player: gameMan.player,
+		actions: gameMan.actions,
+		ai: ai,
+		pieces: [],
+		prompts: []
 	};
 
 	for (var row = 0; row < 15; ++row) {
-	  for (var col = 0; col < 21; ++col) {
+		for (var col = 0; col < 21; ++col) {
 			var cell = grid[row][col];
 
 			if (cell.player > -1) {
@@ -183,7 +180,7 @@ function pushState(ai, dontSave) {
 			if (cell.prompt > -1) {
 				state.prompts.push([row, col, cell.prompt]);
 			}
-	  }
+		}
 	}
 
 	states.push(state);
@@ -280,7 +277,6 @@ function checkWin() {
 	gameMan.winner = -1;
 }
 
-
 function playerAction() {
 	for (var player = 0; player < 4; ++player) {
 		var priorityEvent = getPriorityEvent(eventMan[player]);
@@ -328,12 +324,10 @@ function setIdleAnimation(player) {
 	if (gameMan.tutorialStep >= 0 && player == 0) {
 		if (tutorialInputs[gameMan.tutorialStep]) {
 			murals[player].setAnim("idleActive");
-		}
-		else {
+		} else {
 			murals[player].setAnim("idle");
 		}
-	}
-	else {
+	} else {
 		if (player == gameMan.player) {
 			murals[player].setAnim("idleActive");
 		} else {
@@ -341,7 +335,6 @@ function setIdleAnimation(player) {
 		}
 	}
 }
-
 
 function menuDebug(index) {
 	switch (index) {
@@ -368,16 +361,14 @@ function menuDebug(index) {
 	case 6:
 		if (gameMan.tutorialStep < 0) {
 			initTutorial();
-		}
-		else {
+		} else {
 			endTutorial();
 		}
 		break;
 	case 7:
 		if (gameMan.scene == "rules") {
-				setScene("board");
-			}
-		else {
+			setScene("board");
+		} else {
 			setScene("rules");
 		}
 		break;

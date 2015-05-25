@@ -228,9 +228,8 @@ function setScene(sceneIndex) {
 		if (sceneIndex == "menus") {
 			gameMan.menu = "title";
 			menus["title"] = 1;
-		}
-		else {
-			gameMan.menu = "";	// TODO rethink scene/menu differentiation
+		} else {
+			gameMan.menu = "";
 
 			if (sceneIndex == "rules") {
 				hudMan.pageText = "Rule " + gameMan.rules;
@@ -251,8 +250,7 @@ function zoom() {
 	var scene = scenes[gameMan.scene];
 	if (scene.scale == scene.minScale) {
 		drawMan.zoom = 1;
-	}
-	else {
+	} else {
 		drawMan.zoom = -1;
 	}
 }
@@ -264,19 +262,16 @@ function zooming(dTime) {
 	if (drawMan.zoom > 0) {
 		if (scene.scale + speed < scene.maxScale) {
 			scene.scale += speed;
-		}
-		else {
+		} else {
 			speed = scene.maxScale - scene.scale;	// move exactly the remainder of the animation
 			scene.scale = scene.maxScale;
 			drawMan.zoom = 0;
 		}
-	}
-	else {
+	} else {
 		if (scene.scale + speed > scene.minScale) {
 			scene.scale += speed;
-		}
-		else {
-			speed = scene.minScale - scene.scale;	// move exactly the remainder of the animation
+		} else {
+			speed = scene.minScale - scene.scale;
 			scene.scale = scene.minScale;
 			drawMan.zoom = 0;
 		}
@@ -387,8 +382,7 @@ function drawMural(context, dTime) {
 		var lines;
 		if (gameMan.winner >= 0) {
 			lines = [getWinnerText(gameMan.winner)];
-		}
-		else {
+		} else {
 			lines = tutorialTexts[gameMan.tutorialStep];
 		}
 
@@ -399,8 +393,7 @@ function drawMural(context, dTime) {
 			topPadding -= 2;
 			bottomPadding -= 2;
 			nextX += 4;
-		}
-		else {
+		} else {
 			context.font = fontSize + font;
 		}
 
@@ -675,8 +668,7 @@ function drawMenu(context, dTime) {
 		if (menuMan.width + speed < menuMan.bWidth * menuMan.cols) {
 			menuMan.width += speed;
 			drawMan.menu = true;
-		}
-		else {
+		} else {
 			menuMan.width = menuMan.bWidth * menuMan.cols;
 		}
 
@@ -684,8 +676,7 @@ function drawMenu(context, dTime) {
 		if (menuMan.height + speed < menuMan.bHeight * menuMan.rows) {
 			menuMan.height += speed;
 			drawMan.menu = true;
-		}
-		else {
+		} else {
 			menuMan.height = menuMan.bHeight * menuMan.rows;
 		}
 	}
@@ -694,8 +685,7 @@ function drawMenu(context, dTime) {
 		if (menuMan.width - speed > menuMan.bWidth) {
 			menuMan.width -= speed;
 			drawMan.menu = true;
-		}
-		else {
+		} else {
 			menuMan.width = menuMan.bWidth;
 		}
 
@@ -703,8 +693,7 @@ function drawMenu(context, dTime) {
 		if (menuMan.height - speed > menuMan.bHeight) {
 			menuMan.height -= speed;
 			drawMan.menu = true;
-		}
-		else {
+		} else {
 			menuMan.height = menuMan.bHeight;
 		}
 	}
@@ -719,19 +708,16 @@ function drawMenu(context, dTime) {
 					|| button == 6 && gameMan.tutorialStep >= 0
 					|| button == 7 && gameMan.scene == "rules") {
 						drawButton(context, row, col, buttons[button], "black", "white");
-					}
-					else {
+					} else {
 						drawButton(context, row, col, buttons[button], "white", "black");
 					}
 				}
 			}
 		}
-	}
-	else {
+	} else {
 		if (inputMan.drag == "debug" && menus["debug"] == 0) {
 			drawButton(context, 0, 0, buttons[1], "black", "white");
-		}
-		else {
+		} else {
 			drawButton(context, 0, 0, buttons[1], "white", "black");
 		}
 	}
