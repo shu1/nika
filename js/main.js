@@ -15,7 +15,7 @@ window.onload = function() {
 		do {
 			images[name + i] = document.createElement("img");
 			images[name + i].src = "images/" + name + i + ".png";
-			--i;	// exploiting decrementing an empty string becomes -1
+			--i;	// exploit how decrementing an empty string becomes -1
 		} while (i >= 0);
 	}
 
@@ -45,8 +45,7 @@ window.onload = function() {
 	loadImage("menuOption", 1);
 	loadImage("menuOptionSlider");
 	loadImage("menuCredit", 1);
-	loadImage("arrowLeft");
-	loadImage("arrowRight");	// TODO rename to ruleArrow0,1
+	loadImage("ruleArrow", 1);
 
 	for (var i = 0; i < rulePages; ++i) {
 		loadImage("rule" + i, 1);
@@ -656,10 +655,10 @@ function drawRules(context, scene) {
 
 	var arrowY = (scene.height - drawMan.arrowHeight)/2;
 	if (gameMan.rules > 0) {
-		context.drawImage(images["arrowLeft"], drawMan.arrowWidth/2, arrowY);
+		context.drawImage(images["ruleArrow0"], drawMan.arrowWidth/2, arrowY);
 	}
 	if (gameMan.rules < rulePages-1) {
-		context.drawImage(images["arrowRight"], scene.width - drawMan.arrowWidth*1.5, arrowY);
+		context.drawImage(images["ruleArrow1"], scene.width - drawMan.arrowWidth*1.5, arrowY);
 	}
 }
 
