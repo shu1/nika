@@ -42,7 +42,7 @@ function mouseDown(event) {
 	}
 
 	if (!multiTouch) {
-		var handled = getXY(event, true);
+		var handled = getXYDrag(event, true);
 		if (!handled) {
 			var scene = scenes[gameMan.scene];
 			var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
@@ -96,9 +96,105 @@ function mouseDown(event) {
 	hudMan.inputText += " down";
 }
 
+function getXYDrag(event, down) {
+	if (navigator.msPointerEnabled) {
+		if (event.pointerId == inputMan.touchID) {
+			inputMan.x = event.layerX;
+			inputMan.y = event.layerY;
+		}
+
+		if (event.pointerId == inputMan.touchID2) {
+			inputMan.x2 = event.layerX;
+			inputMan.y2 = event.layerY;
+		}
+	}
+	else if (event.changedTouches) {
+		for (var i = event.changedTouches.length-1; i >= 0; --i) {
+			var touch = event.changedTouches[i];
+			if (touch.identifier == inputMan.touchID) {
+				inputMan.x = touch.pageX;
+				inputMan.y = touch.pageY;
+			}
+			else if (touch.identifier == inputMan.touchID2) {
+				inputMan.x2 = touch.pageX;
+				inputMan.y2 = touch.pageY;
+			}
+		}
+	}
+	else {	// mouse
+		inputMan.x = event.layerX;
+		inputMan.y = event.layerY;
+	}
+
+	var handled = inputMan.drag == "debug" || inputMan.drag == "button" || inputMan.drag == "popup" || gameMan.menu == "popup";
+
+	if (inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - menuMan.width
+	&& inputMan.y < gpCanvas.height && inputMan.y > gpCanvas.height - menuMan.height) {	// debug menu
+		for (var row = 0; row < menuMan.rows; ++row) {
+			for (var col = 0; col < menuMan.cols; ++col) {
+				if (inputMan.x > gpCanvas.width - menuMan.bWidth * (col+1) && inputMan.y > gpCanvas.height - menuMan.bHeight * (row+1)) {
+					menus["debug"] = row * menuMan.cols + col;
+					if (menus["debug"] < buttons.length) {
+						hudMan.inputText = buttons[menus["debug"]];
+					}
+					if (down) {
+						inputMan.drag = "debug";
+					}
+					return down || handled;
+				}
+			}
+		}
+	} else {
+		menus["debug"] = -1;
+	}
+
+	var x = inputMan.x - (gpCanvas.width - menuMan.pWidth)/2;	// offset to topleft of popup
+	var y = inputMan.y - (gpCanvas.height - menuMan.pHeight)/2;
+	if (gameMan.menu == "popup" && x > 0 && x < menuMan.pWidth && y > 0 && y < menuMan.pHeight) {	// popup
+		menus["popup"] = Math.floor(y / (menuMan.pHeight/4));
+		if (down) {
+			inputMan.drag = "popup";
+		}
+		return down || handled;
+	} else {
+		menus["popup"] = -1;
+	}
+
+	if ((gameMan.scene == "rules" || gameMan.menu == "popup" || gameMan.menu == "setup" || gameMan.menu == "option" || gameMan.menu == "credit")
+	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth) {	// close/back button
+		menus["button"] = 0;
+		if (down) {
+			inputMan.drag = "button";
+		}
+		return down || handled;
+	} else {
+		menus["button"] = -1;
+	}
+
+	if (gameMan.scene == "board" && gameMan.menu != "popup"
+	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// board buttons
+		menus["button"] = Math.floor(inputMan.x / menuMan.bWidth);
+		if (down) {
+			inputMan.drag = "button";
+		}
+		return down || handled;
+	} else {
+		menus["button"] = -1;
+	}
+
+	return handled;	// TODO figure out why the above returns are necessary
+}
+
+function getRowCol(scene) {
+	inputMan.col = Math.floor((inputMan.x - scene.x) / (drawMan.cellSize * scene.scale));
+	inputMan.row = Math.floor((inputMan.y - scene.y) / (drawMan.cellSize * scene.scale));
+	inputMan.rot = -1;
+	hudMan.inputText = inputMan.row + "," + inputMan.col;
+}
+
 function mouseMove(event) {
 	if (inputMan.touchID >= 0) {
-		var handled = getXY(event);
+		var handled = getXYDrag(event);
 		var scene = scenes[gameMan.scene];
 
 		if (inputMan.touchID2 >= 0) {	// 2nd touch is down, so pinch
@@ -201,6 +297,23 @@ function mouseMove(event) {
 		if (handled) {
 			event.preventDefault();
 		}
+	}
+}
+
+function isTouch(event, touchID) {
+	if (navigator.msPointerEnabled) {
+		return event.pointerId == touchID;
+	}
+	else if (event.changedTouches) {
+		for (var i = event.changedTouches.length-1; i >= 0; --i) {
+			if (event.changedTouches[i].identifier == touchID) {
+				return true;
+			}
+		}
+		return false;
+	}
+	else {
+		return touchID == 1;
 	}
 }
 
@@ -317,126 +430,6 @@ function mouseUp(event) {
 	}
 }
 
-function mouseWheel(event) {
-	var scene = scenes[gameMan.scene];
-	var dScale = -30*Math.sign(event.deltaY) / drawMan.screenDistance;
-	pinch(scene, dScale, event.layerX, event.layerY);
-	event.preventDefault();
-}
-
-function getXY(event, down) {
-	if (navigator.msPointerEnabled) {
-		if (event.pointerId == inputMan.touchID) {
-			inputMan.x = event.layerX;
-			inputMan.y = event.layerY;
-		}
-
-		if (event.pointerId == inputMan.touchID2) {
-			inputMan.x2 = event.layerX;
-			inputMan.y2 = event.layerY;
-		}
-	}
-	else if (event.changedTouches) {
-		for (var i = event.changedTouches.length-1; i >= 0; --i) {
-			var touch = event.changedTouches[i];
-			if (touch.identifier == inputMan.touchID) {
-				inputMan.x = touch.pageX;
-				inputMan.y = touch.pageY;
-			}
-			else if (touch.identifier == inputMan.touchID2) {
-				inputMan.x2 = touch.pageX;
-				inputMan.y2 = touch.pageY;
-			}
-		}
-	}
-	else {	// mouse
-		inputMan.x = event.layerX;
-		inputMan.y = event.layerY;
-	}
-
-	var handled = inputMan.drag == "debug" || inputMan.drag == "button" || inputMan.drag == "popup" || gameMan.menu == "popup";
-
-	if (inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - menuMan.width
-	&& inputMan.y < gpCanvas.height && inputMan.y > gpCanvas.height - menuMan.height) {	// debug menu
-		for (var row = 0; row < menuMan.rows; ++row) {
-			for (var col = 0; col < menuMan.cols; ++col) {
-				if (inputMan.x > gpCanvas.width - menuMan.bWidth * (col+1) && inputMan.y > gpCanvas.height - menuMan.bHeight * (row+1)) {
-					menus["debug"] = row * menuMan.cols + col;
-					if (menus["debug"] < buttons.length) {
-						hudMan.inputText = buttons[menus["debug"]];
-					}
-					if (down) {
-						inputMan.drag = "debug";
-					}
-					return down || handled;
-				}
-			}
-		}
-	} else {
-		menus["debug"] = -1;
-	}
-
-	var x = inputMan.x - (gpCanvas.width - menuMan.pWidth)/2;	// offset to topleft of popup
-	var y = inputMan.y - (gpCanvas.height - menuMan.pHeight)/2;
-	if (gameMan.menu == "popup" && x > 0 && x < menuMan.pWidth && y > 0 && y < menuMan.pHeight) {	// popup
-		menus["popup"] = Math.floor(y / (menuMan.pHeight/4));
-		if (down) {
-			inputMan.drag = "popup";
-		}
-		return down || handled;
-	} else {
-		menus["popup"] = -1;
-	}
-
-	if ((gameMan.scene == "rules" || gameMan.menu == "popup" || gameMan.menu == "setup" || gameMan.menu == "option" || gameMan.menu == "credit")
-	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth) {	// close/back button
-		menus["button"] = 0;
-		if (down) {
-			inputMan.drag = "button";
-		}
-		return down || handled;
-	} else {
-		menus["button"] = -1;
-	}
-
-	if (gameMan.scene == "board" && gameMan.menu != "popup"
-	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// board buttons
-		menus["button"] = Math.floor(inputMan.x / menuMan.bWidth);
-		if (down) {
-			inputMan.drag = "button";
-		}
-		return down || handled;
-	} else {
-		menus["button"] = -1;
-	}
-
-	return handled;	// TODO figure out why the above returns are necessary
-}
-
-function getRowCol(scene) {
-	inputMan.col = Math.floor((inputMan.x - scene.x) / (drawMan.cellSize * scene.scale));
-	inputMan.row = Math.floor((inputMan.y - scene.y) / (drawMan.cellSize * scene.scale));
-	inputMan.rot = -1;
-	hudMan.inputText = inputMan.row + "," + inputMan.col;
-}
-
-function isTouch(event, touchID) {
-	if (navigator.msPointerEnabled) {
-		return event.pointerId == touchID;
-	}
-	else if (event.changedTouches) {
-		for (var i = event.changedTouches.length-1; i >= 0; --i) {
-			if (event.changedTouches[i].identifier == touchID) {
-				return true;
-			}
-		}
-		return false;
-	}
-	else {
-		return touchID == 1;
-	}
-}
-
 function setPinch(changedTouch) {
 	resetState();
 	inputMan.touchID2 = changedTouch.identifier;
@@ -464,6 +457,13 @@ function pinch(scene, dScale, x, y) {
 		scene.y = y - (y - scene.y) * scene.scale / pScale;
 	}
 	pan(0, 0);
+}
+
+function mouseWheel(event) {
+	var scene = scenes[gameMan.scene];
+	var dScale = -30*Math.sign(event.deltaY) / drawMan.screenDistance;
+	pinch(scene, dScale, event.layerX, event.layerY);
+	event.preventDefault();
 }
 
 function keyDown(event) {
