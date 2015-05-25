@@ -219,6 +219,10 @@ function initScenes(canvas, maxScale, minScale, tv) {
 
 function setScene(sceneIndex) {
 	if (sceneIndex) {
+		if (gameMan.scene == "rules") {
+			hudMan.pageText = "";
+		}
+
 		gameMan.scene = sceneIndex;
 
 		if (sceneIndex == "menus") {

@@ -376,7 +376,6 @@ function menuDebug(index) {
 	case 7:
 		if (gameMan.scene == "rules") {
 				setScene("board");
-				hudMan.pageText = "";
 			}
 		else {
 			setScene("rules");
@@ -393,7 +392,6 @@ function menuButton(index) {
 	case 0:
 		if (gameMan.scene == "rules") {
 			setScene("menus");
-			hudMan.pageText = "";
 		}
 		else if (gameMan.menu == "option") {
 			localStorage.setItem("nikaSoundSave", JSON.stringify(soundMan));
