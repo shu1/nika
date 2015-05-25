@@ -412,8 +412,15 @@ function drawMural(context, dTime) {
 
 function drawContext(context, dTime, tv) {
 	tv = tv ? tv : "";
+
 	var canvas = context.canvas;
-	context.clearRect(0, 0, canvas.width, canvas.height);	// TODO change color depending on scene
+	if (gameMan.scene == "rules") {
+		context.fillStyle = "black";
+		context.fillRect(0, 0, canvas.width, canvas.height);
+	} else {
+		context.clearRect(0, 0, canvas.width, canvas.height);
+	}
+
 	if (drawMan.zoom) {
 		zooming(dTime);
 	}
@@ -439,8 +446,6 @@ function drawContext(context, dTime, tv) {
 		}
 		break;
 	case "rules":
-		context.fillStyle = "black";
-		context.fillRect(0, 0, scene.width, scene.height);
 		context.drawImage(images["rule" + gameMan.rules + "0"], x, y);
 		context.drawImage(images["rule" + gameMan.rules + "1"], x+1024, y);
 		drawRules(context, scene);
