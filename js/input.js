@@ -144,7 +144,38 @@ function mouseMove(event) {
 					dX /= scene.scale;
 					dY /= scene.scale;
 					if (Math.abs(dX) > drawMan.cellSize/2 || Math.abs(dY) > drawMan.cellSize/2) {	// inside cell is deadzone
-						getRot(dX, dY, scene);
+						if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {	// get rotation for non-routed pieces
+							if (dX >= dY && dX <= -dY) {	// up
+								inputMan.rot = 0;
+							}
+							else if (dX >= dY && dX >= -dY) {	// right
+								inputMan.rot = 1;
+							}
+							else if (dX <= dY && dX >= -dY) {	// down
+								inputMan.rot = 2;
+							}
+							else {	// left
+								inputMan.rot = 3;
+							}
+
+							inputMan.row = gameMan.pRow;
+							inputMan.col = gameMan.pCol;
+							var radius = drawMan.cellSize * drawMan.cellSize * 4;
+							if (dX*dX + dY*dY < radius) {
+								if (inputMan.rot == 0) {
+									inputMan.row--;
+								}
+								else if (inputMan.rot == 1) {
+									inputMan.col++;
+								}
+								else if (inputMan.rot == 2) {
+									inputMan.row++;
+								}
+								else if (inputMan.rot == 3) {
+									inputMan.col--;
+								}
+							}
+						}
 						rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
 					}
 					else {
@@ -387,41 +418,6 @@ function getRowCol(scene) {
 	inputMan.row = Math.floor((inputMan.y - scene.y) / (drawMan.cellSize * scene.scale));
 	inputMan.rot = -1;
 	hudMan.inputText = inputMan.row + "," + inputMan.col;
-}
-
-function getRot(dX, dY) {
-	if (grid[gameMan.pRow][gameMan.pCol].kind != 3) {	// not for routed pieces
-		if (dX >= dY && dX <= -dY) {	// up
-			inputMan.rot = 0;
-		}
-		else if (dX >= dY && dX >= -dY) {	// right
-			inputMan.rot = 1;
-		}
-		else if (dX <= dY && dX >= -dY) {	// down
-			inputMan.rot = 2;
-		}
-		else {	// left
-			inputMan.rot = 3;
-		}
-
-		inputMan.row = gameMan.pRow;
-		inputMan.col = gameMan.pCol;
-		var radius = drawMan.cellSize * drawMan.cellSize * 4;
-		if (dX*dX + dY*dY < radius) {
-			if (inputMan.rot == 0) {
-				inputMan.row--;
-			}
-			else if (inputMan.rot == 1) {
-				inputMan.col++;
-			}
-			else if (inputMan.rot == 2) {
-				inputMan.row++;
-			}
-			else if (inputMan.rot == 3) {
-				inputMan.col--;
-			}
-		}
-	}
 }
 
 function isTouch(event, touchID) {
