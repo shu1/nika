@@ -22,8 +22,7 @@ function nextTutorialStep() {
 
 function endTutorial() {
 	hudMan.pageText = "";
-	newGame();
-	resetAnimations();
+	setScene("menus");
 }
 
 function nextTutorialPart() {
@@ -52,7 +51,7 @@ function setupTutorial() {
 	if (board) {
 		loadState(board);
 		states = [];
-		pushState();
+		pushState(null, true); // second argument is 'dontSave' flag
 	} else {
 		endTutorial();
 	}

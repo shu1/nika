@@ -163,7 +163,7 @@ function pass() {
 }
 
 
-function pushState(ai) {
+function pushState(ai, dontSave) {
 	var state = {
 	  player: gameMan.player,
 	  actions: gameMan.actions,
@@ -190,7 +190,9 @@ function pushState(ai) {
 	while (states.length > 1000) {	// number of undos to hold
 		states.shift();
 	}
-	saveGame();
+	if (!dontSave) {
+		saveGame();
+	}
 }
 
 function popState() {
