@@ -287,12 +287,11 @@ function mouseUp(event) {
 	}
 }
 
-function mouseWheel(e) {
-	var sensitivity = 30;
+function mouseWheel(event) {
 	var scene = scenes[gameMan.scene];
-	var dScale = (-sensitivity * Math.sign(e.deltaY)) / drawMan.screenDistance;
-	pinch(scene, dScale, e.layerX, e.layerY);
-	e.preventDefault();
+	var dScale = -30*Math.sign(event.deltaY) / drawMan.screenDistance;
+	pinch(scene, dScale, event.layerX, event.layerY);
+	event.preventDefault();
 }
 
 function getXY(event, down) {
@@ -465,7 +464,7 @@ function pinch(scene, dScale, x, y) {
 		scene.x -= scene.width * (scene.scale - pScale) / 2;
 		scene.y -= scene.height * (scene.scale - pScale) / 2;
 	}
-	else {	// zoom center of pinc
+	else {	// zoom center of pinch
 		scene.x = x - (x - scene.x) * scene.scale / pScale;
 		scene.y = y - (y - scene.y) * scene.scale / pScale;
 	}
