@@ -474,6 +474,9 @@ function keyDown(event) {
 		gameMan.debug = !gameMan.debug;
 		initAnimations();
 		break;
+	case 77:	// M
+		debugMural();
+		break;
 	case 82:	// R
 		replay();
 		break;

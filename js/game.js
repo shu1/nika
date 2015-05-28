@@ -342,27 +342,7 @@ function menuDebug(index) {
 		zoom();
 		break;
 	case 4:
-		pass();
-		break;
-	case 5:
-		popState();
-		break;
-	case 6:
-		if (gameMan.tutorialStep < 0) {
-			initTutorial();
-		} else {
-			endTutorial();
-		}
-		break;
-	case 7:
-		if (gameMan.scene == "rules") {
-			setScene("board");
-		} else {
-			setScene("rules");
-		}
-		break;
-	case 8:
-		setScene("menus");
+		debugMural();
 		break;
 	}
 }

@@ -706,9 +706,7 @@ function drawMenu(context, dTime) {
 				var button = row * menuMan.cols + col;
 				if (button < buttons.length) {
 					if (inputMan.drag == "debug" && button == menus["debug"]
-					|| button == 1 && gameMan.debug
-					|| button == 6 && gameMan.tutorialStep >= 0
-					|| button == 7 && gameMan.scene == "rules") {
+					|| button == 1 && gameMan.debug) {
 						drawButton(context, row, col, buttons[button], "black", "white");
 					} else {
 						drawButton(context, row, col, buttons[button], "white", "black");
