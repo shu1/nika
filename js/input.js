@@ -128,7 +128,7 @@ function getXYDrag(event, down) {
 
 	var handled = inputMan.drag == "debug" || inputMan.drag == "button" || inputMan.drag == "popup" || gameMan.menu == "popup";
 
-	if (inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - menuMan.width
+	if (debugBuild && inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - menuMan.width
 	&& inputMan.y < gpCanvas.height && inputMan.y > gpCanvas.height - menuMan.height) {	// debug menu
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
@@ -489,7 +489,7 @@ function keyDown(event) {
 	case 13:	// enter
 	case 90:	// Z
 		hudMan.inputText = "Enter";
-		if (menuMan.show || gameMan.menu == "credit") {
+		if (debugBuild && (menuMan.show || gameMan.menu == "credit")) {
 			menuDebug(menus["debug"]);
 		}
 		else if (gameMan.menu == "title" && menus["title"] < 6) {
@@ -498,7 +498,7 @@ function keyDown(event) {
 		else if (gameMan.menu == "option" && menus["option"] == 2) {
 			gameMan.menu = "credit";
 		}
-		else if (!(gameMan.scene == "menus" && gameMan.menu == "option" && menus["option"] < 3)) {
+		else if (debugBuild && !(gameMan.scene == "menus" && gameMan.menu == "option" && menus["option"] < 3)) {
 			menuDebug(0);
 		}
 		break;
@@ -507,7 +507,7 @@ function keyDown(event) {
 	case 88:	// X
 	case 227:	// rewind
 		hudMan.inputText = "Back";
-		if (menuMan.show) {
+		if (debugBuild && menuMan.show) {
 			menuMan.show = false;
 			menus["debug"] = 0;
 		}
@@ -529,9 +529,11 @@ function keyDown(event) {
 	case 83:	// S
 	case 179:	// pause
 	case 228:	// forward
-		hudMan.inputText = "Menu";
-		menuMan.show = !menuMan.show;
-		menus["debug"] = 0;
+		if (debugBuild) {
+			hudMan.inputText = "Menu";
+			menuMan.show = !menuMan.show;
+			menus["debug"] = 0;
+		}
 		break;
 	case 37:	// left
 		if (!menuMan.show && gameMan.menu == "option") {
@@ -605,7 +607,7 @@ function keyDown(event) {
 
 function keyPrev() {
 	hudMan.inputText = "Prev";
-	if (menuMan.show) {
+	if (debugBuild && menuMan.show) {
 		if (menus["debug"] < buttons.length-1) {
 			menus["debug"]++;
 		}
@@ -629,7 +631,7 @@ function keyPrev() {
 
 function keyNext() {
 	hudMan.inputText = "Next";
-	if (menuMan.show) {
+	if (debugBuild && menuMan.show) {
 		if (menus["debug"] > 0) {
 			menus["debug"]--;
 		}

@@ -508,13 +508,15 @@ function drawContext(context, dTime, tv) {
 		context.drawImage(images["buttonActive"], menuMan.bWidth * menus["button"], y, menuMan.bWidth, menuMan.bHeight);
 	}
 
-	drawMenu(context, dTime);
+	if (debugBuild) {
+		drawMenu(context, dTime);
 
-	if (gameMan.debug) {
-		hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[tv + gameMan.scene].scale + "x";
-		context.fillStyle = "white";
-		context.clearRect(0, 0, canvas.width, drawMan.hudHeight);
-		context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, drawMan.hudFont);
+		if (gameMan.debug) {
+			hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[tv + gameMan.scene].scale + "x";
+			context.fillStyle = "white";
+			context.clearRect(0, 0, canvas.width, drawMan.hudHeight);
+			context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, drawMan.hudFont);
+		}
 	}
 }
 

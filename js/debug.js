@@ -1,3 +1,5 @@
+"use strict";
+
 function debugGrid() {
 	for (var row = 0; row < 15; ++row) {
 		var str = "";
