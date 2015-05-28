@@ -69,12 +69,9 @@ window.onload = function() {
 	sounds["music"].play();
 
 	gpCanvas = document.getElementById("canvas");
-	gpContext = gpCanvas.getContext("2d");	// TODO maybe don't need context in global var
-
 	muralCanvas = document.createElement("canvas");	// buffer
 	muralCanvas.width = drawMan.muralWidth;
 	muralCanvas.height = drawMan.muralHeight;
-
 	var view_2d = new fo.view_2d(muralCanvas);
 
 	murals[0] = new spriter_animation("images/mural/", view_2d, muralWhite_data);
@@ -133,7 +130,6 @@ window.onload = function() {
 			var tvCanvas = tvDisplay.window.document.getElementById("canvas");
 			tvCanvas.width = tvDisplay.width;
 			tvCanvas.height = tvDisplay.height;
-			tvContext = tvCanvas.getContext("2d");
 
 			scenes["tvboard"] = {};
 			scenes["tvmenus"] = scenes["tvrules"] = {};
@@ -182,11 +178,11 @@ function reSize() {
 
 	drawMan.hudHeight = Math.floor(44*minScale);
 	drawMan.hudFont = Math.floor(32*minScale);
-	gpContext.font = drawMan.hudFont + "px sans-serif";
+	gpCanvas.getContext("2d").font = drawMan.hudFont + "px sans-serif";
 
 	menuMan.bWidth = drawMan.cellSize*2 * minScale;
 	menuMan.bHeight = menuMan.bWidth/2;
-	menuMan.bPadding = 4 * minScale;
+	menuMan.bPadding = 8 * minScale;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
 	menuMan.height = menuMan.bHeight * menuMan.rows;
 	menuMan.pWidth = 1024 * minScale;
@@ -343,9 +339,9 @@ function draw(time) {
 		drawMural(muralCanvas.getContext("2d"), dTime);	// draw mural to buffer
 	}
 
-	drawContext(gpContext, dTime);	// draw main screen
+	drawContext(gpCanvas.getContext("2d"), dTime);	// draw main screen
 	if (window.nwf) {
-		drawContext(tvContext, dTime, "tv");	// draw tv
+		drawContext(tvCanvas.getContext("2d"), dTime, "tv");	// draw tv
 	}
 
 	if (gameMan.scene == "board" && gameMan.tutorialStep < 0 && gameMan.ais[gameMan.player] && !gameMan.thinking && !gameMan.replaying) {
