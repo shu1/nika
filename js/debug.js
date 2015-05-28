@@ -1,5 +1,27 @@
 "use strict";
 
+function menuDebug(index) {
+	switch (index) {
+	case 0:
+		menuMan.show = !menuMan.show;
+		menus["debug"] = 0;
+		break;
+	case 1:
+		gameMan.debug = !gameMan.debug;
+		initAnimations();
+		break;
+	case 2:
+		ai();
+		break;
+	case 3:
+		zoom();
+		break;
+	case 4:
+		debugMural();
+		break;
+	}
+}
+
 function debugGrid() {
 	for (var row = 0; row < 15; ++row) {
 		var str = "";
