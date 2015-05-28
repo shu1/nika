@@ -1,3 +1,14 @@
+function debugGrid() {
+	for (var row = 0; row < 15; ++row) {
+		var str = "";
+		for (var col = 0; col < 21; ++col) {
+			var a = grid[row][col].city;
+			str += (a == -1) ? '.' : a;
+		}
+		console.log(str);
+	}
+}
+
 // testAnimation() will play back all animation combinations
 // testAnimation(idx) will play back a single animation by index
 function testAnimation(idx) {
@@ -28,7 +39,6 @@ function testAnimation(idx) {
 		});
 	}
 }
-
 
 function replay() {
 	gameMan.replaying = !gameMan.replaying;
