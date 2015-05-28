@@ -442,9 +442,11 @@ function drawContext(context, dTime, tv) {
 		}
 		break;
 	case "rules":
-		context.drawImage(images["rule" + gameMan.rules + "0"], x, y);
-		context.drawImage(images["rule" + gameMan.rules + "1"], x+1024, y);
-		drawRules(context, scene);
+		if (gameMan.rules < rulePages) {
+			context.drawImage(images["rule" + gameMan.rules + "0"], x, y);
+			context.drawImage(images["rule" + gameMan.rules + "1"], x+1024, y);
+			drawRules(context, scene);
+		}
 		break;
 	case "menus":
 		switch (gameMan.menu) {
