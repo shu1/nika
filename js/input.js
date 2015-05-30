@@ -198,7 +198,7 @@ function getRowCol(scene) {
 function mouseMove(event) {
 	if (inputMan.touchID >= 0) {
 		getXY(event);
-		var handled = getDrag(false);
+		var handled = false;
 		var scene = scenes[gameMan.scene];
 
 		if (inputMan.touchID2 >= 0) {	// 2nd touch is down, so pinch
@@ -211,7 +211,7 @@ function mouseMove(event) {
 			pinch(scene, dScale, x, y);
 			handled = true;
 		}
-		else if (!handled && isTouch(event, inputMan.touchID)) {
+		else if (isTouch(event, inputMan.touchID) && !(handled = getDrag())) {
 			var preventPan = false;
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
