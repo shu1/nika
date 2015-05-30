@@ -42,7 +42,8 @@ function mouseDown(event) {
 	}
 
 	if (!multiTouch) {
-		var handled = getXYDrag(event, true);
+		getXY(event);
+		var handled = getDrag(true);
 		if (!handled) {
 			var scene = scenes[gameMan.scene];
 			var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
@@ -96,7 +97,7 @@ function mouseDown(event) {
 	hudMan.inputText += " down";
 }
 
-function getXYDrag(event, down) {
+function getXY(event) {
 	if (navigator.msPointerEnabled) {
 		if (event.pointerId == inputMan.touchID) {
 			inputMan.x = event.layerX;
@@ -125,7 +126,9 @@ function getXYDrag(event, down) {
 		inputMan.x = event.layerX;
 		inputMan.y = event.layerY;
 	}
+}
 
+function getDrag(down) {
 	var handled = inputMan.drag == "debug" || inputMan.drag == "button" || inputMan.drag == "popup" || gameMan.menu == "popup";
 
 	if (debugBuild && inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - menuMan.width
@@ -194,7 +197,8 @@ function getRowCol(scene) {
 
 function mouseMove(event) {
 	if (inputMan.touchID >= 0) {
-		var handled = getXYDrag(event);
+		getXY(event);
+		var handled = getDrag(false);
 		var scene = scenes[gameMan.scene];
 
 		if (inputMan.touchID2 >= 0) {	// 2nd touch is down, so pinch
