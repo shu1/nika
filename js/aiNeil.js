@@ -38,7 +38,9 @@ function aiNeil(){
 		if(pieces[i].kind == 3){
 			for(var j = 0; j<rallySpots.length; j++){
 				//Get rally spots
+				phalanx = [pieces[i]];
 				var rally = getRallyArguments(pieces[i],rallySpots[j]);
+				//debugger;
 				movePiece(rally.pRow,rally.pCol,rally.tRow,rally.tCol,true);
 				pieces = getAIPieces();
 				var temp = copyState(defaultState);
@@ -156,7 +158,7 @@ function getValue(state,pieces){
 		var val = 0;
 
 		//Piece on Board
-		if(pieces[i].kind!=3){ val+=1000; }
+		if(pieces[i].kind!=3){ val+=50; }
 
 		//Adjacent Check
 		var adj = [];
