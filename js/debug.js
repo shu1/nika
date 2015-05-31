@@ -33,9 +33,8 @@ function debugGrid() {
 	}
 }
 
-// debugMural() will play back all animation combinations
-// debugMural(index) will play back a single animation by index
-function debugMural(index) {
+var debugMuralIndex = 0;
+function debugMural() {
 	var anims = [
 		[0,"push",1,"pushed"],[0,"rout",1,"routed"],[0,"rout",1,"pushed"],
 		[0,"push",3,"pushed"],[0,"rout",3,"routed"],[0,"rout",3,"pushed"],
@@ -48,19 +47,13 @@ function debugMural(index) {
 		[0,"rally",2,"rally"],[1,"rally",3,"rally"]
 	]
 
-	if (index != undefined) {
-		console.log(index + " : " + anims[index].join(" "));
-		playAnimation(anims[index][0], anims[index][1]);
-		playAnimation(anims[index][2], anims[index][3]);
-	}
-	else {
-		anims.forEach(function(anim, index) {
-			setTimeout(function() {
-				console.log(index + " : " + anim.join(" "));
-				playAnimation(anim[0], anim[1]);
-				playAnimation(anim[2], anim[3]);
-			}, index * 2000);
-		});
+	console.log(debugMuralIndex + " : " + anims[debugMuralIndex].join(" "));
+	playAnimation(anims[debugMuralIndex][0], anims[debugMuralIndex][1]);
+	playAnimation(anims[debugMuralIndex][2], anims[debugMuralIndex][3]);
+
+	++debugMuralIndex;
+	if (debugMuralIndex >= anims.length) {
+		debugMuralIndex = 0;
 	}
 }
 
