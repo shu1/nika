@@ -433,10 +433,10 @@ function menuSetup(index) {
 function ai() {
 	switch (gameMan.ais[gameMan.player]) {
 	case 1:
-		aiNeil();
+		aiShu();
 		break;
 	case 2:
-		aiShu();
+		aiNeil();
 		break;
 	}
 }
