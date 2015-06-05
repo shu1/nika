@@ -36,20 +36,22 @@ function debugGrid() {
 var debugMuralIndex = 0;
 function debugMural() {
 	var anims = [
-		[0,"push",1,"pushed"],[0,"rout",1,"routed"],[0,"rout",1,"pushed"],
-		[0,"push",3,"pushed"],[0,"rout",3,"routed"],[0,"rout",3,"pushed"],
-		[2,"push",1,"pushed"],[2,"rout",1,"routed"],[2,"rout",1,"pushed"],
-		[2,"push",3,"pushed"],[2,"rout",3,"routed"],[2,"rout",3,"pushed"],
-		[1,"push",0,"pushed"],[1,"rout",0,"routed"],[1,"rout",0,"pushed"],
-		[1,"push",2,"pushed"],[1,"rout",2,"routed"],[1,"rout",2,"pushed"],
-		[3,"push",0,"pushed"],[3,"rout",0,"routed"],[3,"rout",0,"pushed"],
-		[3,"push",2,"pushed"],[3,"rout",2,"routed"],[3,"rout",2,"pushed"],
-		[0,"rally",2,"rally"],[1,"rally",3,"rally"]
+		[[0,"push"],[1,"pushed"]],[[0,"rout"],[1,"routed"]],[[0,"rout"],[1,"routed"],[3,"pushed"]],
+		[[0,"push"],[3,"pushed"]],[[0,"rout"],[3,"routed"]],[[0,"rout"],[3,"routed"],[1,"pushed"]],
+		[[2,"push"],[1,"pushed"]],[[2,"rout"],[1,"routed"]],[[2,"rout"],[1,"routed"],[3,"pushed"]],
+		[[2,"push"],[3,"pushed"]],[[2,"rout"],[3,"routed"]],[[2,"rout"],[3,"routed"],[1,"pushed"]],
+		[[1,"push"],[0,"pushed"]],[[1,"rout"],[0,"routed"]],[[1,"rout"],[0,"routed"],[2,"pushed"]],
+		[[1,"push"],[2,"pushed"]],[[1,"rout"],[2,"routed"]],[[1,"rout"],[2,"routed"],[0,"pushed"]],
+		[[3,"push"],[0,"pushed"]],[[3,"rout"],[0,"routed"]],[[3,"rout"],[0,"routed"],[2,"pushed"]],
+		[[3,"push"],[2,"pushed"]],[[3,"rout"],[2,"routed"]],[[3,"rout"],[2,"routed"],[0,"pushed"]],
+		[[0,"rally"],[2,"rally"]],[[1,"rally"],[3,"rally"]]
 	]
 
 	console.log(debugMuralIndex + " : " + anims[debugMuralIndex].join(" "));
-	playAnimation(anims[debugMuralIndex][0], anims[debugMuralIndex][1]);
-	playAnimation(anims[debugMuralIndex][2], anims[debugMuralIndex][3]);
+
+	anims[debugMuralIndex].forEach(function(playerAnim) {
+		playAnimation(playerAnim[0], playerAnim[1]);
+	});
 
 	++debugMuralIndex;
 	if (debugMuralIndex >= anims.length) {
