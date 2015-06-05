@@ -434,10 +434,19 @@ function drawContext(context, dTime, tv) {
 
 	var x = (scene.width - drawMan.screenWidth)/2;
 	var y = (scene.height - drawMan.screenHeight)/2;
+
+	function drawImages(name, x0, y0, x1, y1) {	// fix seams
+		var image0 = images[name + "0"];
+		var image1 = images[name + "1"];
+		context.drawImage(image0, Math.floor(x0 * scene.scale) / scene.scale, Math.floor(y0 * scene.scale) / scene.scale,
+			Math.floor(image0.width * scene.scale) / scene.scale, Math.floor(image0.height * scene.scale) / scene.scale);
+		context.drawImage(image1, Math.floor(x1 * scene.scale) / scene.scale, Math.floor(y1 * scene.scale) / scene.scale,
+			Math.floor(image1.width * scene.scale) / scene.scale, Math.floor(image1.height * scene.scale) / scene.scale);
+	}
+
 	switch (gameMan.scene) {
 	case "board":
-		context.drawImage(images["board0"], 0, 0);
-		context.drawImage(images["board1"], 0, 960);
+		drawImages("board", 0, 0, 0, 960);
 		if (gameMan.menu != "popup") {
 			context.drawImage(muralCanvas, drawMan.muralX, drawMan.muralY);
 		}
@@ -449,37 +458,32 @@ function drawContext(context, dTime, tv) {
 		break;
 	case "rules":
 		if (gameMan.rules < rulePages) {
-			context.drawImage(images["rule" + gameMan.rules + "0"], x, y);
-			context.drawImage(images["rule" + gameMan.rules + "1"], x+1024, y);
+			drawImages("rule" + gameMan.rules, x, y, x+1023, y);
 			drawRules(context, scene);
 		}
 		break;
 	case "menus":
 		switch (gameMan.menu) {
 		case "title":
-			context.drawImage(images["menuTitle0"], x, y);
-			context.drawImage(images["menuTitle1"], x+512, y);
+			drawImages("menuTitle", x, y, x+512, y);
 			if (menus["title"] < 6) {
 				context.drawImage(images["menuTitleActive"], x+82, y+282 + drawMan.activeHeight*menus["title"]);
 			}
 			break;
 		case "setup":
-			context.drawImage(images["menuSetup0"], x, y);
-			context.drawImage(images["menuSetup1"], x+512, y);
+			drawImages("menuSetup", x, y, x+512, y);
 			context.drawImage(images["menuSetupAI" + gameMan.ais[0]], x+50, y+540);
 			context.drawImage(images["menuSetupAI" + gameMan.ais[2]], x+340, y+540);
 			context.drawImage(images["menuSetupAI" + gameMan.ais[1]], x+1020, y+540);
 			context.drawImage(images["menuSetupAI" + gameMan.ais[3]], x+1310, y+540);
 			break;
 		case "option":
-			context.drawImage(images["menuOption0"], x, y);
-			context.drawImage(images["menuOption1"], x+512, y);
+			drawImages("menuOption", x, y, x+512, y);
 			context.drawImage(images["menuOptionSlider"], x-40 + 1484*soundMan.music, y+384);
 			context.drawImage(images["menuOptionSlider"], x-40 + 1484*soundMan.sound, y+648);
 			break;
 		case "credit":
-			context.drawImage(images["menuCredit0"], x, y);
-			context.drawImage(images["menuCredit1"], x+512, y);
+			drawImages("menuCredit", x, y, x+512, y);
 			break;
 		}
 		break;
