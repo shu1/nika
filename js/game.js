@@ -116,6 +116,8 @@ function newGame() {
 	generateGrid(newBoard);
 	states = [];
 	phalanx = [];
+	resetEvents();
+	resetAnimations();
 	pushState();
 	gameMan.winner = -1;
 	gameMan.player = 0;
@@ -273,6 +275,10 @@ function playerAction() {
 		playAnimation(player, priorityEvent);
 		eventMan[player] = [];
 	}
+}
+
+function resetEvents() {
+	eventMan = {0:[],1:[],2:[],3:[]}
 }
 
 function getPriorityEvent(events) {

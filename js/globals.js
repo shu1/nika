@@ -31,12 +31,7 @@ var soundMan = {
 	sound:0.5
 }
 
-var eventMan = {
-	0:[],
-	1:[],
-	2:[],
-	3:[]
-}
+var eventMan = {0:[],1:[],2:[],3:[]}
 
 var gameMan = {
 	tutorialStep:-1,
