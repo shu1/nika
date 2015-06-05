@@ -474,8 +474,8 @@ function drawContext(context, dTime, tv) {
 		case "option":
 			context.drawImage(images["menuOption0"], x, y);
 			context.drawImage(images["menuOption1"], x+512, y);
-			context.drawImage(images["menuOptionSlider"], x-40 + 1484*soundMan.music, y+384);
-			context.drawImage(images["menuOptionSlider"], x-40 + 1484*soundMan.sound, y+648);
+			context.drawImage(images["menuOptionSlider"], Math.floor(x-40 + 1484*soundMan.music), y+384);
+			context.drawImage(images["menuOptionSlider"], Math.floor(x-40 + 1484*soundMan.sound), y+648);
 			break;
 		case "credit":
 			context.drawImage(images["menuCredit0"], x, y);
@@ -495,7 +495,7 @@ function drawContext(context, dTime, tv) {
 		context.drawImage(images["menuPopup"], x, y, menuMan.pWidth, menuMan.pHeight);
 
 		if (inputMan.drag == "popup" && menus["popup"] >= 0) {
-			context.drawImage(images["menuPopupActive"], x, y + menuMan.pHeight/4 * menus["popup"], menuMan.pWidth, menuMan.pHeight/4);
+			context.drawImage(images["menuPopupActive"], x, Math.floor(y + menuMan.pHeight/4 * menus["popup"]), menuMan.pWidth, Math.floor(menuMan.pHeight/4));
 		}
 	}
 
