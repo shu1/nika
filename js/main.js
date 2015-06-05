@@ -398,7 +398,13 @@ function drawMural(context, dTime) {
 			context.fillText(lines[i], drawMan.tutorialOffset+8, topPadding + spacing * i);
 		}
 		if (tutorialInputs[gameMan.tutorialStep]) {
-			context.globalAlpha = (Math.sin(drawMan.time/250 % (Math.PI*2))+1)/4 + 0.5;
+			drawMan.tutorialTheta += dTime/250;
+			if (drawMan.tutorialFlash > 0) {
+				drawMan.tutorialFlash -= dTime/600;
+				drawMan.tutorialTheta += dTime/30;
+			}
+
+			context.globalAlpha = (Math.sin(drawMan.tutorialTheta % (Math.PI*2))+1)/4 + 0.5;
 			context.fillStyle = "white";
 			context.fillText("Next", nextX, drawMan.muralHeight - bottomPadding);
 			context.globalAlpha = 1;

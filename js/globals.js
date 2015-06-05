@@ -16,12 +16,14 @@ var drawMan = {
 	muralWidth:758,
 	muralHeight:192,
 	tutorialOffset:152,
-	menu:false,
-	helmetTheta:0,
 	helmetScale:0,
+	helmetTheta:0,
 	helmetFlash:0,
+	tutorialTheta:0,
+	tutorialFlash:0,
 	zoom:0,
-	time:0
+	time:0,
+	menu:false
 }
 
 var soundMan = {

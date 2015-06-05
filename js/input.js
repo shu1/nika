@@ -397,6 +397,9 @@ function mouseUp(event) {
 					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
 						nextTutorialStep();
 					}
+					else {
+						drawMan.tutorialFlash = 1.5;
+					}
 				}
 				else if (gameMan.winner >= 0) {	// win screen
 					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
