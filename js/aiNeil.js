@@ -21,12 +21,13 @@ function aiNeil(){
 	//Creates the default state in which all other states are compared to.
 	var defaultState = newState();
 	getValue(defaultState,pieces);
+	console.log("Default Value " + defaultState.value);
 	var bestState = defaultState; //Stores best state, which is default at this point. Altough we might be better off just setting best state.
 
 	var rallySpots = [];
 	for (var row = 0 ; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
-			if(grid[row][col].kind == 3 && grid[row][col].city == pieces[0].player && grid[row][col] < 0){
+			if(grid[row][col].kind == 2 && grid[row][col].city == pieces[0].player){
 				rallySpots.push(grid[row][col]);
 			}
 		}
@@ -37,6 +38,20 @@ function aiNeil(){
 		if(pieces[i].kind == 3){
 			for(var j = 0; j<rallySpots.length; j++){
 				//Get rally spots
+				phalanx = [pieces[i]];
+				var rally = getRallyArguments(pieces[i],rallySpots[j]);
+				//debugger;
+				movePiece(rally.pRow,rally.pCol,rally.tRow,rally.tCol,true);
+				pieces = getAIPieces();
+				var temp = copyState(defaultState);
+				getValue(temp,pieces);
+				console.log(temp.value);
+				if(temp.value>bestState.value){
+					bestState=temp;
+					console.log("Found better state by RALLYING with a value of: " + bestState.value);
+				}
+				setGrid(defGrid,grid);
+				pieces = getAIPieces();
 			}
 		}
 		else{
@@ -143,7 +158,7 @@ function getValue(state,pieces){
 		var val = 0;
 
 		//Piece on Board
-		if(pieces[i].kind!=3){ val+=5; }
+		if(pieces[i].kind!=3){ val+=50; }
 
 		//Adjacent Check
 		var adj = [];
@@ -196,7 +211,7 @@ function getValue(state,pieces){
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			if (grid[row][col].player>-1 && Math.abs(gameMan.player-grid[row][col].player)%2!=0 && grid[row][col].kind==3) {
-				state.value+=10000;
+				state.value+=20;
 			}
 		}
 	}
@@ -430,5 +445,14 @@ function getMoveArguments(p,dir){
 		pCol : p.col,
 		tRow : newRow,
 		tCol : newCol
+	}
+}
+
+function getRallyArguments(p,target){
+	return {
+		pRow : p.row,
+		pCol : p.col,
+		tRow : target.row,
+		tCol : target.col
 	}
 }
