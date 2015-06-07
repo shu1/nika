@@ -8,9 +8,10 @@ function clearTutorialRings() {
 	}
 }
 
-function initTutorial() {
+function initTutorial(step) {
+	if (step == undefined) { step = 0; }
 	gameMan.winner = -1;
-	gameMan.tutorialStep = -1;
+	gameMan.tutorialStep = step - 1;
 	nextTutorialStep();
 }
 

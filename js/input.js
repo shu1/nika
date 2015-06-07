@@ -70,7 +70,7 @@ function mouseDown(event) {
 					handled = true;
 				}
 			}
-			else if (gameMan.scene == "board" && gameMan.winner < 0 && !gameMan.thinking) {
+			else if (gameMan.scene == "board" && gameMan.winner < 0 && !gameMan.ais[gameMan.player]) {
 				getRowCol(scene);
 				getPiece(inputMan.row, inputMan.col);
 				if (phalanx.length > 0) {
@@ -417,7 +417,7 @@ function mouseUp(event) {
 				 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
 				 	checkTutorialSelection();
 				}
-				else {
+				else if (!gameMan.ais[gameMan.player]) {
 					movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col);
 				}
 
