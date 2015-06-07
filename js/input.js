@@ -49,9 +49,9 @@ function mouseDown(event) {
 			var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
 			var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
 
-			if (gameMan.menu == "title") {
+			if (gameMan.menu == "title") {	// TODO code repeated 3 times, abstract out to function
 				x -= 128;	// offset to coordinates of buttons
-				y -= 330;
+				y -= 282;
 				if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
 					menus["title"] = Math.floor(y / drawMan.activeHeight);
 					handled = true;
@@ -362,7 +362,7 @@ function mouseUp(event) {
 
 				if (gameMan.menu == "title") {
 					x -= 128;	// offset to coordinates of buttons
-					y -= 330;
+					y -= 282;
 					if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
 						menuTitle(Math.floor(y / drawMan.activeHeight));
 					}
