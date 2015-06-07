@@ -104,9 +104,6 @@ window.onload = function() {
 		gpCanvas.addEventListener("mousemove", mouseMove);
 		window.addEventListener("mouseup", mouseUp);
 	}
-	window.onmousewheel = function() {
-		console.log("Mouse scroll detected.");
-	}
 	window.addEventListener("wheel", mouseWheel);
 	window.addEventListener("keydown", keyDown);
 
