@@ -217,10 +217,11 @@ function mouseMove(event) {
 			var dY = inputMan.y - inputMan.pY;
 			var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
 			var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
+			hudMan.inputText = x + "," + y;
 
 			if (gameMan.menu == "title") {
 				x -= 128;	// offset to coordinates of buttons
-				y -= 330;
+				y -= 282;
 				if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
 					menus["title"] = Math.floor(y / drawMan.activeHeight);
 					handled = true;
