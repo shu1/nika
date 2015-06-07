@@ -50,9 +50,8 @@ function mouseDown(event) {
 			var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
 
 			if (gameMan.menu == "title") {	// TODO code repeated 3 times, abstract out to function
-				x -= 128;	// offset to coordinates of buttons
 				y -= 282;
-				if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
+				if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
 					menus["title"] = Math.floor(y / drawMan.activeHeight);
 					handled = true;
 				}
@@ -220,9 +219,8 @@ function mouseMove(event) {
 			hudMan.inputText = x + "," + y;
 
 			if (gameMan.menu == "title") {
-				x -= 128;	// offset to coordinates of buttons
 				y -= 282;
-				if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
+				if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
 					menus["title"] = Math.floor(y / drawMan.activeHeight);
 					handled = true;
 				}
@@ -361,9 +359,8 @@ function mouseUp(event) {
 				y -= (scene.height - drawMan.screenHeight)/2;
 
 				if (gameMan.menu == "title") {
-					x -= 128;	// offset to coordinates of buttons
 					y -= 282;
-					if (x > 0 && x < 400 && y > 0 && y < drawMan.activeHeight*6) {
+					if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
 						menuTitle(Math.floor(y / drawMan.activeHeight));
 					}
 				}
