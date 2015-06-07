@@ -216,7 +216,7 @@ function mouseMove(event) {
 			var dY = inputMan.y - inputMan.pY;
 			var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
 			var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
-			hudMan.inputText = x + "," + y;
+			hudMan.inputText = Math.floor(x) + "," + Math.floor(y);
 
 			if (gameMan.menu == "title") {
 				y -= 282;
