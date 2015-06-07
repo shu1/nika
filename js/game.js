@@ -341,7 +341,7 @@ function menuButton(index) {
 			localStorage.setItem("nikaSoundSave", JSON.stringify(soundMan));
 			gameMan.menu = "title";
 		}
-		else if (gameMan.menu == "setup" || gameMan.menu == "credit") {
+		else if (gameMan.menu == "setup" || gameMan.menu == "credit" || gameMan.menu == "tutorial") {
 			gameMan.menu = "title";
 		}
 		else if (gameMan.menu == "popup") {
@@ -402,8 +402,7 @@ function menuTitle(index) {
 		}
 		break;
 	case 2:
-		setScene("board");
-		initTutorial();
+		gameMan.menu = "tutorial";
 		break;
 	case 3:
 		setScene("rules");
@@ -428,6 +427,24 @@ function menuSetup(index) {
 		newGame();
 		setScene("board");
 	}
+}
+
+function menuTutorial(index) {
+	switch(index) {
+	case 0:
+		initTutorial(0);
+		break;
+	case 1:
+		initTutorial(10);
+		break;
+	case 2:
+		initTutorial(27);
+		break;
+	case 3:
+		initTutorial(38);
+		break;
+	}
+	setScene("board");
 }
 
 function ai() {

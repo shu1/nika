@@ -162,7 +162,7 @@ function getDrag(down) {
 		menus["popup"] = -1;
 	}
 
-	if ((gameMan.scene == "rules" || gameMan.menu == "popup" || gameMan.menu == "setup" || gameMan.menu == "option" || gameMan.menu == "credit")
+	if ((gameMan.scene == "rules" || gameMan.menu == "popup" || gameMan.menu == "setup" || gameMan.menu == "option" || gameMan.menu == "credit" || gameMan.menu == "tutorial")
 	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth) {	// close/back button
 		menus["button"] = 0;
 		if (down) {
@@ -362,6 +362,12 @@ function mouseUp(event) {
 					y -= 282;
 					if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
 						menuTitle(Math.floor(y / drawMan.activeHeight));
+					}
+				}
+				else if (gameMan.menu == "tutorial") {
+					y -= 190;
+					if (x > 285 && x < 1245 && y > 0 && y < 800) {
+						menuTutorial(Math.floor(y / 200));
 					}
 				}
 				else if (gameMan.menu == "setup") {

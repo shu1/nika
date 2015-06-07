@@ -42,6 +42,7 @@ window.onload = function() {
 	loadImage("menuPopupActive");
 	loadImage("menuSetup", 1);
 	loadImage("menuSetupAI", 2);
+	loadImage("menuTutorial", 1);
 	loadImage("menuOption", 1);
 	loadImage("menuOptionSlider");
 	loadImage("menuCredit", 1);
@@ -471,6 +472,10 @@ function drawContext(context, dTime, tv) {
 			context.drawImage(images["menuSetupAI" + gameMan.ais[1]], x+1020, y+540);
 			context.drawImage(images["menuSetupAI" + gameMan.ais[3]], x+1310, y+540);
 			break;
+		case "tutorial":
+			context.drawImage(images["menuTutorial0"], x, y);
+			context.drawImage(images["menuTutorial1"], x+512, y);
+			break;
 		case "option":
 			context.drawImage(images["menuOption0"], x, y);
 			context.drawImage(images["menuOption1"], x+512, y);
@@ -503,7 +508,7 @@ function drawContext(context, dTime, tv) {
 	if (gameMan.scene == "rules" || gameMan.menu == "popup") {
 		context.drawImage(images["buttonClose"], 0, y, menuMan.bWidth, menuMan.bHeight);
 	}
-	else if (gameMan.menu == "setup" || gameMan.menu == "option" || gameMan.menu == "credit") {
+	else if (gameMan.menu == "setup" || gameMan.menu == "option" || gameMan.menu == "credit" || gameMan.menu == "tutorial") {
 		context.drawImage(images["buttonBack"], 0, y, menuMan.bWidth, menuMan.bHeight);
 	}
 	else if (gameMan.scene == "board") {
