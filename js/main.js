@@ -104,7 +104,7 @@ window.onload = function() {
 		gpCanvas.addEventListener("mousemove", mouseMove);
 		window.addEventListener("mouseup", mouseUp);
 	}
-	window.addEventListener("mousewheel", mouseWheel);
+	window.addEventListener("wheel", mouseWheel);
 	window.addEventListener("keydown", keyDown);
 
 	if (screenType > 0) {
