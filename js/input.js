@@ -472,7 +472,13 @@ function pinch(scene, dScale, x, y) {
 
 function mouseWheel(event) {
 	var scene = scenes[gameMan.scene];
-	var dScale = -30*Math.sign(event.deltaY) / drawMan.screenDistance;
+	var dir = 0;
+	if (event.deltaY > 0) {
+		dir = 1;
+	} else if (event.deltaY < 0) {
+		dir = -1;
+	}
+	var dScale = -30 * dir / drawMan.screenDistance;
 	pinch(scene, dScale, event.layerX, event.layerY);
 	event.preventDefault();
 }
