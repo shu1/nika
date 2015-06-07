@@ -70,7 +70,7 @@ function mouseDown(event) {
 					handled = true;
 				}
 			}
-			else if (gameMan.scene == "board" && gameMan.winner < 0 && !gameMan.thinking) {
+			else if (gameMan.scene == "board" && gameMan.winner < 0 && !gameMan.ais[gameMan.player]) {
 				getRowCol(scene);
 				getPiece(inputMan.row, inputMan.col);
 				if (phalanx.length > 0) {
