@@ -49,7 +49,7 @@ function mouseDown(event) {
 			var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
 			var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
 
-			if (gameMan.menu == "title") {	// TODO code repeated 3 times, abstract out to function
+			if (gameMan.menu == "title") {
 				y -= 282;
 				if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
 					menus["title"] = Math.floor(y / drawMan.activeHeight);
@@ -361,7 +361,7 @@ function mouseUp(event) {
 				if (gameMan.menu == "title") {
 					y -= 282;
 					if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
-						menuTitle(Math.floor(y / drawMan.activeHeight));
+						menuTitle(menus["title"]);
 					}
 				}
 				else if (gameMan.menu == "tutorial") {
