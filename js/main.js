@@ -404,7 +404,7 @@ function drawMural(context, dTime) {
 
 		context.fillStyle = "white";
 		if (gameMan.tutorialStep > 0) {
-			context.fillText("Prev", 40, drawMan.muralHeight - bottomPadding);
+			context.fillText("Back", 40, drawMan.muralHeight - bottomPadding);
 		}
 
 		if (tutorialInputs[gameMan.tutorialStep]) {
@@ -565,11 +565,24 @@ function setRings() {
 
 function drawPieces(context) {
 	if (inputMan.touchID >= 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && inPhalanx(gameMan.pRow, gameMan.pCol)) {
+		var x = gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2;
+		var y = gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2;
+
 		context.fillStyle = "rgba(191,191,191,0.5)";
 		context.beginPath();
-		context.arc(gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2, gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2,
-			drawMan.cellSize * 2, 0, Math.PI*2);
+		context.arc(x, y, drawMan.cellSize * 2.0, 0, Math.PI*2);
 		context.fill();
+
+		context.strokeStyle = "white";
+		context.lineWidth = 2;
+		context.beginPath();
+		context.arc(x, y, drawMan.cellSize * 1.8, 0, Math.PI*2);
+		context.stroke();
+
+		context.lineWidth = 6;
+		context.beginPath();
+		context.arc(x, y, drawMan.cellSize * 2.0, 0, Math.PI*2);
+		context.stroke();
 	}
 
 	var pieceSize = 80;
