@@ -375,7 +375,9 @@ function drawMural(context, dTime) {
 	else {	// draw dialog
 		context.fillStyle = "#221E1F";
 		context.fillRect(drawMan.tutorialOffset, 0, drawMan.muralWidth - drawMan.tutorialOffset, drawMan.muralHeight);
-		context.fillStyle = "#E0D9B3";
+		if (gameMan.tutorialStep > 0) {
+			context.fillRect(0, drawMan.muralHeight, drawMan.tutorialOffset, -46);
+		}
 
 		var lines;
 		if (gameMan.winner >= 0) {
@@ -395,9 +397,16 @@ function drawMural(context, dTime) {
 			context.font = fontSize + font;
 		}
 
+		context.fillStyle = "#E0D9B3";
 		for (var i = lines.length-1; i >= 0; --i) {
 			context.fillText(lines[i], drawMan.tutorialOffset+8, topPadding + spacing * i);
 		}
+
+		context.fillStyle = "white";
+		if (gameMan.tutorialStep > 0) {
+			context.fillText("Prev", 40, drawMan.muralHeight - bottomPadding);
+		}
+
 		if (tutorialInputs[gameMan.tutorialStep]) {
 			drawMan.tutorialTheta += dTime/250;
 			if (drawMan.tutorialFlash > 0) {
@@ -406,7 +415,6 @@ function drawMural(context, dTime) {
 			}
 
 			context.globalAlpha = (Math.sin(drawMan.tutorialTheta % (Math.PI*2))+1)/4 + 0.5;
-			context.fillStyle = "white";
 			context.fillText("Next", nextX, drawMan.muralHeight - bottomPadding);
 			context.globalAlpha = 1;
 		}
