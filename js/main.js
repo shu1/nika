@@ -381,8 +381,8 @@ function drawMural(context, dTime) {
 		if (drawMan.tutorialFlash > 0) {
 			drawMan.tutorialFlash -= dTime/600;
 			drawMan.tutorialTheta += dTime/60;
-			var a = (Math.sin(drawMan.tutorialTheta % (Math.PI*2))+1)/4;
-			context.fillStyle = "rgb(" + Math.floor(a*191+34) + "," + Math.floor(a*187+30) + "," + Math.floor(a*148+31) + ")";
+			var a = (Math.sin(drawMan.tutorialTheta % (Math.PI*2))+1)/4;	// divide by 2 for full range, 3 or more for darker range
+			context.fillStyle = "rgb(" + Math.floor(a*191+34) + "," + Math.floor(a*187+30) + "," + Math.floor(a*148+31) + ")";	// fade between black background and white text
 		}
 		context.fillRect(drawMan.tutorialOffset, 0, drawMan.muralWidth - drawMan.tutorialOffset, drawMan.muralHeight);
 
@@ -395,11 +395,11 @@ function drawMural(context, dTime) {
 
 		var spacing = 36, topPadding = 26, bottomPadding = 14, nextX = 672, font = "px Georgia";
 		if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
-			context.font = (fontSize-2) + font;
 			spacing -= 4;
 			topPadding -= 2;
 			bottomPadding -= 2;
 			nextX += 4;
+			context.font = (fontSize-2) + font;
 		} else {
 			context.font = fontSize + font;
 		}

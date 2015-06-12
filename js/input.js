@@ -396,7 +396,14 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.scene == "board") {
-				if (gameMan.tutorialStep >= 0 && x > drawMan.muralX && x < drawMan.muralX + drawMan.tutorialOffset
+				if (gameMan.winner >= 0) {
+					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
+					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
+						localStorage.removeItem("nikaGameSave");
+						setScene("menus");
+					}
+				}
+				else if (gameMan.tutorialStep >= 0 && x > drawMan.muralX && x < drawMan.muralX + drawMan.tutorialOffset
 				&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
 					prevTutorialPart();
 				}
@@ -408,13 +415,6 @@ function mouseUp(event) {
 					else {
 						drawMan.tutorialTheta = 0;
 						drawMan.tutorialFlash = 1;
-					}
-				}
-				else if (gameMan.winner >= 0) {	// win screen
-					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
-					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
-						localStorage.removeItem("nikaGameSave");
-						setScene("menus");
 					}
 				}
 				else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol
