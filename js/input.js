@@ -396,20 +396,18 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.scene == "board") {
-				if (gameMan.tutorialStep >= 0) {
-					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.tutorialOffset
+				if (gameMan.tutorialStep >= 0 && x > drawMan.muralX && x < drawMan.muralX + drawMan.tutorialOffset
+				&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
+					prevTutorialPart();
+				}
+				else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {
+					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
 					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
-						prevTutorialPart();
+						nextTutorialStep();
 					}
-					else if (tutorialInputs[gameMan.tutorialStep] || gameMan.debug) {
-						if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
-						&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
-							nextTutorialStep();
-						}
-						else {
-							drawMan.tutorialTheta = 0;
-							drawMan.tutorialFlash = 1;
-						}
+					else {
+						drawMan.tutorialTheta = 0;
+						drawMan.tutorialFlash = 1;
 					}
 				}
 				else if (gameMan.winner >= 0) {	// win screen
