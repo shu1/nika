@@ -407,7 +407,8 @@ function mouseUp(event) {
 							nextTutorialStep();
 						}
 						else {
-							drawMan.tutorialFlash = 1.5;
+							drawMan.tutorialTheta = 0;
+							drawMan.tutorialFlash = 1;
 						}
 					}
 				}
