@@ -2,6 +2,24 @@
 
 var defGrid = null;
 
+var aiPersonality = {
+	values : {
+		ownPiecesOnBoard 			: 50,
+		ownAdjInPhalanx 			: 2,
+		ownAdjNotInPhalanx 			: 1,
+		allyAdjSameDir 				: 2,
+		allyAdjDiffDir 				: 1,
+		enemyAdjBlocked 			: -1,
+		enemyAdjRoutable 			: [5,2],
+		enemyAdjCanRoutMe 			: [-5,-12],
+		enemyAdjBothNotFacing 		: [2,-8],
+		perSquareDistanceFromGoal 	: -8,
+		perRoutedEnemyPiece 		: 20
+	}
+}
+
+var aiP = aiPersonality; //Alias?
+
 function newState (){
 	var s = {
 		value : 0, //Value of state after board state adjustments
@@ -158,7 +176,7 @@ function getValue(state,pieces){
 		var val = 0;
 
 		//Piece on Board
-		if(pieces[i].kind!=3){ val+=50; }
+		if(pieces[i].kind!=3){ val+=aiP.values.ownPiecesOnBoard; }
 
 		//Adjacent Check
 		var adj = [];
@@ -171,47 +189,47 @@ function getValue(state,pieces){
 			if(adj[j]!=undefined && adj[j].kind!=-1 && adj[j].player>-1){
 				//Own
 				if(adj[j].player==pieces[i].player){
-					if(adj[j].rot==pieces[i].rot){ val+=2; }//In Phalanx
-					else{ val+=1; }//Not in Phalanx
+					if(adj[j].rot==pieces[i].rot){ val+=aiP.values.ownAdjInPhalanx; }//In Phalanx
+					else{ val+=aiP.values.ownAdjNotInPhalanx; }//Not in Phalanx
 				}
 
 				//Ally
 				else if(Math.abs((adj[j].player-pieces[i].player)%2)==0){
-					if(adj[j].rot==pieces[i].rot){val+=2;} //Same Dir
-					else{val+=1;} //Diff Dir
+					if(adj[j].rot==pieces[i].rot){val+=aiP.values.allyAdjSameDir;} //Same Dir
+					else{val+=aiP.values.allyAdjDiffDir;} //Diff Dir
 				}
 
 				//Enemy
 				else{
 					if(pieces[i].rot == j && Math.abs((adj[j].rot-j)%2)==0){
-						val-=1; //Facing eachother.
+						val+=aiP.values.enemyAdjBlocked; //Facing eachother.
 					}
 					else if(pieces[i].rot==j){
 						//If piece is facing adj, but they aren't facing eachother, then adj is routable
-						if(gameMan.actions>1){ val+=5; }
-						else{ val+=2; }
+						if(gameMan.actions>1){ val+=aiP.values.enemyAdjRoutable[0]; }
+						else{ val+=aiP.values.enemyAdjRoutable[1]; }
 					}
 					else if(Math.abs((adj[j].rot-j)%2)==0){
 						//Else if we're not facing adjacent, check if he's facing us.
-						if(gameMan.actions>1){ val-=5; }
-						else{ val-=12;}
+						if(gameMan.actions>1){ val+=aiP.values.enemyAdjCanRoutMe[0]; }
+						else{ val+=aiP.values.enemyAdjCanRoutMe[1];}
 					}
 					else{
 						//Adjacent but not facing each other.
-						if(gameMan.actions>1){ val+=2; }
-						else { val-=8; }
+						if(gameMan.actions>1){ val+=aiP.values.enemyAdjBothNotFacing[0]; }
+						else { val+=aiP.values.enemyAdjBothNotFacing[1]; }
 					}
 				}
 			}
 		}
-		val-=8*getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
+		val+=aiP.values.perSquareDistanceFromGoal*getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
 		state.value+=val; //Adds piece value to total value
 	}
-	//Subtract for every piece on the board
+	//Add points for every routed enemy piece
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			if (grid[row][col].player>-1 && Math.abs(gameMan.player-grid[row][col].player)%2!=0 && grid[row][col].kind==3) {
-				state.value+=20;
+				state.value+=aiP.values.perRoutedEnemyPiece;
 			}
 		}
 	}
