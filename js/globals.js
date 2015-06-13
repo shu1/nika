@@ -94,7 +94,8 @@ var buttons = [
 	" Debug",
 	"     AI",
 	"  Zoom",
-	"  Mural"
+	"  Mural",
+	"AI Tool"
 ]
 
 var newBoard = [

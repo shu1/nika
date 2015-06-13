@@ -19,6 +19,9 @@ function menuDebug(index) {
 	case 4:
 		debugMural();
 		break;
+	case 5:
+		aiTool();
+		break;
 	}
 }
 
