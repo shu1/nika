@@ -84,3 +84,56 @@ function replayPrev() {
 function loadReplayTurn() {
 	loadState(gameMan.replay[gameMan.replayTurn]);
 }
+
+function aiTool() {
+	var existingDiv = document.getElementById('ai-tool');
+	if (existingDiv) {
+		existingDiv.remove();
+		return;
+	}
+
+	function inputFor(text, value, idx) {
+		var label = document.createTextNode(text);
+		var input = document.createElement('input');
+		input.type = 'number';
+		input.value = value;
+		input.dataset.prop = text;
+		if (idx != undefined) {
+			label.textContent += '[' + idx + ']';
+			input.dataset.idx = idx;
+		}
+
+		div.appendChild(label);
+		div.appendChild(document.createElement('br'));
+		div.appendChild(input);
+		div.appendChild(document.createElement('br'));
+
+		input.addEventListener('input', function() {
+			var prop = this.dataset.prop;
+			var idx = this.dataset.idx;
+			if (idx == undefined) {
+				aiPersonality.values[prop] = parseInt(this.value);
+			} else {
+				aiPersonality.values[prop][idx] = parseInt(this.value);
+			}
+			console.log(prop, aiPersonality.values[prop]);
+		});
+	}
+	var div = document.createElement('div');
+	div.id = 'ai-tool';
+	div.style.position = 'fixed';
+	div.style.top = 0;
+	div.style.left = 0;
+	div.style.background = 'cadetblue';
+	document.body.appendChild(div);
+
+	for (var i in aiPersonality.values) {
+		if (Array.isArray(aiPersonality.values[i])) {
+			aiPersonality.values[i].forEach(function(el, idx) {
+				inputFor(i, el, idx);
+			});
+		} else {
+			inputFor(i, aiPersonality.values[i]);
+		}
+	}
+}
