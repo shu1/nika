@@ -563,7 +563,7 @@ function setRings() {
 }
 
 function drawPieces(context) {
-	if (inputMan.touchID >= 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && inPhalanx(gameMan.pRow, gameMan.pCol)) {
+	if (inputMan.touchID >= 0 && gameMan.pRow >= 0 && gameMan.pCol >= 0 && inPhalanx(gameMan.pRow, gameMan.pCol) && !routedCell(gameMan.pRow, gameMan.pCol)) {
 		var x = gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2;
 		var y = gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2;
 
