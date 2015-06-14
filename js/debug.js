@@ -140,3 +140,13 @@ function aiTool() {
 		}
 	}
 }
+
+function aiBattle(ais) {
+	gameMan.ais = ais;
+	gameMan.thinking = true;
+	newGame();
+	while(gameMan.winner < 0) {
+		ai();
+	}
+	gameMan.thinking = false;
+}

@@ -345,7 +345,7 @@ function draw(time) {
 		drawContext(tvCanvas.getContext("2d"), dTime, "tv");	// draw tv
 	}
 
-	if (gameMan.scene == "board" && gameMan.tutorialStep < 0 && gameMan.ais[gameMan.player] && !gameMan.thinking && !gameMan.replaying) {
+	if (gameMan.scene == "board" && gameMan.ais[gameMan.player] && gameMan.winner < 0 && gameMan.tutorialStep < 0 && !gameMan.thinking && !gameMan.replaying) {
 		gameMan.thinking = true;
 		setTimeout(function() {
 			if (gameMan.thinking) {
