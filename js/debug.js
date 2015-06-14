@@ -141,12 +141,21 @@ function aiTool() {
 	}
 }
 
-function aiBattle(ais) {
-	gameMan.ais = ais;
-	gameMan.thinking = true;
-	newGame();
-	while(gameMan.winner < 0) {
-		ai();
+function aiBattle(ais, numGames) {
+	numGames = numGames || 1;
+	var stats = {
+		wins: [0, 0]
+	};
+	for (var i = 0; i < numGames; i++) {
+		console.log("Game " + i);
+		gameMan.ais = ais;
+		gameMan.thinking = true;
+		newGame();
+		while(gameMan.winner < 0) {
+			ai();
+		}
+		gameMan.thinking = false;
+		stats.wins[gameMan.winner % 2] += 1;
 	}
-	gameMan.thinking = false;
+	console.log(stats);
 }
