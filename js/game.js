@@ -455,5 +455,11 @@ function ai() {
 	case 2:
 		aiNeil();
 		break;
+	case 3:
+		aiNeil(1);
+		break;
+	case 4:
+		aiNeil(2);
+		break;
 	}
 }

@@ -115,11 +115,11 @@ function aiTool() {
 			var prop = this.dataset.prop;
 			var idx = this.dataset.idx;
 			if (idx == undefined) {
-				aiPersonality.values[prop] = parseInt(this.value);
+				aiWeights[0].values[prop] = parseInt(this.value);
 			} else {
-				aiPersonality.values[prop][idx] = parseInt(this.value);
+				aiWeights[0].values[prop][idx] = parseInt(this.value);
 			}
-			console.log(prop, aiPersonality.values[prop]);
+			console.log(prop, aiWeights[0].values[prop]);
 		});
 	}
 	var div = document.createElement('div');
@@ -130,32 +130,49 @@ function aiTool() {
 	div.style.background = 'cadetblue';
 	document.body.appendChild(div);
 
-	for (var i in aiPersonality.values) {
-		if (Array.isArray(aiPersonality.values[i])) {
-			aiPersonality.values[i].forEach(function(el, idx) {
+	for (var i in aiWeights[0].values) {
+		if (Array.isArray(aiWeights[0].values[i])) {
+			aiWeights[0].values[i].forEach(function(el, idx) {
 				inputFor(i, el, idx);
 			});
 		} else {
-			inputFor(i, aiPersonality.values[i]);
+			inputFor(i, aiWeights[0].values[i]);
 		}
 	}
 }
 
+// aiBattle([a, b, c, d], numGames) will set Athens, Sparta, Messene, and Thebes
+// to ais a, b, c, and d respectively, where a, b, c, d, are numbers between 1 and 4
+//
+// 		1 - Shu's in-game AI
+//		2 - Neil's in-game AI
+//    3 - Test AI A, found in aiNeil.js
+//    4 - Test AI B, found in aiNeil.js
+//
+// For example, aiBattle([3, 4, 3, 4], 100) will play 100 games where Athens and
+// Messene are Test AI A, and Sparta and Thebes are Test AI B.
+
+var aiBattleStats;
 function aiBattle(ais, numGames) {
 	numGames = numGames || 1;
+	gameMan.ais = ais;
 	var stats = {
+		moves: [],
 		wins: [0, 0]
 	};
 	for (var i = 0; i < numGames; i++) {
-		console.log("Game " + i);
-		gameMan.ais = ais;
+		console.log("Game " + (i + 1));
+		var moves = 0;
 		gameMan.thinking = true;
 		newGame();
 		while(gameMan.winner < 0) {
 			ai();
+			moves++;
 		}
-		gameMan.thinking = false;
+		stats.moves.push(moves);
 		stats.wins[gameMan.winner % 2] += 1;
+		gameMan.thinking = false;
 	}
+	aiBattleStats = stats;
 	console.log(stats);
 }

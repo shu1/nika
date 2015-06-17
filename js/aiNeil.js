@@ -2,23 +2,62 @@
 
 var defGrid = null;
 
-var aiPersonality = {
-	values : {
-		ownPiecesOnBoard 			: 50,
-		ownAdjInPhalanx 			: 2,
-		ownAdjNotInPhalanx 			: 1,
-		allyAdjSameDir 				: 2,
-		allyAdjDiffDir 				: 1,
-		enemyAdjBlocked 			: -1,
-		enemyAdjRoutable 			: [5,2],
-		enemyAdjCanRoutMe 			: [-5,-12],
-		enemyAdjBothNotFacing 		: [2,-8],
-		perSquareDistanceFromGoal 	: -8,
-		perRoutedEnemyPiece 		: 20
-	}
-}
+var aiWeights = [
+	// used by the game
+	{
+		values : {
+			ownPiecesOnBoard 					: 50,
+			ownAdjInPhalanx 					: 2,
+			ownAdjNotInPhalanx 				: 1,
+			allyAdjSameDir 						: 2,
+			allyAdjDiffDir 						: 1,
+			enemyAdjBlocked 					: -1,
+			enemyAdjRoutable 					: [5,2],
+			enemyAdjCanRoutMe 				: [-5,-12],
+			enemyAdjBothNotFacing			: [2,-8],
+			perSquareDistanceFromGoal : -8,
+			perRoutedEnemyPiece				: 20
+		}
+	},
 
-var aiP = aiPersonality; //Alias?
+	// Test AI A
+	// used by AI3 in aiBattle()
+	{
+		values : {
+			ownPiecesOnBoard 					: 50,
+			ownAdjInPhalanx 					: 2,
+			ownAdjNotInPhalanx 				: 1,
+			allyAdjSameDir 						: 2,
+			allyAdjDiffDir 						: 1,
+			enemyAdjBlocked 					: -1,
+			enemyAdjRoutable 					: [5,2],
+			enemyAdjCanRoutMe 				: [-5,-12],
+			enemyAdjBothNotFacing			: [2,-8],
+			perSquareDistanceFromGoal : -8,
+			perRoutedEnemyPiece				: 20
+		}
+	},
+
+	// Test AI B
+	// used by AI4 in aiBattle()
+	{
+		values : {
+			ownPiecesOnBoard 					: 50,
+			ownAdjInPhalanx 					: 2,
+			ownAdjNotInPhalanx 				: 1,
+			allyAdjSameDir 						: 2,
+			allyAdjDiffDir 						: 1,
+			enemyAdjBlocked 					: -1,
+			enemyAdjRoutable 					: [5,2],
+			enemyAdjCanRoutMe 				: [-5,-12],
+			enemyAdjBothNotFacing			: [2,-8],
+			perSquareDistanceFromGoal : -8,
+			perRoutedEnemyPiece				: 20
+		}
+	}
+];
+
+var aiP = aiWeights[0]; //Alias?
 
 function newState (){
 	var s = {
@@ -28,7 +67,8 @@ function newState (){
 	return s;
 }
 
-function aiNeil(){
+function aiNeil(aiNum){
+	aiP = aiWeights[aiNum || 0];
 	storeGrid();
 	var pieces = [];
 	pieces = getAIPieces();
@@ -39,7 +79,7 @@ function aiNeil(){
 	//Creates the default state in which all other states are compared to.
 	var defaultState = newState();
 	getValue(defaultState,pieces);
-	console.log("Default Value " + defaultState.value);
+	// console.log("Default Value " + defaultState.value);
 	var bestState = defaultState; //Stores best state, which is default at this point. Altough we might be better off just setting best state.
 
 	var rallySpots = [];
@@ -63,10 +103,10 @@ function aiNeil(){
 				pieces = getAIPieces();
 				var temp = copyState(defaultState);
 				getValue(temp,pieces);
-				console.log(temp.value);
+				// console.log(temp.value);
 				if(temp.value>bestState.value){
 					bestState=temp;
-					console.log("Found better state by RALLYING with a value of: " + bestState.value);
+					// console.log("Found better state by RALLYING with a value of: " + bestState.value);
 				}
 				setGrid(defGrid,grid);
 				pieces = getAIPieces();
@@ -82,7 +122,7 @@ function aiNeil(){
 					getValue(temp,pieces);
 					if(temp.value>bestState.value){
 						bestState=temp;
-						console.log("Found better state by ROTATION with a value of: " + bestState.value);
+						// console.log("Found better state by ROTATION with a value of: " + bestState.value);
 					}
 				}
 			}
@@ -101,7 +141,7 @@ function aiNeil(){
 				getValue(temp,pieces);
 				if(temp.value>bestState.value){
 					bestState=temp;
-					console.log("Found better state by MOVEMENT with a value of: " + bestState.value);
+					// console.log("Found better state by MOVEMENT with a value of: " + bestState.value);
 				}
 				setGrid(defGrid,grid);
 				pieces = getAIPieces();
@@ -134,7 +174,7 @@ function aiNeil(){
 							getValue(temp,pieces);
 							if(temp.value>bestState.value){
 								bestState=temp;
-								console.log("Found better state by ROTATING A PHALANX with a value of: " + bestState.value);
+								// console.log("Found better state by ROTATING A PHALANX with a value of: " + bestState.value);
 							}
 							setGrid(defGrid,grid);
 							pieces = getAIPieces();
@@ -154,7 +194,7 @@ function aiNeil(){
 					getValue(temp,pieces);
 					if(temp.value>bestState.value){
 						bestState=temp;
-						console.log("Found better state by MOVING A PHALANX with a value of: " + bestState.value);
+						// console.log("Found better state by MOVING A PHALANX with a value of: " + bestState.value);
 					}
 					setGrid(defGrid,grid);
 					pieces = getAIPieces();
@@ -416,12 +456,12 @@ function checkIfPiecesCanWin(pieces){
 		if(d<=2){
 			if(d==1){
 				//1 move
-				console.log("1 space away.");
+				// console.log("1 space away.");
 				return true;
 			}
 			else if(d==2){
 				//2 moves
-				console.log("2 spaces away.");
+				// console.log("2 spaces away.");
 				return true;
 			}
 		}
