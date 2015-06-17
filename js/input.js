@@ -257,10 +257,10 @@ function mouseMove(event) {
 								inputMan.rot = 3;
 							}
 
-							inputMan.row = gameMan.pRow;
-							inputMan.col = gameMan.pCol;
 							var radius = drawMan.cellSize * drawMan.cellSize * 4;
 							if (dX*dX + dY*dY < radius) {
+								inputMan.row = gameMan.pRow;
+								inputMan.col = gameMan.pCol;
 								if (inputMan.rot == 0) {
 									inputMan.row--;
 								}
