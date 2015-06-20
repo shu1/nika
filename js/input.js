@@ -403,18 +403,17 @@ function mouseUp(event) {
 						setScene("menus");
 					}
 				}
-				else if (gameMan.tutorialStep >= 0 && x > drawMan.muralX && x < drawMan.muralX + drawMan.tutorialOffset
-				&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
+				else if (gameMan.tutorialStep >= 0 && x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth
+				&& y > drawMan.tutorialButtonY && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight) {
 					prevTutorialPart();
 				}
 				else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {
-					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
-					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
+					if (x > drawMan.tutorialNextX && x < drawMan.tutorialNextX + drawMan.tutorialButtonWidth
+					&& y > drawMan.tutorialButtonY && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight) {
 						nextTutorialStep();
 					}
 					else {
-						drawMan.tutorialTheta = 0;
-						drawMan.tutorialFlash = 1;
+						drawMan.tutorialFlash = 1.5;
 					}
 				}
 				else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol

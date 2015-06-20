@@ -38,6 +38,7 @@ window.onload = function() {
 	loadImage("buttonBack");
 	loadImage("buttonClose");
 	loadImage("buttonActive");
+	loadImage("tutorialButton", 1);
 	loadImage("menuPopup");
 	loadImage("menuPopupActive");
 	loadImage("menuSetup", 1);
@@ -374,17 +375,7 @@ function drawMural(context, dTime) {
 	}
 	else {	// draw dialog
 		context.fillStyle = "#221E1F";
-		if (gameMan.tutorialStep > 0) {
-			context.fillRect(0, drawMan.muralHeight, drawMan.tutorialOffset, -46);
-		}
-
-		if (drawMan.tutorialFlash > 0) {
-			drawMan.tutorialFlash -= dTime/600;
-			drawMan.tutorialTheta += dTime/60;
-			var a = (Math.sin(drawMan.tutorialTheta % (Math.PI*2))+1)/4;	// divide by 2 for full range, 3 or more for darker range
-			context.fillStyle = "rgb(" + Math.floor(a*191+34) + "," + Math.floor(a*187+30) + "," + Math.floor(a*148+31) + ")";	// fade between black background and white text
-		}
-		context.fillRect(drawMan.tutorialOffset, 0, drawMan.muralWidth - drawMan.tutorialOffset, drawMan.muralHeight);
+		context.fillRect(drawMan.dialogX, 0, drawMan.muralWidth - drawMan.dialogX, drawMan.muralHeight);
 
 		var lines;
 		if (gameMan.winner >= 0) {
@@ -406,16 +397,7 @@ function drawMural(context, dTime) {
 
 		context.fillStyle = "#E0D9B3";
 		for (var i = lines.length-1; i >= 0; --i) {
-			context.fillText(lines[i], drawMan.tutorialOffset+8, topPadding + spacing * i);
-		}
-
-		context.fillStyle = "white";
-		if (gameMan.tutorialStep > 0) {
-			context.fillText("Back", 40, drawMan.muralHeight - bottomPadding);
-		}
-
-		if (tutorialInputs[gameMan.tutorialStep]) {
-			context.fillText("Next", nextX, drawMan.muralHeight - bottomPadding);
+			context.fillText(lines[i], drawMan.dialogX+8, topPadding + spacing * i);
 		}
 	}
 }
@@ -448,6 +430,22 @@ function drawContext(context, dTime, tv) {
 		context.drawImage(images["board1"], 0, 960);
 		if (gameMan.menu != "popup") {
 			context.drawImage(muralCanvas, drawMan.muralX, drawMan.muralY);
+
+			if (gameMan.tutorialStep > 0) {
+				context.drawImage(images["tutorialButton0"], drawMan.tutorialPrevX, drawMan.tutorialButtonY);
+			}
+
+			if (gameMan.tutorialStep >= 0 && tutorialInputs[gameMan.tutorialStep]) {
+				drawMan.tutorialTheta += dTime/250;
+				if (drawMan.tutorialFlash > 0) {
+					drawMan.tutorialFlash -= dTime/600;
+					drawMan.tutorialTheta += dTime/40;
+				}
+
+				context.globalAlpha = (Math.sin(drawMan.tutorialTheta % (Math.PI*2))+1)/4 + 0.5;
+				context.drawImage(images["tutorialButton1"], drawMan.tutorialNextX, drawMan.tutorialButtonY);
+				context.globalAlpha = 1;
+			}
 		}
 		setRings();
 		drawPieces(context);
