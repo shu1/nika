@@ -335,11 +335,11 @@ function menuButton(index) {
 	switch (index) {
 	case 0:
 		if (gameMan.scene == "rules") {
-			setScene("menus");
+			setScene(gameMan.pScene);
 		}
 		else if (gameMan.menu == "option") {
 			localStorage.setItem("nikaSoundSave", JSON.stringify(soundMan));
-			gameMan.menu = "title";
+			setScene(gameMan.pScene);
 		}
 		else if (gameMan.menu == "setup" || gameMan.menu == "credit" || gameMan.menu == "tutorial") {
 			gameMan.menu = "title";
@@ -369,8 +369,7 @@ function menuPopup(index) {
 		setScene("rules");
 		break;
 	case 2:
-		setScene("menus");
-		gameMan.menu = "option";
+		setScene("option");
 		break;
 	case 3:
 		setScene("menus");
@@ -408,7 +407,7 @@ function menuTitle(index) {
 		setScene("rules");
 		break;
 	case 4:
-		gameMan.menu = "option";
+		setScene("option");
 		break;
 	case 5:
 		gameMan.menu = "credit";

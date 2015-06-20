@@ -216,22 +216,27 @@ function initScenes(canvas, maxScale, minScale, tv) {
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 }
 
-function setScene(sceneIndex) {
-	if (sceneIndex) {
+function setScene(index) {
+	if (index) {
 		if (gameMan.scene == "rules") {
-			hudMan.pageText = "";
+			hudMan.pageText = "";	// clear some debug text
 		}
 
-		gameMan.scene = sceneIndex;
-
-		if (sceneIndex == "menus") {
-			gameMan.menu = "title";
-			menus["title"] = 1;
+		gameMan.pScene = gameMan.scene;
+		if (index == "option") {	// special case
+			gameMan.menu = "option";
+			gameMan.scene = "menus";
 		} else {
-			gameMan.menu = "";
+			gameMan.scene = index;
+			if (gameMan.scene == "menus") {
+				gameMan.menu = "title";
+				menus["title"] = 1;
+			} else {
+				gameMan.menu = "";
 
-			if (sceneIndex == "rules") {
-				hudMan.pageText = "Rule " + gameMan.rules;
+				if (gameMan.scene == "rules") {
+					hudMan.pageText = "Rule " + gameMan.rules;
+				}
 			}
 		}
 	}

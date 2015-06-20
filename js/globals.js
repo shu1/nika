@@ -46,6 +46,7 @@ var gameMan = {
 	winner:-1,
 	actions:2,
 	player:0,
+	pScene:"",
 	scene:"",
 	menu:"",
 	rules:0,
