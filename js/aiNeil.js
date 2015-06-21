@@ -6,7 +6,7 @@ var aiWeights = [
 	// used by the game
 	{
 		values : {
-			ownPiecesOnBoard 					: 50,
+			ownPiecesOnBoard 					: 20,
 			ownAdjInPhalanx 					: 2,
 			ownAdjNotInPhalanx 				: 1,
 			allyAdjSameDir 						: 2,
@@ -16,7 +16,7 @@ var aiWeights = [
 			enemyAdjCanRoutMe 				: [-5,-12],
 			enemyAdjBothNotFacing			: [2,-8],
 			perSquareDistanceFromGoal : -8,
-			perRoutedEnemyPiece				: 20
+			perRoutedEnemyPiece				: 25
 		}
 	},
 
@@ -317,6 +317,10 @@ function setGrid(gFrom, gTo){
 
 // get distance to goal - to be used in ai evaluation
 function getDistanceFromGoal(row, col, player) {
+
+	if (grid[row][col].kind == 3) {
+		return 23;
+	}
 
 	if (player == 0) {
 		if (row <= 5 && col >= 9 && col <= 11) { // in 3x3 square in front of goal
