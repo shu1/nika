@@ -30,7 +30,7 @@ window.onload = function() {
 	loadImage("greenRing");
 	loadImage("greenComet");
 	loadImage("greenShadow");
-	loadImage("helmet1");
+	loadImage("helmet1");	// TODO combine these to 0 and 1
 	loadImage("helmet2");
 	loadImage("buttonMenu");
 	loadImage("buttonPass");
@@ -38,7 +38,7 @@ window.onload = function() {
 	loadImage("buttonBack");
 	loadImage("buttonClose");
 	loadImage("buttonActive");
-	loadImage("tutorialButton", 1);
+	loadImage("tutorialButton", 2);
 	loadImage("menuPopup");
 	loadImage("menuPopupActive");
 	loadImage("menuSetup", 1);
@@ -447,8 +447,9 @@ function drawContext(context, dTime, tv) {
 					drawMan.tutorialTheta += dTime/40;
 				}
 
-				context.globalAlpha = (Math.sin(drawMan.tutorialTheta % (Math.PI*2))+1)/4 + 0.5;
 				context.drawImage(images["tutorialButton1"], drawMan.tutorialNextX, drawMan.tutorialButtonY);
+				context.globalAlpha = (Math.sin(drawMan.tutorialTheta % (Math.PI*2))+1)/2;
+				context.drawImage(images["tutorialButton2"], drawMan.tutorialNextX, drawMan.tutorialButtonY);
 				context.globalAlpha = 1;
 			}
 		}
