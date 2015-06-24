@@ -760,7 +760,6 @@ var muralBlack_data = {
 "@spin":"0",
 "bone":{
 "@x":"200",
-"@y":"-0",
 "@angle":"112.325018",
 "@scale_x":"1.320283"
 }
@@ -798,7 +797,6 @@ var muralBlack_data = {
 "@spin":"0",
 "bone":{
 "@x":"200",
-"@y":"-0",
 "@angle":"80.329741",
 "@scale_x":"1.545396"
 }
@@ -4193,7 +4191,7 @@ var muralBlack_data = {
 },
 {
 "@id":"1",
-"@time":"18",
+"@time":"65",
 "bone_ref":[
 {
 "@id":"0",
@@ -4271,7 +4269,7 @@ var muralBlack_data = {
 },
 {
 "@id":"2",
-"@time":"215",
+"@time":"137",
 "bone_ref":[
 {
 "@id":"0",
@@ -4349,7 +4347,7 @@ var muralBlack_data = {
 },
 {
 "@id":"3",
-"@time":"242",
+"@time":"247",
 "bone_ref":[
 {
 "@id":"0",
@@ -4759,7 +4757,7 @@ var muralBlack_data = {
 },
 {
 "@id":"1",
-"@time":"215",
+"@time":"137",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -4853,7 +4851,7 @@ var muralBlack_data = {
 },
 {
 "@id":"1",
-"@time":"18",
+"@time":"65",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -4867,7 +4865,7 @@ var muralBlack_data = {
 },
 {
 "@id":"2",
-"@time":"215",
+"@time":"137",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -4881,7 +4879,7 @@ var muralBlack_data = {
 },
 {
 "@id":"3",
-"@time":"242",
+"@time":"247",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -4971,7 +4969,7 @@ var muralBlack_data = {
 },
 {
 "@id":"1",
-"@time":"215",
+"@time":"137",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -5066,7 +5064,7 @@ var muralBlack_data = {
 },
 {
 "@id":"1",
-"@time":"18",
+"@time":"65",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -5081,7 +5079,7 @@ var muralBlack_data = {
 },
 {
 "@id":"2",
-"@time":"215",
+"@time":"137",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -5176,7 +5174,7 @@ var muralBlack_data = {
 },
 {
 "@id":"1",
-"@time":"18",
+"@time":"65",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -5191,7 +5189,7 @@ var muralBlack_data = {
 },
 {
 "@id":"2",
-"@time":"215",
+"@time":"137",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -5206,7 +5204,7 @@ var muralBlack_data = {
 },
 {
 "@id":"3",
-"@time":"242",
+"@time":"247",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -5301,7 +5299,7 @@ var muralBlack_data = {
 },
 {
 "@id":"1",
-"@time":"18",
+"@time":"65",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -5316,7 +5314,7 @@ var muralBlack_data = {
 },
 {
 "@id":"2",
-"@time":"215",
+"@time":"137",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -5331,7 +5329,7 @@ var muralBlack_data = {
 },
 {
 "@id":"3",
-"@time":"242",
+"@time":"247",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -5423,7 +5421,7 @@ var muralBlack_data = {
 },
 {
 "@id":"1",
-"@time":"18",
+"@time":"65",
 "bone":{
 "@x":"6.993007",
 "@y":"18.881119",
@@ -5433,7 +5431,7 @@ var muralBlack_data = {
 },
 {
 "@id":"2",
-"@time":"215",
+"@time":"137",
 "@spin":"-1",
 "bone":{
 "@x":"6.993007",
@@ -5444,7 +5442,7 @@ var muralBlack_data = {
 },
 {
 "@id":"3",
-"@time":"242",
+"@time":"247",
 "bone":{
 "@x":"6.993007",
 "@y":"18.881119",
@@ -5504,7 +5502,7 @@ var muralBlack_data = {
 },
 {
 "@id":"1",
-"@time":"18",
+"@time":"65",
 "@spin":"-1",
 "bone":{
 "@x":"201.089604",
@@ -5515,7 +5513,7 @@ var muralBlack_data = {
 },
 {
 "@id":"2",
-"@time":"215",
+"@time":"137",
 "@spin":"-1",
 "bone":{
 "@x":"201.089604",
@@ -5526,7 +5524,7 @@ var muralBlack_data = {
 },
 {
 "@id":"3",
-"@time":"242",
+"@time":"247",
 "@spin":"-1",
 "bone":{
 "@x":"201.089604",
@@ -5587,7 +5585,7 @@ var muralBlack_data = {
 },
 {
 "@id":"1",
-"@time":"18",
+"@time":"65",
 "@spin":"-1",
 "bone":{
 "@x":"148.404051",
@@ -5598,7 +5596,7 @@ var muralBlack_data = {
 },
 {
 "@id":"2",
-"@time":"215",
+"@time":"137",
 "@spin":"-1",
 "bone":{
 "@x":"148.404051",
@@ -5609,7 +5607,7 @@ var muralBlack_data = {
 },
 {
 "@id":"3",
-"@time":"242",
+"@time":"247",
 "bone":{
 "@x":"143.144649",
 "@y":"-38.50888",
@@ -5666,7 +5664,7 @@ var muralBlack_data = {
 },
 {
 "@id":"1",
-"@time":"18",
+"@time":"65",
 "bone":{
 "@x":"200",
 "@angle":"125.413626",
@@ -5675,18 +5673,17 @@ var muralBlack_data = {
 },
 {
 "@id":"2",
-"@time":"215",
+"@time":"137",
 "@spin":"-1",
 "bone":{
 "@x":"200",
-"@y":"0",
 "@angle":"131.111231",
 "@scale_x":"1.320283"
 }
 },
 {
 "@id":"3",
-"@time":"242",
+"@time":"247",
 "@spin":"-1",
 "bone":{
 "@x":"200",
@@ -5708,7 +5705,6 @@ var muralBlack_data = {
 "@time":"503",
 "bone":{
 "@x":"200",
-"@y":"-0",
 "@angle":"100.603136",
 "@scale_x":"1.320283"
 }
@@ -5741,7 +5737,7 @@ var muralBlack_data = {
 },
 {
 "@id":"1",
-"@time":"18",
+"@time":"65",
 "@spin":"-1",
 "bone":{
 "@x":"200",
@@ -5751,18 +5747,17 @@ var muralBlack_data = {
 },
 {
 "@id":"2",
-"@time":"215",
+"@time":"137",
 "@spin":"-1",
 "bone":{
 "@x":"200",
-"@y":"-0",
 "@angle":"88.733501",
 "@scale_x":"1.545396"
 }
 },
 {
 "@id":"3",
-"@time":"242",
+"@time":"247",
 "@spin":"-1",
 "bone":{
 "@x":"200",
@@ -5785,7 +5780,6 @@ var muralBlack_data = {
 "@time":"503",
 "bone":{
 "@x":"200",
-"@y":"-0",
 "@angle":"74.12432",
 "@scale_x":"1.545396"
 }
@@ -10405,7 +10399,7 @@ var muralBlack_data = {
 },
 {
 "@id":"4",
-"@time":"267",
+"@time":"192",
 "bone_ref":[
 {
 "@id":"0",
@@ -10561,7 +10555,7 @@ var muralBlack_data = {
 },
 {
 "@id":"6",
-"@time":"382",
+"@time":"397",
 "bone_ref":[
 {
 "@id":"0",
@@ -11250,7 +11244,7 @@ var muralBlack_data = {
 },
 {
 "@id":"4",
-"@time":"267",
+"@time":"192",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -11432,7 +11426,7 @@ var muralBlack_data = {
 },
 {
 "@id":"3",
-"@time":"267",
+"@time":"192",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -11460,7 +11454,7 @@ var muralBlack_data = {
 },
 {
 "@id":"5",
-"@time":"382",
+"@time":"397",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -11623,7 +11617,7 @@ var muralBlack_data = {
 },
 {
 "@id":"4",
-"@time":"267",
+"@time":"192",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -11823,7 +11817,7 @@ var muralBlack_data = {
 },
 {
 "@id":"4",
-"@time":"267",
+"@time":"192",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -12023,7 +12017,7 @@ var muralBlack_data = {
 },
 {
 "@id":"4",
-"@time":"267",
+"@time":"192",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -12223,7 +12217,7 @@ var muralBlack_data = {
 },
 {
 "@id":"4",
-"@time":"267",
+"@time":"192",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -12253,7 +12247,7 @@ var muralBlack_data = {
 },
 {
 "@id":"6",
-"@time":"382",
+"@time":"397",
 "@spin":"0",
 "object":{
 "@folder":"0",
@@ -12423,7 +12417,7 @@ var muralBlack_data = {
 },
 {
 "@id":"4",
-"@time":"267",
+"@time":"192",
 "bone":{
 "@x":"6.993007",
 "@y":"18.881119",
@@ -12443,7 +12437,7 @@ var muralBlack_data = {
 },
 {
 "@id":"6",
-"@time":"382",
+"@time":"397",
 "bone":{
 "@x":"6.993007",
 "@y":"18.881119",
@@ -12566,7 +12560,7 @@ var muralBlack_data = {
 },
 {
 "@id":"4",
-"@time":"267",
+"@time":"192",
 "@spin":"-1",
 "bone":{
 "@x":"201.089604",
@@ -12588,7 +12582,7 @@ var muralBlack_data = {
 },
 {
 "@id":"6",
-"@time":"382",
+"@time":"397",
 "bone":{
 "@x":"201.089604",
 "@y":"-0.19002",
@@ -12711,7 +12705,7 @@ var muralBlack_data = {
 },
 {
 "@id":"4",
-"@time":"267",
+"@time":"192",
 "bone":{
 "@x":"148.404051",
 "@y":"-38.233674",
@@ -12731,7 +12725,7 @@ var muralBlack_data = {
 },
 {
 "@id":"6",
-"@time":"382",
+"@time":"397",
 "bone":{
 "@x":"148.404051",
 "@y":"-38.233674",
@@ -12852,7 +12846,7 @@ var muralBlack_data = {
 },
 {
 "@id":"4",
-"@time":"267",
+"@time":"192",
 "bone":{
 "@x":"198.831536",
 "@y":"1.350761",
@@ -12873,7 +12867,7 @@ var muralBlack_data = {
 },
 {
 "@id":"6",
-"@time":"382",
+"@time":"397",
 "@spin":"-1",
 "bone":{
 "@x":"191.570423",
@@ -12917,7 +12911,6 @@ var muralBlack_data = {
 "@time":"745",
 "bone":{
 "@x":"200",
-"@y":"0",
 "@angle":"108.300181",
 "@scale_x":"1.320283"
 }
@@ -12981,14 +12974,13 @@ var muralBlack_data = {
 "@time":"125",
 "bone":{
 "@x":"200",
-"@y":"-0",
 "@angle":"152.242878",
 "@scale_x":"1.545396"
 }
 },
 {
 "@id":"4",
-"@time":"267",
+"@time":"192",
 "@spin":"-1",
 "bone":{
 "@x":"202.446626",
@@ -13009,7 +13001,7 @@ var muralBlack_data = {
 },
 {
 "@id":"6",
-"@time":"382",
+"@time":"397",
 "bone":{
 "@x":"202.083542",
 "@y":"-1.451955",
@@ -13043,7 +13035,6 @@ var muralBlack_data = {
 "@time":"691",
 "bone":{
 "@x":"200",
-"@y":"-0",
 "@angle":"57.503119",
 "@scale_x":"1.545396"
 }
@@ -13054,7 +13045,6 @@ var muralBlack_data = {
 "@spin":"-1",
 "bone":{
 "@x":"200",
-"@y":"-0",
 "@angle":"80.670042",
 "@scale_x":"1.545396"
 }
