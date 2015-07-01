@@ -23,15 +23,14 @@ window.onload = function() {
 	loadImage("menuTitleActive");
 	loadImage("board", 1);
 	loadImage("mural");
-	loadImage("player", 3);
-	loadImage("sheen");
-	loadImage("shadow");
-	loadImage("goldRing");
-	loadImage("greenRing");
-	loadImage("greenComet");
-	loadImage("greenShadow");
-	loadImage("helmet1");	// TODO combine these to 0 and 1
-	loadImage("helmet2");
+	loadImage("piece", 3);
+	loadImage("pieceSheen");
+	loadImage("pieceShadow");
+	loadImage("pieceGold");
+	loadImage("pieceGreen");
+	loadImage("pieceGreenComet");
+	loadImage("pieceGreenShadow");
+	loadImage("helmet", 1);
 	loadImage("buttonMenu");
 	loadImage("buttonPass");
 	loadImage("buttonUndo");
@@ -601,34 +600,34 @@ function drawPieces(context) {
 
 				if (cell.player >= 0) {
 					context.rotate(cell.rot * Math.PI/2);
-					context.drawImage(images["player" + cell.player], -pieceSize/2, -pieceSize/2);
+					context.drawImage(images["piece" + cell.player], -pieceSize/2, -pieceSize/2);
 					context.rotate(cell.rot * Math.PI/-2);
-					context.drawImage(images["sheen"], -pieceSize/2, -pieceSize/2);
+					context.drawImage(images["pieceSheen"], -pieceSize/2, -pieceSize/2);
 				}
 
 				if (cell.prompt == 0) {
 					context.rotate(theta);
-					context.drawImage(images["greenComet"], -pieceSize/2, -pieceSize/2);
+					context.drawImage(images["pieceGreenComet"], -pieceSize/2, -pieceSize/2);
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 1) {
 					context.rotate(theta);
-					context.drawImage(images["greenRing"], -drawMan.cellSize/2, -drawMan.cellSize/2);
+					context.drawImage(images["pieceGreen"], -drawMan.cellSize/2, -drawMan.cellSize/2);
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 2) {
-					context.drawImage(images["greenShadow"], -pieceSize/2, -pieceSize/2);
+					context.drawImage(images["pieceGreenShadow"], -pieceSize/2, -pieceSize/2);
 				}
 
 				if (cell.ring == 0) {
 					context.rotate(theta);
-					context.drawImage(images["goldRing"], -drawMan.cellSize/2, -drawMan.cellSize/2);
+					context.drawImage(images["pieceGold"], -drawMan.cellSize/2, -drawMan.cellSize/2);
 					context.rotate(-theta);
 				}
 				else if (cell.ring == 1) {
 					var rotation = (cell.kind == 2) ? cell.city : inputMan.rot;
 					context.rotate(rotation * Math.PI/2);
-					context.drawImage(images["shadow"], -pieceSize/2, -pieceSize/2);
+					context.drawImage(images["pieceShadow"], -pieceSize/2, -pieceSize/2);
 					context.rotate(rotation * Math.PI/-2);
 				}
 				cell.ring = -1;	// clear for next time
@@ -673,17 +672,17 @@ function drawHelmets(context, dTime) {
 	}
 	context.rotate(gameMan.player * Math.PI/2);
 	context.globalAlpha = (Math.sin(drawMan.helmetTheta % (Math.PI*2))+1)/4 + 0.5;
-	context.drawImage(images["helmet" + gameMan.actions], -128, -128);
+	context.drawImage(images["helmet" + (gameMan.actions-1)], -128, -128);	// TODO make gameMan.actions 0,1 instead of 1,2
 	context.restore();
 }
 
 function drawRules(context, scene) {
 	if (scene.height > 1024) {	// only draw border if screen isn't small
-		var padding      = drawMan.arrowWidth/6;
-		var borderX      = drawMan.arrowWidth*1.1;
-		var borderWidth  =  scene.width  - borderX*2;
+		var padding = drawMan.arrowWidth/6;
+		var borderX = drawMan.arrowWidth*1.1;
+		var borderY = (scene.height - drawMan.screenHeight)/4;
+		var borderWidth = scene.width - borderX*2;
 		var borderHeight = (scene.height + drawMan.screenHeight)/2;
-		var borderY      = (scene.height - drawMan.screenHeight)/4;
 
 		context.strokeStyle = "#E0D9B3";
 		context.lineCap = "square";
