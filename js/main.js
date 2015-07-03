@@ -602,43 +602,43 @@ function drawPieces(context) {
 
 				if (cell.player >= 0) {
 					context.rotate(cell.rot * Math.PI/2);
-					context.drawImage(images["piece" + cell.player], -pieceSize/2, -pieceSize/2);
+					context.drawImage(images["piece" + cell.player], pieceSize/-2, pieceSize/-2);
 					context.rotate(cell.rot * Math.PI/-2);
-					context.drawImage(images["pieceSheen"], -pieceSize/2, -pieceSize/2);
+					context.drawImage(images["pieceSheen"], pieceSize/-2, pieceSize/-2);
 
 					if (cell.player == gameMan.player) {
 						context.globalAlpha = (Math.sin(theta*2)+1)/2;	// pulse 2x the speed of ring rotation
-						context.drawImage(images["pieceGlow"], -drawMan.cellSize/2, -drawMan.cellSize/2);
+						context.drawImage(images["pieceGlow"], drawMan.cellSize/-2, drawMan.cellSize/-2);
 						context.globalAlpha = 1;
 					}
 					else {
-						context.drawImage(images["pieceDark"], -pieceSize/2, -pieceSize/2);
+						context.drawImage(images["pieceDark"], pieceSize/-2, pieceSize/-2);
 					}
 				}
 
 				if (cell.prompt == 0) {
 					context.rotate(theta);
-					context.drawImage(images["pieceGreenComet"], -pieceSize/2, -pieceSize/2);
+					context.drawImage(images["pieceGreenComet"], pieceSize/-2, pieceSize/-2);
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 1) {
 					context.rotate(theta);
-					context.drawImage(images["pieceGreen"], -drawMan.cellSize/2, -drawMan.cellSize/2);
+					context.drawImage(images["pieceGreen"], drawMan.cellSize/-2, drawMan.cellSize/-2);
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 2) {
-					context.drawImage(images["pieceGreenShadow"], -pieceSize/2, -pieceSize/2);
+					context.drawImage(images["pieceGreenShadow"], pieceSize/-2, pieceSize/-2);
 				}
 
 				if (cell.ring == 0) {
 					context.rotate(theta);
-					context.drawImage(images["pieceGold"], -drawMan.cellSize/2, -drawMan.cellSize/2);
+					context.drawImage(images["pieceGold"], drawMan.cellSize/-2, drawMan.cellSize/-2);
 					context.rotate(-theta);
 				}
 				else if (cell.ring == 1) {
 					var rotation = (cell.kind == 2) ? cell.city : inputMan.rot;
 					context.rotate(rotation * Math.PI/2);
-					context.drawImage(images["pieceShadow"], -pieceSize/2, -pieceSize/2);
+					context.drawImage(images["pieceShadow"], pieceSize/-2, pieceSize/-2);
 					context.rotate(rotation * Math.PI/-2);
 				}
 				cell.ring = -1;	// clear for next time
