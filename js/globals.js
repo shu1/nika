@@ -161,19 +161,19 @@ var tutorialTexts = [[
 ],[
 	"Defeat!"
 ],[
-	"The Spartans have sent a scout into our","territory. We must drive him off!"
+	"To arms! The Spartans have sent a scout","into our territory. We must drive him off!"
 ],[
 	"We can take 2 actions per turn. The", "number of flashing helmets shows how", "many actions we have remaining."
 ],[
-	"All hoplites carry shields which protect","their front. The Spartan is FACING this","piece, so this piece cannot attack."
+	"All hoplites carry shields which protect","their front. The Spartan is FACING this","piece, so our soldier cannot attack."
 ],[
 	"But Athena smiles upon us today -","we have him flanked! Let us MOVE our","other soldier. Drag this piece forward,","ending your touch in the space indicated."
 ],[
 	"Good. Notice that the single helmet","indicates we have only 1 action remaining."
 ],[
-	"We can ROUT an enemy piece by moving","into it from the side or back, but not from","the front. Take out that Spartan!"
+	"Good. We can ROUT an enemy piece by","moving into it from the side or back, but","not from the front. Take out that Spartan!"
 ],[
-	"Bravo! Now, listen - this is important.","A piece can move forward, left, right,","or back in one action. As you saw, it","turns to face the direction it moved in."
+	"Bravo! As you saw, a piece ends up","facing the direction it moved in."
 ],[
 	"Strategos! While we were dealing with","that Spartan, a contingent of Thebans","has approached us from behind.","Two of our men are in danger!"
 ],[
@@ -181,13 +181,13 @@ var tutorialTexts = [[
 ],[
 	"Excellent! Now, rotate our other soldier","to face the Theban. Since the Theban is","blocking its movement, our piece will","rotate even if you try to move in that","direction."
 ],[
-	"Pieces can rotate to face any direction","in one action. Well done - the men are","safe, for now."
+	"Well done - the men are safe, for now."
 ],[
 	"Beware! The accursed Thebans are","trying to get around the edge of our line.","We must rally!"
 ],[
-	"Routed pieces are not out of the battle","forever. You can rally one routed piece","at a time back onto the battlefield into","the areas indicated."
+	"Routed pieces are not out of the battle","forever. You can RALLY them into","the spaces shown."
 ],[
-	"To RALLY a piece, drag it into one of","your rally spaces. Let's deploy our man","here so he can hurry back to the fight."
+	"Drag our routed soldier into the space","indicated so he can hurry back to the fight."
 ],[
 	"This is our ally's victory area. We move","through these spaces normally, but our","enemies are not allowed to enter them."
 ],[
@@ -203,7 +203,7 @@ var tutorialTexts = [[
 ],[
 	"Good! You'll notice that pieces in a","phalanx can only move forward.","Moving in a different direction requires","two actions: first rotating the phalanx,","then moving it."
 ],[
-	"The Thebans have mounted a tough","defense. If we move our whole phalanx","forward, our piece nearest the main","Theban formation will be in danger.","Proceed with caution."
+	"The Thebans have mounted a tough","defense. If we move our whole phalanx","forward, the indicated piece will be","in danger. Proceed with caution."
 ],[
 	"Fortunately, we can split pieces off from","a phalanx. Tap the indicated piece to","enter phalanx sub-selection mode."
 ],[
@@ -219,9 +219,9 @@ var tutorialTexts = [[
 ],[
 	"This Spartan seeks to block our path.","Well, the Spartans are known more for","their bravery than their intelligence..."
 ],[
-	"Our phalanx cannot rout the Spartan, as","he is facing us. But, since we have two","pieces lined up against a single enemy,","we can PUSH him backward by simply","moving our phalanx toward him."
+	"Our phalanx cannot rout the Spartan, as","he is facing us. But, since we have two","pieces lined up against a single enemy,","we can PUSH him backward. Simply","move our phalanx towards him."
 ],[
-	"Just so. We can push no further, as there","are now two enemies lined up to block our","way, even though the farther Spartan is","not facing us. Still, it is important to gain","ground when we can."
+	"Just so. We can push no further, since","the enemy line now matches our own","in strength. Still, we should gain ground","when we can."
 ],[
 	"We have gained an advantage on the","Thebans. We have three soldiers against","their two. But how best to proceed?"
 ],[
@@ -229,7 +229,7 @@ var tutorialTexts = [[
 ],[
 	"However, we have the advantage in this","line. Our two pieces can push back the","single Theban. Select only them, and","move them forward."
 ],[
-	"Ha! Now, seize the advantage and destroy","that Theban! Tap to select only this piece","so it can move to the left without rotating","first - but I'm sure you knew that already.","Then attack!"
+	"Ha! Now, seize the advantage and destroy","that Theban. Tap only this piece to","split it off from the phalanx, then attack!"
 ],[
 	"Excellent!"
 ],[
@@ -243,15 +243,15 @@ var tutorialTexts = [[
 ],[
 	"If we push this piece into our ally, the","Theban will be routed, regardless of our","ally's facing. Pushing an enemy into our","own piece does the same thing."
 ],[
-	"So, order the men forward!"
+	"So, order the men forward! Remember, if","you're moving an entire phalanx, just drag","any piece in it -  you don't have to select","them each individually."
 ],[
-	"Perfect! At this point, we'll have to wait","for the Messenians to move their soldier","out of our way. We are never allowed to","push or rout our allies - or our own men."
+	"Perfect! We'll have to wait for the","Messenian soldier to move, since we","cannot push or rout our allies -","or our own men."
 ],[
-	"Congratulations! You now know","everything you need to play Nika."
+	"Congratulations, strategos! You now know","everything you need to play Nika."
 ],[
 	"Always remember your ultimate goal -","get one of your pieces across the board","into the victory area on your ally's side,","or help your ally do the same."
 ],[
-	"As you play, take some time to explore","the interface. You can, for example,","UNDO an unwanted move, or PASS if","you feel you cannot better your position","by taking an action."
+	"Note that you can UNDO unwanted","moves, or PASS if you feel you cannot","better your position by taking an action."
 ],[
 	"Though the rules are few, you will find","that the strategies are deep and varied.","Now then, proserkhou kai nika -","go forth and conquer!"
 ]]
@@ -566,7 +566,9 @@ var tutorialBoards = [{
 		[3,9,14,3],
 		[3,11,12,3]
 	],
-	prompts:[]
+	prompts:[
+		[11,12,1]
+	]
 },{
 	player:0,
 	actions:2,
@@ -848,7 +850,10 @@ var tutorialBoards = [{
 		[1,7,5,2],
 		[1,6,5,1]
 	],
-	prompts:[]
+	prompts:[
+		[6,5,1],
+		[7,5,1]
+	]
 },{
 	player:0,
 	actions:2,
