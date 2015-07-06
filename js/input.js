@@ -396,6 +396,8 @@ function mouseUp(event) {
 				}
 			}
 			else if (gameMan.scene == "board") {
+				var margin = 11;
+
 				if (gameMan.winner >= 0) {
 					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
 					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
@@ -404,12 +406,12 @@ function mouseUp(event) {
 					}
 				}
 				else if (gameMan.tutorialStep >= 0 && x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth
-				&& y > drawMan.tutorialButtonY && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight) {
+				&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
 					prevTutorialPart();
 				}
 				else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {
 					if (x > drawMan.tutorialNextX && x < drawMan.tutorialNextX + drawMan.tutorialButtonWidth
-					&& y > drawMan.tutorialButtonY && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight) {
+					&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
 						nextTutorialStep();
 					}
 					else {
