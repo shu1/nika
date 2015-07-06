@@ -183,7 +183,7 @@ var tutorialTexts = [[
 ],[
 	"Well done - the men are safe, for now."
 ],[
-	"Beware! The accursed Thebans are","trying to get around the edge of our line.","We must rally!"
+	"Beware! The accursed Thebans are","trying to get around the edge of our line."
 ],[
 	"Routed pieces are not out of the battle","forever. You can RALLY them into","the spaces shown."
 ],[
