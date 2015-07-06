@@ -24,7 +24,6 @@ window.onload = function() {
 	loadImage("board", 1);
 	loadImage("mural");
 	loadImage("piece", 3);
-	loadImage("pieceSheen");
 	loadImage("pieceGlow");
 	loadImage("pieceDark");
 	loadImage("pieceShadow");
@@ -604,7 +603,6 @@ function drawPieces(context) {
 					context.rotate(cell.rot * Math.PI/2);
 					context.drawImage(images["piece" + cell.player], pieceSize/-2, pieceSize/-2);
 					context.rotate(cell.rot * Math.PI/-2);
-					context.drawImage(images["pieceSheen"], pieceSize/-2, pieceSize/-2);
 
 					if (cell.player == gameMan.player) {
 						context.globalAlpha = (Math.sin(theta*2)+1)/2;	// pulse 2x the speed of ring rotation
