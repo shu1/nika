@@ -183,7 +183,7 @@ var tutorialTexts = [[
 ],[
 	"Well done - the men are safe, for now."
 ],[
-	"Beware! The accursed Thebans are","trying to get around the edge of our line.","We must rally!"
+	"Beware! The accursed Thebans are","trying to get around the edge of our line."
 ],[
 	"Routed pieces are not out of the battle","forever. You can RALLY them into","the spaces shown."
 ],[
@@ -195,13 +195,13 @@ var tutorialTexts = [[
 ],[
 	"Brilliant!"
 ],[
-	"Like all hoplites, our troops are trained to","act in the powerful PHALANX formation.","If two or more are adjacent and face the","same way, they can move and rotate","together."
+	"Like all hoplites, our troops are trained to","act in the powerful PHALANX formation.","Adjacent pieces that face the same way","can move and rotate together."
 ],[
 	"To move in a phalanx, just drag forward","any piece that is part of a phalanx","formation."
 ],[
 	"Exactly. Now, rotate our phalanx to","face the Spartan. Drag any piece in","the phalanx in the direction you want","it to face."
 ],[
-	"Good! You'll notice that pieces in a","phalanx can only move forward.","Moving in a different direction requires","two actions: first rotating the phalanx,","then moving it."
+	"Good! Notice that, unlike single pieces,","a phalanx can only move forward.","Moving in a different direction requires","two actions: first rotating the phalanx,","then moving it."
 ],[
 	"The Thebans have mounted a tough","defense. If we move our whole phalanx","forward, the indicated piece will be","in danger. Proceed with caution."
 ],[
@@ -213,17 +213,17 @@ var tutorialTexts = [[
 ],[
 	"Deftly done! You can now move","the smaller phalanx you created by","dragging it forward as normal."
 ],[
-	"Now, to the attack! Select only the","forward piece by tapping it, then rout","the exposed Theban. Remember -","unlike a phalanx, a single piece can","move in any direction!"
+	"Now to the attack! Select only the","forward piece by tapping it, then rout","the exposed Theban. Remember -","unlike a phalanx, a single piece can","move in any direction!"
 ],[
 	"We have struck first without leaving","our men vulnerable. Masterful!"
 ],[
 	"This Spartan seeks to block our path.","Well, the Spartans are known more for","their bravery than their intelligence..."
 ],[
-	"Our phalanx cannot rout the Spartan, as","he is facing us. But, since we have two","pieces lined up against a single enemy,","we can PUSH him backward. Simply","move our phalanx towards him."
+	"Our phalanx cannot rout the Spartan, as","he is facing us. But, since we have two","pieces lined up against a single enemy,","we can PUSH him backward. Simply","move our phalanx forward to push."
 ],[
-	"Just so. We can push no further, since","the enemy line now matches our own","in strength. Still, we should gain ground","when we can."
+	"Just so. We can push no further, since","the enemy line now matches our own","in strength."
 ],[
-	"We have gained an advantage on the","Thebans. We have three soldiers against","their two. But how best to proceed?"
+	"We have gained an advantage over the","Thebans. Our three soldiers stand against","their two. But how best to proceed?"
 ],[
 	"We cannot push in this line, as there is","only one Athenian facing one Theban.","Our soldier here is stuck."
 ],[
@@ -237,15 +237,15 @@ var tutorialTexts = [[
 ],[
 	"If we push an enemy piece off the","battlefield, that enemy is routed.","Push that Spartan to take him out!"
 ],[
-	"Yes! We can rout enemies by pushing","them into any invalid space. That includes","our and our ally's victory areas, as well as","the center or outside of the board."
+	"Yes! We can also rout enemies by pushing","them into our victory area, or our ally's."
 ],[
 	"We can reap great rewards by","coordinating with the Messenians,","our allies."
 ],[
-	"If we push this piece into our ally, the","Theban will be routed, regardless of our","ally's facing. Pushing an enemy into our","own piece does the same thing."
+	"We can even rout enemies by pushing","them into our ally's piece, or our own - ","regardless of the friendly piece's facing."
 ],[
 	"So, order the men forward! Remember, if","you're moving an entire phalanx, just drag","any piece in it -  you don't have to select","them each individually."
 ],[
-	"Perfect! We'll have to wait for the","Messenian soldier to move, since we","cannot push or rout our allies -","or our own men."
+	"Perfect! We'll have to wait for the","Messenian soldier to move, since we","cannot push or rout allied troops -","or our own men, for that matter."
 ],[
 	"Congratulations, strategos! You now know","everything you need to play Nika."
 ],[
