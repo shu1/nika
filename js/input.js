@@ -389,11 +389,6 @@ function mouseUp(event) {
 						menuSetup(4);
 					}
 				}
-				else if (gameMan.menu == "option") {
-					if (x > 656 && x < 888 && y > 868 && y < 924) {
-						gameMan.menu = "credit";
-					}
-				}
 			}
 			else if (gameMan.scene == "board") {
 				var margin = 11;
@@ -518,9 +513,6 @@ function keyDown(event) {
 		else if (gameMan.menu == "title" && menus["title"] < 6) {
 			menuTitle(menus["title"]);
 		}
-		else if (gameMan.menu == "option" && menus["option"] == 2) {
-			gameMan.menu = "credit";
-		}
 		else if (debugBuild && !(gameMan.scene == "menus" && gameMan.menu == "option" && menus["option"] < 3)) {
 			menuDebug(0);
 		}
@@ -534,11 +526,8 @@ function keyDown(event) {
 			menuMan.show = false;
 			menus["debug"] = 0;
 		}
-		else if (gameMan.menu == "option") {
+		else if (gameMan.menu == "option" || gameMan.menu == "credit") {
 			gameMan.menu = "title";
-		}
-		else if (gameMan.menu == "credit") {
-			gameMan.menu = "option";
 		}
 		else if (gameMan.scene == "rules") {
 			setScene("board");
@@ -610,7 +599,7 @@ function keyDown(event) {
 		break;
 	case 40:	// down
 		if (!menuMan.show && gameMan.menu == "option") {
-			if (menus["option"] < 3) {
+			if (menus["option"] < 2) {
 				menus["option"]++;
 			}
 		}
@@ -621,7 +610,7 @@ function keyDown(event) {
 	}
 
 	if (menuMan.show || gameMan.scene == "board" || gameMan.scene == "rules" || gameMan.menu == "credit"
-	|| gameMan.menu == "title" && menus["title"] == 6 || gameMan.menu == "option" && menus["option"] == 3) {
+	|| gameMan.menu == "title" && menus["title"] == 6 || gameMan.menu == "option" && menus["option"] == 2) {
 		inputMan.drag = "debug";	// highlight menu button
 	} else {
 		inputMan.drag = "";
