@@ -31,6 +31,7 @@ window.onload = function() {
 	loadImage("pieceGreen");
 	loadImage("pieceGreenComet");
 	loadImage("pieceGreenShadow");
+	loadImage("tileGoal");
 	loadImage("helmet", 1);
 	loadImage("buttonMenu");
 	loadImage("buttonPass");
@@ -433,6 +434,7 @@ function drawContext(context, dTime, tv) {
 	case "board":
 		context.drawImage(images["board0"], 0, 0);
 		context.drawImage(images["board1"], 0, 960);
+
 		if (gameMan.menu != "popup") {
 			context.drawImage(muralCanvas, drawMan.muralX, drawMan.muralY);
 
@@ -452,11 +454,12 @@ function drawContext(context, dTime, tv) {
 				context.drawImage(images["tutorialButton2"], drawMan.tutorialNextX, drawMan.tutorialButtonY);
 				context.globalAlpha = 1;
 			}
-		}
-		setRings();
-		drawPieces(context);
-		if (gameMan.winner < 0) {
-			drawHelmets(context, dTime);
+
+			setRings();	// TODO don't do this every frame?
+			drawPieces(context);
+			if (gameMan.winner < 0) {
+				drawTiles(context, dTime);
+			}
 		}
 		break;
 	case "rules":
@@ -647,7 +650,33 @@ function drawPieces(context) {
 	}
 }
 
-function drawHelmets(context, dTime) {
+function drawTiles(context, dTime) {
+	var theta = drawMan.time/400 % (Math.PI*2);
+	context.globalAlpha = (Math.sin(theta)+1)/2;
+	switch (gameMan.player) {
+	case 0:
+		context.drawImage(images["tileGoal"], 848,  176);
+		context.drawImage(images["tileGoal"], 944,  176);
+		context.drawImage(images["tileGoal"], 1040, 176);
+		break;
+	case 1:
+		context.drawImage(images["tileGoal"], 1712, 560);
+		context.drawImage(images["tileGoal"], 1712, 656);
+		context.drawImage(images["tileGoal"], 1712, 752);
+		break;
+	case 2:
+		context.drawImage(images["tileGoal"], 848,  1136);
+		context.drawImage(images["tileGoal"], 944,  1136);
+		context.drawImage(images["tileGoal"], 1040, 1136);
+		break;
+	case 3:
+		context.drawImage(images["tileGoal"], 176, 560);
+		context.drawImage(images["tileGoal"], 176, 656);
+		context.drawImage(images["tileGoal"], 176, 752);
+		break;
+	}
+	context.globalAlpha = 1;
+
 	context.save();
 	switch (gameMan.player) {
 	case 0:
