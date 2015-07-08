@@ -593,6 +593,7 @@ function drawPieces(context) {
 		context.stroke();
 	}
 
+	// TODO optimize context changes
 	var pieceSize = 80;
 	var theta = drawMan.time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
@@ -680,16 +681,16 @@ function drawTiles(context, dTime) {
 	context.save();
 	switch (gameMan.player) {
 	case 0:
-		context.translate(drawMan.cellSize * 13.5, drawMan.cellSize * 14);
+		context.translate(1296, 1344);
 		break;
 	case 1:
-		context.translate(drawMan.cellSize, drawMan.cellSize * 10.5);
+		context.translate(96, 1008);
 		break;
 	case 2:
-		context.translate(drawMan.cellSize * 7.5, drawMan.cellSize);
+		context.translate(720, 96);
 		break;
 	case 3:
-		context.translate(drawMan.cellSize * 20, drawMan.cellSize * 4.5);
+		context.translate(1920, 432);
 		break;
 	}
 	drawMan.helmetTheta += dTime/400;
