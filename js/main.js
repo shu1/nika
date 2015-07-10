@@ -387,11 +387,11 @@ function drawMural(context, dTime) {
 		if (gameMan.winner >= 0) {
 			lines = [getWinnerText(gameMan.winner)];
 		} else {
-			lines = tutorialTexts[gameMan.tutorialStep];
+			lines = tutorialBoards[gameMan.tutorialStep].text;
 		}
 
 		var spacing = 36, topPadding = 26, bottomPadding = 14, nextX = 672, font = "px Georgia";
-		if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
+		if (lines.length > 4 && tutorialBoards[gameMan.tutorialStep].input) {	// text too crowded
 			spacing -= 4;
 			topPadding -= 2;
 			bottomPadding -= 2;
@@ -442,7 +442,7 @@ function drawContext(context, dTime, tv) {
 				context.drawImage(images["tutorialButton0"], drawMan.tutorialPrevX, drawMan.tutorialButtonY);
 			}
 
-			if (gameMan.tutorialStep >= 0 && tutorialInputs[gameMan.tutorialStep]) {
+			if (gameMan.tutorialStep >= 0 && tutorialBoards[gameMan.tutorialStep].input) {
 				drawMan.tutorialTheta += dTime/250;
 				if (drawMan.tutorialFlash > 0) {
 					drawMan.tutorialFlash -= dTime/600;

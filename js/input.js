@@ -76,7 +76,7 @@ function mouseDown(event) {
 					setRallyHighlights(phalanx[0].row, phalanx[0].col);
 				}
 
-				if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
+				if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialBoards[gameMan.tutorialStep].input) {
 					inputMan.pX = scene.x + (gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
 					inputMan.pY = scene.y + (gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
 					handled = true;
@@ -404,7 +404,7 @@ function mouseUp(event) {
 				&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
 					prevTutorialPart();
 				}
-				else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {
+				else if (gameMan.tutorialStep >= 0 && (tutorialBoards[gameMan.tutorialStep].input || gameMan.debug)) {
 					if (x > drawMan.tutorialNextX && x < drawMan.tutorialNextX + drawMan.tutorialButtonWidth
 					&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
 						nextTutorialStep();
@@ -659,7 +659,7 @@ function keyNext() {
 		return true;
 	}
 	else if (gameMan.scene == "board" && gameMan.tutorialStep >= 0) {
-		if (tutorialInputs[gameMan.tutorialStep]) {
+		if (tutorialBoards[gameMan.tutorialStep].input) {
 			nextTutorialStep();
 		}
 		return true;

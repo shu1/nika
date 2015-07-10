@@ -317,7 +317,7 @@ function initAnimations() {
 
 function setIdleAnimation(player) {
 	if (gameMan.tutorialStep >= 0 && player == 0) {
-		if (tutorialInputs[gameMan.tutorialStep]) {
+		if (tutorialBoards[gameMan.tutorialStep].input) {
 			murals[player].setAnim("idleActive");
 		} else {
 			murals[player].setAnim("idle");

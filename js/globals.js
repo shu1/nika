@@ -140,132 +140,9 @@ var emptyBoard = [
 	"......dddccc........."
 ]
 
-var tutorialTexts = [[
-	"Welcome, strategos! You have been","assigned command of our noble Athenian","troops against the cruel Spartans and the","treacherous Thebans."
-],[
-	"Our objective is to reach the camp of the","Messenians, our brave allies. If a single","Athenian piece reaches any part of this","area, we win, and so do the Messenians."
-],[
-	"Drag our piece onto the highlighted","space to claim victory."
-],[
-	"Victory!"
-],[
-	"We also win if any Messenian piece","reaches our own camp."
-],[
-	"Victory!"
-],[
-	"Our enemies have allied against us. We","must stop them from breaking through","our lines at any cost!"
-],[
-	"Defeat!"
-],[
-	"If any Spartan or Theban reaches the","opposite camp, we will have failed in","our mission, and the battle will be lost."
-],[
-	"Defeat!"
-],[
-	"To arms! The Spartans have sent a scout","into our territory. We must drive him off!"
-],[
-	"We can take 2 actions per turn. The", "number of flashing helmets shows how", "many actions we have remaining."
-],[
-	"All hoplites carry shields which protect","their front. The Spartan is FACING this","piece, so our soldier cannot attack."
-],[
-	"But Athena smiles upon us today -","we have him flanked! Let us MOVE our","other soldier. Drag this piece forward,","ending your touch in the space indicated."
-],[
-	"Good. Notice that the single helmet","indicates we have only 1 action remaining."
-],[
-	"Good. We can ROUT an enemy piece by","moving into it from the side or back, but","not from the front. Take out that Spartan!"
-],[
-	"Bravo! As you saw, a piece ends up","facing the direction it moved in."
-],[
-	"Strategos! While we were dealing with","that Spartan, a contingent of Thebans","has approached us from behind.","Two of our men are in danger!"
-],[
-	"We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, and end your touch","more than a space away. Rotate this","piece so that it faces the right."
-],[
-	"Excellent! Now, rotate our other soldier","to face the Theban. Since the Theban is","blocking its movement, our piece will","rotate even if you try to move in that","direction."
-],[
-	"Well done - the men are safe, for now."
-],[
-	"Beware! The accursed Thebans are","trying to get around the edge of our line."
-],[
-	"Routed pieces are not out of the battle","forever. You can RALLY them into","the spaces shown."
-],[
-	"Drag our routed soldier into the space","indicated so he can hurry back to the fight."
-],[
-	"This is our ally's victory area. We move","through these spaces normally, but our","enemies are not allowed to enter them."
-],[
-	"Let's move up our fresh soldier in","support."
-],[
-	"Brilliant!"
-],[
-	"Like all hoplites, our troops are trained to","act in the powerful PHALANX formation.","Adjacent pieces that face the same way","can move and rotate together."
-],[
-	"To move in a phalanx, just drag forward","any piece that is part of a phalanx","formation."
-],[
-	"Exactly. Now, rotate our phalanx to","face the Spartan. Drag any piece in","the phalanx in the direction you want","it to face."
-],[
-	"Good! Notice that, unlike single pieces,","a phalanx can only move forward.","Moving in a different direction requires","two actions: first rotating the phalanx,","then moving it."
-],[
-	"The Thebans have mounted a tough","defense. If we move our whole phalanx","forward, the indicated piece will be","in danger. Proceed with caution."
-],[
-	"Fortunately, we can split pieces off from","a phalanx. Tap the indicated piece to","enter phalanx sub-selection mode."
-],[
-	"Now tap the other pieces indicated,","starting with the corner piece. If you","try to create an invalid phalanx by","tapping the forward piece first, you'll","have to start over."
-],[
-	"Now tap the other pieces indicated,","starting with the corner piece. If you","try to create an invalid phalanx by","tapping the forward piece first, you'll","have to start over."
-],[
-	"Deftly done! You can now move","the smaller phalanx you created by","dragging it forward as normal."
-],[
-	"Now to the attack! Select only the","forward piece by tapping it, then rout","the exposed Theban. Remember -","unlike a phalanx, a single piece can","move in any direction!"
-],[
-	"We have struck first without leaving","our men vulnerable. Masterful!"
-],[
-	"This Spartan seeks to block our path.","Well, the Spartans are known more for","their bravery than their intelligence..."
-],[
-	"Our phalanx cannot rout the Spartan, as","he is facing us. But, since we have two","pieces lined up against a single enemy,","we can PUSH him backward. Simply","move our phalanx forward to push."
-],[
-	"Just so. We can push no further, since","the enemy line now matches our own","in strength."
-],[
-	"We have gained an advantage over the","Thebans. Our three soldiers stand against","their two. But how best to proceed?"
-],[
-	"We cannot push in this line, as there is","only one Athenian facing one Theban.","Our soldier here is stuck."
-],[
-	"However, we have the advantage in this","line. Our two pieces can push back the","single Theban. Select only them, and","move them forward."
-],[
-	"Ha! Now, seize the advantage and destroy","that Theban. Tap only this piece to","split it off from the phalanx, then attack!"
-],[
-	"Excellent!"
-],[
-	"Good news, strategos! Our men have","trapped a Spartan near the edge of the","field."
-],[
-	"If we push an enemy piece off the","battlefield, that enemy is routed.","Push that Spartan to take him out!"
-],[
-	"Yes! We can also rout enemies by pushing","them into our victory area, or our ally's."
-],[
-	"We can reap great rewards by","coordinating with the Messenians,","our allies."
-],[
-	"We can even rout enemies by pushing","them into our ally's piece, or our own - ","regardless of the friendly piece's facing."
-],[
-	"So, order the men forward! Remember, if","you're moving an entire phalanx, just drag","any piece in it -  you don't have to select","them each individually."
-],[
-	"Perfect! We'll have to wait for the","Messenian soldier to move, since we","cannot push or rout allied troops -","or our own men, for that matter."
-],[
-	"Congratulations, strategos! You now know","everything you need to play Nika."
-],[
-	"Always remember your ultimate goal -","get one of your pieces across the board","into the victory area on your ally's side,","or help your ally do the same."
-],[
-	"Note that you can UNDO unwanted","moves, or PASS if you feel you cannot","better your position by taking an action."
-],[
-	"Though the rules are few, you will find","that the strategies are deep and varied.","Now then, proserkhou kai nika -","go forth and conquer!"
-]]
-
-var tutorialInputs = [
-	true,	true,	false,	true,	true,	true,	true,	true,	true,	true,
-	true,	true,	true,	false,	true,	false,	true,	true,	false,	false,
-	true,	true,	true,	false,	true,	false,	true,	true,	false,	false,
-	true,	true,	false,	false,	false,	false,	false,	true,	true,	false,
-	true,	true,	true,	false,	false,	true,	true,	false,	true,	true,
-	true,	false,	true,	true,	true,	true,	true
-]
-
 var tutorialBoards = [{
+	text:["Welcome, strategos! You have been","assigned command of our noble Athenian","troops against the cruel Spartans and the","treacherous Thebans."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -303,6 +180,8 @@ var tutorialBoards = [{
 		[11,11,1]
 	]
 },{
+	text:["Our objective is to reach the camp of the","Messenians, our brave allies. If a single","Athenian piece reaches any part of this","area, we win, and so do the Messenians."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -337,6 +216,8 @@ var tutorialBoards = [{
 		[2,11,2]
 	]
 },{
+	text:["Drag our piece onto the highlighted","space to claim victory."],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -347,6 +228,8 @@ var tutorialBoards = [{
 		[2,10,2]
 	]
 },{
+	text:["Victory!"],
+	input:true,
 	player:0,
 	actions:1,
 	pieces:[
@@ -357,6 +240,8 @@ var tutorialBoards = [{
 	],
 	skip:true
 },{
+	text:["We also win if any Messenian piece","reaches our own camp."],
+	input:true,
 	player:2,
 	actions:2,
 	pieces:[
@@ -369,6 +254,8 @@ var tutorialBoards = [{
 		[12,11,2]
 	]
 },{
+	text:["Victory!"],
+	input:true,
 	player:2,
 	actions:1,
 	pieces:[
@@ -379,6 +266,8 @@ var tutorialBoards = [{
 	],
 	skip:true
 },{
+	text:["Our enemies have allied against us. We","must stop them from breaking through","our lines at any cost!"],
+	input:true,
 	player:1,
 	actions:2,
 	pieces:[
@@ -391,6 +280,8 @@ var tutorialBoards = [{
 		[8,18,2]
 	]
 },{
+	text:["Defeat!"],
+	input:true,
 	player:1,
 	actions:1,
 	pieces:[
@@ -401,6 +292,8 @@ var tutorialBoards = [{
 	],
 	skip:true
 },{
+	text:["If any Spartan or Theban reaches the","opposite camp, we will have failed in","our mission, and the battle will be lost."],
+	input:true,
 	player:3,
 	actions:2,
 	pieces:[
@@ -413,6 +306,8 @@ var tutorialBoards = [{
 		[8,2,2]
 	]
 },{
+	text:["Defeat!"],
+	input:true,
 	player:3,
 	actions:1,
 	pieces:[
@@ -423,6 +318,8 @@ var tutorialBoards = [{
 	],
 	skip:true
 },{
+	text:["To arms! The Spartans have sent a scout","into our territory. We must drive him off!"],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -434,6 +331,8 @@ var tutorialBoards = [{
 		[9,6,1]
 	]
 },{
+	text:["We can take 2 actions per turn. The", "number of flashing helmets shows how", "many actions we have remaining."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -443,6 +342,8 @@ var tutorialBoards = [{
 	],
 	prompts:[]
 },{
+	text:["All hoplites carry shields which protect","their front. The Spartan is FACING this","piece, so our soldier cannot attack."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -454,6 +355,8 @@ var tutorialBoards = [{
 		[9,7,1]
 	]
 },{
+	text:["But Athena smiles upon us today -","we have him flanked! Let us MOVE our","other soldier. Drag this piece forward,","ending your touch in the space indicated."],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -466,6 +369,8 @@ var tutorialBoards = [{
 		[10,6,2]
 	]
 },{
+	text:["Good. Notice that the single helmet","indicates we have only 1 action remaining."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -475,6 +380,8 @@ var tutorialBoards = [{
 	],
 	prompts:[]
 },{
+	text:["Good. We can ROUT an enemy piece by","moving into it from the side or back, but","not from the front. Take out that Spartan!"],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -487,6 +394,8 @@ var tutorialBoards = [{
 		[9,6,2]
 	]
 },{
+	text:["Bravo! As you saw, a piece ends up","facing the direction it moved in."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -498,6 +407,8 @@ var tutorialBoards = [{
 		[9,6,1]
 	]
 },{
+	text:["Strategos! While we were dealing with","that Spartan, a contingent of Thebans","has approached us from behind.","Two of our men are in danger!"],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -513,6 +424,8 @@ var tutorialBoards = [{
 		[10,11,1]
 	]
 },{
+	text:["We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, and end your touch","more than a space away. Rotate this","piece s that it faces the right."],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -527,6 +440,8 @@ var tutorialBoards = [{
 		[10,11,0]
 	]
 },{
+	text:["Excellent! Now, rotate our other soldier","to face the Theban. Since the Theban is","blocking its movement, our piece will","rotate even if you try to move i that","direction."],
+	input:false,
 	player:0,
 	actions:1,
 	pieces:[
@@ -541,6 +456,8 @@ var tutorialBoards = [{
 		[9,11,0]
 	]
 },{
+	text:["Well done - the men are safe, for now."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -556,6 +473,8 @@ var tutorialBoards = [{
 		[10,11,1]
 	]
 },{
+	text:["Beware! The accursed Thebans are","trying to get around the edge of our line."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -570,6 +489,8 @@ var tutorialBoards = [{
 		[11,12,1]
 	]
 },{
+	text:["Routed pieces are not out of the battle","forever. You can RALLY them into","the spaces shown."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -590,6 +511,8 @@ var tutorialBoards = [{
 		[14,11,2]
 	]
 },{
+	text:["Drag our routed soldier into the space","indicated so he can hurry back to the fight."],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -605,6 +528,8 @@ var tutorialBoards = [{
 		[13,11,2]
 	]
 },{
+	text:["This is our ally's victory area. We move","through these spaces normally, but our","enemies are not allowed to enter them."],
+	input:true,
 	player:0,
 	actions:1,
 	pieces:[
@@ -621,6 +546,8 @@ var tutorialBoards = [{
 		[12,11,1]
 	]
 },{
+	text:["Let's move up our fresh soldier in","support."],
+	input:false,
 	player:0,
 	actions:1,
 	pieces:[
@@ -636,6 +563,8 @@ var tutorialBoards = [{
 		[12,11,2]
 	]
 },{
+	text:["Brilliant!"],
+	input:true,
 	player:3,
 	actions:2,
 	pieces:[
@@ -649,6 +578,8 @@ var tutorialBoards = [{
 	prompts:[],
 	skip:true
 },{
+	text:["Like all hoplites, our troops are trained to","act in the powerful PHALANX formation.","Adjacent pieces that face the same way","can move and rotate together."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -661,6 +592,8 @@ var tutorialBoards = [{
 		[10,6,1]
 	]
 },{
+	text:["To move in a phalanx, just drag forward","any piece that is part of a phalanx","formation."],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -675,6 +608,8 @@ var tutorialBoards = [{
 		[10,5,2]
 	]
 },{
+	text:["Exactly. Now, rotate our phalanx to","face the Spartan. Drag any piece in","the phalanx in the direction you want","it to face."],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -687,6 +622,8 @@ var tutorialBoards = [{
 		[10,5,0]
 	]
 },{
+	text:["Good! Notice that, unlike single pieces,","a phalanx can only move forward.","Moving in a different direction requires","two actions: first rotating the phalanx,","the moving it."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -696,6 +633,8 @@ var tutorialBoards = [{
 	],
 	prompts:[]
 },{
+	text:["The Thebans have mounted a tough","defense. If we move our whole phalanx","forward, the indicated piece will be","in danger. Proceed with caution."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -712,6 +651,8 @@ var tutorialBoards = [{
 		[9,14,1]
 	]
 },{
+	text:["Fortunately, we can split pieces off from","a phalanx. Tap the indicated piece to","enter phalanx sub-selection mode."],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -729,6 +670,8 @@ var tutorialBoards = [{
 		[10,14,0]
 	]
 },{
+	text:["Now tap the other pieces indicated,","starting with the corner piece. If you","try to create an invalid phalanx by","tapping the forward piece first, you'll","have to star over."],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -747,6 +690,8 @@ var tutorialBoards = [{
 		[11,15,0]
 	]
 },{
+	text:["Now tap the other pieces indicated,","starting with the corner piece. If you","try to create an invalid phalanx by","tapping the forward piece first, you'll","have to star over."],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -765,6 +710,8 @@ var tutorialBoards = [{
 		[11,15,0]
 	]
 },{
+	text:["Deftly done! You can now move","the smaller phalanx you created by","dragging it forward as normal."],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -784,6 +731,8 @@ var tutorialBoards = [{
 		[11,15,0]
 	]
 },{
+	text:["Now to the attack! Select only the","forward piece by tapping it, then rout","the exposed Theban. Remember -","unlike a phalanx, a single piece can","move in an direction!"],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -801,6 +750,8 @@ var tutorialBoards = [{
 		[10,16,2]
 	]
 },{
+	text:["We have struck first without leaving","our men vulnerable. Masterful!"],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -816,6 +767,8 @@ var tutorialBoards = [{
 	prompts:[],
 	skip:true
 },{
+	text:["This Spartan seeks to block our path.","Well, the Spartans are known more for","their bravery than their intelligence..."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -828,6 +781,8 @@ var tutorialBoards = [{
 		[8,5,1]
 	]
 },{
+	text:["Our phalanx cannot rout the Spartan, as","he is facing us. But, since we have two","pieces lined up against a single enemy,","we can PUSH him backward. Simply","move ou phalanx forward to push."],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -842,6 +797,8 @@ var tutorialBoards = [{
 		[10,5,0]
 	]
 },{
+	text:["Just so. We can push no further, since","the enemy line now matches our own","in strength."],
+	input:true,
 	player:0,
 	actions:1,
 	pieces:[
@@ -855,6 +812,8 @@ var tutorialBoards = [{
 		[7,5,1]
 	]
 },{
+	text:["We have gained an advantage over the","Thebans. Our three soldiers stand against","their two. But how best to proceed?"],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -866,6 +825,8 @@ var tutorialBoards = [{
 	],
 	prompts:[]
 },{
+	text:["We cannot push in this line, as there is","only one Athenian facing one Theban.","Our soldier here is stuck."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -880,6 +841,8 @@ var tutorialBoards = [{
 		[9,15,1]
 	]
 },{
+	text:["However, we have the advantage in this","line. Our two pieces can push back the","single Theban. Select only them, and","move them forward."],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -895,6 +858,8 @@ var tutorialBoards = [{
 		[10,16,0]
 	]
 },{
+	text:["Ha! Now, seize the advantage and destroy","that Theban. Tap only this piece to","split it off from the phalanx, then attack!"],
+	input:false,
 	player:0,
 	actions:1,
 	pieces:[
@@ -909,6 +874,8 @@ var tutorialBoards = [{
 		[8,15,2]
 	]
 },{
+	text:["Excellent!"],
+	input:true,
 	player:3,
 	actions:2,
 	pieces:[
@@ -921,6 +888,8 @@ var tutorialBoards = [{
 	prompts:[],
 	skip:true
 },{
+	text:["Good news, strategos! Our men have","trapped a Spartan near the edge of the","field."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -932,6 +901,8 @@ var tutorialBoards = [{
 		[3,5,1]
 	]
 },{
+	text:["If we push an enemy piece off the","battlefield, that enemy is routed.","Push that Spartan to take him out!"],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -945,6 +916,8 @@ var tutorialBoards = [{
 		[5,5,0]
 	]
 },{
+	text:["Yes! We can also rout enemies by pushing","them into our victory area, or our ally's."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -954,6 +927,8 @@ var tutorialBoards = [{
 	],
 	prompts:[]
 },{
+	text:["We can reap great rewards by","coordinating with the Messenians,","our allies."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -966,6 +941,8 @@ var tutorialBoards = [{
 		[5,15,1]
 	]
 },{
+	text:["We can even rout enemies by pushing","them into our ally's piece, or our own - ","regardless of the friendly piece's facing."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -978,6 +955,8 @@ var tutorialBoards = [{
 		[6,15,1]
 	]
 },{
+	text:["So, order the men forward! Remember, if","you're moving an entire phalanx, just drag","any piece in it -  you don't have to select","them each individually."],
+	input:false,
 	player:0,
 	actions:2,
 	pieces:[
@@ -992,6 +971,8 @@ var tutorialBoards = [{
 		[8,15,0]
 	]
 },{
+	text:["Perfect! We'll have to wait for the","Messenian soldier to move, since we","cannot push or rout allied troops -","or our own men, for that matter."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -1002,6 +983,8 @@ var tutorialBoards = [{
 	],
 	prompts:[]
 },{
+	text:["Congratulations, strategos! You now know","everything you need to play Nika."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -1032,6 +1015,8 @@ var tutorialBoards = [{
 	],
 	prompts:[]
 },{
+	text:["Always remember your ultimate goal -","get one of your pieces across the board","into the victory area on your ally's side,","or help your ally do the same."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -1069,6 +1054,8 @@ var tutorialBoards = [{
 		[2,11,2]
 	]
 },{
+	text:["Note that you can UNDO unwanted","moves, or PASS if you feel you cannot","better your position by taking an action."],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
@@ -1099,6 +1086,8 @@ var tutorialBoards = [{
 	],
 	prompts:[]
 },{
+	text:["Though the rules are few, you will find","that the strategies are deep and varied.","Now then, proserkhou kai nika -","go forth and conquer!"],
+	input:true,
 	player:0,
 	actions:2,
 	pieces:[
