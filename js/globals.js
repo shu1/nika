@@ -245,78 +245,43 @@ var tutorials = [{
 	player:2,
 	actions:2,
 	pieces:[
-		[2,11,10,2]
+		[2,12,10,2]
 	],
 	prompts:[
-		[11,10,1],
+		[12,10,1],
 		[12,9,2],
 		[12,10,2],
 		[12,11,2]
 	]
 },{
-	text:["Victory!"],
-	input:true,
-	player:2,
-	actions:1,
-	pieces:[
-		[2,12,10,2]
-	],
-	prompts:[
-		[12,10,1]
-	],
-	skip:true
-},{
-	text:["Our enemies have allied against us. We","must stop them from breaking through","our lines at any cost!"],
+	text:["The battle is lost if any Spartan reaches","the Theban camp..."],
 	input:true,
 	player:1,
 	actions:2,
 	pieces:[
-		[1,7,17,1]
+		[1,7,18,1]
 	],
 	prompts:[
-		[7,17,1],
+		[7,18,1],
 		[6,18,2],
 		[7,18,2],
 		[8,18,2]
 	]
 },{
-	text:["Defeat!"],
-	input:true,
-	player:1,
-	actions:1,
-	pieces:[
-		[1,7,18,1]
-	],
-	prompts:[
-		[7,18,1]
-	],
-	skip:true
-},{
-	text:["If any Spartan or Theban reaches the","opposite camp, we will have failed in","our mission, and the battle will be lost."],
+
+	text:["...or if any Theban reaches the Spartan","camp."],
 	input:true,
 	player:3,
 	actions:2,
 	pieces:[
-		[3,7,3,3]
+		[3,7,2,3]
 	],
 	prompts:[
-		[7,3,1],
+		[7,2,1],
 		[6,2,2],
 		[7,2,2],
 		[8,2,2]
 	]
-},{
-	text:["Defeat!"],
-	input:true,
-	player:3,
-	actions:1,
-	pieces:[
-		[3,7,2,3]
-	],
-	prompts:[
-		[7,2,1]
-	],
-	skip:true
 },{
 	text:["To arms! The Spartans have sent a scout","into our territory. We must drive him off!"],
 	input:true,
@@ -330,17 +295,6 @@ var tutorials = [{
 	prompts:[
 		[9,6,1]
 	]
-},{
-	text:["We can take 2 actions per turn. The", "number of flashing helmets shows how", "many actions we have remaining."],
-	input:true,
-	player:0,
-	actions:2,
-	pieces:[
-		[0,10,5,1],
-		[0,9,7,3],
-		[1,9,6,1]
-	],
-	prompts:[]
 },{
 	text:["All hoplites carry shields which protect","their front. The Spartan is FACING this","piece, so our soldier cannot attack."],
 	input:true,
@@ -926,20 +880,6 @@ var tutorials = [{
 		[1,3,1,1]
 	],
 	prompts:[]
-},{
-	text:["We can reap great rewards by","coordinating with the Messenians,","our allies."],
-	input:true,
-	player:0,
-	actions:2,
-	pieces:[
-		[0,8,15,0],
-		[0,7,15,0],
-		[3,6,15,2],
-		[2,5,15,1]
-	],
-	prompts:[
-		[5,15,1]
-	]
 },{
 	text:["We can even rout enemies by pushing","them into our ally's piece, or our own - ","regardless of the friendly piece's facing."],
 	input:true,

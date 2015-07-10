@@ -391,6 +391,7 @@ function drawMural(context, dTime) {
 		}
 
 		var spacing = 36, topPadding = 26, bottomPadding = 14, nextX = 672, font = "px Georgia";
+		// TODO: Either do tutstep > 0 or see if this is required at all
 		if (lines.length > 4 && tutorials[gameMan.tutorialStep] && tutorials[gameMan.tutorialStep].input) {	// text too crowded
 			spacing -= 4;
 			topPadding -= 2;
