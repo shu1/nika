@@ -384,14 +384,14 @@ function drawMural(context, dTime) {
 		context.fillRect(drawMan.dialogX, 0, drawMan.muralWidth - drawMan.dialogX, drawMan.muralHeight);
 
 		var lines;
-		if (gameMan.winner >= 0) {
-			lines = [getWinnerText(gameMan.winner)];
-		} else {
+		if (gameMan.tutorialStep >= 0) {
 			lines = tutorials[gameMan.tutorialStep].text;
+		} else {
+			lines = [getWinnerText(gameMan.winner)];
 		}
 
 		var spacing = 36, topPadding = 26, bottomPadding = 14, nextX = 672, font = "px Georgia";
-		if (lines.length > 4 && tutorials[gameMan.tutorialStep].input) {	// text too crowded
+		if (lines.length > 4 && tutorials[gameMan.tutorialStep] && tutorials[gameMan.tutorialStep].input) {	// text too crowded
 			spacing -= 4;
 			topPadding -= 2;
 			bottomPadding -= 2;

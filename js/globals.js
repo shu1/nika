@@ -1015,6 +1015,38 @@ var tutorials = [{
 	],
 	prompts:[]
 },{
+	text:["Note that you can UNDO unwanted","moves, or PASS if you feel you cannot","better your position by taking an action."],
+	input:true,
+	player:0,
+	actions:2,
+	pieces:[
+		[0,9,9,3],
+		[0,10,9,3],
+		[0,11,9,3],
+		[0,10,10,0],
+		[0,11,10,0],
+		[0,11,11,1],
+		[1,6,5,0],
+		[1,6,4,0],
+		[1,6,3,0],
+		[1,7,4,1],
+		[1,7,3,1],
+		[1,8,3,2],
+		[2,5,11,1],
+		[2,4,11,1],
+		[2,3,11,1],
+		[2,4,10,2],
+		[2,3,10,2],
+		[2,3,9,3],
+		[3,8,15,2],
+		[3,8,16,2],
+		[3,8,17,2],
+		[3,7,16,3],
+		[3,7,17,3],
+		[3,6,17,0]
+	],
+	prompts:[]
+},{
 	text:["Always remember your ultimate goal -","get one of your pieces across the board","into the victory area on your ally's side,","or help your ally do the same."],
 	input:true,
 	player:0,
@@ -1053,38 +1085,6 @@ var tutorials = [{
 		[2,10,2],
 		[2,11,2]
 	]
-},{
-	text:["Note that you can UNDO unwanted","moves, or PASS if you feel you cannot","better your position by taking an action."],
-	input:true,
-	player:0,
-	actions:2,
-	pieces:[
-		[0,9,9,3],
-		[0,10,9,3],
-		[0,11,9,3],
-		[0,10,10,0],
-		[0,11,10,0],
-		[0,11,11,1],
-		[1,6,5,0],
-		[1,6,4,0],
-		[1,6,3,0],
-		[1,7,4,1],
-		[1,7,3,1],
-		[1,8,3,2],
-		[2,5,11,1],
-		[2,4,11,1],
-		[2,3,11,1],
-		[2,4,10,2],
-		[2,3,10,2],
-		[2,3,9,3],
-		[3,8,15,2],
-		[3,8,16,2],
-		[3,8,17,2],
-		[3,7,16,3],
-		[3,7,17,3],
-		[3,6,17,0]
-	],
-	prompts:[]
 },{
 	text:["Though the rules are few, you will find","that the strategies are deep and varied.","Now then, proserkhou kai nika -","go forth and conquer!"],
 	input:true,

@@ -76,7 +76,7 @@ function mouseDown(event) {
 					setRallyHighlights(phalanx[0].row, phalanx[0].col);
 				}
 
-				if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorials[gameMan.tutorialStep].input) {
+				if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && (gameMan.tutorialStep < 0 || !tutorials[gameMan.tutorialStep].input)) {
 					inputMan.pX = scene.x + (gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
 					inputMan.pY = scene.y + (gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
 					handled = true;
