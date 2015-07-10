@@ -29,7 +29,7 @@ function endTutorial() {
 function nextTutorialPart() {
 	do {
 		nextTutorialStep();
-	} while (tutorialBoards[gameMan.tutorialStep].skip)
+	} while (tutorials[gameMan.tutorialStep].skip)
 }
 
 function prevTutorialPart() {
@@ -39,7 +39,7 @@ function prevTutorialPart() {
 			hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
 			setupTutorial(gameMan.tutorialStep);
 		}
-	} while (tutorialBoards[gameMan.tutorialStep].skip)
+	} while (tutorials[gameMan.tutorialStep].skip)
 }
 
 function resetActions(player) {
@@ -48,7 +48,7 @@ function resetActions(player) {
 }
 
 function setupTutorial() {
-	var board = tutorialBoards[gameMan.tutorialStep];
+	var board = tutorials[gameMan.tutorialStep];
 	if (board) {
 		loadState(board);
 		states = [];
@@ -61,8 +61,8 @@ function setupTutorial() {
 function checkTutorialMove(moved) {
 	var correct = true;
 	var nextStep = gameMan.tutorialStep + 1;
-	if (tutorialBoards[nextStep]) {
-		var pieces = tutorialBoards[nextStep].pieces;
+	if (tutorials[nextStep]) {
+		var pieces = tutorials[nextStep].pieces;
 		for (var i = pieces.length - 1; i >= 0; --i) {
 			var p = pieces[i];
 			if (grid[p[1]][p[2]].rot != p[3] || grid[p[1]][p[2]].player != p[0]) {

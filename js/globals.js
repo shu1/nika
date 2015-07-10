@@ -140,7 +140,7 @@ var emptyBoard = [
 	"......dddccc........."
 ]
 
-var tutorialBoards = [{
+var tutorials = [{
 	text:["Welcome, strategos! You have been","assigned command of our noble Athenian","troops against the cruel Spartans and the","treacherous Thebans."],
 	input:true,
 	player:0,
@@ -372,7 +372,7 @@ var tutorialBoards = [{
 	text:["Good. Notice that the single helmet","indicates we have only 1 action remaining."],
 	input:true,
 	player:0,
-	actions:2,
+	actions:1,
 	pieces:[
 		[0,10,6,1],
 		[0,9,7,3],
@@ -383,7 +383,7 @@ var tutorialBoards = [{
 	text:["Good. We can ROUT an enemy piece by","moving into it from the side or back, but","not from the front. Take out that Spartan!"],
 	input:false,
 	player:0,
-	actions:2,
+	actions:1,
 	pieces:[
 		[0,10,6,1],
 		[0,9,7,3],
@@ -396,7 +396,7 @@ var tutorialBoards = [{
 },{
 	text:["Bravo! As you saw, a piece ends up","facing the direction it moved in."],
 	input:true,
-	player:0,
+	player:1,
 	actions:2,
 	pieces:[
 		[0,9,6,0],
