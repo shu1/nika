@@ -632,11 +632,9 @@ var tutorials = [{
 	prompts:[
 		[11,14,0]
 	],
-	afterLoad: function() {
-		phalanx = [
-			{row:10,col:14}
-		]
-	}
+	phalanx:[
+		{row:10,col:14}
+	]
 },{
 	text:["Then this piece."],
 	input:false,
@@ -655,12 +653,10 @@ var tutorials = [{
 	prompts:[
 		[11,15,0]
 	],
-	afterLoad: function() {
-		phalanx = [
-			{row:10,col:14},
-			{row:11,col:14}
-		]
-	}
+	phalanx:[
+		{row:10,col:14},
+		{row:11,col:14}
+	]
 },{
 	text:["Deftly done! You can now move","the smaller phalanx you created by","dragging it forward as normal."],
 	input:false,
@@ -682,13 +678,11 @@ var tutorials = [{
 		[11,14,0],
 		[11,15,0]
 	],
-	afterLoad: function() {
-		phalanx = [
-			{row:10,col:14},
-			{row:11,col:14},
-			{row:11,col:15}
-		]
-	}
+	phalanx:[
+		{row:10,col:14},
+		{row:11,col:14},
+		{row:11,col:15}
+	]
 },{
 	text:["Now to the attack! Select only the","forward piece by tapping it, then rout","the exposed Theban. Remember -","unlike a phalanx, a single piece can","move in an direction!"],
 	input:false,

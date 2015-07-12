@@ -51,6 +51,18 @@ function setupTutorial() {
 	var board = tutorials[gameMan.tutorialStep];
 	if (board) {
 		loadState(board);
+
+		// Create phalanxes for some tutorial steps
+		if (board.phalanx) {
+			// Deep copy so changes to phalanx don't affect tutorial states
+			phalanx = [];
+			for(var i = board.phalanx.length - 1; i >= 0; --i) {
+				phalanx.push({
+					row: board.phalanx[i].row,
+					col: board.phalanx[i].col
+				});
+			}
+		}
 		states = [];
 		pushState(null, true); // second argument is 'dontSave' flag
 	} else {
