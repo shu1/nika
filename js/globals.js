@@ -248,10 +248,7 @@ var tutorials = [{
 		[2,12,10,2]
 	],
 	prompts:[
-		[12,10,1],
-		[12,9,2],
-		[12,10,2],
-		[12,11,2]
+		[12,10,1]
 	]
 },{
 	text:["The battle is lost if any Spartan reaches","the Theban camp..."],
@@ -262,10 +259,7 @@ var tutorials = [{
 		[1,7,18,1]
 	],
 	prompts:[
-		[7,18,1],
-		[6,18,2],
-		[7,18,2],
-		[8,18,2]
+		[7,18,1]
 	]
 },{
 
@@ -277,10 +271,7 @@ var tutorials = [{
 		[3,7,2,3]
 	],
 	prompts:[
-		[7,2,1],
-		[6,2,2],
-		[7,2,2],
-		[8,2,2]
+		[7,2,1]
 	]
 },{
 	text:["To arms! The Spartans have sent a scout","into our territory. We must drive him off!"],
