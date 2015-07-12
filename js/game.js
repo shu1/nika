@@ -253,6 +253,19 @@ function getWinnerText(player) {
 	return getCity(player) + "and " + getCity(getPartner(player)) + "win!";
 }
 
+function inPartnerCity(player) {
+	var cell, partner = getPartner(player);
+	for (var row = 0; row < 15; ++row) {
+		for (var col = 0; col < 21; ++col) {
+			cell = grid[row][col];
+			if (cell.player == player && cell.city == partner && cell.kind == 0) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 function checkWin() {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
