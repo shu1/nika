@@ -120,10 +120,6 @@ function movePiece(pRow, pCol, row, col, isAI) {
 
 			playerAction();
 		}
-
-		if (gameMan.tutorialStep >= 0) {
-			checkTutorialMove(moved);
-		}
 	}
 
 	return moved;

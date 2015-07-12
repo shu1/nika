@@ -609,6 +609,9 @@ var tutorials = [{
 	],
 	prompts:[
 		[10,14,0]
+	],
+	selection: [
+		[10,14]
 	]
 },{
 	text:["Next, highlight this piece..."],
@@ -630,6 +633,10 @@ var tutorials = [{
 	],
 	phalanx:[
 		{row:10,col:14}
+	],
+	selection: [
+		[10,14],
+		[11,14]
 	]
 },{
 	text:["Then this piece."],
@@ -652,6 +659,11 @@ var tutorials = [{
 	phalanx:[
 		{row:10,col:14},
 		{row:11,col:14}
+	],
+	selection: [
+		[10,14],
+		[11,14],
+		[11,15]
 	]
 },{
 	text:["Deftly done! You can now move","the smaller phalanx you created by","dragging it forward as normal."],

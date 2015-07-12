@@ -419,10 +419,13 @@ function mouseUp(event) {
 				 		phalanx.length = 0;
 				 	}
 				 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
-				 	checkTutorialSelection();
 				}
 				else if (!gameMan.ais[gameMan.player]) {
 					movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col);
+				}
+
+				if (gameMan.tutorialStep >= 0) {
+					checkTutorialMove();
 				}
 
 				if (phalanx.length > 0 && grid[phalanx[0].row][phalanx[0].col].kind == 3) {

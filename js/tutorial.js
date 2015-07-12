@@ -51,18 +51,6 @@ function setupTutorial() {
 	var board = tutorials[gameMan.tutorialStep];
 	if (board) {
 		loadState(board);
-
-		// Create phalanxes for some tutorial steps
-		if (board.phalanx) {
-			// Deep copy so changes to phalanx don't affect tutorial states
-			phalanx = [];
-			for(var i = board.phalanx.length - 1; i >= 0; --i) {
-				phalanx.push({
-					row: board.phalanx[i].row,
-					col: board.phalanx[i].col
-				});
-			}
-		}
 		states = [];
 		pushState(null, true); // second argument is 'dontSave' flag
 	} else {
@@ -70,15 +58,33 @@ function setupTutorial() {
 	}
 }
 
-function checkTutorialMove(moved) {
+function checkTutorialMove() {
+	if (tutorials[gameMan.tutorialStep].input) {
+		return false;
+	}
+
 	var correct = true;
-	var nextStep = gameMan.tutorialStep + 1;
-	if (tutorials[nextStep]) {
-		var pieces = tutorials[nextStep].pieces;
-		for (var i = pieces.length - 1; i >= 0; --i) {
-			var p = pieces[i];
-			if (grid[p[1]][p[2]].rot != p[3] || grid[p[1]][p[2]].player != p[0]) {
+	var selection = tutorials[gameMan.tutorialStep].selection;
+
+	if (selection) { // if correctness depends on phalanx after selection
+		for (var i = selection.length - 1; i >= 0; --i) {
+			if (!inPhalanx(selection[i][0], selection[i][1])) {
 				correct = false;
+			}
+		}
+		if (selection.length != phalanx.length) { // make sure there are no extras
+			correct = false;
+		}
+	}
+	else { // if correctness depends on position of pieces after a move
+		var nextStep = gameMan.tutorialStep + 1;
+		if (tutorials[nextStep]) {
+			var pieces = tutorials[nextStep].pieces;
+			for (var i = pieces.length - 1; i >= 0; --i) {
+				var p = pieces[i];
+				if (grid[p[1]][p[2]].rot != p[3] || grid[p[1]][p[2]].player != p[0]) {
+					correct = false;
+				}
 			}
 		}
 	}

@@ -221,6 +221,18 @@ function loadState(state) {
 		grid[prompt[0]][prompt[1]].prompt = prompt[2];
 	}
 
+	// Create phalanxes for some tutorial steps
+	if (state.phalanx) {
+		// Deep copy so changes to phalanx don't affect tutorial states
+		phalanx = [];
+		for(var i = state.phalanx.length - 1; i >= 0; --i) {
+			phalanx.push({
+				row: state.phalanx[i].row,
+				col: state.phalanx[i].col
+			});
+		}
+	}
+
 	checkWin();
 }
 
