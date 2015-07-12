@@ -116,13 +116,13 @@ function newGame() {
 	generateGrid(newBoard);
 	states = [];
 	phalanx = [];
-	resetEvents();
-	resetAnimations();
-	pushState();
 	gameMan.winner = -1;
 	gameMan.player = 0;
 	gameMan.actions = 2;
 	gameMan.tutorialStep = -1;
+	resetEvents();
+	resetAnimations();
+	pushState();
 	useAction(0);
 }
 
@@ -221,6 +221,10 @@ function loadState(state) {
 		grid[prompt[0]][prompt[1]].prompt = prompt[2];
 	}
 
+	if (state.afterLoad) {
+		state.afterLoad();
+	}
+
 	checkWin();
 }
 
@@ -317,7 +321,7 @@ function initAnimations() {
 
 function setIdleAnimation(player) {
 	if (gameMan.tutorialStep >= 0 && player == 0) {
-		if (tutorialInputs[gameMan.tutorialStep]) {
+		if (tutorials[gameMan.tutorialStep].input) {
 			murals[player].setAnim("idleActive");
 		} else {
 			murals[player].setAnim("idle");

@@ -76,7 +76,7 @@ function mouseDown(event) {
 					setRallyHighlights(phalanx[0].row, phalanx[0].col);
 				}
 
-				if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && !tutorialInputs[gameMan.tutorialStep]) {
+				if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && (gameMan.tutorialStep < 0 || !tutorials[gameMan.tutorialStep].input)) {
 					inputMan.pX = scene.x + (gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
 					inputMan.pY = scene.y + (gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
 					handled = true;
@@ -389,13 +389,10 @@ function mouseUp(event) {
 						menuSetup(4);
 					}
 				}
-				else if (gameMan.menu == "option") {
-					if (x > 656 && x < 888 && y > 868 && y < 924) {
-						gameMan.menu = "credit";
-					}
-				}
 			}
 			else if (gameMan.scene == "board") {
+				var margin = 11;
+
 				if (gameMan.winner >= 0) {
 					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
 					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
@@ -404,12 +401,12 @@ function mouseUp(event) {
 					}
 				}
 				else if (gameMan.tutorialStep >= 0 && x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth
-				&& y > drawMan.tutorialButtonY && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight) {
+				&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
 					prevTutorialPart();
 				}
-				else if (gameMan.tutorialStep >= 0 && (tutorialInputs[gameMan.tutorialStep] || gameMan.debug)) {
+				else if (gameMan.tutorialStep >= 0 && (tutorials[gameMan.tutorialStep].input || gameMan.debug)) {
 					if (x > drawMan.tutorialNextX && x < drawMan.tutorialNextX + drawMan.tutorialButtonWidth
-					&& y > drawMan.tutorialButtonY && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight) {
+					&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
 						nextTutorialStep();
 					}
 					else {
@@ -516,9 +513,6 @@ function keyDown(event) {
 		else if (gameMan.menu == "title" && menus["title"] < 6) {
 			menuTitle(menus["title"]);
 		}
-		else if (gameMan.menu == "option" && menus["option"] == 2) {
-			gameMan.menu = "credit";
-		}
 		else if (debugBuild && !(gameMan.scene == "menus" && gameMan.menu == "option" && menus["option"] < 3)) {
 			menuDebug(0);
 		}
@@ -532,11 +526,8 @@ function keyDown(event) {
 			menuMan.show = false;
 			menus["debug"] = 0;
 		}
-		else if (gameMan.menu == "option") {
+		else if (gameMan.menu == "option" || gameMan.menu == "credit") {
 			gameMan.menu = "title";
-		}
-		else if (gameMan.menu == "credit") {
-			gameMan.menu = "option";
 		}
 		else if (gameMan.scene == "rules") {
 			setScene("board");
@@ -608,7 +599,7 @@ function keyDown(event) {
 		break;
 	case 40:	// down
 		if (!menuMan.show && gameMan.menu == "option") {
-			if (menus["option"] < 3) {
+			if (menus["option"] < 2) {
 				menus["option"]++;
 			}
 		}
@@ -619,7 +610,7 @@ function keyDown(event) {
 	}
 
 	if (menuMan.show || gameMan.scene == "board" || gameMan.scene == "rules" || gameMan.menu == "credit"
-	|| gameMan.menu == "title" && menus["title"] == 6 || gameMan.menu == "option" && menus["option"] == 3) {
+	|| gameMan.menu == "title" && menus["title"] == 6 || gameMan.menu == "option" && menus["option"] == 2) {
 		inputMan.drag = "debug";	// highlight menu button
 	} else {
 		inputMan.drag = "";
@@ -668,7 +659,7 @@ function keyNext() {
 		return true;
 	}
 	else if (gameMan.scene == "board" && gameMan.tutorialStep >= 0) {
-		if (tutorialInputs[gameMan.tutorialStep]) {
+		if (tutorials[gameMan.tutorialStep].input) {
 			nextTutorialStep();
 		}
 		return true;

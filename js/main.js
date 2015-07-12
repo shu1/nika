@@ -24,7 +24,6 @@ window.onload = function() {
 	loadImage("board", 1);
 	loadImage("mural");
 	loadImage("piece", 3);
-	loadImage("pieceSheen");
 	loadImage("pieceGlow");
 	loadImage("pieceDark");
 	loadImage("pieceShadow");
@@ -32,6 +31,7 @@ window.onload = function() {
 	loadImage("pieceGreen");
 	loadImage("pieceGreenComet");
 	loadImage("pieceGreenShadow");
+	loadImage("tileGoal");
 	loadImage("helmet", 1);
 	loadImage("buttonMenu");
 	loadImage("buttonPass");
@@ -384,14 +384,15 @@ function drawMural(context, dTime) {
 		context.fillRect(drawMan.dialogX, 0, drawMan.muralWidth - drawMan.dialogX, drawMan.muralHeight);
 
 		var lines;
-		if (gameMan.winner >= 0) {
-			lines = [getWinnerText(gameMan.winner)];
+		if (gameMan.tutorialStep >= 0) {
+			lines = tutorials[gameMan.tutorialStep].text;
 		} else {
-			lines = tutorialTexts[gameMan.tutorialStep];
+			lines = [getWinnerText(gameMan.winner)];
 		}
 
 		var spacing = 36, topPadding = 26, bottomPadding = 14, nextX = 672, font = "px Georgia";
-		if (lines.length > 4 && tutorialInputs[gameMan.tutorialStep]) {	// text too crowded
+		// TODO: Either do tutstep > 0 or see if this is required at all
+		if (lines.length > 4 && tutorials[gameMan.tutorialStep] && tutorials[gameMan.tutorialStep].input) {	// text too crowded
 			spacing -= 4;
 			topPadding -= 2;
 			bottomPadding -= 2;
@@ -434,6 +435,7 @@ function drawContext(context, dTime, tv) {
 	case "board":
 		context.drawImage(images["board0"], 0, 0);
 		context.drawImage(images["board1"], 0, 960);
+
 		if (gameMan.menu != "popup") {
 			context.drawImage(muralCanvas, drawMan.muralX, drawMan.muralY);
 
@@ -441,7 +443,7 @@ function drawContext(context, dTime, tv) {
 				context.drawImage(images["tutorialButton0"], drawMan.tutorialPrevX, drawMan.tutorialButtonY);
 			}
 
-			if (gameMan.tutorialStep >= 0 && tutorialInputs[gameMan.tutorialStep]) {
+			if (gameMan.tutorialStep >= 0 && tutorials[gameMan.tutorialStep].input) {
 				drawMan.tutorialTheta += dTime/250;
 				if (drawMan.tutorialFlash > 0) {
 					drawMan.tutorialFlash -= dTime/600;
@@ -453,11 +455,12 @@ function drawContext(context, dTime, tv) {
 				context.drawImage(images["tutorialButton2"], drawMan.tutorialNextX, drawMan.tutorialButtonY);
 				context.globalAlpha = 1;
 			}
-		}
-		setRings();
-		drawPieces(context);
-		if (gameMan.winner < 0) {
-			drawHelmets(context, dTime);
+
+			setRings();	// TODO don't do this every frame?
+			drawPieces(context);
+			if (gameMan.winner < 0) {
+				drawTiles(context, dTime);
+			}
 		}
 		break;
 	case "rules":
@@ -591,6 +594,7 @@ function drawPieces(context) {
 		context.stroke();
 	}
 
+	// TODO optimize context changes
 	var pieceSize = 80;
 	var theta = drawMan.time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
@@ -604,7 +608,6 @@ function drawPieces(context) {
 					context.rotate(cell.rot * Math.PI/2);
 					context.drawImage(images["piece" + cell.player], pieceSize/-2, pieceSize/-2);
 					context.rotate(cell.rot * Math.PI/-2);
-					context.drawImage(images["pieceSheen"], pieceSize/-2, pieceSize/-2);
 
 					if (cell.player == gameMan.player) {
 						context.globalAlpha = (Math.sin(theta*2)+1)/2;	// pulse 2x the speed of ring rotation
@@ -649,20 +652,46 @@ function drawPieces(context) {
 	}
 }
 
-function drawHelmets(context, dTime) {
+function drawTiles(context, dTime) {
+	var theta = drawMan.time/400 % (Math.PI*2);
+	context.globalAlpha = (Math.sin(theta)+1)/2;
+	switch (gameMan.player) {
+	case 0:
+		context.drawImage(images["tileGoal"], 848,  176);
+		context.drawImage(images["tileGoal"], 944,  176);
+		context.drawImage(images["tileGoal"], 1040, 176);
+		break;
+	case 1:
+		context.drawImage(images["tileGoal"], 1712, 560);
+		context.drawImage(images["tileGoal"], 1712, 656);
+		context.drawImage(images["tileGoal"], 1712, 752);
+		break;
+	case 2:
+		context.drawImage(images["tileGoal"], 848,  1136);
+		context.drawImage(images["tileGoal"], 944,  1136);
+		context.drawImage(images["tileGoal"], 1040, 1136);
+		break;
+	case 3:
+		context.drawImage(images["tileGoal"], 176, 560);
+		context.drawImage(images["tileGoal"], 176, 656);
+		context.drawImage(images["tileGoal"], 176, 752);
+		break;
+	}
+	context.globalAlpha = 1;
+
 	context.save();
 	switch (gameMan.player) {
 	case 0:
-		context.translate(drawMan.cellSize * 13.5, drawMan.cellSize * 14);
+		context.translate(1296, 1344);
 		break;
 	case 1:
-		context.translate(drawMan.cellSize, drawMan.cellSize * 10.5);
+		context.translate(96, 1008);
 		break;
 	case 2:
-		context.translate(drawMan.cellSize * 7.5, drawMan.cellSize);
+		context.translate(720, 96);
 		break;
 	case 3:
-		context.translate(drawMan.cellSize * 20, drawMan.cellSize * 4.5);
+		context.translate(1920, 432);
 		break;
 	}
 	drawMan.helmetTheta += dTime/400;
@@ -784,28 +813,6 @@ function drawButton(context, row, col, text, textColor, bgColor) {
 	context.fillStyle = textColor;
 	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);
 }
-
-// browser compatibility
-(function() {
-	var lastTime = 0;
-	var vendors = ['webkit', 'moz'];
-	for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-		window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-		window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
-	}
-	if (!window.requestAnimationFrame)
-		window.requestAnimationFrame = function(callback, element) {
-			var currTime = new Date().getTime();
-			var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-			var id = window.setTimeout(function() { callback(currTime + timeToCall); }, timeToCall);
-			lastTime = currTime + timeToCall;
-			return id;
-		};
-	if (!window.cancelAnimationFrame)
-		window.cancelAnimationFrame = function(id) {
-			clearTimeout(id);
-		};
-}());
 
 if (!window.nwf) {
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
