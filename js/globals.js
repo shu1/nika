@@ -283,6 +283,17 @@ var tutorials = [{
 		[9,6,1]
 	]
 },{
+	text:["We can take 2 actions per turn. The", "number of flashing helmets shows how", "many actions we have remaining."],
+	input:true,
+	player:0,
+	actions:1,
+	pieces:[
+		[0,10,6,1],
+		[0,9,7,3],
+		[1,9,6,1]
+	],
+	prompts:[]
+},{
 	text:["All hoplites carry shields which protect","their front. The Spartan is FACING this","piece, so our soldier cannot attack."],
 	input:true,
 	player:0,
@@ -309,17 +320,6 @@ var tutorials = [{
 		[10,5,0],
 		[10,6,2]
 	]
-},{
-	text:["Good. Notice that the single helmet","indicates we have only 1 action remaining."],
-	input:true,
-	player:0,
-	actions:1,
-	pieces:[
-		[0,10,6,1],
-		[0,9,7,3],
-		[1,9,6,1]
-	],
-	prompts:[]
 },{
 	text:["Good. We can ROUT an enemy piece by","moving into it from the side or back, but","not from the front. Take out that Spartan!"],
 	input:false,
@@ -365,7 +365,7 @@ var tutorials = [{
 		[10,11,1]
 	]
 },{
-	text:["We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, and end your touch","more than a space away. Rotate this","piece s that it faces the right."],
+	text:["We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, and end your touch","outside the white circle. Rotate this piece","so that it faces the right." ],
 	input:false,
 	player:0,
 	actions:2,
@@ -381,7 +381,7 @@ var tutorials = [{
 		[10,11,0]
 	]
 },{
-	text:["Excellent! Now, rotate our other soldier","to face the Theban. Since the Theban is","blocking its movement, our piece will","rotate even if you try to move i that","direction."],
+	text:["Excellent! Now, rotate our other soldier","to face the Theban. Since the Theban is","blocking its movement, our piece will","rotate even if you try to move in that","direction."],
 	input:false,
 	player:0,
 	actions:1,
@@ -1024,14 +1024,7 @@ var tutorials = [{
 		[3,7,17,3],
 		[3,6,17,0]
 	],
-	prompts:[
-		[12,9,2],
-		[12,10,2],
-		[12,11,2],
-		[2,9,2],
-		[2,10,2],
-		[2,11,2]
-	]
+	prompts:[]
 },{
 	text:["Though the rules are few, you will find","that the strategies are deep and varied.","Now then, proserkhou kai nika -","go forth and conquer!"],
 	input:true,
