@@ -210,11 +210,7 @@ var tutorials = [{
 		[3,7,17,3],
 		[3,6,17,0]
 	],
-	prompts:[
-		[2,9,2],
-		[2,10,2],
-		[2,11,2]
-	]
+	prompts:[]
 },{
 	text:["Drag our piece onto the highlighted","space to claim victory."],
 	input:false,
