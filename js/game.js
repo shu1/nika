@@ -452,13 +452,13 @@ function ai() {
 		aiShu();
 		break;
 	case 2:
-		aiNeil();
+		aiNeil(0,2);
 		break;
 	case 3:
-		aiNeil(1);
+		aiNeil(1,2);
 		break;
 	case 4:
-		aiNeil(2);
+		aiNeil(2,2);
 		break;
 	}
 }

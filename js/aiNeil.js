@@ -6,16 +6,16 @@ var aiWeights = [
 	// used by the game
 	{
 		values : {
-			ownPiecesOnBoard 					: 20,
-			ownAdjInPhalanx 					: 2,
+			ownPiecesOnBoard 				: 20,
+			ownAdjInPhalanx 				: 2,
 			ownAdjNotInPhalanx 				: 1,
-			allyAdjSameDir 						: 2,
-			allyAdjDiffDir 						: 1,
-			enemyAdjBlocked 					: -1,
-			enemyAdjRoutable 					: [5,2],
+			allyAdjSameDir 					: 2,
+			allyAdjDiffDir 					: 1,
+			enemyAdjBlocked 				: -1,
+			enemyAdjRoutable 				: [5,2],
 			enemyAdjCanRoutMe 				: [-5,-12],
 			enemyAdjBothNotFacing			: [2,-8],
-			perSquareDistanceFromGoal : -8,
+			perSquareDistanceFromGoal 		: -8,
 			perRoutedEnemyPiece				: 25
 		}
 	},
@@ -24,16 +24,16 @@ var aiWeights = [
 	// used by AI3 in aiBattle()
 	{
 		values : {
-			ownPiecesOnBoard 					: 50,
-			ownAdjInPhalanx 					: 2,
+			ownPiecesOnBoard 				: 50,
+			ownAdjInPhalanx 				: 2,
 			ownAdjNotInPhalanx 				: 1,
-			allyAdjSameDir 						: 2,
-			allyAdjDiffDir 						: 1,
-			enemyAdjBlocked 					: -1,
-			enemyAdjRoutable 					: [5,2],
+			allyAdjSameDir 					: 2,
+			allyAdjDiffDir 					: 1,
+			enemyAdjBlocked 				: -1,
+			enemyAdjRoutable 				: [5,2],
 			enemyAdjCanRoutMe 				: [-5,-12],
 			enemyAdjBothNotFacing			: [2,-8],
-			perSquareDistanceFromGoal : -8,
+			perSquareDistanceFromGoal 		: -8,
 			perRoutedEnemyPiece				: 20
 		}
 	},
@@ -42,22 +42,30 @@ var aiWeights = [
 	// used by AI4 in aiBattle()
 	{
 		values : {
-			ownPiecesOnBoard 					: 50,
-			ownAdjInPhalanx 					: 2,
+			ownPiecesOnBoard 				: 50,
+			ownAdjInPhalanx 				: 2,
 			ownAdjNotInPhalanx 				: 1,
-			allyAdjSameDir 						: 2,
-			allyAdjDiffDir 						: 1,
-			enemyAdjBlocked 					: -1,
-			enemyAdjRoutable 					: [5,2],
+			allyAdjSameDir 					: 2,
+			allyAdjDiffDir 					: 1,
+			enemyAdjBlocked 				: -1,
+			enemyAdjRoutable 				: [5,2],
 			enemyAdjCanRoutMe 				: [-5,-12],
 			enemyAdjBothNotFacing			: [2,-8],
-			perSquareDistanceFromGoal : -8,
+			perSquareDistanceFromGoal 		: -8,
 			perRoutedEnemyPiece				: 20
 		}
 	}
 ];
 
 var aiP = aiWeights[0]; //Alias?
+
+var aiTurnVars = {
+	pieces 			: [],
+	rallySpots 		: [],
+	defaultState 	: null,
+	bestState 		: null,
+	checkCount		: 0
+}
 
 function newState (){
 	var s = {
@@ -67,85 +75,115 @@ function newState (){
 	return s;
 }
 
-function aiNeil(aiNum){
+function aiNeil(aiNum,actionsToTake){
 	aiP = aiWeights[aiNum || 0];
 	storeGrid();
-	var pieces = [];
-	pieces = getAIPieces();
+	aiTurnVars.pieces = getAIPieces();
 
 	//Checks if any pieces are close enough to win.
-	checkIfPiecesCanWin(pieces);
+	checkIfPiecesCanWin(aiTurnVars.pieces);
 
 	//Creates the default state in which all other states are compared to.
-	var defaultState = newState();
-	getValue(defaultState,pieces);
+	aiTurnVars.defaultState = newState();
+	getValue(aiTurnVars.defaultState,aiTurnVars.pieces);
 	// console.log("Default Value " + defaultState.value);
-	var bestState = defaultState; //Stores best state, which is default at this point. Altough we might be better off just setting best state.
+	aiTurnVars.bestState = aiTurnVars.defaultState; //Stores best state, which is default at this point. Altough we might be better off just setting best state.
 
-	var rallySpots = [];
 	for (var row = 0 ; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
-			if(grid[row][col].kind == 2 && grid[row][col].city == pieces[0].player){
-				rallySpots.push(grid[row][col]);
+			if(grid[row][col].kind == 2 && grid[row][col].city == aiTurnVars.pieces[0].player){
+				aiTurnVars.rallySpots.push(grid[row][col]);
 			}
 		}
 	}
 
+	CheckAction(actionsToTake);
+
+	//AFTER ALL CHECKING IS DONE ===========
+	setGrid(aiTurnVars.bestState.board,grid);
+	phalanx=[];
+	for(var i = 0; i<actionsToTake; i++){
+		useAction();
+	}
+	console.log(aiTurnVars.checkCount);
+	ResetTurnVars();
+	pushState();
+}
+
+function ResetTurnVars(){
+	aiTurnVars.checkCount 	= 0;
+	aiTurnVars.pieces 		= [];
+	aiTurnVars.rallySpots 	= [];
+	aiTurnVars.defaultState = null;
+	aiTurnVars.bestState 	= null;
+}
+
+function CheckAction(actionsLeft){
+	if(actionsLeft<=0){return;}
+
 	//EACH PIECE CHECKING =============
 	for(var i = 0; i<6; i++){
-		if(pieces[i].kind == 3){
-			for(var j = 0; j<rallySpots.length; j++){
+		if(aiTurnVars.pieces[i].kind == 3){
+			for(var j = 0; j<aiTurnVars.rallySpots.length; j++){
 				//Get rally spots
-				phalanx = [pieces[i]];
-				var rally = getRallyArguments(pieces[i],rallySpots[j]);
-				//debugger;
+				phalanx 	= [aiTurnVars.pieces[i]];
+				var rally 	= getRallyArguments(aiTurnVars.pieces[i],aiTurnVars.rallySpots[j]);
 				movePiece(rally.pRow,rally.pCol,rally.tRow,rally.tCol,true);
-				pieces = getAIPieces();
-				var temp = copyState(defaultState);
-				getValue(temp,pieces);
+				aiTurnVars.pieces 		= getAIPieces();
+				var temp 	= copyState(aiTurnVars.defaultState);
+				getValue(temp,aiTurnVars.pieces);
 				// console.log(temp.value);
-				if(temp.value>bestState.value){
-					bestState=temp;
-					// console.log("Found better state by RALLYING with a value of: " + bestState.value);
+				if(temp.value>aiTurnVars.bestState.value){
+					aiTurnVars.bestState=temp;
+					// console.log("Found better state by RALLYING with a value of: " + aiTurnVars.bestState.value);
 				}
 				setGrid(defGrid,grid);
-				pieces = getAIPieces();
+				aiTurnVars.pieces = getAIPieces();
 			}
+			aiTurnVars.checkCount++;
+			CheckAction(actionsLeft-1);
+			setGrid(defGrid,grid);
+			aiTurnVars.pieces = getAIPieces();
 		}
 		else{
 			// Do normal move check, which means rotation, then movement.
-			origRot = pieces[i].rot;
+			origRot = aiTurnVars.pieces[i].rot;
 			for (var rot = 0; rot<4; rot++){
 				if(rot!=origRot){
-					pieces[i].rot=rot;
-					var temp = copyState(defaultState);
-					getValue(temp,pieces);
-					if(temp.value>bestState.value){
-						bestState=temp;
-						// console.log("Found better state by ROTATION with a value of: " + bestState.value);
+					aiTurnVars.pieces[i].rot 	= rot;
+					var temp 		= copyState(aiTurnVars.defaultState);
+					getValue(temp,aiTurnVars.pieces);
+					if(temp.value>aiTurnVars.bestState.value){
+						aiTurnVars.bestState=temp;
+						// console.log("Found better state by ROTATION with a value of: " + aiTurnVars.bestState.value);
 					}
+					aiTurnVars.checkCount++;
+					CheckAction(actionsLeft-1);
 				}
 			}
 			setGrid(defGrid,grid);
-			pieces = getAIPieces();
+			aiTurnVars.pieces = getAIPieces();
 			for (var dir = 0; dir<4; dir++){
 				//Check moves in each direction
-				phalanx=[pieces[i]];
+				phalanx 	= [aiTurnVars.pieces[i]];
 
-				var move = getMoveArguments(phalanx[0],dir);
+				var move 	= getMoveArguments(phalanx[0],dir);
 				var origRot = phalanx[0].rot;
 
 				movePiece(move.pRow,move.pCol,move.tRow,move.tCol,true);
-				pieces = getAIPieces();
-				var temp = copyState(defaultState);
-				getValue(temp,pieces);
-				if(temp.value>bestState.value){
-					bestState=temp;
-					// console.log("Found better state by MOVEMENT with a value of: " + bestState.value);
+				aiTurnVars.pieces 		= getAIPieces();
+				var temp 				= copyState(aiTurnVars.defaultState);
+				getValue(temp,aiTurnVars.pieces);
+				if(temp.value>aiTurnVars.bestState.value){
+					aiTurnVars.bestState = temp;
+					// console.log("Found better state by MOVEMENT with a value of: " + aiTurnVars.bestState.value);
 				}
+				aiTurnVars.checkCount++;
+				CheckAction(actionsLeft - 1);
+
 				setGrid(defGrid,grid);
-				pieces = getAIPieces();
-				phalanx=[];
+				aiTurnVars.pieces 		= getAIPieces();
+				phalanx 				= [];
 			}
 		}
 	}
@@ -156,8 +194,8 @@ function aiNeil(aiNum){
 	for(var i=0; i<4; i++){
 		var sameDir=[];
 		for (var p=0; p<6; p++){
-			if(pieces[p].rot==i){
-				sameDir.push(pieces[p]);
+			if(aiTurnVars.pieces[p].rot==i){
+				sameDir.push(aiTurnVars.pieces[p]);
 			}
 		}
 		if(sameDir.length>1){
@@ -169,45 +207,45 @@ function aiNeil(aiNum){
 					for(var rot=0;rot<4;rot++){
 						if(rot!=i){
 							rotatePiece(phalanx[0].row, phalanx[0].col, rot);
-							pieces = getAIPieces();
-							var temp = copyState(defaultState);
-							getValue(temp,pieces);
-							if(temp.value>bestState.value){
-								bestState=temp;
-								// console.log("Found better state by ROTATING A PHALANX with a value of: " + bestState.value);
+							aiTurnVars.pieces 		= getAIPieces();
+							var temp 	= copyState(aiTurnVars.defaultState);
+							getValue(temp,aiTurnVars.pieces);
+							if(temp.value>aiTurnVars.bestState.value){
+								aiTurnVars.bestState=temp;
+								// console.log("Found better state by ROTATING A PHALANX with a value of: " + aiTurnVars.bestState.value);
 							}
+							aiTurnVars.checkCount++;
+							CheckAction(actionsLeft-1);
+
 							setGrid(defGrid,grid);
-							pieces = getAIPieces();
+							aiTurnVars.pieces = getAIPieces();
 						}
 					}
 					setGrid(defGrid,grid);
-					pieces = getAIPieces();
-					var rot = phalanx[0].rot;
+					aiTurnVars.pieces 		= getAIPieces();
+					var rot 	= phalanx[0].rot;
 
-					var move = getMoveArguments(phalanx[0],rot);
+					var move 	= getMoveArguments(phalanx[0],rot);
 					movePiece(move.pRow,move.pCol,move.tRow,move.tCol,true);
 
-					phalanx = e.slice(0);
-					pieces = getAIPieces();
+					phalanx 	= e.slice(0);
+					aiTurnVars.pieces 		= getAIPieces();
 
-					var temp = copyState(defaultState);
-					getValue(temp,pieces);
-					if(temp.value>bestState.value){
-						bestState=temp;
-						// console.log("Found better state by MOVING A PHALANX with a value of: " + bestState.value);
+					var temp = copyState(aiTurnVars.defaultState);
+					getValue(temp,aiTurnVars.pieces);
+					if(temp.value>aiTurnVars.bestState.value){
+						aiTurnVars.bestState=temp;
+						// console.log("Found better state by MOVING A PHALANX with a value of: " + aiTurnVars.bestState.value);
 					}
+					aiTurnVars.checkCount++;
+					CheckAction(actionsLeft-1);
+
 					setGrid(defGrid,grid);
-					pieces = getAIPieces();
+					aiTurnVars.pieces = getAIPieces();
 				}
 			});
 		}
 	}
-
-	//AFTER ALL CHECKING IS DONE ===========
-	setGrid(bestState.board,grid);
-	phalanx=[];
-	useAction();
-	pushState();
 }
 
 function getValue(state,pieces){
@@ -283,16 +321,16 @@ function copyState(original){
 		b[row]=new Array(21);
 		for (var col = 0; col < 21; ++col){
 			var p = {}
-			p.row=row;
-			p.col=col;
-			p.checked=o[row][col].checked;
-			p.player=o[row][col].player;
-			p.kind=o[row][col].kind;
-			p.city=o[row][col].city;
-			p.rot=o[row][col].rot;
-			p.ring=o[row][col].ring;
-			p.prompt=o[row][col].prompt;
-			b[row][col]=p;
+			p.row 		= row;
+			p.col 		= col;
+			p.checked 	= o[row][col].checked;
+			p.player 	= o[row][col].player;
+			p.kind 		= o[row][col].kind;
+			p.city 		= o[row][col].city;
+			p.rot 		= o[row][col].rot;
+			p.ring 		= o[row][col].ring;
+			p.prompt 	= o[row][col].prompt;
+			b[row][col]	= p;
 		}
 	}
 	s.board=b;
@@ -302,15 +340,15 @@ function copyState(original){
 function setGrid(gFrom, gTo){
 	for (var row = 0; row < 15; ++row){
 		for (var col = 0; col < 21; ++col){
-			gTo[row][col].row=row;
-			gTo[row][col].col=col;
-			gTo[row][col].checked=gFrom[row][col].checked;
-			gTo[row][col].player=gFrom[row][col].player;
-			gTo[row][col].kind=gFrom[row][col].kind;
-			gTo[row][col].city=gFrom[row][col].city;
-			gTo[row][col].rot=gFrom[row][col].rot ;
-			gTo[row][col].ring=gFrom[row][col].ring;
-			gTo[row][col].prompt=gFrom[row][col].prompt;
+			gTo[row][col].row 		= row;
+			gTo[row][col].col 		= col;
+			gTo[row][col].checked 	= gFrom[row][col].checked;
+			gTo[row][col].player 	= gFrom[row][col].player;
+			gTo[row][col].kind 		= gFrom[row][col].kind;
+			gTo[row][col].city 		= gFrom[row][col].city;
+			gTo[row][col].rot 		= gFrom[row][col].rot ;
+			gTo[row][col].ring 		= gFrom[row][col].ring;
+			gTo[row][col].prompt 	= gFrom[row][col].prompt;
 		}
 	}
 }
