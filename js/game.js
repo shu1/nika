@@ -221,6 +221,10 @@ function loadState(state) {
 		grid[prompt[0]][prompt[1]].prompt = prompt[2];
 	}
 
+	if (state.afterLoad) {
+		state.afterLoad();
+	}
+
 	checkWin();
 }
 
