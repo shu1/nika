@@ -615,7 +615,7 @@ var tutorials = [{
 		[10,14,0]
 	]
 },{
-	text:["Now tap the other pieces indicated,","starting with the corner piece. If you","try to create an invalid phalanx by","tapping the forward piece first, you'll","have to star over."],
+	text:["Next, highlight this piece..."],
 	input:false,
 	player:0,
 	actions:2,
@@ -630,12 +630,10 @@ var tutorials = [{
 		[3,8,16,2]
 	],
 	prompts:[
-		[10,14,0],
-		[11,14,0],
-		[11,15,0]
+		[11,14,0]
 	]
 },{
-	text:["Now tap the other pieces indicated,","starting with the corner piece. If you","try to create an invalid phalanx by","tapping the forward piece first, you'll","have to star over."],
+	text:["Then this piece."],
 	input:false,
 	player:0,
 	actions:2,
@@ -650,8 +648,6 @@ var tutorials = [{
 		[3,8,16,2]
 	],
 	prompts:[
-		[10,14,0],
-		[11,14,0],
 		[11,15,0]
 	]
 },{
