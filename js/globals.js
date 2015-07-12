@@ -286,7 +286,7 @@ var tutorials = [{
 	text:["We can take 2 actions per turn. The", "number of flashing helmets shows how", "many actions we have remaining."],
 	input:true,
 	player:0,
-	actions:1,
+	actions:2,
 	pieces:[
 		[0,10,5,1],
 		[0,9,7,3],
