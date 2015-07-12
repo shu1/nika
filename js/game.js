@@ -116,13 +116,13 @@ function newGame() {
 	generateGrid(newBoard);
 	states = [];
 	phalanx = [];
-	resetEvents();
-	resetAnimations();
-	pushState();
 	gameMan.winner = -1;
 	gameMan.player = 0;
 	gameMan.actions = 2;
 	gameMan.tutorialStep = -1;
+	resetEvents();
+	resetAnimations();
+	pushState();
 	useAction(0);
 }
 
