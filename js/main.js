@@ -745,6 +745,7 @@ function drawRules(context, scene) {
 }
 
 function drawMenu(context, dTime) {
+	var canvas = context.canvas;
 	var duration = 1;	// no background to animate anymore
 	drawMan.menu = false;	// whether menu is animating
 
@@ -783,6 +784,16 @@ function drawMenu(context, dTime) {
 		}
 	}
 
+	function drawButton(context, row, col, text, textColor, bgColor) {
+		if (bgColor) {
+			context.fillStyle = bgColor;
+			context.fillRect(canvas.width - menuMan.bWidth * (col+1) + menuMan.bPadding, canvas.height - menuMan.bHeight * (row+1) + menuMan.bPadding,
+				menuMan.bWidth - menuMan.bPadding*2, menuMan.bHeight - menuMan.bPadding*2);
+		}
+		context.fillStyle = textColor;
+		context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);
+	}
+
 	if (menuMan.show && !drawMan.menu) {
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
@@ -804,17 +815,6 @@ function drawMenu(context, dTime) {
 			drawButton(context, 0, 0, buttons[1], "white", "black");
 		}
 	}
-}
-
-function drawButton(context, row, col, text, textColor, bgColor) {
-	var canvas = context.canvas;
-	if (bgColor) {
-		context.fillStyle = bgColor;
-		context.fillRect(canvas.width - menuMan.bWidth * (col+1) + menuMan.bPadding, canvas.height - menuMan.bHeight * (row+1) + menuMan.bPadding,
-			menuMan.bWidth - menuMan.bPadding*2, menuMan.bHeight - menuMan.bPadding*2);
-	}
-	context.fillStyle = textColor;
-	context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);
 }
 
 if (!window.nwf) {
