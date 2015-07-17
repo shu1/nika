@@ -653,31 +653,34 @@ function drawPieces(context) {
 }
 
 function drawTiles(context, dTime) {
-	var theta = drawMan.time/400 % (Math.PI*2);
-	context.globalAlpha = (Math.sin(theta)+1)/2;
-	switch (gameMan.player) {
-	case 0:
-		context.drawImage(images["tileGoal"], 848,  176);
-		context.drawImage(images["tileGoal"], 944,  176);
-		context.drawImage(images["tileGoal"], 1040, 176);
-		break;
-	case 1:
-		context.drawImage(images["tileGoal"], 1712, 560);
-		context.drawImage(images["tileGoal"], 1712, 656);
-		context.drawImage(images["tileGoal"], 1712, 752);
-		break;
-	case 2:
-		context.drawImage(images["tileGoal"], 848,  1136);
-		context.drawImage(images["tileGoal"], 944,  1136);
-		context.drawImage(images["tileGoal"], 1040, 1136);
-		break;
-	case 3:
-		context.drawImage(images["tileGoal"], 176, 560);
-		context.drawImage(images["tileGoal"], 176, 656);
-		context.drawImage(images["tileGoal"], 176, 752);
-		break;
+	if (gameMan.tutorialStep < 0 || (gameMan.tutorialStep > 0 && gameMan.tutorialStep < 7) || gameMan.tutorialStep == 50) {
+		var theta = drawMan.time/400 % (Math.PI*2);
+		context.globalAlpha = (Math.sin(theta)+1)/2;
+
+		if (gameMan.player == 0) {
+			context.drawImage(images["tileGoal"], 848,  176);
+			context.drawImage(images["tileGoal"], 944,  176);
+			context.drawImage(images["tileGoal"], 1040, 176);
+		}
+		else if (gameMan.player == 1) {
+			context.drawImage(images["tileGoal"], 1712, 560);
+			context.drawImage(images["tileGoal"], 1712, 656);
+			context.drawImage(images["tileGoal"], 1712, 752);
+		}
+		else if (gameMan.player == 3) {
+			context.drawImage(images["tileGoal"], 176, 560);
+			context.drawImage(images["tileGoal"], 176, 656);
+			context.drawImage(images["tileGoal"], 176, 752);
+		}
+
+		if (gameMan.player == 2 || gameMan.tutorialStep == 50) {
+			context.drawImage(images["tileGoal"], 848,  1136);
+			context.drawImage(images["tileGoal"], 944,  1136);
+			context.drawImage(images["tileGoal"], 1040, 1136);
+		}
+
+		context.globalAlpha = 1;
 	}
-	context.globalAlpha = 1;
 
 	context.save();
 	switch (gameMan.player) {
