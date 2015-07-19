@@ -15,7 +15,7 @@ window.onload = function() {
 		do {
 			images[name + i] = document.createElement("img");
 			images[name + i].src = "images/" + name + i + ".png";
-			--i;	// exploit how decrementing an empty string becomes -1
+			--i;	// HACK exploit how decrementing an empty string becomes -1
 		} while (i >= 0);
 	}
 
@@ -224,9 +224,10 @@ function setScene(index) {
 		}
 
 		gameMan.pScene = gameMan.scene;
-		if (index == "option") {	// special case
 			gameMan.menu = "option";
 			gameMan.scene = "menus";
+
+		if (index == "option") {	// HACK special case
 		} else {
 			gameMan.scene = index;
 			if (gameMan.scene == "menus") {
