@@ -218,32 +218,40 @@ function initScenes(canvas, maxScale, minScale, tv) {
 }
 
 function setScene(index) {
+	gameMan.nScene = index ? index : gameMan.scene;
+
 	if (index) {
 		if (gameMan.scene == "rules") {
 			hudMan.pageText = "";	// clear some debug text
 		}
 
 		gameMan.pScene = gameMan.scene;
-			gameMan.menu = "option";
-			gameMan.scene = "menus";
 
 		if (index == "option") {	// HACK special case
+			gameMan.menu = index;
+			gameMan.nScene = "menus";
 		} else {
-			gameMan.scene = index;
-			if (gameMan.scene == "menus") {
+			gameMan.nScene = index;
+			if (index == "menus") {
 				gameMan.menu = "title";
 				menus["title"] = 1;
 			} else {
 				gameMan.menu = "";
-
-				if (gameMan.scene == "rules") {
+				if (index == "rules") {
 					hudMan.pageText = "Rule " + gameMan.rules;
 				}
 			}
 		}
+
+		if (gameMan.nScene != gameMan.pScene) {	// only fade if changing scenes
+			drawMan.fade = 1;
+			if (gameMan.menu == "popup") {
+				drawMan.alpha = 0.5;	// popup already has overlay
+			}
+		}
 	}
 
-	var scene = scenes[gameMan.scene];
+	var scene = scenes[gameMan.nScene];
 	scene.x = (gpCanvas.width - scene.width * scene.scale)/2;
 	scene.y = (gpCanvas.height - scene.height * scene.scale)/2;
 
@@ -343,6 +351,20 @@ function draw(time) {
 		hudMan.fpsCount = 0;
 	}
 	hudMan.fpsCount++;
+
+	if (drawMan.fade) {
+		drawMan.alpha += dTime/500 * drawMan.fade;	// set positive/negative
+
+		if (drawMan.alpha >= 1) {
+			drawMan.alpha = 1;
+			gameMan.scene = gameMan.nScene;
+			drawMan.fade = -1;
+		}
+		else if (drawMan.alpha <= 0) {
+			drawMan.alpha = 0;
+			drawMan.fade = 0;
+		}
+	}
 
 	if (gameMan.scene == "board" && gameMan.menu != "popup") {
 		drawMural(muralCanvas.getContext("2d"), dTime);	// draw mural to buffer
@@ -535,6 +557,11 @@ function drawContext(context, dTime, tv) {
 
 	if (inputMan.drag == "button" && menus["button"] >= 0) {
 		context.drawImage(images["buttonActive"], menuMan.bWidth * menus["button"], y, menuMan.bWidth, menuMan.bHeight);
+	}
+
+	if (drawMan.alpha > 0) {
+		context.fillStyle = "rgba(0,0,0," + drawMan.alpha + ")";
+		context.fillRect(0, 0, canvas.width, canvas.height);
 	}
 
 	if (debugBuild) {

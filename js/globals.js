@@ -26,6 +26,8 @@ var drawMan = {
 	helmetScale:0,
 	helmetTheta:0,
 	helmetFlash:0,
+	alpha:0,
+	fade:0,
 	zoom:0,
 	time:0,
 	menu:false
@@ -47,6 +49,7 @@ var gameMan = {
 	actions:2,
 	player:0,
 	pScene:"",
+	nScene:"",
 	scene:"",
 	menu:"",
 	rules:0,
