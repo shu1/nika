@@ -375,6 +375,7 @@ function draw(time) {
 		drawContext(tvCanvas.getContext("2d"), dTime, "tv");	// draw tv
 	}
 
+	// This is triggering AI turns, not draw functionality
 	if (gameMan.scene == "board" && gameMan.ais[gameMan.player] && gameMan.winner < 0 && gameMan.tutorialStep < 0 && !gameMan.thinking && !gameMan.replaying) {
 		gameMan.thinking = true;
 		setTimeout(function() {

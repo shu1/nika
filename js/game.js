@@ -385,7 +385,7 @@ function menuButton(index) {
 		}
 		break;
 	case 1:
-		if(!gameMan.ais[gameMan.player]) {
+		if(!gameMan.ais[gameMan.player] && gameMan.tutorialStep < 0) {
 			pass();
 		}
 		break;
