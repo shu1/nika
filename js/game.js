@@ -377,7 +377,9 @@ function menuButton(index) {
 		}
 		break;
 	case 1:
-		pass();
+		if(!gameMan.ais[gameMan.player]) {
+			pass();
+		}
 		break;
 	case 2:
 		popState();
