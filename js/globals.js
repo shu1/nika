@@ -38,7 +38,7 @@ var soundMan = {
 	sound:0.5
 }
 
-var eventMan = {0:[],1:[],2:[],3:[]}	// TODO why is this better than a 2D array again?
+var eventMan = [[],[],[],[]]
 
 var gameMan = {
 	tutorialStep:-1,

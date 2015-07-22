@@ -311,7 +311,7 @@ function playerAction() {
 }
 
 function resetEvents() {
-	eventMan = {0:[],1:[],2:[],3:[]}
+	eventMan = [[],[],[],[]];
 }
 
 function getPriorityEvent(events) {
