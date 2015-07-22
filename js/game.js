@@ -126,6 +126,14 @@ function newGame() {
 	useAction(0);
 }
 
+function resumeGame(gameSave) {
+	states = gameSave.states;
+	phalanx = [];
+	gameMan.tutorialStep = -1;
+	gameMan.ais = gameSave.ais;
+	revertState();
+}
+
 function useAction(n) {
 	if (n === undefined) {
 		n = 1;
@@ -418,10 +426,7 @@ function menuTitle(index) {
 		}
 
 		if (gameSave) {
-			gameMan.tutorialStep = -1;
-			states = gameSave.states;
-			gameMan.ais = gameSave.ais;
-			revertState();
+			resumeGame(gameSave);
 			setScene("board");
 		} else {
 			gameMan.menu = "setup";
