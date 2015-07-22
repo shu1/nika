@@ -22,6 +22,7 @@ function nextTutorialStep() {
 }
 
 function endTutorial() {
+	gameMan.tutorialStep = -1;
 	hudMan.pageText = "";
 	setScene("menus");
 }
