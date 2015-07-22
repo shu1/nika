@@ -461,13 +461,13 @@ function menuTutorial(index) {
 		initTutorial(0);
 		break;
 	case 1:
-		initTutorial(10);
+		initTutorial(7);
 		break;
 	case 2:
-		initTutorial(27);
+		initTutorial(23);
 		break;
 	case 3:
-		initTutorial(38);
+		initTutorial(34);
 		break;
 	}
 	setScene("board");
