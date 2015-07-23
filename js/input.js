@@ -396,7 +396,7 @@ function mouseUp(event) {
 				if (gameMan.winner >= 0) {
 					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
 					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
-						localStorage.removeItem("nikaGameSave");
+						localStorage.removeItem("NikaGameSave");
 						setScene("menus");
 					}
 				}

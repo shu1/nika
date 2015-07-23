@@ -249,7 +249,7 @@ function saveGame() {
 		states: states,
 		ais: gameMan.ais
 	}
-	localStorage.setItem("nikaGameSave", JSON.stringify(gameSave));
+	localStorage.setItem("NikaGameSave", JSON.stringify(gameSave));
 }
 
 function getCity(player) {
@@ -371,7 +371,7 @@ function menuButton(index) {
 			setScene(gameMan.pScene);
 		}
 		else if (gameMan.menu == "option") {
-			localStorage.setItem("nikaSoundSave", JSON.stringify(soundMan));
+			localStorage.setItem("NikaSoundSave", JSON.stringify(soundMan));
 			setScene(gameMan.pScene);
 		}
 		else if (gameMan.menu == "setup" || gameMan.menu == "credit" || gameMan.menu == "tutorial") {
@@ -420,9 +420,9 @@ function menuTitle(index) {
 	case 1:
 		var gameSave;
 		try {
-			gameSave = JSON.parse(localStorage.getItem("nikaGameSave"));
+			gameSave = JSON.parse(localStorage.getItem("NikaGameSave"));
 		} catch (e) {
-			console.log("Error: nikaGameSave corrupt");
+			console.warn("NikaGameSave error");
 		}
 
 		if (gameSave) {

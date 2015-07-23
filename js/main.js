@@ -2,12 +2,12 @@
 
 window.onload = function() {
 	try {
-		var soundSave = JSON.parse(localStorage.getItem("nikaSoundSave"));
+		var soundSave = JSON.parse(localStorage.getItem("NikaSoundSave"));
 		if (soundSave) {
 			soundMan = soundSave;
 		}
 	} catch (e) {
-		console.log('Error: nikaSoundSave corrupt');
+		console.warn("NikaSoundSave error");
 	}
 
 	function loadImage(name, i) {
