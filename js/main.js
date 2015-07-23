@@ -60,12 +60,12 @@ window.onload = function() {
 		sounds[name].src = "audio/" + file + "." + type;
 	}
 
-	loadAudio("rotate",	"rally");
-	loadAudio("move",	"drop");
-	loadAudio("push",	"push");
-	loadAudio("rout",	"move");
-	loadAudio("rally",	"rout");
-	loadAudio("music",	"nika2", "ogg");
+	loadAudio("move",	"move");
+	loadAudio("rotate",	"rotate");
+	loadAudio("push",	"mural_push");
+	loadAudio("rout",	"mural_rout");
+	loadAudio("rally",	"mural_rally_alt");
+	loadAudio("music",	"nika_main");
 
 	sounds["music"].volume = Math.pow(soundMan.music, 2);
 	sounds["music"].loop = true;
