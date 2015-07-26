@@ -10,6 +10,7 @@ function clearTutorialRings() {
 
 function initTutorial(step) {
 	if (step == undefined) { step = 0; }
+	phalanx = [];
 	gameMan.winner = -1;
 	gameMan.tutorialStep = step - 1;
 	nextTutorialStep();
