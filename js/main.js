@@ -354,7 +354,7 @@ function draw(time) {
 	hudMan.fpsCount++;
 
 	if (drawMan.fade) {
-		drawMan.alpha += dTime/500 * drawMan.fade;	// set positive/negative
+		drawMan.alpha += dTime/250 * drawMan.fade;	// set positive/negative
 
 		if (drawMan.alpha >= 1) {
 			drawMan.alpha = 1;
