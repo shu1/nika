@@ -87,10 +87,10 @@ window.onload = function() {
 	murals[2].set_position(220, 170);
 	murals[3].set_position(692, 220);
 
-	murals[0].onFinishAnimCallback(true, function() { setIdleAnimation(0) });
-	murals[1].onFinishAnimCallback(true, function() { setIdleAnimation(1) });
-	murals[2].onFinishAnimCallback(true, function() { setIdleAnimation(2) });
-	murals[3].onFinishAnimCallback(true, function() { setIdleAnimation(3) });
+	murals[0].onFinishAnimCallback(true, function(){setIdleAnimation(0)});
+	murals[1].onFinishAnimCallback(true, function(){setIdleAnimation(1)});
+	murals[2].onFinishAnimCallback(true, function(){setIdleAnimation(2)});
+	murals[3].onFinishAnimCallback(true, function(){setIdleAnimation(3)});
 
 	if (navigator.msPointerEnabled) {
 		gpCanvas.addEventListener("MSPointerDown", mouseDown);
@@ -98,8 +98,8 @@ window.onload = function() {
 		window.addEventListener("MSPointerUp", mouseUp);
 	}
 	else if ("ontouchstart" in window && !window.nwf) {	// NWF should use mouse events
-		window.addEventListener("touchstart", mouseDown);
-		window.addEventListener("touchmove", mouseMove);
+		gpCanvas.addEventListener("touchstart", mouseDown);
+		gpCanvas.addEventListener("touchmove", mouseMove);
 		window.addEventListener("touchend", mouseUp);
 	}
 	else {
@@ -107,6 +107,7 @@ window.onload = function() {
 		gpCanvas.addEventListener("mousemove", mouseMove);
 		window.addEventListener("mouseup", mouseUp);
 	}
+	gpCanvas.addEventListener("contextmenu", function(e){e.preventDefault();});
 	window.addEventListener("wheel", mouseWheel);
 	window.addEventListener("keydown", keyDown);
 
