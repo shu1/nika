@@ -61,7 +61,7 @@ var gameMan = {
 	thinking: false,
 	replaying: false,
 	timed: false,
-	turnTime: 30000,
+	turnTime: 3000,
 	turnTimer: 0
 }
 

@@ -119,7 +119,7 @@ function newGame() {
 	gameMan.winner = -1;
 	gameMan.player = 0;
 	gameMan.actions = 2;
-	gameMan.turnTimer = gameMan.turnTime;
+	gameMan.turnTimer = 0;
 	gameMan.tutorialStep = -1;
 	resetEvents();
 	resetAnimations();
@@ -130,7 +130,7 @@ function newGame() {
 function resumeGame(gameSave) {
 	states = gameSave.states;
 	phalanx = [];
-	gameMan.turnTimer = gameMan.turnTime;
+	gameMan.turnTimer = 0;
 	gameMan.tutorialStep = -1;
 	gameMan.ais = gameSave.ais;
 	revertState();
@@ -144,7 +144,7 @@ function useAction(n) {
 	if (gameMan.actions <= 0) {
 		gameMan.actions = 2;
 		gameMan.player = (gameMan.player + 1) % 4;
-		gameMan.turnTimer = gameMan.turnTime;
+		gameMan.turnTimer = 0;
 		if (gameMan.tutorialStep < 0) {
 			drawMan.helmetScale = 1;	// zoom helmets
 		}
@@ -502,8 +502,8 @@ function updateTimer(dTime) {
 	if (gameMan.ais[gameMan.player] || gameMan.winner >= 0) {
 		return;
 	}
-	gameMan.turnTimer -= dTime;
-	if (gameMan.turnTimer < 0) {
+	gameMan.turnTimer += dTime;
+	if (gameMan.timed && gameMan.turnTimer > gameMan.turnTime) {
 		pass();
 	}
 }

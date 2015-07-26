@@ -708,8 +708,9 @@ function drawTimer(context) {
 		return;
 	}
 	context.save();
-	var minutes = Math.floor(gameMan.turnTimer / 60000);
-	var seconds = Math.floor(gameMan.turnTimer / 1000) - 60 * Math.floor(gameMan.turnTimer / 60000);
+	var remainingTime = gameMan.turnTime - gameMan.turnTimer;
+	var minutes = Math.floor(remainingTime / 60000);
+	var seconds = Math.floor(remainingTime / 1000) - 60 * Math.floor(gameMan.turnTimer / 60000);
 	var divider = seconds < 10 ? ":0" : ":";
 	var timeString = minutes + divider + seconds;
 	context.font = (2 * fontSize) + "px Georgia";
