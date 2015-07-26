@@ -381,7 +381,9 @@ function draw(time) {
 	}
 
 	if (gameMan.scene == "board" && gameMan.menu != "popup") {
-		gameMan.turnTimer += dTime;
+		if (gameMan.timed){
+			updateTimer(dTime);
+		}
 		drawMural(muralCanvas.getContext("2d"), dTime);	// draw mural to buffer
 	}
 
@@ -389,6 +391,7 @@ function draw(time) {
 	if (window.nwf) {
 		drawContext(tvCanvas.getContext("2d"), dTime, "tv");	// draw tv
 	}
+
 
 	// This is triggering AI turns, not draw functionality
 	if (gameMan.scene == "board" && gameMan.ais[gameMan.player] && gameMan.winner < 0 && gameMan.tutorialStep < 0 && !gameMan.thinking && !gameMan.replaying) {
@@ -495,7 +498,7 @@ function drawContext(context, dTime, tv) {
 				context.globalAlpha = 1;
 			}
 
-			if (gameMan.tutorialStep < 0) {
+			if (gameMan.timed) {
 				drawTimer(context);
 			}
 
@@ -701,13 +704,17 @@ function drawPieces(context) {
 }
 
 function drawTimer(context) {
+	if (gameMan.ais[gameMan.player] > 0 || gameMan.tutorialStep >= 0) {
+		return;
+	}
 	context.save();
 	var minutes = Math.floor(gameMan.turnTimer / 60000);
 	var seconds = Math.floor(gameMan.turnTimer / 1000) - 60 * Math.floor(gameMan.turnTimer / 60000);
 	var divider = seconds < 10 ? ":0" : ":";
+	var timeString = minutes + divider + seconds;
 	context.font = (2 * fontSize) + "px Georgia";
 	context.fillStyle = "white";
-	context.fillText(minutes + divider + seconds, 16, 2 * fontSize);
+	context.fillText(timeString, 2000 - context.measureText(timeString).width, 2 * fontSize);
 	context.restore();
 }
 

@@ -60,6 +60,8 @@ var gameMan = {
 	ais:[0,1,0,1],
 	thinking: false,
 	replaying: false,
+	timed: false,
+	turnTime: 30000,
 	turnTimer: 0
 }
 
