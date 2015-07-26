@@ -354,7 +354,7 @@ function draw(time) {
 	hudMan.fpsCount++;
 
 	if (drawMan.fade) {
-		drawMan.alpha += dTime/500 * drawMan.fade;	// set positive/negative
+		drawMan.alpha += dTime/250 * drawMan.fade;	// set positive/negative
 
 		if (drawMan.alpha >= 1) {
 			drawMan.alpha = 1;
@@ -364,6 +364,19 @@ function draw(time) {
 		else if (drawMan.alpha <= 0) {
 			drawMan.alpha = 0;
 			drawMan.fade = 0;
+		}
+	}
+
+	if (drawMan.slide > 0) {
+		drawMan.slide -= dTime/250;
+		if (drawMan.slide < 0) {
+			drawMan.slide = 0;
+		}
+	}
+	else if (drawMan.slide < 0) {
+		drawMan.slide += dTime/250;
+		if (drawMan.slide > 0) {
+			drawMan.slide = 0;
 		}
 	}
 
@@ -417,7 +430,7 @@ function drawMural(context, dTime) {
 		}
 
 		var spacing = 36, topPadding = 26, bottomPadding = 14, nextX = 672, font = "px Georgia";
-		// TODO: Either do tutstep > 0 or see if this is required at all
+		// TODO either do tutstep > 0 or see if this is required at all
 		if (lines.length > 4 && tutorials[gameMan.tutorialStep] && tutorials[gameMan.tutorialStep].input) {	// text too crowded
 			spacing -= 4;
 			topPadding -= 2;
@@ -495,8 +508,8 @@ function drawContext(context, dTime, tv) {
 		break;
 	case "rules":
 		if (gameMan.rules < rulePages) {
-			context.drawImage(images["rule" + gameMan.rules + "0"], x, y);
-			context.drawImage(images["rule" + gameMan.rules + "1"], x+1024, y);
+			context.drawImage(images["rule" + gameMan.rules + "0"], x+1536*drawMan.slide, y);
+			context.drawImage(images["rule" + gameMan.rules + "1"], x+1024 + 1536*drawMan.slide, y);
 			drawRules(context, scene);
 		}
 		break;
