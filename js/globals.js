@@ -58,7 +58,8 @@ var gameMan = {
 	pRot:-1,
 	ais:[0,1,0,1],
 	thinking: false,
-	replaying: false
+	replaying: false,
+	turnTimer: 0
 }
 
 var inputMan = {

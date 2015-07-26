@@ -119,6 +119,7 @@ function newGame() {
 	gameMan.winner = -1;
 	gameMan.player = 0;
 	gameMan.actions = 2;
+	gameMan.turnTimer = 0;
 	gameMan.tutorialStep = -1;
 	resetEvents();
 	resetAnimations();
@@ -129,6 +130,7 @@ function newGame() {
 function resumeGame(gameSave) {
 	states = gameSave.states;
 	phalanx = [];
+	gameMan.turnTimer = 0;
 	gameMan.tutorialStep = -1;
 	gameMan.ais = gameSave.ais;
 	revertState();
@@ -142,6 +144,7 @@ function useAction(n) {
 	if (gameMan.actions <= 0) {
 		gameMan.actions = 2;
 		gameMan.player = (gameMan.player + 1) % 4;
+		gameMan.turnTimer = 0;
 		if (gameMan.tutorialStep < 0) {
 			drawMan.helmetScale = 1;	// zoom helmets
 		}

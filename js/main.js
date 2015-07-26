@@ -368,6 +368,7 @@ function draw(time) {
 	}
 
 	if (gameMan.scene == "board" && gameMan.menu != "popup") {
+		gameMan.turnTimer += dTime;
 		drawMural(muralCanvas.getContext("2d"), dTime);	// draw mural to buffer
 	}
 
@@ -479,6 +480,10 @@ function drawContext(context, dTime, tv) {
 				context.globalAlpha = (Math.sin(drawMan.tutorialTheta % (Math.PI*2))+1)/2;
 				context.drawImage(images["tutorialButton2"], drawMan.tutorialNextX, drawMan.tutorialButtonY);
 				context.globalAlpha = 1;
+			}
+
+			if (gameMan.tutorialStep < 0) {
+				drawTimer(context);
 			}
 
 			setRings();	// TODO don't do this every frame?
@@ -680,6 +685,17 @@ function drawPieces(context) {
 			}
 		}
 	}
+}
+
+function drawTimer(context) {
+	context.save();
+	var minutes = Math.floor(gameMan.turnTimer / 60000);
+	var seconds = Math.floor(gameMan.turnTimer / 1000) - 60 * Math.floor(gameMan.turnTimer / 60000);
+	var divider = seconds < 10 ? ":0" : ":";
+	context.font = (2 * fontSize) + "px Georgia";
+	context.fillStyle = "white";
+	context.fillText(minutes + divider + seconds, 16, 2 * fontSize);
+	context.restore();
 }
 
 function drawTiles(context, dTime) {
