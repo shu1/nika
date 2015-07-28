@@ -497,3 +497,13 @@ function ai() {
 		break;
 	}
 }
+
+function updateTimer(dTime) {
+	if (gameMan.ais[gameMan.player] || gameMan.winner >= 0) {
+		return;
+	}
+	gameMan.turnTimer += dTime;
+	if (gameMan.timed && gameMan.turnTimer > gameMan.turnTime) {
+		pass();
+	}
+}
