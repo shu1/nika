@@ -26,7 +26,7 @@ var drawMan = {
 	helmetScale:0,
 	helmetTheta:0,
 	helmetFlash:0,
-	slide:0,
+	ruleSlide:0,
 	alpha:0,
 	fade:0,
 	zoom:0,

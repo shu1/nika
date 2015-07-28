@@ -367,16 +367,16 @@ function draw(time) {
 		}
 	}
 
-	if (drawMan.slide > 0) {
-		drawMan.slide -= dTime/250;
-		if (drawMan.slide < 0) {
-			drawMan.slide = 0;
+	if (drawMan.ruleSlide > 0) {
+		drawMan.ruleSlide -= dTime/250;
+		if (drawMan.ruleSlide < 0) {
+			drawMan.ruleSlide = 0;
 		}
 	}
-	else if (drawMan.slide < 0) {
-		drawMan.slide += dTime/250;
-		if (drawMan.slide > 0) {
-			drawMan.slide = 0;
+	else if (drawMan.ruleSlide < 0) {
+		drawMan.ruleSlide += dTime/250;
+		if (drawMan.ruleSlide > 0) {
+			drawMan.ruleSlide = 0;
 		}
 	}
 
@@ -508,8 +508,8 @@ function drawContext(context, dTime, tv) {
 		break;
 	case "rules":
 		if (gameMan.rules < rulePages) {
-			context.drawImage(images["rule" + gameMan.rules + "0"], x+1536*drawMan.slide, y);
-			context.drawImage(images["rule" + gameMan.rules + "1"], x+1024 + 1536*drawMan.slide, y);
+			context.drawImage(images["rule" + gameMan.rules + "0"], x+1536*drawMan.ruleSlide, y);
+			context.drawImage(images["rule" + gameMan.rules + "1"], x+1024 + 1536*drawMan.ruleSlide, y);
 			drawRules(context, scene);
 		}
 		break;
