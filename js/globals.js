@@ -749,7 +749,7 @@ var tutorials = [{
 		[8,5,1]
 	]
 },{
-	text:["Our phalanx cannot rout the Spartan, as","he is facing us. But, since we have two","pieces lined up against a single enemy,","we can PUSH him backward. Simply","move ou phalanx forward to push."],
+	text:["Our phalanx cannot rout the Spartan, as","he is facing us. But, since we have two","pieces lined up against a single enemy,","we can PUSH him backward. Simply","move our phalanx forward to push."],
 	input:false,
 	player:0,
 	actions:2,
