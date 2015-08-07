@@ -385,6 +385,7 @@ function menuButton(index) {
 		}
 		else if (gameMan.scene == "board") {
 			gameMan.menu = "popup";
+			drawMan.slide = 1;
 		}
 		break;
 	case 1:

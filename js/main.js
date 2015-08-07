@@ -558,10 +558,10 @@ function drawContext(context, dTime, tv) {
 	if (gameMan.menu == "popup") {
 		context.fillStyle = "rgba(0,0,0,0.5)";
 		context.fillRect(0, 0, canvas.width, canvas.height);
-		context.drawImage(images["menuPopup"], x, y, menuMan.pWidth, menuMan.pHeight);
+		context.drawImage(images["menuPopup"], x, y - (y + menuMan.pHeight) * drawMan.slide, menuMan.pWidth, menuMan.pHeight);
 
 		if (inputMan.drag == "popup" && menus["popup"] >= 0) {
-			context.drawImage(images["menuPopupActive"], x, y + menuMan.pHeight/4 * menus["popup"], menuMan.pWidth, menuMan.pHeight/4);
+			context.drawImage(images["menuPopupActive"], x, y + menuMan.pHeight/4 * menus["popup"], menuMan.pWidth, menuMan.pHeight/4);	// TODO draw with fillRect and fix size
 		}
 	}
 
