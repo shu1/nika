@@ -367,15 +367,16 @@ function draw(time) {
 		}
 	}
 
+	var speed = drawMan.slide * dTime / 100;
 	if (drawMan.slide > 0) {
-		drawMan.slide -= dTime/250;
-		if (drawMan.slide < 0) {
+		drawMan.slide -= speed;
+		if (drawMan.slide < 0.001) {
 			drawMan.slide = 0;
 		}
 	}
 	else if (drawMan.slide < 0) {
-		drawMan.slide += dTime/250;
-		if (drawMan.slide > 0) {
+		drawMan.slide -= speed;
+		if (drawMan.slide > -0.001) {
 			drawMan.slide = 0;
 		}
 	}
