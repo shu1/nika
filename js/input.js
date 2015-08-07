@@ -346,12 +346,12 @@ function mouseUp(event) {
 				if (y > (scene.height - drawMan.arrowHeight)/2 && y < (scene.height + drawMan.arrowHeight)/2) {
 					if (x > scene.width - drawMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
 						gameMan.rules++;
-						drawMan.ruleSlide = 1;
+						drawMan.slide = 1;
 						hudMan.pageText = "Rule " + gameMan.rules;
 					}
 					else if (x < drawMan.arrowWidth*1.5 && gameMan.rules > 0) {
 						gameMan.rules--;
-						drawMan.ruleSlide = -1;
+						drawMan.slide = -1;
 						hudMan.pageText = "Rule " + gameMan.rules;
 					}
 				}
@@ -636,7 +636,7 @@ function keyPrev() {
 	}
 	else if (gameMan.scene == "rules" && gameMan.rules > 0) {
 		gameMan.rules--;
-		drawMan.ruleSlide = -1;
+		drawMan.slide = -1;
 		hudMan.pageText = "Rule " + gameMan.rules;
 		return true;
 	}
@@ -661,7 +661,7 @@ function keyNext() {
 	}
 	else if (gameMan.scene == "rules" && gameMan.rules < rulePages-1) {
 		gameMan.rules++;
-		drawMan.ruleSlide = 1;
+		drawMan.slide = 1;
 		hudMan.pageText = "Rule " + gameMan.rules;
 		return true;
 	}
