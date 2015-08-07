@@ -884,6 +884,22 @@ function drawMenu(context, dTime) {
 	}
 }
 
+(function() {
+	var lastTime = 0;
+	if (!window.requestAnimationFrame)
+		window.requestAnimationFrame = function(callback, element) {
+			var currTime = new Date().getTime();
+			var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+			var id = window.setTimeout(function() { callback(currTime + timeToCall); }, timeToCall);
+			lastTime = currTime + timeToCall;
+			return id;
+		};
+	if (!window.cancelAnimationFrame)
+		window.cancelAnimationFrame = function(id) {
+			clearTimeout(id);
+		};
+}());
+
 if (!window.nwf) {
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
