@@ -131,7 +131,7 @@ window.onload = function() {
 		var tvDisplay = nwf.display.DisplayManager.getInstance().getTVDisplay();
 
 		tvDisplay.addEventListener("load", function() {
-			var tvCanvas = tvDisplay.window.document.getElementById("canvas");
+			tvCanvas = tvDisplay.window.document.getElementById("canvas");
 			tvCanvas.width = tvDisplay.width;
 			tvCanvas.height = tvDisplay.height;
 
