@@ -592,7 +592,7 @@ function drawContext(context, dTime, tv) {
 		drawMenu(context, dTime);
 
 		if (gameMan.debug) {
-			hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[tv + gameMan.scene].scale + "x";
+			hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[tv + gameMan.scene].scale.toFixed(4) + "x";
 			context.fillStyle = "white";
 			context.clearRect(0, 0, canvas.width, drawMan.hudHeight);
 			context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, drawMan.hudFont);
