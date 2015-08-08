@@ -514,14 +514,22 @@ function keyDown(event) {
 		hudMan.inputText = "Replay Next";
 		replayNext();
 		break;
-	case 65:	// A
 	case 83:	// S
+		hudMan.inputText = "Zoom";
+		if (gameMan.menu != "popup") {
+			zoom();
+		}
+		break;
+	case 65:	// A
 	case 179:	// pause
 	case 228:	// forward
-		if (debugBuild) {
-			hudMan.inputText = "Menu";
-			menuMan.show = !menuMan.show;
-			menus["debug"] = 0;
+		hudMan.inputText = "Menu";
+		if (gameMan.menu == "popup") {
+			gameMan.menu = "";
+		}
+		else if (gameMan.scene == "board") {
+			gameMan.menu = "popup";
+			drawMan.slide = 1;
 		}
 		break;
 	case 13:	// enter
