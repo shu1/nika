@@ -157,12 +157,12 @@ function reSize() {
 	}
 	drawMan.screenDistance = Math.sqrt(gpCanvas.width*gpCanvas.width + gpCanvas.height*gpCanvas.height);
 
-	var minScale = 1/2, maxScale = 2/3;	// defaults for ipad
+	var minScale = 0.5, maxScale = 2/3;	// defaults for ipad and gamepad
 	if (gpCanvas.width == 2048 && gpCanvas.height == 1536) {	// ipad retina
 		minScale = 1;
 		maxScale = 4/3;
 	}
-	else if (screenType == 2) {	// tablet, pc or tv
+	else if (screenType == 2) {	// tablet, pc, or tv
 		if (gpCanvas.width / gpCanvas.height >= 1.4) {	// more landscape
 			minScale = gpCanvas.height / drawMan.boardHeight;
 			maxScale = gpCanvas.width / drawMan.boardWidth;
@@ -172,9 +172,9 @@ function reSize() {
 			maxScale = gpCanvas.height / drawMan.boardHeight;
 		}
 	}
-	else if (gpCanvas.width != 1024 || gpCanvas.height != 768) {	// else if not ipad then it's a phone
+	else if ((gpCanvas.width != 1024 || gpCanvas.height != 768) && gpCanvas.height > 480) {	// not ipad nor gamepad, so phone
 		minScale = gpCanvas.width / drawMan.boardWidth;
-		maxScale = gpCanvas.width / 1281;	// make maxScale = 2/3 on WiiU gamepad
+		maxScale = gpCanvas.height / 720;
 
 		if (maxScale > 0.9 && maxScale < 1.1) {
 			maxScale = 1;
