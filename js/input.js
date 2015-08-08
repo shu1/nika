@@ -494,20 +494,35 @@ function keyDown(event) {
 
 	switch (event.keyCode) {
 	case 68:	// D
+		hudMan.inputText = "Debug";
 		gameMan.debug = !gameMan.debug;
 		initAnimations();
 		break;
 	case 77:	// M
+		hudMan.inputText = "Debug Mural";
 		debugMural();
 		break;
 	case 82:	// R
+		hudMan.inputText = "Replay";
 		replay();
 		break;
 	case 84:	// T
+		hudMan.inputText = "Replay Prev";
 		replayPrev();
 		break;
 	case 89:	// Y
+		hudMan.inputText = "Replay Next";
 		replayNext();
+		break;
+	case 65:	// A
+	case 83:	// S
+	case 179:	// pause
+	case 228:	// forward
+		if (debugBuild) {
+			hudMan.inputText = "Menu";
+			menuMan.show = !menuMan.show;
+			menus["debug"] = 0;
+		}
 		break;
 	case 13:	// enter
 	case 90:	// Z
@@ -540,16 +555,6 @@ function keyDown(event) {
 		}
 		else if (gameMan.tutorialStep >= 0) {
 			endTutorial();
-		}
-		break;
-	case 65:	// A
-	case 83:	// S
-	case 179:	// pause
-	case 228:	// forward
-		if (debugBuild) {
-			hudMan.inputText = "Menu";
-			menuMan.show = !menuMan.show;
-			menus["debug"] = 0;
 		}
 		break;
 	case 37:	// left
