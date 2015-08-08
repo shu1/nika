@@ -123,7 +123,8 @@ window.onload = function() {
 	gameMan.menu = "title";
 
 	scenes["board"] = {};
-	scenes["menus"] = scenes["rules"] = {};	// menus and rules have the same properties for now
+	scenes["rules"] = {};
+	scenes["menus"] = {};
 	gameMan.scene = "menus";
 	reSize();
 
@@ -136,7 +137,8 @@ window.onload = function() {
 			tvCanvas.height = tvDisplay.height;
 
 			scenes["tvboard"] = {};
-			scenes["tvmenus"] = scenes["tvrules"] = {};
+			scenes["tvrules"] = {};
+			scenes["tvmenus"] = {};
 			var scale = tvCanvas.height / drawMan.boardHeight;
 			initScenes(tvCanvas, scale, scale, "tv");
 
@@ -163,11 +165,11 @@ function reSize() {
 		maxScale = 4/3;
 	}
 	else if (screenType == 2) {	// tablet, pc, or tv
-		if (gpCanvas.width / gpCanvas.height >= 1.4) {	// more landscape
+		if (gpCanvas.width / gpCanvas.height >= 1.4) {	// landscape
 			minScale = gpCanvas.height / drawMan.boardHeight;
 			maxScale = gpCanvas.width / drawMan.boardWidth;
 		}
-		else {	// more portrait
+		else {	// portrait
 			minScale = gpCanvas.width / drawMan.boardWidth;
 			maxScale = gpCanvas.height / drawMan.boardHeight;
 		}
@@ -221,6 +223,13 @@ function initScenes(canvas, maxScale, minScale, tv) {
 	scene.width = scene.height * ratio;
 	scene.minScale = scene.scale = canvas.height / scene.height;
 	scene.maxScale = (maxScale > scene.minScale*1.1) ? maxScale : scene.minScale;	// if maxScale is close to minScale, make them the same
+	scene.x = (canvas.width - scene.width * scene.scale)/2;
+	scene.y = (canvas.height - scene.height * scene.scale)/2;
+
+	scene = scenes[tv + "menus"];
+	scene.height = (canvas.height <= 480) ? drawMan.screenHeight : 1152;
+	scene.width = scene.height * ratio;
+	scene.maxScale = scene.minScale = scene.scale = canvas.height / scene.height;	// can't scale menus
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 }
