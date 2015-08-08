@@ -515,6 +515,7 @@ function keyDown(event) {
 		replayNext();
 		break;
 	case 83:	// S
+	case 228:	// forward
 		hudMan.inputText = "Zoom";
 		if (gameMan.menu != "popup") {
 			zoom();
@@ -522,7 +523,6 @@ function keyDown(event) {
 		break;
 	case 65:	// A
 	case 179:	// pause
-	case 228:	// forward
 		hudMan.inputText = "Menu";
 		if (gameMan.menu == "popup") {
 			gameMan.menu = "";
@@ -545,7 +545,6 @@ function keyDown(event) {
 			menuDebug(0);
 		}
 		break;
-	case 8: 	// backspace
 	case 27:	// escape
 	case 88:	// X
 	case 227:	// rewind
