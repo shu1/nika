@@ -220,7 +220,7 @@ function initScenes(canvas, maxScale, minScale, tv) {
 	scene.height = (canvas.height <= 480) ? drawMan.screenHeight : (ratio < 1.5) ? 1536 : 1152;
 	scene.width = scene.height * ratio;
 	scene.minScale = scene.scale = canvas.height / scene.height;
-	scene.maxScale = Math.max(maxScale, scene.scale);
+	scene.maxScale = (maxScale > scene.minScale*1.1) ? maxScale : scene.minScale;	// if maxScale is close to minScale, make them the same
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 }
