@@ -107,7 +107,7 @@ window.onload = function() {
 		gpCanvas.addEventListener("mousemove", mouseMove);
 		window.addEventListener("mouseup", mouseUp);
 	}
-	gpCanvas.addEventListener("contextmenu", function(e){e.preventDefault();});
+	gpCanvas.addEventListener("contextmenu", function(e){e.preventDefault()});
 	window.addEventListener("wheel", mouseWheel);
 	window.addEventListener("keydown", keyDown);
 
@@ -184,7 +184,8 @@ function reSize() {
 	drawMan.hudFont = Math.floor(32*minScale);
 	gpCanvas.getContext("2d").font = drawMan.hudFont + "px sans-serif";
 
-	menuMan.bWidth = drawMan.cellSize*2 * minScale;
+	// TODO separate out button code from debug code
+	menuMan.bWidth = drawMan.cellSize * 2 * minScale;
 	menuMan.bHeight = menuMan.bWidth/2;
 	menuMan.bPadding = 8 * minScale;
 	menuMan.width = menuMan.bWidth * menuMan.cols;
@@ -202,15 +203,14 @@ function initScenes(canvas, maxScale, minScale, tv) {
 	var scene = scenes[tv + "board"];
 	scene.width = drawMan.boardWidth;
 	scene.height = drawMan.boardHeight;
+	scene.minScale = scene.scale = minScale;
 	scene.maxScale = maxScale;
-	scene.minScale = minScale;
-	scene.scale = minScale;
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 
 	var ratio = canvas.width / canvas.height;
 	scene = scenes[tv + "rules"];
-	scene.height = (canvas.height <= 480) ? drawMan.screenHeight : (ratio >= 1.5) ? 1152 : 1536;
+	scene.height = (canvas.height <= 480) ? drawMan.screenHeight : (ratio < 1.5) ? 1536 : 1152;
 	scene.width = scene.height * ratio;
 	scene.minScale = scene.scale = canvas.height / scene.height;
 	scene.maxScale = Math.max(maxScale, scene.scale);
@@ -891,7 +891,7 @@ function drawMenu(context, dTime) {
 		window.requestAnimationFrame = function(callback, element) {
 			var currTime = new Date().getTime();
 			var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-			var id = window.setTimeout(function() { callback(currTime + timeToCall); }, timeToCall);
+			var id = window.setTimeout(function(){callback(currTime + timeToCall)}, timeToCall);
 			lastTime = currTime + timeToCall;
 			return id;
 		};
