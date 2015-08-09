@@ -335,6 +335,12 @@ function playSound(event) {
 }
 
 function playAnimation(player, event) {
+	// If in tutorial, only register player 1's animations
+	// Registering others leads to residual animations playing after tutorial ends
+	if (player != 0 && gameMan.tutorialStep >= 0) {
+		return;
+	}
+
 	if (["push", "pushed", "rout", "routed", "rally"].indexOf(event) > -1) {
 		murals[player].setAnim(event);
 	}
