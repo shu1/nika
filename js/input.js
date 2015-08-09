@@ -433,6 +433,7 @@ function mouseUp(event) {
 					phalanx.length = 0;
 				}
 
+				playerAction();
 				revertState();
 				clearRallyHighlights();	// TODO refactor highlights?
 			}

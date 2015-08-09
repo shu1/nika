@@ -117,8 +117,6 @@ function movePiece(pRow, pCol, row, col, isAI) {
 			if (gameMan.tutorialStep < 0) {
 				pushState();
 			}
-
-			playerAction();
 		}
 	}
 

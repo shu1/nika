@@ -94,6 +94,7 @@ function checkTutorialMove() {
 	if (correct) {
 		nextTutorialStep();
 	} else {
+		resetEvents();
 		setupTutorial();
 	}
 }
