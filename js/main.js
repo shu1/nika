@@ -531,6 +531,10 @@ function drawContext(context, dTime, tv) {
 				drawTimer(context);
 			}
 
+			if (gameMan.tutorialStep >= 0) {
+				drawTutorialProgress(context);
+			}
+
 			setRings();	// TODO don't do this every frame?
 			drawPieces(context);
 			if (gameMan.winner < 0) {
@@ -745,6 +749,21 @@ function drawTimer(context) {
 	context.font = (2 * fontSize) + "px Georgia";
 	context.fillStyle = "white";
 	context.fillText(timeString, 2000 - context.measureText(timeString).width, 2 * fontSize);
+	context.restore();
+}
+
+function drawTutorialProgress(context) {
+	context.save();
+	var sectionStarts = [0,7,23,34,52]; // HACK last section start represents end of tutorial, included for edge case handling
+	var sectionNames = ["Introduction", "Actions and Routing", "Phalanxes", "Pushing"];
+	var i = sectionStarts.length - 2;
+	while (gameMan.tutorialStep < sectionStarts[i] && i > 0) {
+		i -= 1;
+	}
+	var progressString = sectionNames[i] + ": " + (gameMan.tutorialStep - sectionStarts[i] + 1)  + "/" + (sectionStarts[i+1] - sectionStarts[i]);
+	context.font = (2 * fontSize) + "px Georgia";
+	context.fillStyle = "white";
+	context.fillText(progressString, 2000 - context.measureText(progressString).width, 3 * fontSize);
 	context.restore();
 }
 
