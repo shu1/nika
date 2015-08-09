@@ -278,8 +278,9 @@ function fadeScreen(index) {
 	gameMan.nScreen = index;
 	drawMan.fade = 1;
 
-	if (gameMan.screen == "popup") {
-		drawMan.alpha = 0.5;	// popup already has overlay
+	if (gameMan.screen == "popup" && gameMan.nScreen == "board") {
+		drawMan.fade = -1;
+		setScreen("board");
 	}
 }
 
@@ -378,10 +379,15 @@ function draw(time) {
 	if (drawMan.fade) {
 		drawMan.alpha += dTime/250 * drawMan.fade;	// set positive/negative
 
-		if (drawMan.alpha >= 1) {
-			drawMan.alpha = 1;
+		if (gameMan.nScreen == "popup" && drawMan.alpha >= 0.5) {
+			drawMan.alpha = 0.5;
+			drawMan.fade = 0;
 			setScreen(gameMan.nScreen);
+		}
+		else if (drawMan.alpha >= 1) {
+			drawMan.alpha = 1;
 			drawMan.fade = -1;
+			setScreen(gameMan.nScreen);
 		}
 		else if (drawMan.alpha <= 0) {
 			drawMan.alpha = 0;
@@ -579,7 +585,7 @@ function drawContext(context, dTime, tv) {
 	var x = (canvas.width - menuMan.pWidth)/2;
 	var y = (canvas.height - menuMan.pHeight)/2;
 	if (gameMan.screen == "popup") {
-		context.fillStyle = "rgba(0,0,0,0.5)";
+		context.fillStyle = "rgba(0,0,0," + drawMan.alpha + ")";
 		context.fillRect(0, 0, canvas.width, canvas.height);
 		context.drawImage(images["menuPopup"], x, y - (y + menuMan.pHeight) * drawMan.slide, menuMan.pWidth, menuMan.pHeight);
 
@@ -605,7 +611,7 @@ function drawContext(context, dTime, tv) {
 		context.drawImage(images["buttonActive"], menuMan.bWidth * menus["button"], y, menuMan.bWidth, menuMan.bHeight);
 	}
 
-	if (drawMan.alpha > 0) {
+	if (drawMan.alpha > 0 && gameMan.screen != "popup") {
 		context.fillStyle = "rgba(0,0,0," + drawMan.alpha + ")";
 		context.fillRect(0, 0, canvas.width, canvas.height);
 	}

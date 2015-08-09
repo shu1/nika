@@ -381,10 +381,10 @@ function menuButton(index) {
 			fadeScreen("title");
 		}
 		else if (gameMan.screen == "popup") {
-			setScreen("board");
+			fadeScreen("board");
 		}
 		else if (gameMan.screen == "board") {
-			setScreen("popup");
+			fadeScreen("popup");
 			drawMan.slide = 1;
 		}
 		break;
