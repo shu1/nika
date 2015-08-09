@@ -120,12 +120,10 @@ window.onload = function() {
 
 	menus["title"] = 0;
 	menus["option"] = 0;
-	gameMan.menu = "title";
 
 	scenes["board"] = {};
 	scenes["rules"] = {};
 	scenes["menus"] = {};
-	gameMan.scene = "menus";
 	reSize();
 
 	if (window.nwf) {
@@ -203,7 +201,7 @@ function reSize() {
 	menuMan.pHeight = 512 * minScale;
 
 	initScenes(gpCanvas, maxScale, minScale);
-	setScene();
+	setScreen("title");
 }
 
 function initScenes(canvas, maxScale, minScale, tv) {
@@ -234,47 +232,55 @@ function initScenes(canvas, maxScale, minScale, tv) {
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 }
 
-function setScene(index) {
-	gameMan.nScene = index ? index : gameMan.scene;
+function setScreen(index) {
+	gameMan.pScreen = gameMan.screen;
+	gameMan.screen = index;
+	gameMan.scene = getScene(gameMan.screen);
 
-	if (index) {
-		if (gameMan.scene == "rules") {
-			hudMan.pageText = "";	// clear some debug text
-		}
-
-		gameMan.pScene = gameMan.scene;
-
-		if (index == "option") {	// HACK special case
-			gameMan.menu = index;
-			gameMan.nScene = "menus";
-		} else {
-			gameMan.nScene = index;
-			if (index == "menus") {
-				gameMan.menu = "title";
-				menus["title"] = 1;
-			} else {
-				gameMan.menu = "";
-				if (index == "rules") {
-					hudMan.pageText = "Rule " + gameMan.rules;
-				}
-			}
-		}
-
-		if (gameMan.nScene != gameMan.pScene) {	// only fade if changing scenes
-			drawMan.fade = 1;
-			if (gameMan.menu == "popup") {
-				drawMan.alpha = 0.5;	// popup already has overlay
-			}
+	function getScene(index) {
+		switch (index) {
+			case "":	// HACK for first boot of game
+			case "rules":
+				return index;
+				break;
+			case "board":
+			case "popup":
+				return "board";
+				break;
+			default:
+				return "menus";
 		}
 	}
 
-	var scene = scenes[gameMan.nScene];
-	scene.x = (gpCanvas.width - scene.width * scene.scale)/2;
-	scene.y = (gpCanvas.height - scene.height * scene.scale)/2;
+	if (getScene(gameMan.pScreen) == "menus") {
+		menus["title"] = 1;	// TODO adjust for saved game
+	}
+
+	if (gameMan.screen == "rules") {
+		hudMan.pageText = "Rule " + gameMan.rules;
+	}
+	else if (gameMan.pScreen == "rules") {
+		hudMan.pageText = "";
+	}
+
+	if (gameMan.screen != "popup") {
+		var scene = scenes[gameMan.scene];
+		scene.x = (gpCanvas.width - scene.width * scene.scale)/2;
+		scene.y = (gpCanvas.height - scene.height * scene.scale)/2;
+	}
 
 	drawMan.zoom = 0;
 	menuMan.show = false;
 	menus["debug"] = 0;
+}
+
+function fadeScreen(index) {
+	gameMan.nScreen = index;
+	drawMan.fade = 1;
+
+	if (gameMan.screen == "popup") {
+		drawMan.alpha = 0.5;	// popup already has overlay
+	}
 }
 
 function zoom() {
@@ -374,7 +380,7 @@ function draw(time) {
 
 		if (drawMan.alpha >= 1) {
 			drawMan.alpha = 1;
-			gameMan.scene = gameMan.nScene;
+			setScreen(gameMan.nScreen);
 			drawMan.fade = -1;
 		}
 		else if (drawMan.alpha <= 0) {
@@ -397,7 +403,7 @@ function draw(time) {
 		}
 	}
 
-	if (gameMan.scene == "board" && gameMan.menu != "popup") {
+	if (gameMan.scene == "board" && gameMan.screen != "popup") {
 		if (gameMan.timed){
 			updateTimer(dTime);
 		}
@@ -495,7 +501,7 @@ function drawContext(context, dTime, tv) {
 		context.drawImage(images["board0"], 0, 0);
 		context.drawImage(images["board1"], 0, 960);
 
-		if (gameMan.menu != "popup") {
+		if (gameMan.screen != "popup") {
 			context.drawImage(muralCanvas, drawMan.muralX, drawMan.muralY);
 
 			if (gameMan.tutorialStep > 0) {
@@ -534,7 +540,7 @@ function drawContext(context, dTime, tv) {
 		}
 		break;
 	case "menus":
-		switch (gameMan.menu) {
+		switch (gameMan.screen) {
 		case "title":
 			context.drawImage(images["menuTitle0"], x, y);
 			context.drawImage(images["menuTitle1"], x+512, y);
@@ -572,7 +578,7 @@ function drawContext(context, dTime, tv) {
 
 	var x = (canvas.width - menuMan.pWidth)/2;
 	var y = (canvas.height - menuMan.pHeight)/2;
-	if (gameMan.menu == "popup") {
+	if (gameMan.screen == "popup") {
 		context.fillStyle = "rgba(0,0,0,0.5)";
 		context.fillRect(0, 0, canvas.width, canvas.height);
 		context.drawImage(images["menuPopup"], x, y - (y + menuMan.pHeight) * drawMan.slide, menuMan.pWidth, menuMan.pHeight);
@@ -583,10 +589,10 @@ function drawContext(context, dTime, tv) {
 	}
 
 	y = canvas.height - menuMan.bHeight;
-	if (gameMan.scene == "rules" || gameMan.menu == "popup") {
+	if (gameMan.scene == "rules" || gameMan.screen == "popup") {
 		context.drawImage(images["buttonClose"], 0, y, menuMan.bWidth, menuMan.bHeight);
 	}
-	else if (gameMan.menu == "setup" || gameMan.menu == "option" || gameMan.menu == "credit" || gameMan.menu == "tutorial") {
+	else if (gameMan.screen == "setup" || gameMan.screen == "option" || gameMan.screen == "credit" || gameMan.screen == "tutorial") {
 		context.drawImage(images["buttonBack"], 0, y, menuMan.bWidth, menuMan.bHeight);
 	}
 	else if (gameMan.scene == "board") {
@@ -640,7 +646,7 @@ function setRings() {
 
 function drawPieces(context) {
 	// draw drag radius
-	if (inputMan.touchID >= 0 && !inputMan.drag && gameMan.menu != "popup" && gameMan.pRow >= 0 && gameMan.pCol >= 0
+	if (inputMan.touchID >= 0 && !inputMan.drag && gameMan.screen != "popup" && gameMan.pRow >= 0 && gameMan.pCol >= 0
 	&& inPhalanx(gameMan.pRow, gameMan.pCol) && !routedCell(gameMan.pRow, gameMan.pCol)) {
 		var x = gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2;
 		var y = gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2;

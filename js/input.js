@@ -49,14 +49,14 @@ function mouseDown(event) {
 			var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
 			var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
 
-			if (gameMan.menu == "title") {
+			if (gameMan.screen == "title") {
 				y -= 282;
 				if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
 					menus["title"] = Math.floor(y / drawMan.activeHeight);
 					handled = true;
 				}
 			}
-			else if (gameMan.menu == "option") {
+			else if (gameMan.screen == "option") {
 				x += 40 - 62;	// offset to x of volume line - button radius
 				var radius = 93;	// bigger radius for fat fingers
 				var musicX = 1484 * soundMan.music, soundX = 1484 * soundMan.sound;
@@ -69,7 +69,7 @@ function mouseDown(event) {
 					handled = true;
 				}
 			}
-			else if (gameMan.scene == "board" && gameMan.winner < 0 && !gameMan.ais[gameMan.player]) {
+			else if (gameMan.screen == "board" && gameMan.winner < 0 && !gameMan.ais[gameMan.player]) {
 				getRowCol(scene);
 				getPiece(inputMan.row, inputMan.col);
 				if (phalanx.length > 0) {
@@ -128,7 +128,7 @@ function getXY(event) {
 }
 
 function getDrag(down) {
-	var handled = inputMan.drag == "debug" || inputMan.drag == "button" || inputMan.drag == "popup" || gameMan.menu == "popup";
+	var handled = inputMan.drag == "debug" || inputMan.drag == "button" || inputMan.drag == "popup" || gameMan.screen == "popup";
 
 	if (debugBuild && inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - menuMan.width
 	&& inputMan.y < gpCanvas.height && inputMan.y > gpCanvas.height - menuMan.height) {	// debug menu
@@ -152,7 +152,7 @@ function getDrag(down) {
 
 	var x = inputMan.x - (gpCanvas.width - menuMan.pWidth)/2;	// offset to topleft of popup
 	var y = inputMan.y - (gpCanvas.height - menuMan.pHeight)/2;
-	if (gameMan.menu == "popup" && x > 0 && x < menuMan.pWidth && y > 0 && y < menuMan.pHeight) {	// popup
+	if (gameMan.screen == "popup" && x > 0 && x < menuMan.pWidth && y > 0 && y < menuMan.pHeight) {	// popup
 		menus["popup"] = Math.floor(y / (menuMan.pHeight/4));
 		if (down) {
 			inputMan.drag = "popup";
@@ -162,7 +162,7 @@ function getDrag(down) {
 		menus["popup"] = -1;
 	}
 
-	if ((gameMan.scene == "rules" || gameMan.menu == "popup" || gameMan.menu == "setup" || gameMan.menu == "option" || gameMan.menu == "credit" || gameMan.menu == "tutorial")
+	if ((gameMan.screen != "board" && gameMan.screen != "title")
 	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth) {	// close/back button
 		menus["button"] = 0;
 		if (down) {
@@ -173,8 +173,7 @@ function getDrag(down) {
 		menus["button"] = -1;
 	}
 
-	if (gameMan.scene == "board" && gameMan.menu != "popup"
-	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// board buttons
+	if (gameMan.screen == "board" && inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// board buttons
 		menus["button"] = Math.floor(inputMan.x / menuMan.bWidth);
 		if (down) {
 			inputMan.drag = "button";
@@ -218,14 +217,14 @@ function mouseMove(event) {
 			var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
 			hudMan.inputText = Math.floor(x) + "," + Math.floor(y);
 
-			if (gameMan.menu == "title") {
+			if (gameMan.screen == "title") {
 				y -= 282;
 				if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
 					menus["title"] = Math.floor(y / drawMan.activeHeight);
 					handled = true;
 				}
 			}
-			else if (gameMan.menu == "option") {
+			else if (gameMan.screen == "option") {
 				x += 40 - 62;	// offset to x of volume line - button radius
 				if (inputMan.drag == "music") {
 					soundMan.music = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
@@ -237,7 +236,7 @@ function mouseMove(event) {
 					handled = true;
 				}
 			}
-			else if (gameMan.scene == "board" && gameMan.winner < 0) {
+			else if (gameMan.screen == "board" && gameMan.winner < 0) {
 				getRowCol(scene);
 				if (gameMan.pRow >= 0 && gameMan.pCol >= 0) {	// if there's a piece, rotate it
 					dX /= scene.scale;
@@ -342,7 +341,7 @@ function mouseUp(event) {
 			var x = (inputMan.x - scene.x) / scene.scale;
 			var y = (inputMan.y - scene.y) / scene.scale;
 
-			if (gameMan.scene == "rules") {
+			if (gameMan.screen == "rules") {
 				if (y > (scene.height - drawMan.arrowHeight)/2 && y < (scene.height + drawMan.arrowHeight)/2) {
 					if (x > scene.width - drawMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
 						gameMan.rules++;
@@ -360,19 +359,19 @@ function mouseUp(event) {
 				x -= (scene.width - drawMan.screenWidth)/2;	// offset to coordinates of image
 				y -= (scene.height - drawMan.screenHeight)/2;
 
-				if (gameMan.menu == "title") {
+				if (gameMan.screen == "title") {
 					y -= 282;
 					if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
 						menuTitle(menus["title"]);
 					}
 				}
-				else if (gameMan.menu == "tutorial") {
+				else if (gameMan.screen == "tutorial") {
 					y -= 190;
 					if (x > 285 && x < 1245 && y > 0 && y < 800) {
 						menuTutorial(Math.floor(y / 200));
 					}
 				}
-				else if (gameMan.menu == "setup") {
+				else if (gameMan.screen == "setup") {
 					if (y > 220 && y < 610) {
 						if (x > 20 & x < 240) {
 							menuSetup(0);
@@ -392,14 +391,14 @@ function mouseUp(event) {
 					}
 				}
 			}
-			else if (gameMan.scene == "board") {
+			else if (gameMan.screen == "board") {
 				var margin = 11;
 
 				if (gameMan.winner >= 0) {
 					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
 					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
 						localStorage.removeItem("NikaGameSave");
-						setScene("menus");
+						fadeScreen("title");
 					}
 				}
 				else if (gameMan.tutorialStep >= 0 && x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth
@@ -517,31 +516,31 @@ function keyDown(event) {
 	case 83:	// S
 	case 228:	// forward
 		hudMan.inputText = "Zoom";
-		if (gameMan.menu != "popup") {
+		if (gameMan.screen != "popup") {
 			zoom();
 		}
 		break;
 	case 65:	// A
 	case 179:	// pause
 		hudMan.inputText = "Menu";
-		if (gameMan.menu == "popup") {
-			gameMan.menu = "";
+		if (gameMan.screen == "popup") {
+			setScreen("board");
 		}
-		else if (gameMan.scene == "board") {
-			gameMan.menu = "popup";
+		else if (gameMan.screen == "board") {
+			setScreen("popup");
 			drawMan.slide = 1;
 		}
 		break;
 	case 13:	// enter
 	case 90:	// Z
 		hudMan.inputText = "Enter";
-		if (debugBuild && (menuMan.show || gameMan.menu == "credit")) {
+		if (debugBuild && (menuMan.show || gameMan.screen == "credit")) {
 			menuDebug(menus["debug"]);
 		}
-		else if (gameMan.menu == "title" && menus["title"] < 6) {
+		else if (gameMan.screen == "title" && menus["title"] < 6) {
 			menuTitle(menus["title"]);
 		}
-		else if (debugBuild && !(gameMan.scene == "menus" && gameMan.menu == "option" && menus["option"] < 3)) {
+		else if (debugBuild && !(gameMan.screen == "option" && menus["option"] < 3)) {
 			menuDebug(0);
 		}
 		break;
@@ -553,11 +552,11 @@ function keyDown(event) {
 			menuMan.show = false;
 			menus["debug"] = 0;
 		}
-		else if (gameMan.menu == "option" || gameMan.menu == "credit") {
-			gameMan.menu = "title";
+		else if (gameMan.screen == "option" || gameMan.screen == "credit") {
+			gameMan.screen = "title";
 		}
-		else if (gameMan.scene == "rules") {
-			setScene("board");
+		else if (gameMan.screen == "rules") {
+			fadeScreen("board");
 			hudMan.pageText = "";
 		}
 		else if (gameMan.tutorialStep >= 0) {
@@ -565,7 +564,7 @@ function keyDown(event) {
 		}
 		break;
 	case 37:	// left
-		if (!menuMan.show && gameMan.menu == "option") {
+		if (!menuMan.show && gameMan.screen == "option") {
 			if (menus["option"] == 0 && soundMan.music > 0) {
 				soundMan.music -= 0.1;
 				if (soundMan.music < 0) {
@@ -585,7 +584,7 @@ function keyDown(event) {
 		}
 		break;
 	case 38:	// up
-		if (!menuMan.show && gameMan.menu == "option") {
+		if (!menuMan.show && gameMan.screen == "option") {
 			if (menus["option"] > 0) {
 				menus["option"]--;
 			}
@@ -595,7 +594,7 @@ function keyDown(event) {
 		}
 		break;
 	case 39:	// right
-		if (!menuMan.show && gameMan.menu == "option") {
+		if (!menuMan.show && gameMan.screen == "option") {
 			if (menus["option"] == 0 && soundMan.music < 1) {
 				soundMan.music += 0.1;
 				if (soundMan.music > 1) {
@@ -615,7 +614,7 @@ function keyDown(event) {
 		}
 		break;
 	case 40:	// down
-		if (!menuMan.show && gameMan.menu == "option") {
+		if (!menuMan.show && gameMan.screen == "option") {
 			if (menus["option"] < 2) {
 				menus["option"]++;
 			}
@@ -626,8 +625,8 @@ function keyDown(event) {
 		break;
 	}
 
-	if (menuMan.show || gameMan.scene == "board" || gameMan.scene == "rules" || gameMan.menu == "credit"
-	|| gameMan.menu == "title" && menus["title"] == 6 || gameMan.menu == "option" && menus["option"] == 2) {
+	if (menuMan.show || gameMan.screen == "board" || gameMan.screen == "rules" || gameMan.screen == "credit"
+	|| gameMan.screen == "title" && menus["title"] == 6 || gameMan.screen == "option" && menus["option"] == 2) {
 		inputMan.drag = "debug";	// highlight menu button
 	} else {
 		inputMan.drag = "";
@@ -642,11 +641,11 @@ function keyPrev() {
 		}
 		return true;	// never pan when menu is showing
 	}
-	else if (gameMan.menu == "title" && menus["title"] > 0) {
+	else if (gameMan.screen == "title" && menus["title"] > 0) {
 		menus["title"]--;
 		return true;
 	}
-	else if (gameMan.scene == "rules" && gameMan.rules > 0) {
+	else if (gameMan.screen == "rules" && gameMan.rules > 0) {
 		gameMan.rules--;
 		drawMan.slide = -1;
 		hudMan.pageText = "Rule " + gameMan.rules;
@@ -667,17 +666,17 @@ function keyNext() {
 		}
 		return true;	// never pan when menu is showing
 	}
-	else if (gameMan.menu == "title" && menus["title"] < 6) {
+	else if (gameMan.screen == "title" && menus["title"] < 6) {
 		menus["title"]++;
 		return true;
 	}
-	else if (gameMan.scene == "rules" && gameMan.rules < rulePages-1) {
+	else if (gameMan.screen == "rules" && gameMan.rules < rulePages-1) {
 		gameMan.rules++;
 		drawMan.slide = 1;
 		hudMan.pageText = "Rule " + gameMan.rules;
 		return true;
 	}
-	else if (gameMan.scene == "board" && gameMan.tutorialStep >= 0) {
+	else if (gameMan.screen == "board" && gameMan.tutorialStep >= 0) {
 		if (tutorials[gameMan.tutorialStep].input) {
 			nextTutorialStep();
 		}

@@ -205,7 +205,7 @@ function popState() {
 }
 
 function resetState() {
-	if (gameMan.scene == "board") {	// reset game actions for zoom
+	if (gameMan.screen == "board") {	// reset game actions for zoom
 		phalanx.length = 0;
 		revertState();
 	}
@@ -370,21 +370,21 @@ function setIdleAnimation(player) {
 function menuButton(index) {
 	switch (index) {
 	case 0:
-		if (gameMan.scene == "rules") {
-			setScene(gameMan.pScene);
+		if (gameMan.screen == "rules") {
+			fadeScreen(gameMan.pScreen);
 		}
-		else if (gameMan.menu == "option") {
+		else if (gameMan.screen == "option") {
 			localStorage.setItem("NikaSoundSave", JSON.stringify(soundMan));
-			setScene(gameMan.pScene);
+			fadeScreen(gameMan.pScreen);
 		}
-		else if (gameMan.menu == "setup" || gameMan.menu == "credit" || gameMan.menu == "tutorial") {
-			gameMan.menu = "title";
+		else if (gameMan.screen == "setup" || gameMan.screen == "credit" || gameMan.screen == "tutorial") {
+			fadeScreen("title");
 		}
-		else if (gameMan.menu == "popup") {
-			gameMan.menu = "";
+		else if (gameMan.screen == "popup") {
+			setScreen("board");
 		}
-		else if (gameMan.scene == "board") {
-			gameMan.menu = "popup";
+		else if (gameMan.screen == "board") {
+			setScreen("popup");
 			drawMan.slide = 1;
 		}
 		break;
@@ -402,16 +402,16 @@ function menuButton(index) {
 function menuPopup(index) {
 	switch (index) {
 	case 0:
-		gameMan.menu = "";
+		setScreen("board");
 		break;
 	case 1:
-		setScene("rules");
+		fadeScreen("rules");
 		break;
 	case 2:
-		setScene("option");
+		fadeScreen("option");
 		break;
 	case 3:
-		setScene("menus");
+		fadeScreen("title");
 		break;
 	}
 }
@@ -419,7 +419,7 @@ function menuPopup(index) {
 function menuTitle(index) {
 	switch (index) {
 	case 0:
-		gameMan.menu = "setup";
+		fadeScreen("setup");
 		break;
 	case 1:
 		var gameSave;
@@ -431,22 +431,22 @@ function menuTitle(index) {
 
 		if (gameSave) {
 			resumeGame(gameSave);
-			setScene("board");
+			fadeScreen("board");
 		} else {
-			gameMan.menu = "setup";
+			fadeScreen("setup");
 		}
 		break;
 	case 2:
-		gameMan.menu = "tutorial";
+		fadeScreen("tutorial");
 		break;
 	case 3:
-		setScene("rules");
+		fadeScreen("rules");
 		break;
 	case 4:
-		setScene("option");
+		fadeScreen("option");
 		break;
 	case 5:
-		gameMan.menu = "credit";
+		fadeScreen("credit");
 		break;
 	}
 }
@@ -460,7 +460,7 @@ function menuSetup(index) {
 	}
 	else if (index == 4) {
 		newGame();
-		setScene("board");
+		fadeScreen("board");
 	}
 }
 
@@ -479,7 +479,7 @@ function menuTutorial(index) {
 		initTutorial(34);
 		break;
 	}
-	setScene("board");
+	fadeScreen("board");
 }
 
 function ai() {

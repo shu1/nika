@@ -49,10 +49,6 @@ var gameMan = {
 	winner:-1,
 	actions:2,
 	player:0,
-	pScene:"",
-	nScene:"",
-	scene:"",
-	menu:"",
 	rules:0,
 	pRow:-1,
 	pCol:-1,
@@ -62,7 +58,11 @@ var gameMan = {
 	replaying: false,
 	timed: false,
 	turnTime: 3000,
-	turnTimer: 0
+	turnTimer: 0,
+	scene:"",
+	screen:"",
+	pScreen:"",
+	nScreen:""
 }
 
 var inputMan = {
