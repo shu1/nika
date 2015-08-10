@@ -533,12 +533,8 @@ function keyDown(event) {
 	case 65:	// A
 	case 179:	// pause
 		hudMan.inputText = "Menu";
-		if (gameMan.screen == "popup") {
-			setScreen("board");
-		}
-		else if (gameMan.screen == "board") {
-			setScreen("popup");
-			drawMan.slide = 1;
+		if (gameMan.scene == "board") {
+			menuButton(0);
 		}
 		break;
 	case 13:	// enter
@@ -564,7 +560,7 @@ function keyDown(event) {
 		if (gameMan.tutorialStep >= 0) {
 			endTutorial();
 		}
-		else {
+		else if (gameMan.screen != "board") {
 			menuButton(0);
 		}
 		break;
