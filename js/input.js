@@ -49,20 +49,7 @@ function mouseDown(event) {
 			var x = (inputMan.x - scene.x) / scene.scale;
 			var y = (inputMan.y - scene.y) / scene.scale;
 
-			if (gameMan.screen == "rules") {
-				menus["rules"] = -1;
-				if (y > (scene.height - drawMan.arrowHeight)/2 && y < (scene.height + drawMan.arrowHeight)/2) {
-					if (x > scene.width - drawMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
-						menus["rules"] = 1;
-						handled = true;
-					}
-					else if (x < drawMan.arrowWidth*1.5 && gameMan.rules > 0) {
-						menus["rules"] = 0;
-						handled = true;
-					}
-				}
-			}
-			else if (gameMan.scene == "menus") {
+			if (gameMan.scene == "menus") {
 				x -= (scene.width - drawMan.screenWidth)/2;	// offset to coordinates of image
 				y -= (scene.height - drawMan.screenHeight)/2;
 
@@ -83,6 +70,19 @@ function mouseDown(event) {
 					}
 					else if (x > soundX - radius && x < soundX + radius && y > 710 - radius && y < 710 + radius) {
 						inputMan.drag = "sound";
+						handled = true;
+					}
+				}
+			}
+			else if (gameMan.screen == "rules") {
+				menus["rules"] = -1;
+				if (y > (scene.height - drawMan.arrowHeight)/2 && y < (scene.height + drawMan.arrowHeight)/2) {
+					if (x > scene.width - drawMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
+						menus["rules"] = 1;
+						handled = true;
+					}
+					else if (x < drawMan.arrowWidth*1.5 && gameMan.rules > 0) {
+						menus["rules"] = 0;
 						handled = true;
 					}
 				}
@@ -235,20 +235,7 @@ function mouseMove(event) {
 			var y = (inputMan.y - scene.y) / scene.scale;
 			hudMan.inputText = Math.floor(x) + "," + Math.floor(y);
 
-			if (gameMan.screen == "rules") {
-				menus["rules"] = -1;
-				if (y > (scene.height - drawMan.arrowHeight)/2 && y < (scene.height + drawMan.arrowHeight)/2) {
-					if (x > scene.width - drawMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
-						menus["rules"] = 1;
-						handled = true;
-					}
-					else if (x < drawMan.arrowWidth*1.5 && gameMan.rules > 0) {
-						menus["rules"] = 0;
-						handled = true;
-					}
-				}
-			}
-			else if (gameMan.scene == "menus") {
+			if (gameMan.scene == "menus") {
 				x -= (scene.width - drawMan.screenWidth)/2;	// offset to coordinates of image
 				y -= (scene.height - drawMan.screenHeight)/2;
 				
@@ -268,6 +255,19 @@ function mouseMove(event) {
 					}
 					else if (inputMan.drag == "sound") {
 						soundMan.sound = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
+						handled = true;
+					}
+				}
+			}
+			else if (gameMan.screen == "rules") {
+				menus["rules"] = -1;
+				if (y > (scene.height - drawMan.arrowHeight)/2 && y < (scene.height + drawMan.arrowHeight)/2) {
+					if (x > scene.width - drawMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
+						menus["rules"] = 1;
+						handled = true;
+					}
+					else if (x < drawMan.arrowWidth*1.5 && gameMan.rules > 0) {
+						menus["rules"] = 0;
 						handled = true;
 					}
 				}
