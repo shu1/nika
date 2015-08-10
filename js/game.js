@@ -488,6 +488,21 @@ function menuTutorial(index) {
 	fadeScreen("board");
 }
 
+function menuRules(index) {
+	switch (index) {
+	case 0:
+		gameMan.rules--;
+		drawMan.slide = -1;
+		hudMan.pageText = "Rule " + gameMan.rules;
+		break;
+	case 1:
+		gameMan.rules++;
+		drawMan.slide = 1;
+		hudMan.pageText = "Rule " + gameMan.rules;
+		break;
+	}
+}
+
 function ai() {
 	switch (gameMan.ais[gameMan.player]) {
 	case 1:

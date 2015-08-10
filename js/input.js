@@ -377,19 +377,7 @@ function mouseUp(event) {
 			var x = (inputMan.x - scene.x) / scene.scale;
 			var y = (inputMan.y - scene.y) / scene.scale;
 
-			if (gameMan.screen == "rules") {
-				if (menus["rules"] == 1) {
-					gameMan.rules++;
-					drawMan.slide = 1;
-					hudMan.pageText = "Rule " + gameMan.rules;
-				}
-				else if (menus["rules"] == 0) {
-					gameMan.rules--;
-					drawMan.slide = -1;
-					hudMan.pageText = "Rule " + gameMan.rules;
-				}
-			}
-			else if (gameMan.scene == "menus") {
+			if (gameMan.scene == "menus") {
 				x -= (scene.width - drawMan.screenWidth)/2;	// offset to coordinates of image
 				y -= (scene.height - drawMan.screenHeight)/2;
 
@@ -424,6 +412,9 @@ function mouseUp(event) {
 						menuSetup(4);
 					}
 				}
+			}
+			else if (gameMan.screen == "rules") {
+				menuRules(menus["rules"]);
 			}
 			else if (gameMan.screen == "board") {
 				var margin = 11;
@@ -681,9 +672,7 @@ function keyPrev() {
 		return true;
 	}
 	else if (gameMan.screen == "rules" && gameMan.rules > 0) {
-		gameMan.rules--;
-		drawMan.slide = -1;
-		hudMan.pageText = "Rule " + gameMan.rules;
+		menuRules(0);
 		return true;
 	}
 	else if (gameMan.tutorialStep > 0) {
@@ -706,9 +695,7 @@ function keyNext() {
 		return true;
 	}
 	else if (gameMan.screen == "rules" && gameMan.rules < rulePages-1) {
-		gameMan.rules++;
-		drawMan.slide = 1;
-		hudMan.pageText = "Rule " + gameMan.rules;
+		menuRules(1);
 		return true;
 	}
 	else if (gameMan.screen == "board" && gameMan.tutorialStep >= 0) {
