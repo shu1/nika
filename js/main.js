@@ -49,6 +49,7 @@ window.onload = function() {
 	loadImage("menuOptionSlider");
 	loadImage("menuCredit", 1);
 	loadImage("ruleArrow", 1);
+	loadImage("ruleArrowActive", 1);
 
 	for (var i = 0; i < rulePages; ++i) {
 		loadImage("rule" + i, 1);
@@ -852,10 +853,12 @@ function drawRules(context, scene) {
 
 	var arrowY = (scene.height - drawMan.arrowHeight)/2;
 	if (gameMan.rules > 0) {
-		context.drawImage(images["ruleArrow0"], drawMan.arrowWidth/2, arrowY);
+		var image = (menus["rules"] == 0) ? "ruleArrowActive0" : "ruleArrow0";
+		context.drawImage(images[image], drawMan.arrowWidth/2, arrowY);
 	}
 	if (gameMan.rules < rulePages-1) {
-		context.drawImage(images["ruleArrow1"], scene.width - drawMan.arrowWidth*1.5, arrowY);
+		var image = (menus["rules"] == 1) ? "ruleArrowActive1" : "ruleArrow1";
+		context.drawImage(images[image], scene.width - drawMan.arrowWidth*1.5, arrowY);
 	}
 }
 

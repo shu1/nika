@@ -415,6 +415,7 @@ function mouseUp(event) {
 			}
 			else if (gameMan.screen == "rules") {
 				menuRules(menus["rules"]);
+				menus["rules"] = -1;
 			}
 			else if (gameMan.screen == "board") {
 				var margin = 11;
