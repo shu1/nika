@@ -544,7 +544,10 @@ function keyDown(event) {
 	case 13:	// enter
 	case 90:	// Z
 		hudMan.inputText = "Enter";
-		if (gameMan.screen == "title" && menus["title"] < 6) {
+		if (gameMan.screen == "popup" && menus["popup"] < 4) {
+			menuPopup(menus["popup"]);
+		}
+		else if (gameMan.screen == "title" && menus["title"] < 6) {
 			menuTitle(menus["title"]);
 		}
 		else if (gameMan.screen == "setup" && menus["setup"] < 5) {
@@ -630,7 +633,11 @@ function keyDown(event) {
 
 function keyPrev() {
 	hudMan.inputText = "Prev";
-	if (gameMan.screen == "title" && menus["title"] > 0) {
+	if (gameMan.screen == "popup" && menus["popup"] > 0) {
+		menus["popup"]--;
+		return true;
+	}
+	else if (gameMan.screen == "title" && menus["title"] > 0) {
 		menus["title"]--;
 		return true;
 	}
@@ -665,7 +672,11 @@ function keyPrev() {
 
 function keyNext() {
 	hudMan.inputText = "Next";
-	if (gameMan.screen == "title" && menus["title"] < 5) {
+	if (gameMan.screen == "popup" && menus["popup"] < 3) {
+		menus["popup"]++;
+		return true;
+	}
+	else if (gameMan.screen == "title" && menus["title"] < 5) {
 		menus["title"]++;
 		return true;
 	}

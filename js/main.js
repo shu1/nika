@@ -119,6 +119,7 @@ window.onload = function() {
 	menuMan.cols = 3;
 	menuMan.rows = Math.ceil(buttons.length / menuMan.cols);
 
+	menus["popup"] = 0;
 	menus["title"] = 0;
 	menus["setup"] = 4;
 	menus["option"] = 0;
