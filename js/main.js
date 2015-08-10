@@ -120,6 +120,7 @@ window.onload = function() {
 	menuMan.rows = Math.ceil(buttons.length / menuMan.cols);
 
 	menus["title"] = 0;
+	menus["setup"] = 4;
 	menus["option"] = 0;
 	menus["tutorial"] = 0;
 

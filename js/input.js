@@ -547,6 +547,9 @@ function keyDown(event) {
 		if (gameMan.screen == "title" && menus["title"] < 6) {
 			menuTitle(menus["title"]);
 		}
+		else if (gameMan.screen == "setup" && menus["setup"] < 5) {
+			menuSetup(menus["setup"]);
+		}
 		else if (gameMan.screen == "tutorial" && menus["tutorial"] < 4) {
 			menuTutorial(menus["tutorial"]);
 		}
@@ -631,6 +634,20 @@ function keyPrev() {
 		menus["title"]--;
 		return true;
 	}
+	else if (gameMan.screen == "setup" && menus["setup"] > 0) {
+		switch (menus["setup"]) {
+		case 3:
+		case 2:
+			menus["setup"] -= 2;
+			break;
+		case 1:
+			menus["setup"]++;
+			break;
+		default:
+			menus["setup"]--;
+		}
+		return true;
+	}
 	else if (gameMan.screen == "tutorial" && menus["tutorial"] > 0) {
 		menus["tutorial"]--;
 		return true;
@@ -650,6 +667,20 @@ function keyNext() {
 	hudMan.inputText = "Next";
 	if (gameMan.screen == "title" && menus["title"] < 5) {
 		menus["title"]++;
+		return true;
+	}
+	else if (gameMan.screen == "setup" && menus["setup"] < 4) {
+		switch (menus["setup"]) {
+		case 0:
+		case 1:
+			menus["setup"] +=2;
+			break;
+		case 2:
+			menus["setup"]--;
+			break;
+		default:
+			menus["setup"]++;
+		}
 		return true;
 	}
 	else if (gameMan.screen == "tutorial" && menus["tutorial"] < 3) {
