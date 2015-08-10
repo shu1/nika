@@ -373,55 +373,6 @@ function setIdleAnimation(player) {
 	}
 }
 
-function menuButton(index) {
-	switch (index) {
-	case 0:
-		if (gameMan.screen == "rules") {
-			fadeScreen(gameMan.pScreen);
-		}
-		else if (gameMan.screen == "option") {
-			localStorage.setItem("NikaSoundSave", JSON.stringify(soundMan));
-			fadeScreen(gameMan.pScreen);
-		}
-		else if (gameMan.screen == "setup" || gameMan.screen == "credit" || gameMan.screen == "tutorial") {
-			fadeScreen("title");
-		}
-		else if (gameMan.screen == "popup") {
-			fadeScreen("board");
-		}
-		else if (gameMan.screen == "board") {
-			fadeScreen("popup");
-			drawMan.slide = 1;
-		}
-		break;
-	case 1:
-		if(!gameMan.ais[gameMan.player] && gameMan.tutorialStep < 0) {
-			pass();
-		}
-		break;
-	case 2:
-		popState();
-		break;
-	}
-}
-
-function menuPopup(index) {
-	switch (index) {
-	case 0:
-		fadeScreen("board");
-		break;
-	case 1:
-		fadeScreen("rules");
-		break;
-	case 2:
-		fadeScreen("option");
-		break;
-	case 3:
-		fadeScreen("title");
-		break;
-	}
-}
-
 function menuTitle(index) {
 	switch (index) {
 	case 0:
@@ -470,6 +421,21 @@ function menuSetup(index) {
 	}
 }
 
+function menuRules(index) {
+	switch (index) {
+	case 0:
+		gameMan.rules--;
+		drawMan.slide = -1;
+		hudMan.pageText = "Rule " + gameMan.rules;
+		break;
+	case 1:
+		gameMan.rules++;
+		drawMan.slide = 1;
+		hudMan.pageText = "Rule " + gameMan.rules;
+		break;
+	}
+}
+
 function menuTutorial(index) {
 	switch(index) {
 	case 0:
@@ -488,17 +454,51 @@ function menuTutorial(index) {
 	fadeScreen("board");
 }
 
-function menuRules(index) {
+function menuPopup(index) {
 	switch (index) {
 	case 0:
-		gameMan.rules--;
-		drawMan.slide = -1;
-		hudMan.pageText = "Rule " + gameMan.rules;
+		fadeScreen("board");
 		break;
 	case 1:
-		gameMan.rules++;
-		drawMan.slide = 1;
-		hudMan.pageText = "Rule " + gameMan.rules;
+		fadeScreen("rules");
+		break;
+	case 2:
+		fadeScreen("option");
+		break;
+	case 3:
+		fadeScreen("title");
+		break;
+	}
+}
+
+function menuButton(index) {
+	switch (index) {
+	case 0:
+		if (gameMan.screen == "rules") {
+			fadeScreen(gameMan.pScreen);
+		}
+		else if (gameMan.screen == "option") {
+			localStorage.setItem("NikaSoundSave", JSON.stringify(soundMan));
+			fadeScreen(gameMan.pScreen);
+		}
+		else if (gameMan.screen == "setup" || gameMan.screen == "credit" || gameMan.screen == "tutorial") {
+			fadeScreen("title");
+		}
+		else if (gameMan.screen == "popup") {
+			fadeScreen("board");
+		}
+		else if (gameMan.screen == "board") {
+			fadeScreen("popup");
+			drawMan.slide = 1;
+		}
+		break;
+	case 1:
+		if(!gameMan.ais[gameMan.player] && gameMan.tutorialStep < 0) {
+			pass();
+		}
+		break;
+	case 2:
+		popState();
 		break;
 	}
 }
