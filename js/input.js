@@ -43,7 +43,7 @@ function mouseDown(event) {
 
 	if (!multiTouch) {
 		getXY(event);
-		var handled = getDrag(true);
+		var handled = handleDrag(true);
 		if (!handled) {
 			var scene = scenes[gameMan.scene];
 			var x = (inputMan.x - scene.x) / scene.scale;
@@ -124,7 +124,14 @@ function getXY(event) {
 	}
 }
 
-function getDrag(down) {
+function getRowCol(scene) {
+	inputMan.col = Math.floor((inputMan.x - scene.x) / (drawMan.cellSize * scene.scale));
+	inputMan.row = Math.floor((inputMan.y - scene.y) / (drawMan.cellSize * scene.scale));
+	inputMan.rot = -1;
+	hudMan.inputText = inputMan.row + "," + inputMan.col;
+}
+
+function handleDrag(down) {
 	var handled = inputMan.drag == "debug" || inputMan.drag == "button" || inputMan.drag == "popup" || gameMan.screen == "popup";
 
 	if (debugBuild && inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - menuMan.width
@@ -183,13 +190,6 @@ function getDrag(down) {
 	return handled;	// TODO figure out why the above returns are necessary
 }
 
-function getRowCol(scene) {
-	inputMan.col = Math.floor((inputMan.x - scene.x) / (drawMan.cellSize * scene.scale));
-	inputMan.row = Math.floor((inputMan.y - scene.y) / (drawMan.cellSize * scene.scale));
-	inputMan.rot = -1;
-	hudMan.inputText = inputMan.row + "," + inputMan.col;
-}
-
 function handleScreen(scene, x, y) {
 	if (gameMan.screen == "rules") {
 		menus["rules"] = -1;
@@ -232,7 +232,7 @@ function mouseMove(event) {
 			pinch(scene, dScale, x, y);
 			handled = true;
 		}
-		else if (isTouch(event, inputMan.touchID) && !(handled = getDrag())) {
+		else if (isTouch(event, inputMan.touchID) && !(handled = handleDrag())) {
 			var preventPan = false;
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
