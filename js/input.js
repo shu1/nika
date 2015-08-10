@@ -61,9 +61,9 @@ function mouseDown(event) {
 					}
 				}
 				else if (gameMan.screen == "option") {
-					x += 40 - 62;	// offset to x of volume line - button radius
-					var radius = 93;	// bigger radius for fat fingers
-					var musicX = 1484 * soundMan.music, soundX = 1484 * soundMan.sound;
+					x -= 156;	// offset to about x of volume line
+					var radius = 96;	// bigger radius for fat fingers
+					var musicX = 1210 * soundMan.music, soundX = 1210 * soundMan.sound;
 					if (x > musicX - radius && x < musicX + radius && y > 446 - radius && y < 446 + radius) {
 						inputMan.drag = "music";	// only drag if touch started on button
 						handled = true;
@@ -247,14 +247,14 @@ function mouseMove(event) {
 					}
 				}
 				else if (gameMan.screen == "option") {
-					x += 40 - 62;	// offset to x of volume line - button radius
+					x -= 156;	// offset to about x of volume line
 					if (inputMan.drag == "music") {
-						soundMan.music = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
+						soundMan.music = Math.max(0, Math.min(1, Math.round(x / 12.1) / 100));
 						sounds["music"].volume = Math.pow(soundMan.music, 2);
 						handled = true;
 					}
 					else if (inputMan.drag == "sound") {
-						soundMan.sound = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
+						soundMan.sound = Math.max(0, Math.min(1, Math.round(x / 12.1) / 100));
 						handled = true;
 					}
 				}

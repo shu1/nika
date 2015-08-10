@@ -574,8 +574,8 @@ function drawContext(context, dTime, tv) {
 		case "option":
 			context.drawImage(images["menuOption0"], x, y);
 			context.drawImage(images["menuOption1"], x+512, y);
-			context.drawImage(images["menuOptionSlider"], x-40 + 1484*soundMan.music, y+384);
-			context.drawImage(images["menuOptionSlider"], x-40 + 1484*soundMan.sound, y+648);
+			context.drawImage(images["menuOptionSlider"], x+100 + 1210*soundMan.music, y+384);
+			context.drawImage(images["menuOptionSlider"], x+100 + 1210*soundMan.sound, y+648);
 			break;
 		case "credit":
 			context.drawImage(images["menuCredit0"], x, y);
