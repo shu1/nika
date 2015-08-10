@@ -660,14 +660,17 @@ function keyPrev() {
 		return true;
 	}
 	else if (gameMan.screen == "rules" && gameMan.rules > 0) {
-		menuRules(0);
-		return true;
+		var scene = scenes[gameMan.scene];
+		if (scene.scale == scene.minScale) {	// allow panning if zoomed in
+			menuRules(0);
+			return true;
+		}
 	}
 	else if (gameMan.tutorialStep > 0) {
 		prevTutorialPart();
 		return true;
 	}
-	return false;
+	return gameMan.screen == "popup";	// don't pan during popup
 }
 
 function keyNext() {
@@ -699,8 +702,11 @@ function keyNext() {
 		return true;
 	}
 	else if (gameMan.screen == "rules" && gameMan.rules < rulePages-1) {
-		menuRules(1);
-		return true;
+		var scene = scenes[gameMan.scene];
+		if (scene.scale == scene.minScale) {	// allow panning if zoomed in
+			menuRules(1);
+			return true;
+		}
 	}
 	else if (gameMan.screen == "board" && gameMan.tutorialStep >= 0) {
 		if (tutorials[gameMan.tutorialStep].input) {
@@ -708,5 +714,5 @@ function keyNext() {
 		}
 		return true;
 	}
-	return false;
+	return gameMan.screen == "popup";	// don't pan during popup
 }
