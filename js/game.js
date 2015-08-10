@@ -408,7 +408,7 @@ function menuButton(index) {
 function menuPopup(index) {
 	switch (index) {
 	case 0:
-		setScreen("board");
+		fadeScreen("board");
 		break;
 	case 1:
 		fadeScreen("rules");
