@@ -46,27 +46,45 @@ function mouseDown(event) {
 		var handled = getDrag(true);
 		if (!handled) {
 			var scene = scenes[gameMan.scene];
-			var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
-			var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
+			var x = (inputMan.x - scene.x) / scene.scale;
+			var y = (inputMan.y - scene.y) / scene.scale;
 
-			if (gameMan.screen == "title") {
-				y -= 282;
-				if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
-					menus["title"] = Math.floor(y / drawMan.activeHeight);
-					handled = true;
+			if (gameMan.screen == "rules") {
+				menus["rules"] = -1;
+				if (y > (scene.height - drawMan.arrowHeight)/2 && y < (scene.height + drawMan.arrowHeight)/2) {
+					if (x > scene.width - drawMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
+						menus["rules"] = 1;
+						handled = true;
+					}
+					else if (x < drawMan.arrowWidth*1.5 && gameMan.rules > 0) {
+						menus["rules"] = 0;
+						handled = true;
+					}
 				}
 			}
-			else if (gameMan.screen == "option") {
-				x += 40 - 62;	// offset to x of volume line - button radius
-				var radius = 93;	// bigger radius for fat fingers
-				var musicX = 1484 * soundMan.music, soundX = 1484 * soundMan.sound;
-				if (x > musicX - radius && x < musicX + radius && y > 446 - radius && y < 446 + radius) {
-					inputMan.drag = "music";	// only drag if touch started on button
-					handled = true;
+			else if (gameMan.scene == "menus") {
+				x -= (scene.width - drawMan.screenWidth)/2;	// offset to coordinates of image
+				y -= (scene.height - drawMan.screenHeight)/2;
+
+				if (gameMan.screen == "title") {
+					y -= 282;
+					if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
+						menus["title"] = Math.floor(y / drawMan.activeHeight);
+						handled = true;
+					}
 				}
-				else if (x > soundX - radius && x < soundX + radius && y > 710 - radius && y < 710 + radius) {
-					inputMan.drag = "sound";
-					handled = true;
+				else if (gameMan.screen == "option") {
+					x += 40 - 62;	// offset to x of volume line - button radius
+					var radius = 93;	// bigger radius for fat fingers
+					var musicX = 1484 * soundMan.music, soundX = 1484 * soundMan.sound;
+					if (x > musicX - radius && x < musicX + radius && y > 446 - radius && y < 446 + radius) {
+						inputMan.drag = "music";	// only drag if touch started on button
+						handled = true;
+					}
+					else if (x > soundX - radius && x < soundX + radius && y > 710 - radius && y < 710 + radius) {
+						inputMan.drag = "sound";
+						handled = true;
+					}
 				}
 			}
 			else if (gameMan.screen == "board" && gameMan.winner < 0 && !gameMan.ais[gameMan.player]) {
@@ -213,27 +231,45 @@ function mouseMove(event) {
 			var preventPan = false;
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;
-			var x = (inputMan.x - scene.x) / scene.scale - (scene.width - drawMan.screenWidth)/2;
-			var y = (inputMan.y - scene.y) / scene.scale - (scene.height - drawMan.screenHeight)/2;
+			var x = (inputMan.x - scene.x) / scene.scale;
+			var y = (inputMan.y - scene.y) / scene.scale;
 			hudMan.inputText = Math.floor(x) + "," + Math.floor(y);
 
-			if (gameMan.screen == "title") {
-				y -= 282;
-				if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
-					menus["title"] = Math.floor(y / drawMan.activeHeight);
-					handled = true;
+			if (gameMan.screen == "rules") {
+				menus["rules"] = -1;
+				if (y > (scene.height - drawMan.arrowHeight)/2 && y < (scene.height + drawMan.arrowHeight)/2) {
+					if (x > scene.width - drawMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
+						menus["rules"] = 1;
+						handled = true;
+					}
+					else if (x < drawMan.arrowWidth*1.5 && gameMan.rules > 0) {
+						menus["rules"] = 0;
+						handled = true;
+					}
 				}
 			}
-			else if (gameMan.screen == "option") {
-				x += 40 - 62;	// offset to x of volume line - button radius
-				if (inputMan.drag == "music") {
-					soundMan.music = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
-					sounds["music"].volume = Math.pow(soundMan.music, 2);
-					handled = true;
+			else if (gameMan.scene == "menus") {
+				x -= (scene.width - drawMan.screenWidth)/2;	// offset to coordinates of image
+				y -= (scene.height - drawMan.screenHeight)/2;
+				
+				if (gameMan.screen == "title") {
+					y -= 282;
+					if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
+						menus["title"] = Math.floor(y / drawMan.activeHeight);
+						handled = true;
+					}
 				}
-				else if (inputMan.drag == "sound") {
-					soundMan.sound = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
-					handled = true;
+				else if (gameMan.screen == "option") {
+					x += 40 - 62;	// offset to x of volume line - button radius
+					if (inputMan.drag == "music") {
+						soundMan.music = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
+						sounds["music"].volume = Math.pow(soundMan.music, 2);
+						handled = true;
+					}
+					else if (inputMan.drag == "sound") {
+						soundMan.sound = Math.max(0, Math.min(1, Math.round(x / 14.84) / 100));
+						handled = true;
+					}
 				}
 			}
 			else if (gameMan.screen == "board" && gameMan.winner < 0) {
@@ -342,17 +378,15 @@ function mouseUp(event) {
 			var y = (inputMan.y - scene.y) / scene.scale;
 
 			if (gameMan.screen == "rules") {
-				if (y > (scene.height - drawMan.arrowHeight)/2 && y < (scene.height + drawMan.arrowHeight)/2) {
-					if (x > scene.width - drawMan.arrowWidth*1.5 && gameMan.rules < rulePages-1) {
-						gameMan.rules++;
-						drawMan.slide = 1;
-						hudMan.pageText = "Rule " + gameMan.rules;
-					}
-					else if (x < drawMan.arrowWidth*1.5 && gameMan.rules > 0) {
-						gameMan.rules--;
-						drawMan.slide = -1;
-						hudMan.pageText = "Rule " + gameMan.rules;
-					}
+				if (menus["rules"] == 1) {
+					gameMan.rules++;
+					drawMan.slide = 1;
+					hudMan.pageText = "Rule " + gameMan.rules;
+				}
+				else if (menus["rules"] == 0) {
+					gameMan.rules--;
+					drawMan.slide = -1;
+					hudMan.pageText = "Rule " + gameMan.rules;
 				}
 			}
 			else if (gameMan.scene == "menus") {
