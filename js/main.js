@@ -121,6 +121,7 @@ window.onload = function() {
 
 	menus["title"] = 0;
 	menus["option"] = 0;
+	menus["tutorial"] = 0;
 
 	scenes["board"] = {};
 	scenes["rules"] = {};

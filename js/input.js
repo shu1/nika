@@ -547,6 +547,9 @@ function keyDown(event) {
 		if (gameMan.screen == "title" && menus["title"] < 6) {
 			menuTitle(menus["title"]);
 		}
+		else if (gameMan.screen == "tutorial" && menus["tutorial"] < 4) {
+			menuTutorial(menus["tutorial"]);
+		}
 		break;
 	case 27:	// escape
 	case 88:	// X
@@ -628,6 +631,10 @@ function keyPrev() {
 		menus["title"]--;
 		return true;
 	}
+	else if (gameMan.screen == "tutorial" && menus["tutorial"] > 0) {
+		menus["tutorial"]--;
+		return true;
+	}
 	else if (gameMan.screen == "rules" && gameMan.rules > 0) {
 		menuRules(0);
 		return true;
@@ -643,6 +650,10 @@ function keyNext() {
 	hudMan.inputText = "Next";
 	if (gameMan.screen == "title" && menus["title"] < 5) {
 		menus["title"]++;
+		return true;
+	}
+	else if (gameMan.screen == "tutorial" && menus["tutorial"] < 3) {
+		menus["tutorial"]++;
 		return true;
 	}
 	else if (gameMan.screen == "rules" && gameMan.rules < rulePages-1) {
