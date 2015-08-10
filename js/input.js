@@ -451,7 +451,6 @@ function mouseUp(event) {
 
 		gameMan.selection = false;
 		inputMan.drag = "";
-		menus["debug"] = 0;	// reset for key input
 		menus["button"] = -1;
 		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 	}
@@ -545,37 +544,23 @@ function keyDown(event) {
 	case 13:	// enter
 	case 90:	// Z
 		hudMan.inputText = "Enter";
-		if (debugBuild && (menuMan.show || gameMan.screen == "credit")) {
-			menuDebug(menus["debug"]);
-		}
-		else if (gameMan.screen == "title" && menus["title"] < 6) {
+		if (gameMan.screen == "title" && menus["title"] < 6) {
 			menuTitle(menus["title"]);
-		}
-		else if (debugBuild && !(gameMan.screen == "option" && menus["option"] < 3)) {
-			menuDebug(0);
 		}
 		break;
 	case 27:	// escape
 	case 88:	// X
 	case 227:	// rewind
 		hudMan.inputText = "Back";
-		if (debugBuild && menuMan.show) {
-			menuMan.show = false;
-			menus["debug"] = 0;
-		}
-		else if (gameMan.screen == "option" || gameMan.screen == "credit") {
-			gameMan.screen = "title";
-		}
-		else if (gameMan.screen == "rules") {
-			fadeScreen("board");
-			hudMan.pageText = "";
-		}
-		else if (gameMan.tutorialStep >= 0) {
+		if (gameMan.tutorialStep >= 0) {
 			endTutorial();
+		}
+		else {
+			menuButton(0);
 		}
 		break;
 	case 37:	// left
-		if (!menuMan.show && gameMan.screen == "option") {
+		if (gameMan.screen == "option") {
 			if (menus["option"] == 0 && soundMan.music > 0) {
 				soundMan.music -= 0.1;
 				if (soundMan.music < 0) {
@@ -595,7 +580,7 @@ function keyDown(event) {
 		}
 		break;
 	case 38:	// up
-		if (!menuMan.show && gameMan.screen == "option") {
+		if (gameMan.screen == "option") {
 			if (menus["option"] > 0) {
 				menus["option"]--;
 			}
@@ -605,7 +590,7 @@ function keyDown(event) {
 		}
 		break;
 	case 39:	// right
-		if (!menuMan.show && gameMan.screen == "option") {
+		if (gameMan.screen == "option") {
 			if (menus["option"] == 0 && soundMan.music < 1) {
 				soundMan.music += 0.1;
 				if (soundMan.music > 1) {
@@ -625,7 +610,7 @@ function keyDown(event) {
 		}
 		break;
 	case 40:	// down
-		if (!menuMan.show && gameMan.screen == "option") {
+		if (gameMan.screen == "option") {
 			if (menus["option"] < 2) {
 				menus["option"]++;
 			}
@@ -635,24 +620,11 @@ function keyDown(event) {
 		}
 		break;
 	}
-
-	if (menuMan.show || gameMan.screen == "board" || gameMan.screen == "rules" || gameMan.screen == "credit"
-	|| gameMan.screen == "title" && menus["title"] == 6 || gameMan.screen == "option" && menus["option"] == 2) {
-		inputMan.drag = "debug";	// highlight menu button
-	} else {
-		inputMan.drag = "";
-	}
 }
 
 function keyPrev() {
 	hudMan.inputText = "Prev";
-	if (debugBuild && menuMan.show) {
-		if (menus["debug"] < buttons.length-1) {
-			menus["debug"]++;
-		}
-		return true;	// never pan when menu is showing
-	}
-	else if (gameMan.screen == "title" && menus["title"] > 0) {
+	if (gameMan.screen == "title" && menus["title"] > 0) {
 		menus["title"]--;
 		return true;
 	}
@@ -669,13 +641,7 @@ function keyPrev() {
 
 function keyNext() {
 	hudMan.inputText = "Next";
-	if (debugBuild && menuMan.show) {
-		if (menus["debug"] > 0) {
-			menus["debug"]--;
-		}
-		return true;	// never pan when menu is showing
-	}
-	else if (gameMan.screen == "title" && menus["title"] < 6) {
+	if (gameMan.screen == "title" && menus["title"] < 5) {
 		menus["title"]++;
 		return true;
 	}
