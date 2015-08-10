@@ -641,6 +641,10 @@ function keyPrev() {
 		menus["title"]--;
 		return true;
 	}
+	else if (gameMan.screen == "tutorial" && menus["tutorial"] > 0) {
+		menus["tutorial"]--;
+		return true;
+	}
 	else if (gameMan.screen == "setup" && menus["setup"] > 0) {
 		switch (menus["setup"]) {
 		case 3:
@@ -653,10 +657,6 @@ function keyPrev() {
 		default:
 			menus["setup"]--;
 		}
-		return true;
-	}
-	else if (gameMan.screen == "tutorial" && menus["tutorial"] > 0) {
-		menus["tutorial"]--;
 		return true;
 	}
 	else if (gameMan.screen == "rules" && gameMan.rules > 0) {
@@ -680,6 +680,10 @@ function keyNext() {
 		menus["title"]++;
 		return true;
 	}
+	else if (gameMan.screen == "tutorial" && menus["tutorial"] < 3) {
+		menus["tutorial"]++;
+		return true;
+	}
 	else if (gameMan.screen == "setup" && menus["setup"] < 4) {
 		switch (menus["setup"]) {
 		case 0:
@@ -692,10 +696,6 @@ function keyNext() {
 		default:
 			menus["setup"]++;
 		}
-		return true;
-	}
-	else if (gameMan.screen == "tutorial" && menus["tutorial"] < 3) {
-		menus["tutorial"]++;
 		return true;
 	}
 	else if (gameMan.screen == "rules" && gameMan.rules < rulePages-1) {
