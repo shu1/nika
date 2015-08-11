@@ -59,8 +59,8 @@ var gameMan = {
 	timed: false,
 	turnTime: 3000,
 	turnTimer: 0,
-	scene:"",
-	screen:"",
+	scene:"menus",
+	screen:"title",
 	pScreen:"",
 	nScreen:""
 }

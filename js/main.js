@@ -205,7 +205,7 @@ function reSize() {
 	menuMan.pHeight = 512 * minScale;
 
 	initScenes(gpCanvas, maxScale, minScale);
-	setScreen("title");
+	setScreen();
 }
 
 function initScenes(canvas, maxScale, minScale, tv) {
@@ -237,13 +237,27 @@ function initScenes(canvas, maxScale, minScale, tv) {
 }
 
 function setScreen(index) {
-	gameMan.pScreen = gameMan.screen;
-	gameMan.screen = index;
-	gameMan.scene = getScene(gameMan.screen);
+	if (index) {
+		gameMan.pScreen = gameMan.screen;
+		gameMan.screen = index;
+		gameMan.scene = getScene(gameMan.screen);
+
+		if (gameMan.screen == "rules") {
+			hudMan.pageText = "Rule " + gameMan.rules;
+		}
+		else if (gameMan.pScreen == "rules") {
+			hudMan.pageText = "";
+		}
+	}
+
+	if ((gameMan.pScreen != "board" || gameMan.screen != "popup") && (gameMan.pScreen != "popup" || gameMan.screen != "board")) {
+		var scene = scenes[gameMan.scene];
+		scene.x = (gpCanvas.width - scene.width * scene.scale)/2;
+		scene.y = (gpCanvas.height - scene.height * scene.scale)/2;
+	}
 
 	function getScene(index) {
 		switch (index) {
-			case "":	// HACK for first boot of game
 			case "rules":
 				return index;
 				break;
@@ -255,27 +269,6 @@ function setScreen(index) {
 				return "menus";
 		}
 	}
-
-	if (getScene(gameMan.pScreen) == "menus") {
-		menus["title"] = 1;	// TODO adjust for saved game
-	}
-
-	if (gameMan.screen == "rules") {
-		hudMan.pageText = "Rule " + gameMan.rules;
-	}
-	else if (gameMan.pScreen == "rules") {
-		hudMan.pageText = "";
-	}
-
-	if (gameMan.screen != "popup") {
-		var scene = scenes[gameMan.scene];
-		scene.x = (gpCanvas.width - scene.width * scene.scale)/2;
-		scene.y = (gpCanvas.height - scene.height * scene.scale)/2;
-	}
-
-	drawMan.zoom = 0;
-	menuMan.show = false;
-	menus["debug"] = 0;
 }
 
 function fadeScreen(index) {
