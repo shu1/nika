@@ -250,7 +250,7 @@ function setScreen(index) {
 		}
 	}
 
-	if ((gameMan.pScreen != "board" || gameMan.screen != "popup") && (gameMan.pScreen != "popup" || gameMan.screen != "board")) {
+	if (getScene(gameMan.screen) != getScene(gameMan.pScreen)) {
 		var scene = scenes[gameMan.scene];
 		scene.x = (gpCanvas.width - scene.width * scene.scale)/2;
 		scene.y = (gpCanvas.height - scene.height * scene.scale)/2;
