@@ -49,7 +49,7 @@ function mouseDown(event) {
 			var x = (inputMan.x - scene.x) / scene.scale;
 			var y = (inputMan.y - scene.y) / scene.scale;
 
-			handled = handleScreen(scene, x, y);
+			handled = handleScreen(scene, x, y);	// shared code with mouseMove
 
 			if (gameMan.screen == "option") {
 				x -= (scene.width - drawMan.screenWidth)/2 + 156;	// offset to near x of volume line
@@ -240,7 +240,7 @@ function mouseMove(event) {
 			var y = (inputMan.y - scene.y) / scene.scale;
 			hudMan.inputText = Math.floor(x) + "," + Math.floor(y);
 
-			handled = handleScreen(scene, x, y);
+			handled = handleScreen(scene, x, y);	// shared code with mouseDown
 
 			if (gameMan.screen == "option") {
 				x -= (scene.width - drawMan.screenWidth)/2 + 156;	// offset to near x of volume line
