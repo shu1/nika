@@ -43,7 +43,7 @@ function mouseDown(event) {
 
 	if (!multiTouch) {
 		getXY(event);
-		var handled = handleDrag(true);
+		var handled = handleHud(true);
 		if (!handled) {
 			var scene = scenes[gameMan.scene];
 			var x = (inputMan.x - scene.x) / scene.scale;
@@ -131,7 +131,7 @@ function getRowCol(scene) {
 	hudMan.inputText = inputMan.row + "," + inputMan.col;
 }
 
-function handleDrag(down) {
+function handleHud(down) {
 	var handled = inputMan.drag == "debug" || inputMan.drag == "button" || inputMan.drag == "popup" || gameMan.screen == "popup";
 
 	if (debugBuild && inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - debugMan.width
@@ -232,7 +232,7 @@ function mouseMove(event) {
 			pinch(scene, dScale, x, y);
 			handled = true;
 		}
-		else if (isTouch(event, inputMan.touchID) && !(handled = handleDrag())) {
+		else if (isTouch(event, inputMan.touchID) && !(handled = handleHud())) {
 			var preventPan = false;
 			var dX = inputMan.x - inputMan.pX;
 			var dY = inputMan.y - inputMan.pY;

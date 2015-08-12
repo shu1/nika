@@ -2,6 +2,13 @@
 
 var debugBuild = true, gpCanvas, tvCanvas, muralCanvas, grid, images={}, sounds={}, scenes={}, menus={}, states=[], phalanx=[], murals=[];
 
+var eventMan = [[],[],[],[]]
+
+var soundMan = {
+	music:0.5,
+	sound:0.5
+}
+
 var drawMan = {
 	cellSize:96,
 	boardWidth:2016,
@@ -37,13 +44,6 @@ var drawMan = {
 	time:0,
 	menu:false
 }
-
-var soundMan = {
-	music:0.5,
-	sound:0.5
-}
-
-var eventMan = [[],[],[],[]]
 
 var gameMan = {
 	tutorialStep:-1,
