@@ -133,12 +133,13 @@ function getRowCol(scene) {
 
 function handleHud(down) {
 	var handled = inputMan.drag == "debug" || inputMan.drag == "button" || inputMan.drag == "popup" || gameMan.screen == "popup";
+	var scene = scenes["hud"];
 
-	if (debugBuild && inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - debugMan.width
-	&& inputMan.y < gpCanvas.height && inputMan.y > gpCanvas.height - debugMan.height) {	// debug menu
+	if (debugBuild && inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - scene.debugWidth
+	&& inputMan.y < gpCanvas.height && inputMan.y > gpCanvas.height - scene.debugHeight) {	// debug menu
 		for (var row = 0; row < debugMan.rows; ++row) {
 			for (var col = 0; col < debugMan.cols; ++col) {
-				if (inputMan.x > gpCanvas.width - drawMan.buttonWidth * (col+1) && inputMan.y > gpCanvas.height - drawMan.buttonHeight * (row+1)) {
+				if (inputMan.x > gpCanvas.width - scene.buttonWidth * (col+1) && inputMan.y > gpCanvas.height - scene.buttonHeight * (row+1)) {
 					menus["debug"] = row * debugMan.cols + col;
 					if (menus["debug"] < debugTexts.length) {
 						hudMan.inputText = debugTexts[menus["debug"]];
@@ -154,10 +155,10 @@ function handleHud(down) {
 		menus["debug"] = -1;
 	}
 
-	var x = inputMan.x - (gpCanvas.width - drawMan.popupWidth)/2;	// offset to topleft of popup
-	var y = inputMan.y - (gpCanvas.height - drawMan.popupHeight)/2;
-	if (gameMan.screen == "popup" && x > 0 && x < drawMan.popupWidth && y > 0 && y < drawMan.popupHeight) {	// popup
-		menus["popup"] = Math.floor(y / (drawMan.popupHeight/4));
+	var x = inputMan.x - (gpCanvas.width - scene.popupWidth)/2;	// offset to topleft of popup
+	var y = inputMan.y - (gpCanvas.height - scene.popupHeight)/2;
+	if (gameMan.screen == "popup" && x > 0 && x < scene.popupWidth && y > 0 && y < scene.popupHeight) {	// popup
+		menus["popup"] = Math.floor(y / (scene.popupHeight/4));
 		if (down) {
 			inputMan.drag = "popup";
 		}
@@ -167,7 +168,7 @@ function handleHud(down) {
 	}
 
 	if ((gameMan.screen != "board" && gameMan.screen != "title")
-	&& inputMan.y > gpCanvas.height - drawMan.buttonHeight && inputMan.x < drawMan.buttonWidth) {	// close/back button
+	&& inputMan.y > gpCanvas.height - scene.buttonHeight && inputMan.x < scene.buttonWidth) {	// close/back button
 		menus["button"] = 0;
 		if (down) {
 			inputMan.drag = "button";
@@ -177,8 +178,8 @@ function handleHud(down) {
 		menus["button"] = -1;
 	}
 
-	if (gameMan.screen == "board" && inputMan.y > gpCanvas.height - drawMan.buttonHeight && inputMan.x < drawMan.buttonWidth * 3) {	// board buttons
-		menus["button"] = Math.floor(inputMan.x / drawMan.buttonWidth);
+	if (gameMan.screen == "board" && inputMan.y > gpCanvas.height - scene.buttonHeight && inputMan.x < scene.buttonWidth * 3) {	// board buttons
+		menus["button"] = Math.floor(inputMan.x / scene.buttonWidth);
 		if (down) {
 			inputMan.drag = "button";
 		}

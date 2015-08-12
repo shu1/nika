@@ -130,6 +130,7 @@ window.onload = function() {
 	scenes["board"] = {};
 	scenes["rules"] = {};
 	scenes["menus"] = {};
+	scenes["hud"] = {};
 
 	reSize();
 
@@ -144,6 +145,7 @@ window.onload = function() {
 			scenes["tvboard"] = {};
 			scenes["tvrules"] = {};
 			scenes["tvmenus"] = {};
+			scenes["tvhud"] = {};
 			var scale = tvCanvas.height / drawMan.boardHeight;
 			initScenes(tvCanvas, scale, scale, "tv");
 
@@ -198,17 +200,6 @@ function reSize() {
 	drawMan.hudFont = Math.floor(32*minScale);
 	gpCanvas.getContext("2d").font = drawMan.hudFont + "px sans-serif";
 
-	// TODO put these into new scenes for hud and tvhud
-	drawMan.popupWidth = 1024 * minScale;
-	drawMan.popupHeight = 512 * minScale;
-	drawMan.buttonWidth = drawMan.cellSize * 2 * minScale;
-	drawMan.buttonHeight = drawMan.buttonWidth/2;
-	if (debugBuild) {
-		debugMan.buttonPadding = 8 * minScale;
-		debugMan.width = drawMan.buttonWidth * debugMan.cols;
-		debugMan.height = drawMan.buttonHeight * debugMan.rows;
-	}
-
 	initScenes(gpCanvas, maxScale, minScale);
 	setScreen();
 }
@@ -239,6 +230,17 @@ function initScenes(canvas, maxScale, minScale, tv) {
 	scene.maxScale = scene.minScale = scene.scale = canvas.height / scene.height;	// can't scale menus
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
+
+	scene = scenes[tv + "hud"];
+	scene.popupWidth = 1024 * minScale;
+	scene.popupHeight = 512 * minScale;
+	scene.buttonWidth = drawMan.cellSize * minScale * 2;
+	scene.buttonHeight = drawMan.cellSize * minScale;
+	if (debugBuild) {
+		scene.buttonPadding = 8 * minScale;
+		scene.debugWidth = scene.buttonWidth * debugMan.cols;
+		scene.debugHeight = scene.buttonHeight * debugMan.rows;
+	}
 }
 
 function setScreen(index) {
@@ -588,33 +590,34 @@ function drawContext(context, dTime, tv) {
 
 	context.restore();
 
-	var x = (canvas.width - drawMan.popupWidth)/2;
-	var y = (canvas.height - drawMan.popupHeight)/2;
+	scene = scenes["hud"];
+	var x = (canvas.width - scene.popupWidth)/2;
+	var y = (canvas.height - scene.popupHeight)/2;
 	if (gameMan.screen == "popup") {
 		context.fillStyle = "rgba(0,0,0," + drawMan.alpha + ")";
 		context.fillRect(0, 0, canvas.width, canvas.height);
-		context.drawImage(images["menuPopup"], x, y - (y + drawMan.popupHeight) * drawMan.slide, drawMan.popupWidth, drawMan.popupHeight);
+		context.drawImage(images["menuPopup"], x, y - (y + scene.popupHeight) * drawMan.slide, scene.popupWidth, scene.popupHeight);
 
 		if (inputMan.drag == "popup" && menus["popup"] >= 0) {
-			context.drawImage(images["menuPopupActive"], x, y + drawMan.popupHeight/4 * menus["popup"], drawMan.popupWidth, drawMan.popupHeight/4);	// TODO draw with fillRect and fix size
+			context.drawImage(images["menuPopupActive"], x, y + scene.popupHeight/4 * menus["popup"], scene.popupWidth, scene.popupHeight/4);	// TODO draw with fillRect and fix size
 		}
 	}
 
-	y = canvas.height - drawMan.buttonHeight;
+	y = canvas.height - scene.buttonHeight;
 	if (gameMan.scene == "rules" || gameMan.screen == "popup") {
-		context.drawImage(images["buttonClose"], 0, y, drawMan.buttonWidth, drawMan.buttonHeight);
+		context.drawImage(images["buttonClose"], 0, y, scene.buttonWidth, scene.buttonHeight);
 	}
 	else if (gameMan.screen == "setup" || gameMan.screen == "option" || gameMan.screen == "credit" || gameMan.screen == "tutorial") {
-		context.drawImage(images["buttonBack"], 0, y, drawMan.buttonWidth, drawMan.buttonHeight);
+		context.drawImage(images["buttonBack"], 0, y, scene.buttonWidth, scene.buttonHeight);
 	}
 	else if (gameMan.scene == "board") {
-		context.drawImage(images["buttonMenu"], 0, y, drawMan.buttonWidth, drawMan.buttonHeight);
-		context.drawImage(images["buttonPass"], drawMan.buttonWidth, y, drawMan.buttonWidth, drawMan.buttonHeight);
-		context.drawImage(images["buttonUndo"], drawMan.buttonWidth*2, y, drawMan.buttonWidth, drawMan.buttonHeight);
+		context.drawImage(images["buttonMenu"], 0, y, scene.buttonWidth, scene.buttonHeight);
+		context.drawImage(images["buttonPass"], scene.buttonWidth, y, scene.buttonWidth, scene.buttonHeight);
+		context.drawImage(images["buttonUndo"], scene.buttonWidth*2, y, scene.buttonWidth, scene.buttonHeight);
 	}
 
 	if (inputMan.drag == "button" && menus["button"] >= 0) {
-		context.drawImage(images["buttonActive"], drawMan.buttonWidth * menus["button"], y, drawMan.buttonWidth, drawMan.buttonHeight);
+		context.drawImage(images["buttonActive"], scene.buttonWidth * menus["button"], y, scene.buttonWidth, scene.buttonHeight);
 	}
 
 	if (drawMan.alpha > 0 && gameMan.screen != "popup") {
@@ -867,39 +870,40 @@ function drawMenu(context, dTime) {
 	var canvas = context.canvas;
 	var duration = 1;	// no background to animate anymore
 	drawMan.menu = false;	// whether menu is animating
+	var scene = scenes["hud"];
 
-	if (debugMan.show && (debugMan.width < drawMan.buttonWidth * debugMan.cols || debugMan.height < drawMan.buttonHeight * debugMan.rows)) {
-		var speed = drawMan.buttonWidth * (debugMan.cols-1) * dTime / duration;
-		if (debugMan.width + speed < drawMan.buttonWidth * debugMan.cols) {
-			debugMan.width += speed;
+	if (debugMan.show && (scene.debugWidth < scene.buttonWidth * debugMan.cols || scene.debugHeight < scene.buttonHeight * debugMan.rows)) {
+		var speed = scene.buttonWidth * (debugMan.cols-1) * dTime / duration;
+		if (scene.debugWidth + speed < scene.buttonWidth * debugMan.cols) {
+			scene.debugWidth += speed;
 			drawMan.menu = true;
 		} else {
-			debugMan.width = drawMan.buttonWidth * debugMan.cols;
+			scene.debugWidth = scene.buttonWidth * debugMan.cols;
 		}
 
-		speed = drawMan.buttonHeight * (debugMan.rows-1) * dTime / duration;
-		if (debugMan.height + speed < drawMan.buttonHeight * debugMan.rows) {
-			debugMan.height += speed;
+		speed = scene.buttonHeight * (debugMan.rows-1) * dTime / duration;
+		if (scene.debugHeight + speed < scene.buttonHeight * debugMan.rows) {
+			scene.debugHeight += speed;
 			drawMan.menu = true;
 		} else {
-			debugMan.height = drawMan.buttonHeight * debugMan.rows;
+			scene.debugHeight = scene.buttonHeight * debugMan.rows;
 		}
 	}
-	else if (!debugMan.show && (debugMan.width > drawMan.buttonWidth || debugMan.height > drawMan.buttonHeight)) {
-		var speed = drawMan.buttonWidth * (debugMan.cols-1) * dTime / duration;
-		if (debugMan.width - speed > drawMan.buttonWidth) {
-			debugMan.width -= speed;
+	else if (!debugMan.show && (scene.debugWidth > scene.buttonWidth || scene.debugHeight > scene.buttonHeight)) {
+		var speed = scene.buttonWidth * (debugMan.cols-1) * dTime / duration;
+		if (scene.debugWidth - speed > scene.buttonWidth) {
+			scene.debugWidth -= speed;
 			drawMan.menu = true;
 		} else {
-			debugMan.width = drawMan.buttonWidth;
+			scene.debugWidth = scene.buttonWidth;
 		}
 
-		speed = drawMan.buttonHeight * (debugMan.rows-1) * dTime / duration;
-		if (debugMan.height - speed > drawMan.buttonHeight) {
-			debugMan.height -= speed;
+		speed = scene.buttonHeight * (debugMan.rows-1) * dTime / duration;
+		if (scene.debugHeight - speed > scene.buttonHeight) {
+			scene.debugHeight -= speed;
 			drawMan.menu = true;
 		} else {
-			debugMan.height = drawMan.buttonHeight;
+			scene.debugHeight = scene.buttonHeight;
 		}
 	}
 
@@ -928,11 +932,11 @@ function drawMenu(context, dTime) {
 	function drawButton(context, row, col, text, textColor, bgColor) {
 		if (bgColor) {
 			context.fillStyle = bgColor;
-			context.fillRect(canvas.width - drawMan.buttonWidth * (col+1) + debugMan.buttonPadding, canvas.height - drawMan.buttonHeight * (row+1) + debugMan.buttonPadding,
-				drawMan.buttonWidth - debugMan.buttonPadding*2, drawMan.buttonHeight - debugMan.buttonPadding*2);
+			context.fillRect(canvas.width - scene.buttonWidth * (col+1) + scene.buttonPadding, canvas.height - scene.buttonHeight * (row+1) + scene.buttonPadding,
+				scene.buttonWidth - scene.buttonPadding*2, scene.buttonHeight - scene.buttonPadding*2);
 		}
 		context.fillStyle = textColor;
-		context.fillText(text, canvas.width - drawMan.buttonWidth * (col+0.8), canvas.height - drawMan.buttonHeight * (row+0.5)+6);
+		context.fillText(text, canvas.width - scene.buttonWidth * (col+0.8), canvas.height - scene.buttonHeight * (row+0.5)+6);
 	}
 }
 

@@ -4,9 +4,6 @@ var debugMan = {
 	show:false,
 	rows:1,
 	cols:1,
-	width:0,
-	height:0,
-	buttonPadding:0
 }
 
 var debugTexts = [
