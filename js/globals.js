@@ -102,7 +102,7 @@ var hudMan = {
 	pageText:""
 }
 
-var buttons = [
+var debugTexts = [
 	"  Close",
 	" Debug",
 	"     AI",

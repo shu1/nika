@@ -140,8 +140,8 @@ function handleDrag(down) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				if (inputMan.x > gpCanvas.width - menuMan.bWidth * (col+1) && inputMan.y > gpCanvas.height - menuMan.bHeight * (row+1)) {
 					menus["debug"] = row * menuMan.cols + col;
-					if (menus["debug"] < buttons.length) {
-						hudMan.inputText = buttons[menus["debug"]];
+					if (menus["debug"] < debugTexts.length) {
+						hudMan.inputText = debugTexts[menus["debug"]];
 					}
 					if (down) {
 						inputMan.drag = "debug";

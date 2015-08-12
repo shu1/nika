@@ -117,7 +117,7 @@ window.onload = function() {
 	}
 
 	menuMan.cols = 3;
-	menuMan.rows = Math.ceil(buttons.length / menuMan.cols);
+	menuMan.rows = Math.ceil(debugTexts.length / menuMan.cols);
 
 	menus["popup"] = 0;
 	menus["title"] = 0;
@@ -250,7 +250,7 @@ function setScreen(index) {
 		}
 	}
 
-	if (getScene(gameMan.screen) != getScene(gameMan.pScreen)) {
+	if (getScene(gameMan.screen) != getScene(gameMan.pScreen)) {	// only reset scene when switching scenes
 		var scene = scenes[gameMan.scene];
 		scene.x = (gpCanvas.width - scene.width * scene.scale)/2;
 		scene.y = (gpCanvas.height - scene.height * scene.scale)/2;
@@ -902,21 +902,21 @@ function drawMenu(context, dTime) {
 		for (var row = 0; row < menuMan.rows; ++row) {
 			for (var col = 0; col < menuMan.cols; ++col) {
 				var button = row * menuMan.cols + col;
-				if (button < buttons.length) {
+				if (button < debugTexts.length) {
 					if (inputMan.drag == "debug" && button == menus["debug"]
 					|| button == 1 && gameMan.debug) {
-						drawButton(context, row, col, buttons[button], "black", "white");
+						drawButton(context, row, col, debugTexts[button], "black", "white");
 					} else {
-						drawButton(context, row, col, buttons[button], "white", "black");
+						drawButton(context, row, col, debugTexts[button], "white", "black");
 					}
 				}
 			}
 		}
 	} else {
 		if (inputMan.drag == "debug" && menus["debug"] == 0) {
-			drawButton(context, 0, 0, buttons[1], "black", "white");
+			drawButton(context, 0, 0, debugTexts[1], "black", "white");
 		} else {
-			drawButton(context, 0, 0, buttons[1], "white", "black");
+			drawButton(context, 0, 0, debugTexts[1], "white", "black");
 		}
 	}
 
