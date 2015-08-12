@@ -84,15 +84,6 @@ var inputMan = {
 	y:0
 }
 
-var debugMan = {
-	show:false,
-	rows:1,
-	cols:1,
-	width:0,
-	height:0,
-	buttonPadding:0
-}
-
 var hudMan = {
 	fpsTime:0,
 	fpsCount:0,
@@ -101,15 +92,6 @@ var hudMan = {
 	inputText:"",
 	pageText:""
 }
-
-var debugTexts = [
-	"  Close",
-	" Debug",
-	"     AI",
-	"  Zoom",
-	"  Mural",
-	"AI Tool"
-]
 
 var newBoard = [
 	".........kkklll......",

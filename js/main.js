@@ -116,8 +116,10 @@ window.onload = function() {
 		window.addEventListener("resize", reSize);
 	}
 
-	menuMan.cols = 3;
-	menuMan.rows = Math.ceil(debugTexts.length / menuMan.cols);
+	if (debugBuild) {
+		debugMan.cols = 3;
+		debugMan.rows = Math.ceil(debugTexts.length / debugMan.cols);
+	}
 
 	menus["popup"] = 0;
 	menus["title"] = 0;
@@ -128,6 +130,7 @@ window.onload = function() {
 	scenes["board"] = {};
 	scenes["rules"] = {};
 	scenes["menus"] = {};
+
 	reSize();
 
 	if (window.nwf) {
@@ -200,9 +203,11 @@ function reSize() {
 	drawMan.popupHeight = 512 * minScale;
 	drawMan.buttonWidth = drawMan.cellSize * 2 * minScale;
 	drawMan.buttonHeight = drawMan.buttonWidth/2;
-	debugMan.buttonPadding = 8 * minScale;
-	debugMan.width = drawMan.buttonWidth * debugMan.cols;
-	debugMan.height = drawMan.buttonHeight * debugMan.rows;
+	if (debugBuild) {
+		debugMan.buttonPadding = 8 * minScale;
+		debugMan.width = drawMan.buttonWidth * debugMan.cols;
+		debugMan.height = drawMan.buttonHeight * debugMan.rows;
+	}
 
 	initScenes(gpCanvas, maxScale, minScale);
 	setScreen();

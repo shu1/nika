@@ -1,5 +1,23 @@
 "use strict";
 
+var debugMan = {
+	show:false,
+	rows:1,
+	cols:1,
+	width:0,
+	height:0,
+	buttonPadding:0
+}
+
+var debugTexts = [
+	"  Close",
+	" Debug",
+	"     AI",
+	"  Zoom",
+	"  Mural",
+	"AI Tool"
+]
+
 function menuDebug(index) {
 	switch (index) {
 	case 0:
