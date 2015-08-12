@@ -195,14 +195,14 @@ function reSize() {
 	drawMan.hudFont = Math.floor(32*minScale);
 	gpCanvas.getContext("2d").font = drawMan.hudFont + "px sans-serif";
 
-	// TODO separate out button code from debug code, and account for tv context
-	menuMan.bWidth = drawMan.cellSize * 2 * minScale;
-	menuMan.bHeight = menuMan.bWidth/2;
-	menuMan.bPadding = 8 * minScale;
-	menuMan.width = menuMan.bWidth * menuMan.cols;
-	menuMan.height = menuMan.bHeight * menuMan.rows;
-	menuMan.pWidth = 1024 * minScale;
-	menuMan.pHeight = 512 * minScale;
+	// TODO put these into new scenes for hud and tvhud
+	drawMan.popupWidth = 1024 * minScale;
+	drawMan.popupHeight = 512 * minScale;
+	drawMan.buttonWidth = drawMan.cellSize * 2 * minScale;
+	drawMan.buttonHeight = drawMan.buttonWidth/2;
+	debugMan.buttonPadding = 8 * minScale;
+	debugMan.width = drawMan.buttonWidth * debugMan.cols;
+	debugMan.height = drawMan.buttonHeight * debugMan.rows;
 
 	initScenes(gpCanvas, maxScale, minScale);
 	setScreen();
@@ -583,33 +583,33 @@ function drawContext(context, dTime, tv) {
 
 	context.restore();
 
-	var x = (canvas.width - menuMan.pWidth)/2;
-	var y = (canvas.height - menuMan.pHeight)/2;
+	var x = (canvas.width - drawMan.popupWidth)/2;
+	var y = (canvas.height - drawMan.popupHeight)/2;
 	if (gameMan.screen == "popup") {
 		context.fillStyle = "rgba(0,0,0," + drawMan.alpha + ")";
 		context.fillRect(0, 0, canvas.width, canvas.height);
-		context.drawImage(images["menuPopup"], x, y - (y + menuMan.pHeight) * drawMan.slide, menuMan.pWidth, menuMan.pHeight);
+		context.drawImage(images["menuPopup"], x, y - (y + drawMan.popupHeight) * drawMan.slide, drawMan.popupWidth, drawMan.popupHeight);
 
 		if (inputMan.drag == "popup" && menus["popup"] >= 0) {
-			context.drawImage(images["menuPopupActive"], x, y + menuMan.pHeight/4 * menus["popup"], menuMan.pWidth, menuMan.pHeight/4);	// TODO draw with fillRect and fix size
+			context.drawImage(images["menuPopupActive"], x, y + drawMan.popupHeight/4 * menus["popup"], drawMan.popupWidth, drawMan.popupHeight/4);	// TODO draw with fillRect and fix size
 		}
 	}
 
-	y = canvas.height - menuMan.bHeight;
+	y = canvas.height - drawMan.buttonHeight;
 	if (gameMan.scene == "rules" || gameMan.screen == "popup") {
-		context.drawImage(images["buttonClose"], 0, y, menuMan.bWidth, menuMan.bHeight);
+		context.drawImage(images["buttonClose"], 0, y, drawMan.buttonWidth, drawMan.buttonHeight);
 	}
 	else if (gameMan.screen == "setup" || gameMan.screen == "option" || gameMan.screen == "credit" || gameMan.screen == "tutorial") {
-		context.drawImage(images["buttonBack"], 0, y, menuMan.bWidth, menuMan.bHeight);
+		context.drawImage(images["buttonBack"], 0, y, drawMan.buttonWidth, drawMan.buttonHeight);
 	}
 	else if (gameMan.scene == "board") {
-		context.drawImage(images["buttonMenu"], 0, y, menuMan.bWidth, menuMan.bHeight);
-		context.drawImage(images["buttonPass"], menuMan.bWidth, y, menuMan.bWidth, menuMan.bHeight);
-		context.drawImage(images["buttonUndo"], menuMan.bWidth*2, y, menuMan.bWidth, menuMan.bHeight);
+		context.drawImage(images["buttonMenu"], 0, y, drawMan.buttonWidth, drawMan.buttonHeight);
+		context.drawImage(images["buttonPass"], drawMan.buttonWidth, y, drawMan.buttonWidth, drawMan.buttonHeight);
+		context.drawImage(images["buttonUndo"], drawMan.buttonWidth*2, y, drawMan.buttonWidth, drawMan.buttonHeight);
 	}
 
 	if (inputMan.drag == "button" && menus["button"] >= 0) {
-		context.drawImage(images["buttonActive"], menuMan.bWidth * menus["button"], y, menuMan.bWidth, menuMan.bHeight);
+		context.drawImage(images["buttonActive"], drawMan.buttonWidth * menus["button"], y, drawMan.buttonWidth, drawMan.buttonHeight);
 	}
 
 	if (drawMan.alpha > 0 && gameMan.screen != "popup") {
@@ -863,45 +863,45 @@ function drawMenu(context, dTime) {
 	var duration = 1;	// no background to animate anymore
 	drawMan.menu = false;	// whether menu is animating
 
-	if (menuMan.show && (menuMan.width < menuMan.bWidth * menuMan.cols || menuMan.height < menuMan.bHeight * menuMan.rows)) {
-		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / duration;
-		if (menuMan.width + speed < menuMan.bWidth * menuMan.cols) {
-			menuMan.width += speed;
+	if (debugMan.show && (debugMan.width < drawMan.buttonWidth * debugMan.cols || debugMan.height < drawMan.buttonHeight * debugMan.rows)) {
+		var speed = drawMan.buttonWidth * (debugMan.cols-1) * dTime / duration;
+		if (debugMan.width + speed < drawMan.buttonWidth * debugMan.cols) {
+			debugMan.width += speed;
 			drawMan.menu = true;
 		} else {
-			menuMan.width = menuMan.bWidth * menuMan.cols;
+			debugMan.width = drawMan.buttonWidth * debugMan.cols;
 		}
 
-		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / duration;
-		if (menuMan.height + speed < menuMan.bHeight * menuMan.rows) {
-			menuMan.height += speed;
+		speed = drawMan.buttonHeight * (debugMan.rows-1) * dTime / duration;
+		if (debugMan.height + speed < drawMan.buttonHeight * debugMan.rows) {
+			debugMan.height += speed;
 			drawMan.menu = true;
 		} else {
-			menuMan.height = menuMan.bHeight * menuMan.rows;
+			debugMan.height = drawMan.buttonHeight * debugMan.rows;
 		}
 	}
-	else if (!menuMan.show && (menuMan.width > menuMan.bWidth || menuMan.height > menuMan.bHeight)) {
-		var speed = menuMan.bWidth * (menuMan.cols-1) * dTime / duration;
-		if (menuMan.width - speed > menuMan.bWidth) {
-			menuMan.width -= speed;
+	else if (!debugMan.show && (debugMan.width > drawMan.buttonWidth || debugMan.height > drawMan.buttonHeight)) {
+		var speed = drawMan.buttonWidth * (debugMan.cols-1) * dTime / duration;
+		if (debugMan.width - speed > drawMan.buttonWidth) {
+			debugMan.width -= speed;
 			drawMan.menu = true;
 		} else {
-			menuMan.width = menuMan.bWidth;
+			debugMan.width = drawMan.buttonWidth;
 		}
 
-		speed = menuMan.bHeight * (menuMan.rows-1) * dTime / duration;
-		if (menuMan.height - speed > menuMan.bHeight) {
-			menuMan.height -= speed;
+		speed = drawMan.buttonHeight * (debugMan.rows-1) * dTime / duration;
+		if (debugMan.height - speed > drawMan.buttonHeight) {
+			debugMan.height -= speed;
 			drawMan.menu = true;
 		} else {
-			menuMan.height = menuMan.bHeight;
+			debugMan.height = drawMan.buttonHeight;
 		}
 	}
 
-	if (menuMan.show && !drawMan.menu) {
-		for (var row = 0; row < menuMan.rows; ++row) {
-			for (var col = 0; col < menuMan.cols; ++col) {
-				var button = row * menuMan.cols + col;
+	if (debugMan.show && !drawMan.menu) {
+		for (var row = 0; row < debugMan.rows; ++row) {
+			for (var col = 0; col < debugMan.cols; ++col) {
+				var button = row * debugMan.cols + col;
 				if (button < debugTexts.length) {
 					if (inputMan.drag == "debug" && button == menus["debug"]
 					|| button == 1 && gameMan.debug) {
@@ -923,11 +923,11 @@ function drawMenu(context, dTime) {
 	function drawButton(context, row, col, text, textColor, bgColor) {
 		if (bgColor) {
 			context.fillStyle = bgColor;
-			context.fillRect(canvas.width - menuMan.bWidth * (col+1) + menuMan.bPadding, canvas.height - menuMan.bHeight * (row+1) + menuMan.bPadding,
-				menuMan.bWidth - menuMan.bPadding*2, menuMan.bHeight - menuMan.bPadding*2);
+			context.fillRect(canvas.width - drawMan.buttonWidth * (col+1) + debugMan.buttonPadding, canvas.height - drawMan.buttonHeight * (row+1) + debugMan.buttonPadding,
+				drawMan.buttonWidth - debugMan.buttonPadding*2, drawMan.buttonHeight - debugMan.buttonPadding*2);
 		}
 		context.fillStyle = textColor;
-		context.fillText(text, canvas.width - menuMan.bWidth * (col+0.8), canvas.height - menuMan.bHeight * (row+0.5)+6);
+		context.fillText(text, canvas.width - drawMan.buttonWidth * (col+0.8), canvas.height - drawMan.buttonHeight * (row+0.5)+6);
 	}
 }
 

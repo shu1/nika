@@ -21,6 +21,10 @@ var drawMan = {
 	tutorialButtonY:805,
 	tutorialButtonWidth:190,
 	tutorialButtonHeight:48,
+	buttonWidth:0,
+	buttonHeight:0,
+	popupWidth:0,
+	popupHeight:0,
 	tutorialTheta:0,
 	tutorialFlash:0,
 	helmetScale:0,
@@ -80,17 +84,13 @@ var inputMan = {
 	y:0
 }
 
-var menuMan = {
+var debugMan = {
 	show:false,
 	rows:1,
 	cols:1,
 	width:0,
 	height:0,
-	bWidth:0,
-	bHeight:0,
-	pWidth:0,
-	pHeight:0,
-	bPadding:0
+	buttonPadding:0
 }
 
 var hudMan = {

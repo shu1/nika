@@ -3,7 +3,7 @@
 function menuDebug(index) {
 	switch (index) {
 	case 0:
-		menuMan.show = !menuMan.show;
+		debugMan.show = !debugMan.show;
 		menus["debug"] = 0;
 		break;
 	case 1:

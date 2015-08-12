@@ -134,12 +134,12 @@ function getRowCol(scene) {
 function handleDrag(down) {
 	var handled = inputMan.drag == "debug" || inputMan.drag == "button" || inputMan.drag == "popup" || gameMan.screen == "popup";
 
-	if (debugBuild && inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - menuMan.width
-	&& inputMan.y < gpCanvas.height && inputMan.y > gpCanvas.height - menuMan.height) {	// debug menu
-		for (var row = 0; row < menuMan.rows; ++row) {
-			for (var col = 0; col < menuMan.cols; ++col) {
-				if (inputMan.x > gpCanvas.width - menuMan.bWidth * (col+1) && inputMan.y > gpCanvas.height - menuMan.bHeight * (row+1)) {
-					menus["debug"] = row * menuMan.cols + col;
+	if (debugBuild && inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - debugMan.width
+	&& inputMan.y < gpCanvas.height && inputMan.y > gpCanvas.height - debugMan.height) {	// debug menu
+		for (var row = 0; row < debugMan.rows; ++row) {
+			for (var col = 0; col < debugMan.cols; ++col) {
+				if (inputMan.x > gpCanvas.width - drawMan.buttonWidth * (col+1) && inputMan.y > gpCanvas.height - drawMan.buttonHeight * (row+1)) {
+					menus["debug"] = row * debugMan.cols + col;
 					if (menus["debug"] < debugTexts.length) {
 						hudMan.inputText = debugTexts[menus["debug"]];
 					}
@@ -154,10 +154,10 @@ function handleDrag(down) {
 		menus["debug"] = -1;
 	}
 
-	var x = inputMan.x - (gpCanvas.width - menuMan.pWidth)/2;	// offset to topleft of popup
-	var y = inputMan.y - (gpCanvas.height - menuMan.pHeight)/2;
-	if (gameMan.screen == "popup" && x > 0 && x < menuMan.pWidth && y > 0 && y < menuMan.pHeight) {	// popup
-		menus["popup"] = Math.floor(y / (menuMan.pHeight/4));
+	var x = inputMan.x - (gpCanvas.width - drawMan.popupWidth)/2;	// offset to topleft of popup
+	var y = inputMan.y - (gpCanvas.height - drawMan.popupHeight)/2;
+	if (gameMan.screen == "popup" && x > 0 && x < drawMan.popupWidth && y > 0 && y < drawMan.popupHeight) {	// popup
+		menus["popup"] = Math.floor(y / (drawMan.popupHeight/4));
 		if (down) {
 			inputMan.drag = "popup";
 		}
@@ -167,7 +167,7 @@ function handleDrag(down) {
 	}
 
 	if ((gameMan.screen != "board" && gameMan.screen != "title")
-	&& inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth) {	// close/back button
+	&& inputMan.y > gpCanvas.height - drawMan.buttonHeight && inputMan.x < drawMan.buttonWidth) {	// close/back button
 		menus["button"] = 0;
 		if (down) {
 			inputMan.drag = "button";
@@ -177,8 +177,8 @@ function handleDrag(down) {
 		menus["button"] = -1;
 	}
 
-	if (gameMan.screen == "board" && inputMan.y > gpCanvas.height - menuMan.bHeight && inputMan.x < menuMan.bWidth * 3) {	// board buttons
-		menus["button"] = Math.floor(inputMan.x / menuMan.bWidth);
+	if (gameMan.screen == "board" && inputMan.y > gpCanvas.height - drawMan.buttonHeight && inputMan.x < drawMan.buttonWidth * 3) {	// board buttons
+		menus["button"] = Math.floor(inputMan.x / drawMan.buttonWidth);
 		if (down) {
 			inputMan.drag = "button";
 		}
