@@ -506,7 +506,8 @@ function drawContext(context, dTime, tv) {
 
 	var x = (scene.width - drawMan.screenWidth)/2;
 	var y = (scene.height - drawMan.screenHeight)/2;
-	switch (gameMan.scene) {
+	switch (gameMan.screen) {
+	case "popup":
 	case "board":
 		context.drawImage(images["board0"], 0, 0);
 		context.drawImage(images["board1"], 0, 960);
@@ -553,38 +554,34 @@ function drawContext(context, dTime, tv) {
 			drawRules(context, scene);
 		}
 		break;
-	case "menus":
-		switch (gameMan.screen) {
-		case "title":
-			context.drawImage(images["menuTitle0"], x, y);
-			context.drawImage(images["menuTitle1"], x+512, y);
-			if (menus["title"] < 6) {
-				context.drawImage(images["menuTitleActive"], x+82, y+282 + drawMan.activeHeight*menus["title"]);
-			}
-			break;
-		case "setup":
-			context.drawImage(images["menuSetup0"], x, y);
-			context.drawImage(images["menuSetup1"], x+512, y);
-			context.drawImage(images["menuSetupAI" + gameMan.ais[0]], x+50, y+540);
-			context.drawImage(images["menuSetupAI" + gameMan.ais[2]], x+340, y+540);
-			context.drawImage(images["menuSetupAI" + gameMan.ais[1]], x+1020, y+540);
-			context.drawImage(images["menuSetupAI" + gameMan.ais[3]], x+1310, y+540);
-			break;
-		case "tutorial":
-			context.drawImage(images["menuTutorial0"], x, y);
-			context.drawImage(images["menuTutorial1"], x+512, y);
-			break;
-		case "option":
-			context.drawImage(images["menuOption0"], x, y);
-			context.drawImage(images["menuOption1"], x+512, y);
-			context.drawImage(images["menuOptionSlider"], x+100 + 1210*soundMan.music, y+384);
-			context.drawImage(images["menuOptionSlider"], x+100 + 1210*soundMan.sound, y+648);
-			break;
-		case "credit":
-			context.drawImage(images["menuCredit0"], x, y);
-			context.drawImage(images["menuCredit1"], x+512, y);
-			break;
+	case "title":
+		context.drawImage(images["menuTitle0"], x, y);
+		context.drawImage(images["menuTitle1"], x+512, y);
+		if (menus["title"] < 6) {
+			context.drawImage(images["menuTitleActive"], x+82, y+282 + drawMan.activeHeight*menus["title"]);
 		}
+		break;
+	case "setup":
+		context.drawImage(images["menuSetup0"], x, y);
+		context.drawImage(images["menuSetup1"], x+512, y);
+		context.drawImage(images["menuSetupAI" + gameMan.ais[0]], x+50, y+540);
+		context.drawImage(images["menuSetupAI" + gameMan.ais[2]], x+340, y+540);
+		context.drawImage(images["menuSetupAI" + gameMan.ais[1]], x+1020, y+540);
+		context.drawImage(images["menuSetupAI" + gameMan.ais[3]], x+1310, y+540);
+		break;
+	case "tutorial":
+		context.drawImage(images["menuTutorial0"], x, y);
+		context.drawImage(images["menuTutorial1"], x+512, y);
+		break;
+	case "option":
+		context.drawImage(images["menuOption0"], x, y);
+		context.drawImage(images["menuOption1"], x+512, y);
+		context.drawImage(images["menuOptionSlider"], x+100 + 1210*soundMan.music, y+384);
+		context.drawImage(images["menuOptionSlider"], x+100 + 1210*soundMan.sound, y+648);
+		break;
+	case "credit":
+		context.drawImage(images["menuCredit0"], x, y);
+		context.drawImage(images["menuCredit1"], x+512, y);
 		break;
 	}
 
