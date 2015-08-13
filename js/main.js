@@ -587,6 +587,14 @@ function drawContext(context, dTime, tv) {
 	context.restore();
 
 	scene = scenes["hud"];
+	if (gameMan.debug) {
+		context.fillStyle = drawMan.color;
+		context.fillRect(0, 0, canvas.width, scene.hudHeight);
+		hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[tv + gameMan.scene].scale.toFixed(4) + "x";
+		context.fillStyle = "white";
+		context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, scene.hudFont);
+	}
+
 	var x = (canvas.width - scene.popupWidth)/2;
 	var y = (canvas.height - scene.popupHeight)/2;
 	if (gameMan.screen == "popup") {
@@ -623,13 +631,6 @@ function drawContext(context, dTime, tv) {
 
 	if (debugBuild) {
 		drawMenu(context, dTime);
-
-		if (gameMan.debug) {
-			hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[tv + gameMan.scene].scale.toFixed(4) + "x";
-			context.fillStyle = "white";
-			context.clearRect(0, 0, canvas.width, scene.hudHeight);
-			context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, scene.hudFont);
-		}
 	}
 }
 
