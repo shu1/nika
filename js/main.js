@@ -239,7 +239,7 @@ function initScenes(canvas, maxScale, minScale, tv) {
 		scene.debugHeight = scene.buttonHeight * debugMan.rows;
 	}
 	scene.hudHeight = Math.floor(44*minScale);
-	scene.hudFont = Math.floor(32*minScale);
+	scene.hudFont = Math.floor(fontSize * minScale);
 	canvas.getContext("2d").font = scene.hudFont + "px sans-serif";
 }
 
