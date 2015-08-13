@@ -38,8 +38,7 @@ var drawMan = {
 	alpha:0,
 	fade:0,
 	zoom:0,
-	time:0,
-	menu:false
+	time:0
 }
 
 var gameMan = {

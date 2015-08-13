@@ -1,6 +1,7 @@
 "use strict";
 
 var debugMan = {
+	scaling:false,
 	show:false,
 	rows:1,
 	cols:1,

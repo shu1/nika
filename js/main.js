@@ -865,15 +865,15 @@ function drawRules(context, scene) {
 
 function drawMenu(context, dTime) {
 	var canvas = context.canvas;
-	var duration = 1;	// no background to animate anymore
-	drawMan.menu = false;	// whether menu is animating
 	var scene = scenes["hud"];
+	var duration = 1;	// no background to animate anymore
+	debugMan.scaling = false;	// whether menu is animating
 
 	if (debugMan.show && (scene.debugWidth < scene.buttonWidth * debugMan.cols || scene.debugHeight < scene.buttonHeight * debugMan.rows)) {
 		var speed = scene.buttonWidth * (debugMan.cols-1) * dTime / duration;
 		if (scene.debugWidth + speed < scene.buttonWidth * debugMan.cols) {
 			scene.debugWidth += speed;
-			drawMan.menu = true;
+			debugMan.scaling = true;
 		} else {
 			scene.debugWidth = scene.buttonWidth * debugMan.cols;
 		}
@@ -881,7 +881,7 @@ function drawMenu(context, dTime) {
 		speed = scene.buttonHeight * (debugMan.rows-1) * dTime / duration;
 		if (scene.debugHeight + speed < scene.buttonHeight * debugMan.rows) {
 			scene.debugHeight += speed;
-			drawMan.menu = true;
+			debugMan.scaling = true;
 		} else {
 			scene.debugHeight = scene.buttonHeight * debugMan.rows;
 		}
@@ -890,7 +890,7 @@ function drawMenu(context, dTime) {
 		var speed = scene.buttonWidth * (debugMan.cols-1) * dTime / duration;
 		if (scene.debugWidth - speed > scene.buttonWidth) {
 			scene.debugWidth -= speed;
-			drawMan.menu = true;
+			debugMan.scaling = true;
 		} else {
 			scene.debugWidth = scene.buttonWidth;
 		}
@@ -898,13 +898,13 @@ function drawMenu(context, dTime) {
 		speed = scene.buttonHeight * (debugMan.rows-1) * dTime / duration;
 		if (scene.debugHeight - speed > scene.buttonHeight) {
 			scene.debugHeight -= speed;
-			drawMan.menu = true;
+			debugMan.scaling = true;
 		} else {
 			scene.debugHeight = scene.buttonHeight;
 		}
 	}
 
-	if (debugMan.show && !drawMan.menu) {
+	if (debugMan.show && !debugMan.scaling) {
 		for (var row = 0; row < debugMan.rows; ++row) {
 			for (var col = 0; col < debugMan.cols; ++col) {
 				var button = row * debugMan.cols + col;
