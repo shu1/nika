@@ -383,6 +383,10 @@ function draw(time) {
 	}
 	hudMan.fpsCount++;
 
+	if (drawMan.zoom) {
+		zooming(dTime);
+	}
+
 	if (drawMan.fade) {
 		drawMan.alpha += dTime/250 * drawMan.fade;	// set positive/negative
 
@@ -493,10 +497,6 @@ function drawContext(context, dTime, tv) {
 	var canvas = context.canvas;
 	context.fillStyle = drawMan.color;
 	context.fillRect(0, 0, canvas.width, canvas.height);
-
-	if (drawMan.zoom) {
-		zooming(dTime);
-	}
 
 	var scene = scenes[tv + gameMan.scene];
 	context.save();
