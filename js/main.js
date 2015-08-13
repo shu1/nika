@@ -138,8 +138,7 @@ window.onload = function() {
 		var tvDisplay = nwf.display.DisplayManager.getInstance().getTVDisplay();
 
 		tvDisplay.addEventListener("load", function() {
-			tvDocument = tvDisplay.window.document;
-			tvCanvas = tvDocument.getElementById("canvas");
+			tvCanvas = tvDisplay.window.document.getElementById("canvas");
 			tvCanvas.width = tvDisplay.width;
 			tvCanvas.height = tvDisplay.height;
 
@@ -248,24 +247,16 @@ function setScreen(index) {
 		gameMan.pScreen = gameMan.screen;
 		gameMan.screen = index;
 		gameMan.scene = getScene(gameMan.screen);
-	}
 
-	if (gameMan.screen == "rules") {
-		document.body.style.backgroundColor = "black";
-		if (tvDocument) {
-			tvDocument.body.style.backgroundColor = "black";
+		if (gameMan.screen == "rules") {
+			drawMan.color = "black";
+			hudMan.pageText = "Rule " + gameMan.rules;
 		}
-
-		hudMan.pageText = "Rule " + gameMan.rules;
-	}
-	else {
-		document.body.style.backgroundColor = "#00384C";
-		if (tvDocument) {
-			tvDocument.body.style.backgroundColor = "#00384C";
-		}
-
-		if (gameMan.pScreen == "rules") {
-			hudMan.pageText = "";
+		else {
+			drawMan.color = "#00384C";
+			if (gameMan.pScreen == "rules") {
+				hudMan.pageText = "";
+			}
 		}
 	}
 
@@ -500,7 +491,8 @@ function drawContext(context, dTime, tv) {
 	tv = tv ? tv : "";
 
 	var canvas = context.canvas;
-	context.clearRect(0, 0, canvas.width, canvas.height);
+	context.fillStyle = drawMan.color;
+	context.fillRect(0, 0, canvas.width, canvas.height);
 
 	if (drawMan.zoom) {
 		zooming(dTime);

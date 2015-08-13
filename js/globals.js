@@ -1,6 +1,6 @@
 "use strict";
 
-var debugBuild = true, tvDocument, tvCanvas, gpCanvas, muralCanvas, grid, images={}, sounds={}, scenes={}, menus={}, states=[], phalanx=[], murals=[];
+var debugBuild = true, tvCanvas, gpCanvas, muralCanvas, grid, images={}, sounds={}, scenes={}, menus={}, states=[], phalanx=[], murals=[];
 
 var eventMan = [[],[],[],[]]
 
@@ -10,6 +10,7 @@ var soundMan = {
 }
 
 var drawMan = {
+	color:"#00384C",
 	cellSize:96,
 	boardWidth:2016,
 	boardHeight:1440,
