@@ -1,6 +1,6 @@
 "use strict";
 
-var debugBuild = true, gpCanvas, tvCanvas, muralCanvas, grid, images={}, sounds={}, scenes={}, menus={}, states=[], phalanx=[], murals=[];
+var debugBuild = true, tvDocument, tvCanvas, gpCanvas, muralCanvas, grid, images={}, sounds={}, scenes={}, menus={}, states=[], phalanx=[], murals=[];
 
 var eventMan = [[],[],[],[]]
 

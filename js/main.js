@@ -138,7 +138,8 @@ window.onload = function() {
 		var tvDisplay = nwf.display.DisplayManager.getInstance().getTVDisplay();
 
 		tvDisplay.addEventListener("load", function() {
-			tvCanvas = tvDisplay.window.document.getElementById("canvas");
+			tvDocument = tvDisplay.window.document;
+			tvCanvas = tvDocument.getElementById("canvas");
 			tvCanvas.width = tvDisplay.width;
 			tvCanvas.height = tvDisplay.height;
 
@@ -237,7 +238,6 @@ function initScenes(canvas, maxScale, minScale, tv) {
 		scene.debugWidth = scene.buttonWidth * debugMan.cols;
 		scene.debugHeight = scene.buttonHeight * debugMan.rows;
 	}
-
 	scene.hudHeight = Math.floor(44*minScale);
 	scene.hudFont = Math.floor(32*minScale);
 	canvas.getContext("2d").font = scene.hudFont + "px sans-serif";
@@ -248,17 +248,24 @@ function setScreen(index) {
 		gameMan.pScreen = gameMan.screen;
 		gameMan.screen = index;
 		gameMan.scene = getScene(gameMan.screen);
+	}
 
-		if (gameMan.screen == "rules") {
-			document.body.style.backgroundColor = "black";
-			hudMan.pageText = "Rule " + gameMan.rules;
+	if (gameMan.screen == "rules") {
+		document.body.style.backgroundColor = "black";
+		if (tvDocument) {
+			tvDocument.body.style.backgroundColor = "black";
 		}
-		else {
-			document.body.style.backgroundColor = "#00384C";
 
-			if (gameMan.pScreen == "rules") {
-				hudMan.pageText = "";
-			}
+		hudMan.pageText = "Rule " + gameMan.rules;
+	}
+	else {
+		document.body.style.backgroundColor = "#00384C";
+		if (tvDocument) {
+			tvDocument.body.style.backgroundColor = "#00384C";
+		}
+
+		if (gameMan.pScreen == "rules") {
+			hudMan.pageText = "";
 		}
 	}
 
