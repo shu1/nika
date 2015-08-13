@@ -250,10 +250,15 @@ function setScreen(index) {
 		gameMan.scene = getScene(gameMan.screen);
 
 		if (gameMan.screen == "rules") {
+			document.body.style.backgroundColor = "black";
 			hudMan.pageText = "Rule " + gameMan.rules;
 		}
-		else if (gameMan.pScreen == "rules") {
-			hudMan.pageText = "";
+		else {
+			document.body.style.backgroundColor = "#00384C";
+
+			if (gameMan.pScreen == "rules") {
+				hudMan.pageText = "";
+			}
 		}
 	}
 
@@ -488,12 +493,7 @@ function drawContext(context, dTime, tv) {
 	tv = tv ? tv : "";
 
 	var canvas = context.canvas;
-	if (gameMan.scene == "rules") {
-		context.fillStyle = "black";
-		context.fillRect(0, 0, canvas.width, canvas.height);
-	} else {
-		context.clearRect(0, 0, canvas.width, canvas.height);
-	}
+	context.clearRect(0, 0, canvas.width, canvas.height);
 
 	if (drawMan.zoom) {
 		zooming(dTime);
