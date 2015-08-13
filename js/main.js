@@ -196,10 +196,6 @@ function reSize() {
 		}
 	}
 
-	drawMan.hudHeight = Math.floor(44*minScale);
-	drawMan.hudFont = Math.floor(32*minScale);
-	gpCanvas.getContext("2d").font = drawMan.hudFont + "px sans-serif";
-
 	initScenes(gpCanvas, maxScale, minScale);
 	setScreen();
 }
@@ -241,6 +237,10 @@ function initScenes(canvas, maxScale, minScale, tv) {
 		scene.debugWidth = scene.buttonWidth * debugMan.cols;
 		scene.debugHeight = scene.buttonHeight * debugMan.rows;
 	}
+
+	scene.hudHeight = Math.floor(44*minScale);
+	scene.hudFont = Math.floor(32*minScale);
+	canvas.getContext("2d").font = scene.hudFont + "px sans-serif";
 }
 
 function setScreen(index) {
@@ -631,8 +631,8 @@ function drawContext(context, dTime, tv) {
 		if (gameMan.debug) {
 			hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[tv + gameMan.scene].scale.toFixed(4) + "x";
 			context.fillStyle = "white";
-			context.clearRect(0, 0, canvas.width, drawMan.hudHeight);
-			context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, drawMan.hudFont);
+			context.clearRect(0, 0, canvas.width, scene.hudHeight);
+			context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, scene.hudFont);
 		}
 	}
 }
