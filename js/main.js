@@ -1,6 +1,11 @@
 "use strict";
 
 window.onload = function() {
+	console.log(navigator.userAgent);
+	if (navigator.userAgent.indexOf("Phone") >= 0) {
+		screenType = 1;
+	}
+
 	try {
 		var soundSave = JSON.parse(localStorage.getItem("NikaSoundSave"));
 		if (soundSave) {
@@ -156,8 +161,6 @@ window.onload = function() {
 	} else {
 		draw(0);
 	}
-
-	console.log(navigator.userAgent);
 }
 
 function reSize() {
@@ -232,7 +235,7 @@ function initScenes(canvas, maxScale, minScale, tv) {
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 
 	scene = scenes[tv + "hud"];
-	scene.popupWidth = 1024 * minScale;
+	scene.popupWidth = 1024 * minScale;	// TODO choose better size for higher resolutions
 	scene.popupHeight = 512 * minScale;
 	scene.buttonWidth = drawMan.cellSize * minScale * 2;
 	scene.buttonHeight = drawMan.cellSize * minScale;
