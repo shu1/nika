@@ -225,7 +225,7 @@ function initScenes(canvas, maxScale, minScale, tv) {
 	scene = scenes[tv + "menus"];
 	scene.height = (canvas.height <= 480) ? drawMan.screenHeight : 1152;
 	scene.width = scene.height * ratio;
-	scene.maxScale = scene.minScale = scene.scale = canvas.height / scene.height;	// can't scale menus
+	scene.scale = scene.minScale = scene.maxScale = canvas.height / scene.height;	// don't scale menus
 	scene.x = (canvas.width - scene.width * scene.scale)/2;
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 
