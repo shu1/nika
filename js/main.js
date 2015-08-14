@@ -156,6 +156,8 @@ window.onload = function() {
 	} else {
 		draw(0);
 	}
+
+	console.log(navigator.userAgent);
 }
 
 function reSize() {
