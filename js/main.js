@@ -181,16 +181,20 @@ function reSize() {
 	}
 	else if (gpCanvas.height > 480 && (gpCanvas.width != 1024 || gpCanvas.height != 768)) {	// phone
 		minScale = gpCanvas.width / drawMan.boardWidth;
-		maxScale = gpCanvas.height / 720;	// TODO width / 1280?
+		maxScale = gpCanvas.width / 1280;
 
-		if (maxScale > 0.9 && maxScale < 1.1) {
+		if (minScale < 0.5) {
+			minScale = 0.5;
+		}
+
+		if (maxScale >= 0.9 && maxScale < 1.12) {
 			maxScale = 1;
 		}
-		else if (maxScale > 1.4 && maxScale < 1.6) {
+		else if (maxScale > 1.4 && maxScale <= 1.6) {
 			maxScale = 1.5;
 		}
-		else if (maxScale > 0.7 && maxScale < 0.8) {
-			maxScale = 0.75;
+		else if (maxScale >= 1.8 && maxScale < 2.23) {
+			maxScale = 2;
 		}
 	}
 
