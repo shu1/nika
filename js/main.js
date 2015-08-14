@@ -153,8 +153,7 @@ window.onload = function() {
 		});
 
 		tvDisplay.load("wiiutv.html");
-	}
-	else {
+	} else {
 		draw(0);
 	}
 }
@@ -166,24 +165,23 @@ function reSize() {
 	}
 	drawMan.screenDistance = Math.sqrt(gpCanvas.width*gpCanvas.width + gpCanvas.height*gpCanvas.height);
 
-	var minScale = 0.5, maxScale = 2/3;	// defaults for ipad and gamepad
+	var minScale = 0.5, maxScale = 2/3;	// defaults for ipad, gamepad and small devices
 	if (gpCanvas.width == 2048 && gpCanvas.height == 1536) {	// ipad retina
 		minScale = 1;
 		maxScale = 4/3;
 	}
-	else if (screenType == 2) {	// tablet, pc, or tv
+	else if (screenType == 2) {	// tablet, pc or tv
 		if (gpCanvas.width / gpCanvas.height >= 1.4) {	// landscape
 			minScale = gpCanvas.height / drawMan.boardHeight;
 			maxScale = gpCanvas.width / drawMan.boardWidth;
-		}
-		else {	// portrait
+		} else {	// portrait
 			minScale = gpCanvas.width / drawMan.boardWidth;
 			maxScale = gpCanvas.height / drawMan.boardHeight;
 		}
 	}
-	else if ((gpCanvas.width != 1024 || gpCanvas.height != 768) && gpCanvas.height > 480) {	// not ipad nor gamepad, so phone
+	else if (gpCanvas.height > 480 && (gpCanvas.width != 1024 || gpCanvas.height != 768)) {	// phone
 		minScale = gpCanvas.width / drawMan.boardWidth;
-		maxScale = gpCanvas.height / 720;
+		maxScale = gpCanvas.height / 720;	// TODO width / 1280?
 
 		if (maxScale > 0.9 && maxScale < 1.1) {
 			maxScale = 1;
