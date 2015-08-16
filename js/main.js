@@ -116,10 +116,7 @@ window.onload = function() {
 	gpCanvas.addEventListener("contextmenu", function(e){e.preventDefault()});
 	window.addEventListener("wheel", mouseWheel);
 	window.addEventListener("keydown", keyDown);
-
-	if (screenType > 0) {
-		window.addEventListener("resize", reSize);
-	}
+	window.addEventListener("resize", reSize);
 
 	if (debugBuild) {
 		debugMan.cols = 3;
@@ -164,10 +161,8 @@ window.onload = function() {
 }
 
 function reSize() {
-	if (screenType > 0) {	// fullscreen
-		gpCanvas.width = window.innerWidth;
-		gpCanvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
-	}
+	gpCanvas.width = window.innerWidth;
+	gpCanvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 	drawMan.screenDistance = Math.sqrt(gpCanvas.width*gpCanvas.width + gpCanvas.height*gpCanvas.height);
 
 	var minScale = 0.5, maxScale = 2/3;	// defaults for ipad, gamepad and small devices

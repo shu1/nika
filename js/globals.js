@@ -42,10 +42,10 @@ var drawMan = {
 }
 
 var gameMan = {
+	debug:false,
+	selection:false,
 	tutorialStep:-1,
 	tutorialPart:-1,
-	selection:false,
-	debug:false,
 	winner:-1,
 	actions:2,
 	player:0,
