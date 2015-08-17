@@ -46,7 +46,6 @@ window.onload = function() {
 	loadImage("buttonActive");
 	loadImage("tutorialButton", 2);
 	loadImage("menuPopup");
-	loadImage("menuPopupActive");
 	loadImage("menuSetup", 1);
 	loadImage("menuSetupAI", 2);
 	loadImage("menuTutorial", 1);
@@ -230,7 +229,8 @@ function initScenes(canvas, maxScale, minScale, tv) {
 	scene.y = (canvas.height - scene.height * scene.scale)/2;
 
 	scene = scenes[tv + "hud"];
-	scene.popupWidth = 1024 * minScale;	// TODO choose better size for higher resolutions
+	scene.scale = minScale;	// TODO set context scale like other scenes?
+	scene.popupWidth = 1024 * minScale;	// TODO choose better size for tv
 	scene.popupHeight = 512 * minScale;
 	scene.buttonWidth = drawMan.cellSize * minScale * 2;
 	scene.buttonHeight = drawMan.cellSize * minScale;
@@ -605,7 +605,8 @@ function drawContext(context, dTime, tv) {
 		context.drawImage(images["menuPopup"], x, y - (y + scene.popupHeight) * drawMan.slide, scene.popupWidth, scene.popupHeight);
 
 		if (inputMan.drag == "popup" && menus["popup"] >= 0) {
-			context.drawImage(images["menuPopupActive"], x, y + scene.popupHeight/4 * menus["popup"], scene.popupWidth, scene.popupHeight/4);	// TODO draw with fillRect and fix size
+			context.fillStyle = "rgba(224,217,179,0.5)";
+			context.fillRect(x + 10*scene.scale, y + (9 + 124 * menus["popup"]) * scene.scale, 1004*scene.scale, 122*scene.scale);
 		}
 	}
 
