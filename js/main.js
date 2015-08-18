@@ -249,16 +249,20 @@ function setScreen(index) {
 		gameMan.pScreen = gameMan.screen;
 		gameMan.screen = index;
 		gameMan.scene = getScene(gameMan.screen);
+	}
 
-		if (gameMan.screen == "rules") {
-			drawMan.color = "black";
-			hudMan.pageText = "Rule " + gameMan.rules;
-		}
-		else {
-			drawMan.color = "#00384C";
-			if (gameMan.pScreen == "rules") {
-				hudMan.pageText = "";
-			}
+	if (gameMan.screen == "title") {
+		drawMan.slideY = drawMan.activeHeight * menus["title"];
+	}
+
+	if (gameMan.screen == "rules") {
+		drawMan.color = "black";
+		hudMan.pageText = "Rule " + gameMan.rules;
+	}
+	else {
+		drawMan.color = "#00384C";
+		if (gameMan.pScreen == "rules") {
+			hudMan.pageText = "";
 		}
 	}
 
@@ -422,6 +426,9 @@ function draw(time) {
 		}
 	}
 
+	var y = drawMan.activeHeight * menus["title"];
+	drawMan.slideY = y + (drawMan.slideY - y) * drawMan.slide;
+
 	if (gameMan.scene == "board" && gameMan.screen != "popup") {
 		if (gameMan.timed){
 			updateTimer(dTime);
@@ -559,7 +566,7 @@ function drawContext(context, dTime, tv) {
 		context.drawImage(images["menuTitle0"], x, y);
 		context.drawImage(images["menuTitle1"], x+512, y);
 		if (menus["title"] < 6) {
-			context.drawImage(images["menuTitleActive"], x+82, y+282 + drawMan.activeHeight*menus["title"]);
+			context.drawImage(images["menuTitleActive"], x+82, y+282 + drawMan.slideY);
 		}
 		break;
 	case "setup":

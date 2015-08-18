@@ -209,7 +209,11 @@ function handleScreen(scene, x, y) {
 		x -= (scene.width - drawMan.screenWidth)/2;
 		y -= (scene.height - drawMan.screenHeight)/2 + 282;	// offset to top of menu
 		if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
-			menus["title"] = Math.floor(y / drawMan.activeHeight);
+			var i = Math.floor(y / drawMan.activeHeight);
+			if (menus["title"] != i) {
+				menus["title"] = i;
+				drawMan.slide = 1;
+			}
 			return true;
 		}
 	}
@@ -636,6 +640,7 @@ function keyPrev() {
 	}
 	else if (gameMan.screen == "title" && menus["title"] > 0) {
 		menus["title"]--;
+		drawMan.slide = 1;
 		return true;
 	}
 	else if (gameMan.screen == "tutorial" && menus["tutorial"] > 0) {
@@ -678,6 +683,7 @@ function keyNext() {
 	}
 	else if (gameMan.screen == "title" && menus["title"] < 5) {
 		menus["title"]++;
+		drawMan.slide = 1;
 		return true;
 	}
 	else if (gameMan.screen == "tutorial" && menus["tutorial"] < 3) {
