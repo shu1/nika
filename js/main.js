@@ -597,12 +597,14 @@ function drawContext(context, dTime, tv) {
 		context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, scene.hudFont);
 	}
 
-	var x = (canvas.width - scene.popupWidth)/2;
-	var y = (canvas.height - scene.popupHeight)/2;
 	if (gameMan.screen == "popup") {
+		x = (canvas.width - scene.popupWidth)/2;
+		y = (canvas.height - scene.popupHeight)/2;
+		y -= (y + scene.popupHeight) * drawMan.slide;
+
 		context.fillStyle = "rgba(0,0,0," + drawMan.alpha + ")";
 		context.fillRect(0, 0, canvas.width, canvas.height);
-		context.drawImage(images["menuPopup"], x, y - (y + scene.popupHeight) * drawMan.slide, scene.popupWidth, scene.popupHeight);
+		context.drawImage(images["menuPopup"], x, y, scene.popupWidth, scene.popupHeight);
 
 		if (inputMan.drag == "popup" && menus["popup"] >= 0) {
 			context.fillStyle = "rgba(224,217,179,0.5)";
