@@ -425,12 +425,12 @@ function menuRules(index) {
 	switch (index) {
 	case 0:
 		gameMan.rules--;
-		drawMan.slide = -1;
+		drawMan.slideScreen = -1;
 		hudMan.pageText = "Rule " + gameMan.rules;
 		break;
 	case 1:
 		gameMan.rules++;
-		drawMan.slide = 1;
+		drawMan.slideScreen = 1;
 		hudMan.pageText = "Rule " + gameMan.rules;
 		break;
 	}
@@ -489,7 +489,7 @@ function menuButton(index) {
 		}
 		else if (gameMan.screen == "board") {
 			fadeScreen("popup");
-			drawMan.slide = 1;
+			drawMan.slideScreen = 1;
 		}
 		break;
 	case 1:

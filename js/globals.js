@@ -9,6 +9,7 @@ var soundMan = {
 	sound:0.5
 }
 
+// TODO remove vars that don't need starting value
 var drawMan = {
 	color:"#00384C",
 	cellSize:96,
@@ -34,7 +35,8 @@ var drawMan = {
 	helmetScale:0,
 	helmetTheta:0,
 	helmetFlash:0,
-	slide:0,
+	slideScreen:0,
+	slideActive:0,
 	alpha:0,
 	fade:0,
 	zoom:0,

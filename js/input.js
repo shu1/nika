@@ -158,7 +158,12 @@ function handleHud(down) {
 	var x = inputMan.x - (gpCanvas.width - scene.popupWidth)/2;	// offset to topleft of popup
 	var y = inputMan.y - (gpCanvas.height - scene.popupHeight)/2;
 	if (gameMan.screen == "popup" && x > 0 && x < scene.popupWidth && y > 0 && y < scene.popupHeight) {	// popup
-		menus["popup"] = Math.floor(y / (scene.popupHeight/4));
+		var i = Math.floor(y / (scene.popupHeight/4));
+		if (menus["popup"] != i) {
+			menus["popup"] = i;
+			drawMan.slideActive = 1;
+		}
+
 		if (down) {
 			inputMan.drag = "popup";
 		}
@@ -212,7 +217,7 @@ function handleScreen(scene, x, y) {
 			var i = Math.floor(y / drawMan.activeHeight);
 			if (menus["title"] != i) {
 				menus["title"] = i;
-				drawMan.slide = 1;
+				drawMan.slideActive = 1;
 			}
 			return true;
 		}
@@ -640,7 +645,7 @@ function keyPrev() {
 	}
 	else if (gameMan.screen == "title" && menus["title"] > 0) {
 		menus["title"]--;
-		drawMan.slide = 1;
+		drawMan.slideActive = 1;
 		return true;
 	}
 	else if (gameMan.screen == "tutorial" && menus["tutorial"] > 0) {
@@ -683,7 +688,7 @@ function keyNext() {
 	}
 	else if (gameMan.screen == "title" && menus["title"] < 5) {
 		menus["title"]++;
-		drawMan.slide = 1;
+		drawMan.slideActive = 1;
 		return true;
 	}
 	else if (gameMan.screen == "tutorial" && menus["tutorial"] < 3) {
