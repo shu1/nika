@@ -169,6 +169,10 @@ function reSize() {
 		minScale = 1;
 		maxScale = 4/3;
 	}
+	else if (gpCanvas.width == 2732 && gpCanvas.height == 2048) {	// ipad 12?
+		minScale = 4/3;
+		maxScale = 16/9;
+	}
 	else if (screenType == 2) {	// tablet, pc or tv
 		if (gpCanvas.width / gpCanvas.height >= 1.4) {	// landscape
 			minScale = gpCanvas.height / drawMan.boardHeight;
