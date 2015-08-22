@@ -418,11 +418,14 @@ function draw(time) {
 
 	if (drawMan.activeFade) {
 		drawMan.activeAlpha += dTime/250 * drawMan.activeFade;	// set positive/negative
+
 		if (drawMan.activeAlpha >= 1) {
 			drawMan.activeAlpha = 1;
+			drawMan.activeFade = 0;
 		}
 		else if (drawMan.activeAlpha <= 0) {
 			drawMan.activeAlpha = 0;
+			drawMan.activeFade = 0;
 		}
 	}
 
