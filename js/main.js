@@ -401,20 +401,20 @@ function draw(time) {
 	}
 
 	if (drawMan.fade) {
-		drawMan.alpha += dTime/250 * drawMan.fade;	// set positive/negative
+		drawMan.screenAlpha += dTime/250 * drawMan.fade;	// set positive/negative
 
-		if (gameMan.nScreen == "popup" && drawMan.alpha >= 0.5) {
-			drawMan.alpha = 0.5;
+		if (gameMan.nScreen == "popup" && drawMan.screenAlpha >= 0.5) {
+			drawMan.screenAlpha = 0.5;
 			drawMan.fade = 0;
 			setScreen(gameMan.nScreen);
 		}
-		else if (drawMan.alpha >= 1) {
-			drawMan.alpha = 1;
+		else if (drawMan.screenAlpha >= 1) {
+			drawMan.screenAlpha = 1;
 			drawMan.fade = -1;
 			setScreen(gameMan.nScreen);
 		}
-		else if (drawMan.alpha <= 0) {
-			drawMan.alpha = 0;
+		else if (drawMan.screenAlpha <= 0) {
+			drawMan.screenAlpha = 0;
 			drawMan.fade = 0;
 		}
 	}
@@ -628,7 +628,7 @@ function drawContext(context, dTime, tv) {
 		y = (canvas.height - scene.popupHeight)/2;
 		y -= (y + scene.popupHeight) * drawMan.slideScreen;
 
-		context.fillStyle = "rgba(0,0,0," + drawMan.alpha + ")";
+		context.fillStyle = "rgba(0,0,0," + drawMan.screenAlpha + ")";
 		context.fillRect(0, 0, canvas.width, canvas.height);
 		context.drawImage(images["menuPopup"], x, y, scene.popupWidth, scene.popupHeight);
 
@@ -655,8 +655,8 @@ function drawContext(context, dTime, tv) {
 		context.drawImage(images["buttonActive"], scene.buttonWidth * menus["button"], y, scene.buttonWidth, scene.buttonHeight);
 	}
 
-	if (drawMan.alpha > 0 && gameMan.screen != "popup") {
-		context.fillStyle = "rgba(0,0,0," + drawMan.alpha + ")";
+	if (drawMan.screenAlpha > 0 && gameMan.screen != "popup") {
+		context.fillStyle = "rgba(0,0,0," + drawMan.screenAlpha + ")";
 		context.fillRect(0, 0, canvas.width, canvas.height);
 	}
 

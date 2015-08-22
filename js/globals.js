@@ -37,7 +37,7 @@ var drawMan = {
 	helmetFlash:0,
 	slideScreen:0,
 	slideActive:0,
-	alpha:0,
+	screenAlpha:0,
 	fade:0,
 	zoom:0,
 	time:0
