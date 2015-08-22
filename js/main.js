@@ -258,9 +258,6 @@ function setScreen(index) {
 	if (gameMan.screen == "title") {
 		drawMan.slideY = drawMan.activeHeight * menus["title"];
 	}
-	else if (gameMan.screen == "popup") {
-		drawMan.slideY = 124 * ((menus["popup"] >= 0) ? menus["popup"] : 0);
-	}
 
 	if (gameMan.screen == "rules") {
 		drawMan.color = "black";
@@ -419,6 +416,16 @@ function draw(time) {
 		}
 	}
 
+	if (drawMan.activeFade) {
+		drawMan.activeAlpha += dTime/250 * drawMan.activeFade;	// set positive/negative
+		if (drawMan.activeAlpha >= 1) {
+			drawMan.activeAlpha = 1;
+		}
+		else if (drawMan.activeAlpha <= 0) {
+			drawMan.activeAlpha = 0;
+		}
+	}
+
 	function slide(slide) {
 		var speed = slide * dTime / 100;
 		if (slide > 0) {
@@ -439,14 +446,10 @@ function draw(time) {
 	drawMan.screenSlide = slide(drawMan.screenSlide);
 	drawMan.activeSlide = slide(drawMan.activeSlide);
 
-	var y;
 	if (gameMan.screen == "title") {
-		y = drawMan.activeHeight * menus["title"];
+		var y = drawMan.activeHeight * menus["title"];
+		drawMan.slideY = y + (drawMan.slideY - y) * drawMan.activeSlide;
 	}
-	else if (gameMan.screen == "popup") {
-		y = 124 * ((menus["popup"] >= 0) ? menus["popup"] : 0);
-	}
-	drawMan.slideY = y + (drawMan.slideY - y) * drawMan.activeSlide;
 
 	if (gameMan.scene == "board" && gameMan.screen != "popup") {
 		if (gameMan.timed){
@@ -632,9 +635,9 @@ function drawContext(context, dTime, tv) {
 		context.fillRect(0, 0, canvas.width, canvas.height);
 		context.drawImage(images["menuPopup"], x, y, scene.popupWidth, scene.popupHeight);
 
-		if (inputMan.drag == "popup" && menus["popup"] >= 0) {
-			context.fillStyle = "rgba(224,217,179,0.5)";
-			context.fillRect(x + 10*scene.scale, y + (9 + drawMan.slideY) * scene.scale, 1004*scene.scale, 122*scene.scale);
+		if (inputMan.drag == "popup" && drawMan.activeAlpha >= 0) {
+			context.fillStyle = "rgba(224,217,179," + 0.5*drawMan.activeAlpha + ")";
+			context.fillRect(x + 10*scene.scale, y + (9 + 124 * menus["popup"]) * scene.scale, 1004*scene.scale, 122*scene.scale);
 		}
 	}
 

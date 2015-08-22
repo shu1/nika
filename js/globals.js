@@ -38,7 +38,9 @@ var drawMan = {
 	screenSlide:0,
 	activeSlide:0,
 	screenAlpha:0,
+	activeAlpha:0,
 	screenFade:0,
+	activeFade:0,
 	zoom:0,
 	time:0
 }

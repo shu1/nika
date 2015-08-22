@@ -159,9 +159,10 @@ function handleHud(down) {
 	var y = inputMan.y - (gpCanvas.height - scene.popupHeight)/2;
 	if (gameMan.screen == "popup" && x > 0 && x < scene.popupWidth && y > 0 && y < scene.popupHeight) {	// popup
 		var i = Math.floor(y / (scene.popupHeight/4));
-		if (menus["popup"] != i) {
+		if (menus["popup"] != i || drawMan.activeAlpha == 0) {	// newly clicking within popup
 			menus["popup"] = i;
-			drawMan.activeSlide = 1;
+			drawMan.activeAlpha = 0;
+			drawMan.activeFade = 1;
 		}
 
 		if (down) {
@@ -169,7 +170,7 @@ function handleHud(down) {
 		}
 		return down || handled;
 	} else {
-		menus["popup"] = -1;
+		drawMan.activeFade = -1;
 	}
 
 	if ((gameMan.screen != "board" && gameMan.screen != "title")
@@ -364,7 +365,12 @@ function mouseUp(event) {
 			menuButton(menus["button"]);
 		}
 		else if (inputMan.drag == "popup") {
-			menuPopup(menus["popup"]);
+			var scene = scenes["hud"];
+			var x = inputMan.x - (gpCanvas.width - scene.popupWidth)/2;	// offset to topleft of popup
+			var y = inputMan.y - (gpCanvas.height - scene.popupHeight)/2;
+			if (x > 0 && x < scene.popupWidth && y > 0 && y < scene.popupHeight) {
+				menuPopup(menus["popup"]);
+			}
 		}
 		else {
 			var scene = scenes[gameMan.scene];
