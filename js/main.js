@@ -296,10 +296,10 @@ function setScreen(index) {
 
 function fadeScreen(index) {
 	gameMan.nScreen = index;
-	drawMan.fade = 1;
+	drawMan.screenFade = 1;
 
 	if (gameMan.screen == "popup" && gameMan.nScreen == "board") {
-		drawMan.fade = -1;
+		drawMan.screenFade = -1;
 		setScreen("board");
 	}
 }
@@ -400,22 +400,22 @@ function draw(time) {
 		zooming(dTime);
 	}
 
-	if (drawMan.fade) {
-		drawMan.screenAlpha += dTime/250 * drawMan.fade;	// set positive/negative
+	if (drawMan.screenFade) {
+		drawMan.screenAlpha += dTime/250 * drawMan.screenFade;	// set positive/negative
 
 		if (gameMan.nScreen == "popup" && drawMan.screenAlpha >= 0.5) {
 			drawMan.screenAlpha = 0.5;
-			drawMan.fade = 0;
+			drawMan.screenFade = 0;
 			setScreen(gameMan.nScreen);
 		}
 		else if (drawMan.screenAlpha >= 1) {
 			drawMan.screenAlpha = 1;
-			drawMan.fade = -1;
+			drawMan.screenFade = -1;
 			setScreen(gameMan.nScreen);
 		}
 		else if (drawMan.screenAlpha <= 0) {
 			drawMan.screenAlpha = 0;
-			drawMan.fade = 0;
+			drawMan.screenFade = 0;
 		}
 	}
 
