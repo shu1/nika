@@ -436,8 +436,8 @@ function draw(time) {
 		return slide;
 	}
 
-	drawMan.slideScreen = slide(drawMan.slideScreen);
-	drawMan.slideActive = slide(drawMan.slideActive);
+	drawMan.screenSlide = slide(drawMan.screenSlide);
+	drawMan.activeSlide = slide(drawMan.activeSlide);
 
 	var y;
 	if (gameMan.screen == "title") {
@@ -446,7 +446,7 @@ function draw(time) {
 	else if (gameMan.screen == "popup") {
 		y = 124 * ((menus["popup"] >= 0) ? menus["popup"] : 0);
 	}
-	drawMan.slideY = y + (drawMan.slideY - y) * drawMan.slideActive;
+	drawMan.slideY = y + (drawMan.slideY - y) * drawMan.activeSlide;
 
 	if (gameMan.scene == "board" && gameMan.screen != "popup") {
 		if (gameMan.timed){
@@ -576,8 +576,8 @@ function drawContext(context, dTime, tv) {
 		break;
 	case "rules":
 		if (gameMan.rules < rulePages) {
-			context.drawImage(images["rule" + gameMan.rules + "0"], x + 1536*drawMan.slideScreen, y);
-			context.drawImage(images["rule" + gameMan.rules + "1"], x+1024 + 1536*drawMan.slideScreen, y);
+			context.drawImage(images["rule" + gameMan.rules + "0"], x + 1536*drawMan.screenSlide, y);
+			context.drawImage(images["rule" + gameMan.rules + "1"], x+1024 + 1536*drawMan.screenSlide, y);
 			drawRules(context, scene);
 		}
 		break;
@@ -626,7 +626,7 @@ function drawContext(context, dTime, tv) {
 	if (gameMan.screen == "popup") {
 		x = (canvas.width - scene.popupWidth)/2;
 		y = (canvas.height - scene.popupHeight)/2;
-		y -= (y + scene.popupHeight) * drawMan.slideScreen;
+		y -= (y + scene.popupHeight) * drawMan.screenSlide;
 
 		context.fillStyle = "rgba(0,0,0," + drawMan.screenAlpha + ")";
 		context.fillRect(0, 0, canvas.width, canvas.height);

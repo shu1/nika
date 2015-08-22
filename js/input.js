@@ -161,7 +161,7 @@ function handleHud(down) {
 		var i = Math.floor(y / (scene.popupHeight/4));
 		if (menus["popup"] != i) {
 			menus["popup"] = i;
-			drawMan.slideActive = 1;
+			drawMan.activeSlide = 1;
 		}
 
 		if (down) {
@@ -217,7 +217,7 @@ function handleScreen(scene, x, y) {
 			var i = Math.floor(y / drawMan.activeHeight);
 			if (menus["title"] != i) {
 				menus["title"] = i;
-				drawMan.slideActive = 1;
+				drawMan.activeSlide = 1;
 			}
 			return true;
 		}
@@ -645,7 +645,7 @@ function keyPrev() {
 	}
 	else if (gameMan.screen == "title" && menus["title"] > 0) {
 		menus["title"]--;
-		drawMan.slideActive = 1;
+		drawMan.activeSlide = 1;
 		return true;
 	}
 	else if (gameMan.screen == "tutorial" && menus["tutorial"] > 0) {
@@ -688,7 +688,7 @@ function keyNext() {
 	}
 	else if (gameMan.screen == "title" && menus["title"] < 5) {
 		menus["title"]++;
-		drawMan.slideActive = 1;
+		drawMan.activeSlide = 1;
 		return true;
 	}
 	else if (gameMan.screen == "tutorial" && menus["tutorial"] < 3) {
