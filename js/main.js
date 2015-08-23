@@ -257,6 +257,9 @@ function setScreen(index) {
 
 	if (gameMan.screen == "title") {
 		drawMan.slideY = drawMan.activeHeight * menus["title"];
+		drawMan.activeAlpha = 1;
+	} else {
+		drawMan.activeAlpha = 0;
 	}
 
 	if (gameMan.screen == "rules") {
@@ -429,6 +432,20 @@ function draw(time) {
 		}
 	}
 
+	// TODO refactor this code together
+	if (drawMan.activeFlash) {
+		drawMan.activeAlpha -= dTime/100 * drawMan.activeFlash;	// set positive/negative
+
+		if (drawMan.activeAlpha <= 0) {
+			drawMan.activeAlpha = 0;
+			drawMan.activeFlash = -1;
+		}
+		else if (drawMan.activeAlpha >= 1) {
+			drawMan.activeAlpha = 1;
+			drawMan.activeFlash = 0;
+		}
+	}
+
 	function slide(slide) {
 		var speed = slide * dTime / 100;
 		if (slide > 0) {
@@ -591,7 +608,11 @@ function drawContext(context, dTime, tv) {
 		context.drawImage(images["menuTitle0"], x, y);
 		context.drawImage(images["menuTitle1"], x+512, y);
 		if (menus["title"] < 6) {
+			if (drawMan.activeAlpha < 1) {
+				context.globalAlpha = drawMan.activeAlpha;
+			}
 			context.drawImage(images["menuTitleActive"], x+82, y+282 + drawMan.slideY);
+			context.globalAlpha = 1;
 		}
 		break;
 	case "setup":

@@ -406,6 +406,7 @@ function menuTitle(index) {
 		fadeScreen("credit");
 		break;
 	}
+	drawMan.activeFlash = 1;
 }
 
 function menuSetup(index) {
