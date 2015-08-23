@@ -557,6 +557,46 @@ function drawContext(context, dTime, tv) {
 	var x = (scene.width - drawMan.screenWidth)/2;
 	var y = (scene.height - drawMan.screenHeight)/2;
 	switch (gameMan.screen) {
+	case "title":
+		context.drawImage(images["menuTitle0"], x, y);
+		context.drawImage(images["menuTitle1"], x+512, y);
+		if (menus["title"] < 6) {
+			if (drawMan.activeAlpha < 1) {
+				context.globalAlpha = drawMan.activeAlpha;
+			}
+			context.drawImage(images["menuTitleActive"], x+82, y+282 + drawMan.slideY);
+			context.globalAlpha = 1;
+		}
+		break;
+	case "setup":
+		context.drawImage(images["menuSetup0"], x, y);
+		context.drawImage(images["menuSetup1"], x+512, y);
+		context.drawImage(images["menuSetupAI" + gameMan.ais[0]], x+50, y+540);
+		context.drawImage(images["menuSetupAI" + gameMan.ais[2]], x+340, y+540);
+		context.drawImage(images["menuSetupAI" + gameMan.ais[1]], x+1020, y+540);
+		context.drawImage(images["menuSetupAI" + gameMan.ais[3]], x+1310, y+540);
+		break;
+	case "tutorial":
+		context.drawImage(images["menuTutorial0"], x, y);
+		context.drawImage(images["menuTutorial1"], x+512, y);
+		break;
+	case "option":
+		context.drawImage(images["menuOption0"], x, y);
+		context.drawImage(images["menuOption1"], x+512, y);
+		context.drawImage(images["menuOptionSlider"], x+100 + 1210*soundMan.music, y+384);
+		context.drawImage(images["menuOptionSlider"], x+100 + 1210*soundMan.sound, y+648);
+		break;
+	case "credit":
+		context.drawImage(images["menuCredit0"], x, y);
+		context.drawImage(images["menuCredit1"], x+512, y);
+		break;
+	case "rules":
+		if (gameMan.rules < rulePages) {
+			context.drawImage(images["rule" + gameMan.rules + "0"], x + 1536*drawMan.screenSlide, y);
+			context.drawImage(images["rule" + gameMan.rules + "1"], x+1024 + 1536*drawMan.screenSlide, y);
+			drawRules(context, scene);
+		}
+		break;
 	case "popup":
 	case "board":
 		context.drawImage(images["board0"], 0, 0);
@@ -597,98 +637,40 @@ function drawContext(context, dTime, tv) {
 			}
 		}
 		break;
-	case "rules":
-		if (gameMan.rules < rulePages) {
-			context.drawImage(images["rule" + gameMan.rules + "0"], x + 1536*drawMan.screenSlide, y);
-			context.drawImage(images["rule" + gameMan.rules + "1"], x+1024 + 1536*drawMan.screenSlide, y);
-			drawRules(context, scene);
-		}
-		break;
-	case "title":
-		context.drawImage(images["menuTitle0"], x, y);
-		context.drawImage(images["menuTitle1"], x+512, y);
-		if (menus["title"] < 6) {
-			if (drawMan.activeAlpha < 1) {
-				context.globalAlpha = drawMan.activeAlpha;
-			}
-			context.drawImage(images["menuTitleActive"], x+82, y+282 + drawMan.slideY);
-			context.globalAlpha = 1;
-		}
-		break;
-	case "setup":
-		context.drawImage(images["menuSetup0"], x, y);
-		context.drawImage(images["menuSetup1"], x+512, y);
-		context.drawImage(images["menuSetupAI" + gameMan.ais[0]], x+50, y+540);
-		context.drawImage(images["menuSetupAI" + gameMan.ais[2]], x+340, y+540);
-		context.drawImage(images["menuSetupAI" + gameMan.ais[1]], x+1020, y+540);
-		context.drawImage(images["menuSetupAI" + gameMan.ais[3]], x+1310, y+540);
-		break;
-	case "tutorial":
-		context.drawImage(images["menuTutorial0"], x, y);
-		context.drawImage(images["menuTutorial1"], x+512, y);
-		break;
-	case "option":
-		context.drawImage(images["menuOption0"], x, y);
-		context.drawImage(images["menuOption1"], x+512, y);
-		context.drawImage(images["menuOptionSlider"], x+100 + 1210*soundMan.music, y+384);
-		context.drawImage(images["menuOptionSlider"], x+100 + 1210*soundMan.sound, y+648);
-		break;
-	case "credit":
-		context.drawImage(images["menuCredit0"], x, y);
-		context.drawImage(images["menuCredit1"], x+512, y);
-		break;
 	}
 
 	context.restore();
-
-	scene = scenes["hud"];
-	if (gameMan.debug) {
-		context.fillStyle = drawMan.color;
-		context.fillRect(0, 0, canvas.width, scene.hudHeight);
-		hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[tv + gameMan.scene].scale.toFixed(4) + "x";
-		context.fillStyle = "white";
-		context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, scene.hudFont);
-	}
-
-	if (gameMan.screen == "popup") {
-		x = (canvas.width - scene.popupWidth)/2;
-		y = (canvas.height - scene.popupHeight)/2;
-		y -= (y + scene.popupHeight) * drawMan.screenSlide;
-
-		context.fillStyle = "rgba(0,0,0," + drawMan.screenAlpha + ")";
-		context.fillRect(0, 0, canvas.width, canvas.height);
-		context.drawImage(images["menuPopup"], x, y, scene.popupWidth, scene.popupHeight);
-
-		if (inputMan.drag == "popup" && drawMan.activeAlpha >= 0) {
-			context.fillStyle = "rgba(224,217,179," + 0.5*drawMan.activeAlpha + ")";
-			context.fillRect(x + 10*scene.scale, y + (9 + 124 * menus["popup"]) * scene.scale, 1004*scene.scale, 122*scene.scale);
-		}
-	}
-
-	y = canvas.height - scene.buttonHeight;
-	if (gameMan.scene == "rules" || gameMan.screen == "popup") {
-		context.drawImage(images["buttonClose"], 0, y, scene.buttonWidth, scene.buttonHeight);
-	}
-	else if (gameMan.screen == "setup" || gameMan.screen == "option" || gameMan.screen == "credit" || gameMan.screen == "tutorial") {
-		context.drawImage(images["buttonBack"], 0, y, scene.buttonWidth, scene.buttonHeight);
-	}
-	else if (gameMan.scene == "board") {
-		context.drawImage(images["buttonMenu"], 0, y, scene.buttonWidth, scene.buttonHeight);
-		context.drawImage(images["buttonPass"], scene.buttonWidth, y, scene.buttonWidth, scene.buttonHeight);
-		context.drawImage(images["buttonUndo"], scene.buttonWidth*2, y, scene.buttonWidth, scene.buttonHeight);
-	}
-
-	if (inputMan.drag == "button" && menus["button"] >= 0) {
-		context.drawImage(images["buttonActive"], scene.buttonWidth * menus["button"], y, scene.buttonWidth, scene.buttonHeight);
-	}
-
-	if (drawMan.screenAlpha > 0 && gameMan.screen != "popup") {
-		context.fillStyle = "rgba(0,0,0," + drawMan.screenAlpha + ")";
-		context.fillRect(0, 0, canvas.width, canvas.height);
-	}
+	drawHud(context, tv);	// TODO call drawDebug() inside drawHud() if drawHud() needs dTime
 
 	if (debugBuild) {
 		drawDebug(context, dTime);
+	}
+}
+
+function drawRules(context, scene) {
+	if (scene.height > 1024) {	// only draw border if screen isn't small
+		var padding = drawMan.arrowWidth/6;
+		var borderX = drawMan.arrowWidth*1.1;
+		var borderY = (scene.height - drawMan.screenHeight)/4;
+		var borderWidth = scene.width - borderX*2;
+		var borderHeight = (scene.height + drawMan.screenHeight)/2;
+
+		context.strokeStyle = "#E0D9B3";
+		context.lineCap = "square";
+		context.lineWidth = 8;
+		context.strokeRect(borderX, borderY, borderWidth, borderHeight);
+		context.lineWidth = 2;
+		context.strokeRect(borderX + padding, borderY + padding, borderWidth - padding*2, borderHeight - padding*2);
+	}
+
+	var arrowY = (scene.height - drawMan.arrowHeight)/2;
+	if (gameMan.rules > 0) {
+		var image = (menus["rules"] == 0) ? "ruleArrowActive0" : "ruleArrow0";
+		context.drawImage(images[image], drawMan.arrowWidth/2, arrowY);
+	}
+	if (gameMan.rules < rulePages-1) {
+		var image = (menus["rules"] == 1) ? "ruleArrowActive1" : "ruleArrow1";
+		context.drawImage(images[image], scene.width - drawMan.arrowWidth*1.5, arrowY);
 	}
 }
 
@@ -796,37 +778,6 @@ function drawPieces(context) {
 	}
 }
 
-function drawTimer(context) {
-	if (gameMan.ais[gameMan.player] > 0 || gameMan.tutorialStep >= 0) {
-		return;
-	}
-	context.save();
-	var remainingTime = gameMan.turnTime - gameMan.turnTimer;
-	var minutes = Math.floor(remainingTime / 60000);
-	var seconds = Math.floor(remainingTime / 1000) - 60 * Math.floor(gameMan.turnTimer / 60000);
-	var divider = seconds < 10 ? ":0" : ":";
-	var timeString = minutes + divider + seconds;
-	context.font = (2 * fontSize) + "px Georgia";
-	context.fillStyle = "white";
-	context.fillText(timeString, 2000 - context.measureText(timeString).width, 2 * fontSize);
-	context.restore();
-}
-
-function drawTutorialProgress(context) {
-	context.save();
-	var sectionStarts = [0,7,23,34,52]; // HACK last section start represents end of tutorial, included for edge case handling
-	var sectionNames = ["Introduction", "Actions and Routing", "Phalanxes", "Pushing"];
-	var i = sectionStarts.length - 2;
-	while (gameMan.tutorialStep < sectionStarts[i] && i > 0) {
-		i -= 1;
-	}
-	var progressString = sectionNames[i] + ": " + (gameMan.tutorialStep - sectionStarts[i] + 1)  + "/" + (sectionStarts[i+1] - sectionStarts[i]);
-	context.font = (2 * fontSize) + "px Georgia";
-	context.fillStyle = "white";
-	context.fillText(progressString, 2000 - context.measureText(progressString).width, 3 * fontSize);
-	context.restore();
-}
-
 function drawTiles(context, dTime) {
 	if (gameMan.tutorialStep < 0 || (gameMan.tutorialStep > 0 && gameMan.tutorialStep < 7) || gameMan.tutorialStep == 50) {
 		var theta = drawMan.time/400 % (Math.PI*2);
@@ -894,30 +845,83 @@ function drawTiles(context, dTime) {
 	context.restore();
 }
 
-function drawRules(context, scene) {
-	if (scene.height > 1024) {	// only draw border if screen isn't small
-		var padding = drawMan.arrowWidth/6;
-		var borderX = drawMan.arrowWidth*1.1;
-		var borderY = (scene.height - drawMan.screenHeight)/4;
-		var borderWidth = scene.width - borderX*2;
-		var borderHeight = (scene.height + drawMan.screenHeight)/2;
+function drawTimer(context) {
+	if (gameMan.ais[gameMan.player] > 0 || gameMan.tutorialStep >= 0) {
+		return;
+	}
+	context.save();
+	var remainingTime = gameMan.turnTime - gameMan.turnTimer;
+	var minutes = Math.floor(remainingTime / 60000);
+	var seconds = Math.floor(remainingTime / 1000) - 60 * Math.floor(gameMan.turnTimer / 60000);
+	var divider = seconds < 10 ? ":0" : ":";
+	var timeString = minutes + divider + seconds;
+	context.font = (2 * fontSize) + "px Georgia";
+	context.fillStyle = "white";
+	context.fillText(timeString, 2000 - context.measureText(timeString).width, 2 * fontSize);
+	context.restore();
+}
 
-		context.strokeStyle = "#E0D9B3";
-		context.lineCap = "square";
-		context.lineWidth = 8;
-		context.strokeRect(borderX, borderY, borderWidth, borderHeight);
-		context.lineWidth = 2;
-		context.strokeRect(borderX + padding, borderY + padding, borderWidth - padding*2, borderHeight - padding*2);
+function drawTutorialProgress(context) {
+	context.save();
+	var sectionStarts = [0,7,23,34,52]; // HACK last section start represents end of tutorial, included for edge case handling
+	var sectionNames = ["Introduction", "Actions and Routing", "Phalanxes", "Pushing"];
+	var i = sectionStarts.length - 2;
+	while (gameMan.tutorialStep < sectionStarts[i] && i > 0) {
+		i -= 1;
+	}
+	var progressString = sectionNames[i] + ": " + (gameMan.tutorialStep - sectionStarts[i] + 1)  + "/" + (sectionStarts[i+1] - sectionStarts[i]);
+	context.font = (2 * fontSize) + "px Georgia";
+	context.fillStyle = "white";
+	context.fillText(progressString, 2000 - context.measureText(progressString).width, 3 * fontSize);
+	context.restore();
+}
+
+function drawHud(context, tv) {
+	var x, y, scene = scenes["hud"];
+
+	if (gameMan.debug) {
+		context.fillStyle = drawMan.color;
+		context.fillRect(0, 0, canvas.width, scene.hudHeight);
+		hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[tv + gameMan.scene].scale.toFixed(4) + "x";
+		context.fillStyle = "white";
+		context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, scene.hudFont);
 	}
 
-	var arrowY = (scene.height - drawMan.arrowHeight)/2;
-	if (gameMan.rules > 0) {
-		var image = (menus["rules"] == 0) ? "ruleArrowActive0" : "ruleArrow0";
-		context.drawImage(images[image], drawMan.arrowWidth/2, arrowY);
+	if (gameMan.screen == "popup") {
+		x = (canvas.width - scene.popupWidth)/2;
+		y = (canvas.height - scene.popupHeight)/2;
+		y -= (y + scene.popupHeight) * drawMan.screenSlide;
+
+		context.fillStyle = "rgba(0,0,0," + drawMan.screenAlpha + ")";
+		context.fillRect(0, 0, canvas.width, canvas.height);
+		context.drawImage(images["menuPopup"], x, y, scene.popupWidth, scene.popupHeight);
+
+		if (inputMan.drag == "popup" && drawMan.activeAlpha >= 0) {
+			context.fillStyle = "rgba(224,217,179," + 0.5*drawMan.activeAlpha + ")";
+			context.fillRect(x + 10*scene.scale, y + (9 + 124 * menus["popup"]) * scene.scale, 1004*scene.scale, 122*scene.scale);
+		}
 	}
-	if (gameMan.rules < rulePages-1) {
-		var image = (menus["rules"] == 1) ? "ruleArrowActive1" : "ruleArrow1";
-		context.drawImage(images[image], scene.width - drawMan.arrowWidth*1.5, arrowY);
+
+	y = canvas.height - scene.buttonHeight;
+	if (gameMan.scene == "rules" || gameMan.screen == "popup") {
+		context.drawImage(images["buttonClose"], 0, y, scene.buttonWidth, scene.buttonHeight);
+	}
+	else if (gameMan.screen == "setup" || gameMan.screen == "option" || gameMan.screen == "credit" || gameMan.screen == "tutorial") {
+		context.drawImage(images["buttonBack"], 0, y, scene.buttonWidth, scene.buttonHeight);
+	}
+	else if (gameMan.scene == "board") {
+		context.drawImage(images["buttonMenu"], 0, y, scene.buttonWidth, scene.buttonHeight);
+		context.drawImage(images["buttonPass"], scene.buttonWidth, y, scene.buttonWidth, scene.buttonHeight);
+		context.drawImage(images["buttonUndo"], scene.buttonWidth*2, y, scene.buttonWidth, scene.buttonHeight);
+	}
+
+	if (inputMan.drag == "button" && menus["button"] >= 0) {
+		context.drawImage(images["buttonActive"], scene.buttonWidth * menus["button"], y, scene.buttonWidth, scene.buttonHeight);
+	}
+
+	if (drawMan.screenAlpha > 0 && gameMan.screen != "popup") {
+		context.fillStyle = "rgba(0,0,0," + drawMan.screenAlpha + ")";
+		context.fillRect(0, 0, canvas.width, canvas.height);
 	}
 }
 
