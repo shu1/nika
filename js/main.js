@@ -688,7 +688,7 @@ function drawContext(context, dTime, tv) {
 	}
 
 	if (debugBuild) {
-		drawMenu(context, dTime);
+		drawDebug(context, dTime);
 	}
 }
 
@@ -918,80 +918,6 @@ function drawRules(context, scene) {
 	if (gameMan.rules < rulePages-1) {
 		var image = (menus["rules"] == 1) ? "ruleArrowActive1" : "ruleArrow1";
 		context.drawImage(images[image], scene.width - drawMan.arrowWidth*1.5, arrowY);
-	}
-}
-
-function drawMenu(context, dTime) {
-	var canvas = context.canvas;
-	var scene = scenes["hud"];
-	var duration = 1;	// no background to animate anymore
-	debugMan.scaling = false;	// whether menu is animating
-
-	if (debugMan.show && (scene.debugWidth < scene.buttonWidth * debugMan.cols || scene.debugHeight < scene.buttonHeight * debugMan.rows)) {
-		var speed = scene.buttonWidth * (debugMan.cols-1) * dTime / duration;
-		if (scene.debugWidth + speed < scene.buttonWidth * debugMan.cols) {
-			scene.debugWidth += speed;
-			debugMan.scaling = true;
-		} else {
-			scene.debugWidth = scene.buttonWidth * debugMan.cols;
-		}
-
-		speed = scene.buttonHeight * (debugMan.rows-1) * dTime / duration;
-		if (scene.debugHeight + speed < scene.buttonHeight * debugMan.rows) {
-			scene.debugHeight += speed;
-			debugMan.scaling = true;
-		} else {
-			scene.debugHeight = scene.buttonHeight * debugMan.rows;
-		}
-	}
-	else if (!debugMan.show && (scene.debugWidth > scene.buttonWidth || scene.debugHeight > scene.buttonHeight)) {
-		var speed = scene.buttonWidth * (debugMan.cols-1) * dTime / duration;
-		if (scene.debugWidth - speed > scene.buttonWidth) {
-			scene.debugWidth -= speed;
-			debugMan.scaling = true;
-		} else {
-			scene.debugWidth = scene.buttonWidth;
-		}
-
-		speed = scene.buttonHeight * (debugMan.rows-1) * dTime / duration;
-		if (scene.debugHeight - speed > scene.buttonHeight) {
-			scene.debugHeight -= speed;
-			debugMan.scaling = true;
-		} else {
-			scene.debugHeight = scene.buttonHeight;
-		}
-	}
-
-	if (debugMan.show && !debugMan.scaling) {
-		for (var row = 0; row < debugMan.rows; ++row) {
-			for (var col = 0; col < debugMan.cols; ++col) {
-				var button = row * debugMan.cols + col;
-				if (button < debugTexts.length) {
-					if (inputMan.drag == "debug" && button == menus["debug"]
-					|| button == 1 && gameMan.debug) {
-						drawButton(context, row, col, debugTexts[button], "black", "white");
-					} else {
-						drawButton(context, row, col, debugTexts[button], "white", "black");
-					}
-				}
-			}
-		}
-	} else {
-		if (inputMan.drag == "debug" && menus["debug"] == 0) {
-			drawButton(context, 0, 0, debugTexts[1], "black", "white");
-		} else {
-			drawButton(context, 0, 0, debugTexts[1], "white", "black");
-		}
-	}
-
-	function drawButton(context, row, col, text, textColor, bgColor) {
-		if (bgColor) {
-			context.fillStyle = bgColor;
-			context.fillRect(canvas.width - scene.buttonWidth * (col+1) + scene.buttonPadding, canvas.height - scene.buttonHeight * (row+1) + scene.buttonPadding,
-				scene.buttonWidth - scene.buttonPadding*2, scene.buttonHeight - scene.buttonPadding*2);
-		}
-		context.fillStyle = textColor;
-		context.fillText(text, canvas.width - scene.buttonWidth * (col+0.8), canvas.height - scene.buttonHeight * (row+0.5)+6);
 	}
 }
 

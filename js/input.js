@@ -135,6 +135,7 @@ function handleHud(down) {
 	var handled = inputMan.drag == "debug" || inputMan.drag == "button" || inputMan.drag == "popup" || gameMan.screen == "popup";
 	var scene = scenes["hud"];
 
+	// TODO refactor out to debug.js?
 	if (debugBuild && inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - scene.debugWidth
 	&& inputMan.y < gpCanvas.height && inputMan.y > gpCanvas.height - scene.debugHeight) {	// debug menu
 		for (var row = 0; row < debugMan.rows; ++row) {
