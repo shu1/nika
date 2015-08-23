@@ -157,20 +157,22 @@ function handleHud(down) {
 
 	var x = inputMan.x - (gpCanvas.width - scene.popupWidth)/2;	// offset to topleft of popup
 	var y = inputMan.y - (gpCanvas.height - scene.popupHeight)/2;
-	if (gameMan.screen == "popup" && x > 0 && x < scene.popupWidth && y > 0 && y < scene.popupHeight) {	// popup
-		var i = Math.floor(y / (scene.popupHeight/4));
-		if (menus["popup"] != i || drawMan.activeAlpha == 0) {	// newly clicking within popup
-			menus["popup"] = i;
-			drawMan.activeAlpha = 0;
-			drawMan.activeFade = 1;
-		}
+	if (gameMan.screen == "popup") {
+		if (x > 0 && x < scene.popupWidth && y > 0 && y < scene.popupHeight) {
+			var i = Math.floor(y / (scene.popupHeight/4));
+			if (menus["popup"] != i || drawMan.activeAlpha == 0) {	// newly clicking within popup
+				menus["popup"] = i;
+				drawMan.activeAlpha = 0;
+				drawMan.activeFade = 1;
+			}
 
-		if (down) {
-			inputMan.drag = "popup";
+			if (down) {
+				inputMan.drag = "popup";
+			}
+			return down || handled;
+		} else {
+			drawMan.activeFade = -1;
 		}
-		return down || handled;
-	} else {
-		drawMan.activeFade = -1;
 	}
 
 	if ((gameMan.screen != "board" && gameMan.screen != "title")
