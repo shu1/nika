@@ -113,7 +113,7 @@ function clearRallyHighlights() {
 }
 
 function newGame() {
-	generateGrid(newBoard);
+	generateGrid(newGrid);
 	states = [];
 	phalanx = [];
 	gameMan.winner = -1;
@@ -216,7 +216,7 @@ function revertState() {
 }
 
 function loadState(state) {
-	generateGrid(emptyBoard);
+	generateGrid(emptyGrid);
 
 	gameMan.player = state.player;
 	gameMan.actions = state.actions;

@@ -94,7 +94,7 @@ var hudMan = {
 	pageText:""
 }
 
-var newBoard = [
+var newGrid = [
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",
@@ -112,7 +112,7 @@ var newBoard = [
 	"......dddccc........."
 ]
 
-var emptyBoard = [
+var emptyGrid = [
 	".........kkklll......",
 	".........kkklll......",
 	".........jjj.........",

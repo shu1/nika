@@ -150,12 +150,12 @@ window.onload = function() {
 			var scale = tvCanvas.height / drawMan.boardHeight;
 			initScenes(tvCanvas, scale, scale, "tv");
 
-			draw(0);
+			update(0);
 		});
 
 		tvDisplay.load("wiiutv.html");
 	} else {
-		draw(0);
+		update(0);
 	}
 }
 
@@ -385,7 +385,7 @@ function pan(dX, dY) {
 	return panned;
 }
 
-function draw(time) {
+function update(time) {
 	var dTime = time - drawMan.time;
 	drawMan.time = time;
 
@@ -495,7 +495,7 @@ function draw(time) {
 		}, 1200);
 	}
 
-	window.requestAnimationFrame(draw);
+	window.requestAnimationFrame(update);
 }
 
 function drawMural(context, dTime) {

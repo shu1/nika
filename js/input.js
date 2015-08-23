@@ -707,7 +707,7 @@ function keyNext() {
 		switch (menus["setup"]) {
 		case 0:
 		case 1:
-			menus["setup"] +=2;
+			menus["setup"] += 2;
 			break;
 		case 2:
 			menus["setup"]--;
