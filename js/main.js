@@ -639,7 +639,7 @@ function drawContext(context, dTime, tv) {
 	}
 
 	context.restore();
-	drawHud(context, tv);	// TODO call drawDebug() inside drawHud() if drawHud() needs dTime
+	drawHud(canvas, context, tv);	// TODO call drawDebug() inside drawHud() if drawHud() needs dTime
 
 	if (debugBuild) {
 		drawDebug(context, dTime);
@@ -875,7 +875,7 @@ function drawTutorialProgress(context) {
 	context.restore();
 }
 
-function drawHud(context, tv) {
+function drawHud(canvas, context, tv) {
 	var x, y, scene = scenes["hud"];
 
 	if (gameMan.debug) {
