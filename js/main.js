@@ -642,7 +642,7 @@ function drawContext(context, dTime, tv) {
 	drawHud(canvas, context, tv);	// TODO call drawDebug() inside drawHud() if drawHud() needs dTime
 
 	if (debugBuild) {
-		drawDebug(context, dTime);
+		drawDebug(canvas, context, dTime);
 	}
 }
 

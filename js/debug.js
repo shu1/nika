@@ -41,14 +41,13 @@ function menuDebug(index) {
 	}
 }
 
-function drawDebug(context, dTime) {
-	var canvas = context.canvas;
+function drawDebug(canvas, context, dTime) {
 	var scene = scenes["hud"];
-	var duration = 1;	// no background to animate anymore
+	var time = 200;
 	debugMan.scaling = false;	// whether menu is animating
 
 	if (debugMan.show && (scene.debugWidth < scene.buttonWidth * debugMan.cols || scene.debugHeight < scene.buttonHeight * debugMan.rows)) {
-		var speed = scene.buttonWidth * (debugMan.cols-1) * dTime / duration;
+		var speed = scene.buttonWidth * (debugMan.cols-1) * dTime / time;
 		if (scene.debugWidth + speed < scene.buttonWidth * debugMan.cols) {
 			scene.debugWidth += speed;
 			debugMan.scaling = true;
@@ -56,7 +55,7 @@ function drawDebug(context, dTime) {
 			scene.debugWidth = scene.buttonWidth * debugMan.cols;
 		}
 
-		speed = scene.buttonHeight * (debugMan.rows-1) * dTime / duration;
+		speed = scene.buttonHeight * (debugMan.rows-1) * dTime / time;
 		if (scene.debugHeight + speed < scene.buttonHeight * debugMan.rows) {
 			scene.debugHeight += speed;
 			debugMan.scaling = true;
@@ -65,7 +64,7 @@ function drawDebug(context, dTime) {
 		}
 	}
 	else if (!debugMan.show && (scene.debugWidth > scene.buttonWidth || scene.debugHeight > scene.buttonHeight)) {
-		var speed = scene.buttonWidth * (debugMan.cols-1) * dTime / duration;
+		var speed = scene.buttonWidth * (debugMan.cols-1) * dTime / time;
 		if (scene.debugWidth - speed > scene.buttonWidth) {
 			scene.debugWidth -= speed;
 			debugMan.scaling = true;
@@ -73,7 +72,7 @@ function drawDebug(context, dTime) {
 			scene.debugWidth = scene.buttonWidth;
 		}
 
-		speed = scene.buttonHeight * (debugMan.rows-1) * dTime / duration;
+		speed = scene.buttonHeight * (debugMan.rows-1) * dTime / time;
 		if (scene.debugHeight - speed > scene.buttonHeight) {
 			scene.debugHeight -= speed;
 			debugMan.scaling = true;
@@ -82,6 +81,9 @@ function drawDebug(context, dTime) {
 		}
 	}
 
+	context.fillStyle = drawMan.color;
+	context.fillRect(canvas.width - scene.debugWidth, canvas.height - scene.debugHeight, scene.debugWidth, scene.debugHeight);
+
 	if (debugMan.show && !debugMan.scaling) {
 		for (var row = 0; row < debugMan.rows; ++row) {
 			for (var col = 0; col < debugMan.cols; ++col) {
@@ -89,22 +91,22 @@ function drawDebug(context, dTime) {
 				if (button < debugTexts.length) {
 					if (inputMan.drag == "debug" && button == menus["debug"]
 					|| button == 1 && gameMan.debug) {
-						drawButton(context, row, col, debugTexts[button], "black", "white");
+						drawButton(row, col, debugTexts[button], "#004157", "white");
 					} else {
-						drawButton(context, row, col, debugTexts[button], "white", "black");
+						drawButton(row, col, debugTexts[button], "white", "#004157");
 					}
 				}
 			}
 		}
 	} else {
 		if (inputMan.drag == "debug" && menus["debug"] == 0) {
-			drawButton(context, 0, 0, debugTexts[1], "black", "white");
+			drawButton(0, 0, debugTexts[1], drawMan.color, "white");
 		} else {
-			drawButton(context, 0, 0, debugTexts[1], "white", "black");
+			drawButton(0, 0, debugTexts[1], "white");
 		}
 	}
 
-	function drawButton(context, row, col, text, textColor, bgColor) {
+	function drawButton(row, col, text, textColor, bgColor) {
 		if (bgColor) {
 			context.fillStyle = bgColor;
 			context.fillRect(canvas.width - scene.buttonWidth * (col+1) + scene.buttonPadding, canvas.height - scene.buttonHeight * (row+1) + scene.buttonPadding,
