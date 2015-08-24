@@ -385,21 +385,7 @@ function pan(dX, dY) {
 	return panned;
 }
 
-function update(time) {
-	var dTime = time - drawMan.time;
-	drawMan.time = time;
-
-	if (time - hudMan.fpsTime > 984) {
-		hudMan.fpsText = hudMan.fpsCount + "fps";
-		hudMan.fpsTime = time;
-		hudMan.fpsCount = 0;
-	}
-	hudMan.fpsCount++;
-
-	if (drawMan.zoom) {
-		zooming(dTime);
-	}
-
+function updateAnimations(dTime) {
 	if (drawMan.screenFade) {
 		drawMan.screenAlpha += dTime/250 * drawMan.screenFade;	// set positive/negative
 
@@ -446,6 +432,14 @@ function update(time) {
 		}
 	}
 
+	drawMan.screenSlide = slide(drawMan.screenSlide);
+	drawMan.activeSlide = slide(drawMan.activeSlide);
+
+	if (gameMan.screen == "title") {
+		var y = drawMan.activeHeight * menus["title"];
+		drawMan.slideY = y + (drawMan.slideY - y) * drawMan.activeSlide;
+	}
+
 	function slide(slide) {
 		var speed = slide * dTime / 100;
 		if (slide > 0) {
@@ -462,13 +456,23 @@ function update(time) {
 		}
 		return slide;
 	}
+}
 
-	drawMan.screenSlide = slide(drawMan.screenSlide);
-	drawMan.activeSlide = slide(drawMan.activeSlide);
+function update(time) {
+	var dTime = time - drawMan.time;
+	drawMan.time = time;
 
-	if (gameMan.screen == "title") {
-		var y = drawMan.activeHeight * menus["title"];
-		drawMan.slideY = y + (drawMan.slideY - y) * drawMan.activeSlide;
+	if (time - hudMan.fpsTime > 984) {
+		hudMan.fpsText = hudMan.fpsCount + "fps";
+		hudMan.fpsTime = time;
+		hudMan.fpsCount = 0;
+	}
+	hudMan.fpsCount++;
+
+	updateAnimations(dTime);
+
+	if (drawMan.zoom) {
+		zooming(dTime);
 	}
 
 	if (gameMan.scene == "board" && gameMan.screen != "popup") {
@@ -482,7 +486,6 @@ function update(time) {
 	if (window.nwf) {
 		drawContext(tvCanvas.getContext("2d"), dTime, "tv");	// draw tv
 	}
-
 
 	// This is triggering AI turns, not draw functionality
 	if (gameMan.scene == "board" && gameMan.ais[gameMan.player] && gameMan.winner < 0 && gameMan.tutorialStep < 0 && !gameMan.thinking && !gameMan.replaying) {
