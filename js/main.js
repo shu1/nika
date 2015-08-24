@@ -304,49 +304,6 @@ function fadeScreen(index) {
 	}
 }
 
-function zoom() {
-	var scene = scenes[gameMan.scene];
-	if (scene.scale == scene.minScale) {
-		drawMan.zoom = 1;
-	} else {
-		drawMan.zoom = -1;
-	}
-}
-
-function zooming(dTime) {
-	var scene = scenes[gameMan.scene];
-	var speed = (scene.maxScale - scene.minScale) * dTime/250 * drawMan.zoom;	// set positive/negative
-
-	if (drawMan.zoom > 0) {
-		if (scene.scale + speed < scene.maxScale) {
-			scene.scale += speed;
-		} else {
-			speed = scene.maxScale - scene.scale;	// move exactly the remainder of the animation
-			scene.scale = scene.maxScale;
-			drawMan.zoom = 0;
-		}
-	} else {
-		if (scene.scale + speed > scene.minScale) {
-			scene.scale += speed;
-		} else {
-			speed = scene.minScale - scene.scale;
-			scene.scale = scene.minScale;
-			drawMan.zoom = 0;
-		}
-	}
-
-	scene.x -= scene.width * speed/2;
-	scene.y -= scene.height * speed/2;
-	pan(0, 0);	// prevent moving off screen
-
-	if (Math.abs(scene.x) < 1) {
-		scene.x = 0;
-	}
-	if (Math.abs(scene.y) < 1) {
-		scene.y = 0;
-	}
-}
-
 function pan(dX, dY) {
 	var panned = false;
 	var scene = scenes[gameMan.scene];
@@ -385,7 +342,50 @@ function pan(dX, dY) {
 	return panned;
 }
 
+function zoom() {
+	var scene = scenes[gameMan.scene];
+	if (scene.scale == scene.minScale) {
+		drawMan.zoom = 1;
+	} else {
+		drawMan.zoom = -1;
+	}
+}
+
 function updateAnimations(dTime) {
+	if (drawMan.zoom) {
+		var scene = scenes[gameMan.scene];
+		var speed = (scene.maxScale - scene.minScale) * dTime/250 * drawMan.zoom;	// set positive/negative
+
+		if (drawMan.zoom > 0) {
+			if (scene.scale + speed < scene.maxScale) {
+				scene.scale += speed;
+			} else {
+				speed = scene.maxScale - scene.scale;	// move exactly the remainder of the animation
+				scene.scale = scene.maxScale;
+				drawMan.zoom = 0;
+			}
+		} else {
+			if (scene.scale + speed > scene.minScale) {
+				scene.scale += speed;
+			} else {
+				speed = scene.minScale - scene.scale;
+				scene.scale = scene.minScale;
+				drawMan.zoom = 0;
+			}
+		}
+
+		scene.x -= scene.width * speed/2;
+		scene.y -= scene.height * speed/2;
+		pan(0, 0);	// prevent moving off screen
+
+		if (Math.abs(scene.x) < 1) {
+			scene.x = 0;
+		}
+		if (Math.abs(scene.y) < 1) {
+			scene.y = 0;
+		}
+	}
+
 	if (drawMan.screenFade) {
 		drawMan.screenAlpha += dTime/250 * drawMan.screenFade;	// set positive/negative
 
@@ -470,10 +470,6 @@ function update(time) {
 	hudMan.fpsCount++;
 
 	updateAnimations(dTime);
-
-	if (drawMan.zoom) {
-		zooming(dTime);
-	}
 
 	if (gameMan.scene == "board" && gameMan.screen != "popup") {
 		if (gameMan.timed){
