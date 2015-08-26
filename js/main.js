@@ -97,17 +97,21 @@ window.onload = function() {
 	murals[2].onFinishAnimCallback(true, function(){setIdleAnimation(2)});
 	murals[3].onFinishAnimCallback(true, function(){setIdleAnimation(3)});
 
+	// TODO allow mouse and touch simultaneously
 	if (navigator.msPointerEnabled) {
+		console.log("MSPointer");
 		gpCanvas.addEventListener("MSPointerDown", mouseDown);
 		gpCanvas.addEventListener("MSPointerMove", mouseMove);
 		window.addEventListener("MSPointerUp", mouseUp);
 	}
 	else if ("ontouchstart" in window && !window.nwf) {	// NWF should use mouse events
+		console.log("Touch");
 		gpCanvas.addEventListener("touchstart", mouseDown);
 		gpCanvas.addEventListener("touchmove", mouseMove);
 		window.addEventListener("touchend", mouseUp);
 	}
 	else {
+		console.log("Mouse");
 		gpCanvas.addEventListener("mousedown", mouseDown);
 		gpCanvas.addEventListener("mousemove", mouseMove);
 		window.addEventListener("mouseup", mouseUp);
@@ -160,6 +164,8 @@ window.onload = function() {
 }
 
 function reSize() {
+	console.log("DevicePixelRatio: " + window.devicePixelRatio);
+
 	gpCanvas.width = window.innerWidth;
 	gpCanvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
 	drawMan.screenDistance = Math.sqrt(gpCanvas.width*gpCanvas.width + gpCanvas.height*gpCanvas.height);
