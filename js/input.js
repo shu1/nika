@@ -472,6 +472,7 @@ function mouseUp(event) {
 		inputMan.drag = "";
 		menus["button"] = -1;
 		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
+		event.preventDefault();	// prevent firing twice in environments with both touch and mouse
 	}
 }
 
