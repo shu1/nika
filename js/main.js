@@ -645,11 +645,7 @@ function drawContext(context, dTime, tv) {
 	}
 
 	context.restore();
-	drawHud(canvas, context, tv);	// TODO call drawDebug() inside drawHud() if drawHud() needs dTime
-
-	if (debugBuild) {
-		drawDebug(canvas, context, dTime);
-	}
+	drawHud(canvas, context, tv, dTime);
 }
 
 function drawRules(context, scene) {
@@ -881,7 +877,7 @@ function drawTutorialProgress(context) {
 	context.restore();
 }
 
-function drawHud(canvas, context, tv) {
+function drawHud(canvas, context, tv, dTime) {
 	var x, y, scene = scenes["hud"];
 
 	if (gameMan.debug) {
@@ -898,7 +894,7 @@ function drawHud(canvas, context, tv) {
 		y -= (y + scene.popupHeight) * drawMan.screenSlide;
 
 		context.fillStyle = "rgba(0,0,0," + drawMan.screenAlpha + ")";
-		context.fillRect(0, 0, canvas.width, canvas.height);
+		context.fillRect(0, 0, canvas.width, canvas.height);	// TODO do this before if, do fade correctly
 		context.drawImage(images["menuPopup"], x, y, scene.popupWidth, scene.popupHeight);
 
 		if (inputMan.drag == "popup" && drawMan.activeAlpha >= 0) {
@@ -924,9 +920,13 @@ function drawHud(canvas, context, tv) {
 		context.drawImage(images["buttonActive"], scene.buttonWidth * menus["button"], y, scene.buttonWidth, scene.buttonHeight);
 	}
 
+	if (debugBuild) {
+		drawDebug(canvas, context, dTime);	// TODO do debug animations in update()
+	}
+
 	if (drawMan.screenAlpha > 0 && gameMan.screen != "popup") {
 		context.fillStyle = "rgba(0,0,0," + drawMan.screenAlpha + ")";
-		context.fillRect(0, 0, canvas.width, canvas.height);
+		context.fillRect(0, 0, canvas.width, canvas.height);	// fullscreen fade
 	}
 }
 
