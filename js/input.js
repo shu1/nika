@@ -494,7 +494,7 @@ function pinch(scene, dScale, x, y) {
 	var pScale = scene.scale;
 	scene.scale = Math.max(scene.minScale, Math.min(scene.maxScale, scene.scale + dScale));
 
-	if (screenType == 2) {	// zoom center of screen
+	if (screenType % 2) {	// zoom center of screen
 		scene.x -= scene.width * (scene.scale - pScale) / 2;
 		scene.y -= scene.height * (scene.scale - pScale) / 2;
 	}

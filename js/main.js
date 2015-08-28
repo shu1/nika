@@ -3,7 +3,7 @@
 window.onload = function() {
 	console.log(navigator.userAgent);
 	if (navigator.userAgent.indexOf("Phone") >= 0) {
-		screenType = 1;
+		screenType = 0;
 	}
 
 	try {
@@ -55,7 +55,7 @@ window.onload = function() {
 	loadImage("ruleArrow", 1);
 	loadImage("ruleArrowActive", 1);
 
-	for (var i = 0; i < rulePages; ++i) {
+	for (var i = 0; i < rulePages; ++i) {	// TODO remove rulePages from html
 		loadImage("rule" + i, 1);
 	}
 
@@ -173,7 +173,7 @@ function reSize() {
 		minScale = 4/3;
 		maxScale = 16/9;
 	}
-	else if (screenType == 2) {	// tablet, pc or tv
+	else if (screenType % 2) {	// if odd then tablet, pc or tv
 		if (gpCanvas.width / gpCanvas.height >= 1.4) {	// landscape
 			minScale = gpCanvas.height / drawMan.boardHeight;
 			maxScale = gpCanvas.width / drawMan.boardWidth;
