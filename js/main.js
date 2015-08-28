@@ -2,9 +2,6 @@
 
 window.onload = function() {
 	console.log(navigator.userAgent);
-	if (navigator.userAgent.indexOf("Phone") >= 0) {
-		screenType = 0;
-	}
 
 	try {
 		var soundSave = JSON.parse(localStorage.getItem("NikaSoundSave"));
@@ -159,9 +156,12 @@ window.onload = function() {
 
 function reSize() {
 	console.log("DevicePixelRatio: " + window.devicePixelRatio);
+	if (screenType > 1) {	// windows platform
+		drawMan.pixelRatio = window.devicePixelRatio;
+	}
 
-	gpCanvas.width = window.innerWidth;
-	gpCanvas.height = window.innerHeight;	// height-4 to remove scrollbars on some browsers
+	gpCanvas.width = window.innerWidth * drawMan.pixelRatio;
+	gpCanvas.height = window.innerHeight * drawMan.pixelRatio;
 	drawMan.screenDistance = Math.sqrt(gpCanvas.width*gpCanvas.width + gpCanvas.height*gpCanvas.height);
 
 	var minScale = 0.5, maxScale = 2/3;	// defaults for ipad, gamepad and small devices

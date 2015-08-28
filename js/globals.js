@@ -42,6 +42,7 @@ var drawMan = {
 	activeFlash:0,
 	screenFade:0,
 	activeFade:0,
+	pixelRatio:1,
 	zoom:0,
 	time:0
 }

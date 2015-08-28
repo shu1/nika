@@ -96,31 +96,31 @@ function mouseDown(event) {
 function getXY(event) {
 	if (navigator.msPointerEnabled) {
 		if (event.pointerId == inputMan.touchID) {
-			inputMan.x = event.layerX;
-			inputMan.y = event.layerY;
+			inputMan.x = event.layerX * drawMan.pixelRatio;
+			inputMan.y = event.layerY * drawMan.pixelRatio;
 		}
 
 		if (event.pointerId == inputMan.touchID2) {
-			inputMan.x2 = event.layerX;
-			inputMan.y2 = event.layerY;
+			inputMan.x2 = event.layerX * drawMan.pixelRatio;
+			inputMan.y2 = event.layerY * drawMan.pixelRatio;
 		}
 	}
 	else if (event.changedTouches) {
 		for (var i = event.changedTouches.length-1; i >= 0; --i) {
 			var touch = event.changedTouches[i];
 			if (touch.identifier == inputMan.touchID) {
-				inputMan.x = touch.pageX;
-				inputMan.y = touch.pageY;
+				inputMan.x = touch.pageX * drawMan.pixelRatio;
+				inputMan.y = touch.pageY * drawMan.pixelRatio;
 			}
 			else if (touch.identifier == inputMan.touchID2) {
-				inputMan.x2 = touch.pageX;
-				inputMan.y2 = touch.pageY;
+				inputMan.x2 = touch.pageX * drawMan.pixelRatio;
+				inputMan.y2 = touch.pageY * drawMan.pixelRatio;
 			}
 		}
 	}
 	else {	// mouse
-		inputMan.x = event.layerX;
-		inputMan.y = event.layerY;
+		inputMan.x = event.layerX * drawMan.pixelRatio;
+		inputMan.y = event.layerY * drawMan.pixelRatio;
 	}
 }
 
