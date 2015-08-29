@@ -2,7 +2,7 @@
 
 window.onload = function() {
 	console.log(navigator.userAgent);
-	gameMan.debugBuild = typeof debugMan != "undefined";	// if debug.js is included
+	gameMan.debugBuild = typeof debugMan != "undefined";	// HACK if debug.js is included
 
 	try {
 		var soundSave = JSON.parse(localStorage.getItem("NikaSoundSave"));
@@ -258,9 +258,9 @@ function setScreen(index) {
 
 	if (gameMan.screen == "title") {
 		drawMan.slideY = drawMan.activeHeight * menus["title"];
-		drawMan.activeAlpha = 1;
+		animMan["activeAlpha"] = 1;
 	} else {
-		drawMan.activeAlpha = 0;
+		animMan["activeAlpha"] = 0;
 	}
 
 	if (gameMan.screen == "rules") {
@@ -297,10 +297,10 @@ function setScreen(index) {
 
 function fadeScreen(index) {
 	gameMan.nScreen = index;
-	drawMan.screenFade = 1;
+	animMan["screenFade"] = 1;
 
 	if (gameMan.screen == "popup" && gameMan.nScreen == "board") {
-		drawMan.screenFade = -1;
+		animMan["screenFade"] = -1;
 		setScreen("board");
 	}
 }
@@ -352,7 +352,7 @@ function zoom() {
 	}
 }
 
-function updateAnimations(dTime) {
+function updateAnims(dTime) {
 	if (drawMan.zoom) {
 		var scene = scenes[gameMan.scene];
 		var speed = (scene.maxScale - scene.minScale) * dTime/250 * drawMan.zoom;	// set positive/negative
@@ -387,58 +387,58 @@ function updateAnimations(dTime) {
 		}
 	}
 
-	if (drawMan.screenFade) {
-		drawMan.screenAlpha += dTime/250 * drawMan.screenFade;	// set positive/negative
+	if (animMan["screenFade"]) {
+		animMan["screenAlpha"] += dTime/250 * animMan["screenFade"];	// set positive/negative
 
-		if (gameMan.nScreen == "popup" && drawMan.screenAlpha >= 0.5) {
-			drawMan.screenAlpha = 0.5;
-			drawMan.screenFade = 0;
+		if (gameMan.nScreen == "popup" && animMan["screenAlpha"] >= 0.5) {
+			animMan["screenAlpha"] = 0.5;
+			animMan["screenFade"] = 0;
 			setScreen(gameMan.nScreen);
 		}
-		else if (drawMan.screenAlpha >= 1) {
-			drawMan.screenAlpha = 1;
-			drawMan.screenFade = -1;
+		else if (animMan["screenAlpha"] >= 1) {
+			animMan["screenAlpha"] = 1;
+			animMan["screenFade"] = -1;
 			setScreen(gameMan.nScreen);
 		}
-		else if (drawMan.screenAlpha <= 0) {
-			drawMan.screenAlpha = 0;
-			drawMan.screenFade = 0;
+		else if (animMan["screenAlpha"] <= 0) {
+			animMan["screenAlpha"] = 0;
+			animMan["screenFade"] = 0;
 		}
 	}
 
-	if (drawMan.activeFade) {
-		drawMan.activeAlpha += dTime/250 * drawMan.activeFade;	// set positive/negative
+	if (animMan["activeFade"]) {
+		animMan["activeAlpha"] += dTime/250 * animMan["activeFade"];	// set positive/negative
 
-		if (drawMan.activeAlpha >= 1) {
-			drawMan.activeAlpha = 1;
-			drawMan.activeFade = 0;
+		if (animMan["activeAlpha"] >= 1) {
+			animMan["activeAlpha"] = 1;
+			animMan["activeFade"] = 0;
 		}
-		else if (drawMan.activeAlpha <= 0) {
-			drawMan.activeAlpha = 0;
-			drawMan.activeFade = 0;
+		else if (animMan["activeAlpha"] <= 0) {
+			animMan["activeAlpha"] = 0;
+			animMan["activeFade"] = 0;
 		}
 	}
 
 	// TODO refactor this code together
-	if (drawMan.activeFlash) {
-		drawMan.activeAlpha -= dTime/100 * drawMan.activeFlash;	// set positive/negative
+	if (animMan["activeFlash"]) {
+		animMan["activeAlpha"] -= dTime/100 * animMan["activeFlash"];	// set positive/negative
 
-		if (drawMan.activeAlpha <= 0) {
-			drawMan.activeAlpha = 0;
-			drawMan.activeFlash = -1;
+		if (animMan["activeAlpha"] <= 0) {
+			animMan["activeAlpha"] = 0;
+			animMan["activeFlash"] = -1;
 		}
-		else if (drawMan.activeAlpha >= 1) {
-			drawMan.activeAlpha = 1;
-			drawMan.activeFlash = 0;
+		else if (animMan["activeAlpha"] >= 1) {
+			animMan["activeAlpha"] = 1;
+			animMan["activeFlash"] = 0;
 		}
 	}
 
-	drawMan.screenSlide = slide(drawMan.screenSlide);
-	drawMan.activeSlide = slide(drawMan.activeSlide);
+	animMan["screenSlide"] = slide(animMan["screenSlide"]);
+	animMan["activeSlide"] = slide(animMan["activeSlide"]);
 
 	if (gameMan.screen == "title") {
 		var y = drawMan.activeHeight * menus["title"];
-		drawMan.slideY = y + (drawMan.slideY - y) * drawMan.activeSlide;
+		drawMan.slideY = y + (drawMan.slideY - y) * animMan["activeSlide"];
 	}
 
 	function slide(slide) {
@@ -470,7 +470,7 @@ function update(time) {
 	}
 	hudMan.fpsCount++;
 
-	updateAnimations(dTime);
+	updateAnims(dTime);
 
 	if (gameMan.scene == "board" && gameMan.screen != "popup") {
 		if (gameMan.timed){
@@ -561,8 +561,8 @@ function drawContext(context, dTime, tv) {
 		context.drawImage(images["menuTitle0"], x, y);
 		context.drawImage(images["menuTitle1"], x+512, y);
 		if (menus["title"] < 6) {
-			if (drawMan.activeAlpha < 1) {
-				context.globalAlpha = drawMan.activeAlpha;
+			if (animMan["activeAlpha"] < 1) {
+				context.globalAlpha = animMan["activeAlpha"];
 			}
 			context.drawImage(images["menuTitleActive"], x+82, y+282 + drawMan.slideY);
 			context.globalAlpha = 1;
@@ -592,8 +592,8 @@ function drawContext(context, dTime, tv) {
 		break;
 	case "rules":
 		if (gameMan.rules < rulePages) {
-			context.drawImage(images["rule" + gameMan.rules + "0"], x + 1536*drawMan.screenSlide, y);
-			context.drawImage(images["rule" + gameMan.rules + "1"], x+1024 + 1536*drawMan.screenSlide, y);
+			context.drawImage(images["rule" + gameMan.rules + "0"], x + 1536*animMan["screenSlide"], y);
+			context.drawImage(images["rule" + gameMan.rules + "1"], x+1024 + 1536*animMan["screenSlide"], y);
 			drawRules(context, scene);
 		}
 		break;
@@ -886,14 +886,14 @@ function drawHud(canvas, context, tv, dTime) {
 	if (gameMan.screen == "popup") {
 		x = (canvas.width - scene.popupWidth)/2;
 		y = (canvas.height - scene.popupHeight)/2;
-		y -= (y + scene.popupHeight) * drawMan.screenSlide;
+		y -= (y + scene.popupHeight) * animMan["screenSlide"];
 
-		context.fillStyle = "rgba(0,0,0," + drawMan.screenAlpha + ")";
+		context.fillStyle = "rgba(0,0,0," + animMan["screenAlpha"] + ")";
 		context.fillRect(0, 0, canvas.width, canvas.height);	// TODO do this before if, do fade correctly
 		context.drawImage(images["menuPopup"], x, y, scene.popupWidth, scene.popupHeight);
 
-		if (inputMan.drag == "popup" && drawMan.activeAlpha >= 0) {
-			context.fillStyle = "rgba(224,217,179," + 0.5*drawMan.activeAlpha + ")";
+		if (inputMan.drag == "popup" && animMan["activeAlpha"] >= 0) {
+			context.fillStyle = "rgba(224,217,179," + 0.5*animMan["activeAlpha"] + ")";
 			context.fillRect(x + 10*scene.scale, y + (9 + 124 * menus["popup"]) * scene.scale, 1004*scene.scale, 122*scene.scale);
 		}
 	}
@@ -919,8 +919,8 @@ function drawHud(canvas, context, tv, dTime) {
 		drawDebug(canvas, context, dTime);	// TODO do debug animations in update()
 	}
 
-	if (drawMan.screenAlpha > 0 && gameMan.screen != "popup") {
-		context.fillStyle = "rgba(0,0,0," + drawMan.screenAlpha + ")";
+	if (animMan["screenAlpha"] > 0 && gameMan.screen != "popup") {
+		context.fillStyle = "rgba(0,0,0," + animMan["screenAlpha"] + ")";
 		context.fillRect(0, 0, canvas.width, canvas.height);	// fullscreen fade
 	}
 }

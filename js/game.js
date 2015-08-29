@@ -406,7 +406,7 @@ function menuTitle(index) {
 		fadeScreen("credit");
 		break;
 	}
-	drawMan.activeFlash = 1;
+	animMan["activeFlash"] = 1;
 }
 
 function menuSetup(index) {
@@ -426,12 +426,12 @@ function menuRules(index) {
 	switch (index) {
 	case 0:
 		gameMan.rules--;
-		drawMan.screenSlide = -1;
+		animMan["screenSlide"] = -1;
 		hudMan.pageText = "Rule " + gameMan.rules;
 		break;
 	case 1:
 		gameMan.rules++;
-		drawMan.screenSlide = 1;
+		animMan["screenSlide"] = 1;
 		hudMan.pageText = "Rule " + gameMan.rules;
 		break;
 	}
@@ -490,7 +490,7 @@ function menuButton(index) {
 		}
 		else if (gameMan.screen == "board") {
 			fadeScreen("popup");
-			drawMan.screenSlide = 1;
+			animMan["screenSlide"] = 1;
 		}
 		break;
 	case 1:

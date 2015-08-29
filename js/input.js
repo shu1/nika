@@ -161,10 +161,10 @@ function handleHud(down) {
 	if (gameMan.screen == "popup") {
 		if (x > 0 && x < scene.popupWidth && y > 0 && y < scene.popupHeight) {
 			var i = Math.floor(y / (scene.popupHeight/4));
-			if (menus["popup"] != i || drawMan.activeAlpha == 0) {	// newly clicking within popup
+			if (menus["popup"] != i || !animMan["activeAlpha"]) {	// newly clicking within popup
 				menus["popup"] = i;
-				drawMan.activeAlpha = 0;
-				drawMan.activeFade = 1;
+				animMan["activeAlpha"] = 0;
+				animMan["activeFade"] = 1;
 			}
 
 			if (down) {
@@ -172,7 +172,7 @@ function handleHud(down) {
 			}
 			return down || handled;
 		} else {
-			drawMan.activeFade = -1;
+			animMan["activeFade"] = -1;
 		}
 	}
 
@@ -221,7 +221,7 @@ function handleScreen(scene, x, y) {
 			var i = Math.floor(y / drawMan.activeHeight);
 			if (menus["title"] != i) {
 				menus["title"] = i;
-				drawMan.activeSlide = 1;
+				animMan["activeSlide"] = 1;
 			}
 			return true;
 		}
@@ -655,7 +655,7 @@ function keyPrev() {
 	}
 	else if (gameMan.screen == "title" && menus["title"] > 0) {
 		menus["title"]--;
-		drawMan.activeSlide = 1;
+		animMan["activeSlide"] = 1;
 		return true;
 	}
 	else if (gameMan.screen == "tutorial" && menus["tutorial"] > 0) {
@@ -698,7 +698,7 @@ function keyNext() {
 	}
 	else if (gameMan.screen == "title" && menus["title"] < 5) {
 		menus["title"]++;
-		drawMan.activeSlide = 1;
+		animMan["activeSlide"] = 1;
 		return true;
 	}
 	else if (gameMan.screen == "tutorial" && menus["tutorial"] < 3) {
