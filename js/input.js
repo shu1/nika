@@ -136,7 +136,7 @@ function handleHud(down) {
 	var scene = scenes["hud"];
 
 	// TODO refactor out to debug.js?
-	if (debugBuild && inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - scene.debugWidth
+	if (gameMan.debugBuild && inputMan.x < gpCanvas.width && inputMan.x > gpCanvas.width - scene.debugWidth
 	&& inputMan.y < gpCanvas.height && inputMan.y > gpCanvas.height - scene.debugHeight) {	// debug menu
 		for (var row = 0; row < debugMan.rows; ++row) {
 			for (var col = 0; col < debugMan.cols; ++col) {

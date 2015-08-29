@@ -2,6 +2,7 @@
 
 window.onload = function() {
 	console.log(navigator.userAgent);
+	gameMan.debugBuild = typeof debugMan != "undefined";	// if debug.js is included
 
 	try {
 		var soundSave = JSON.parse(localStorage.getItem("NikaSoundSave"));
@@ -112,7 +113,7 @@ window.onload = function() {
 	window.addEventListener("keydown", keyDown);
 	window.addEventListener("resize", reSize);
 
-	if (debugBuild) {
+	if (gameMan.debugBuild) {
 		debugMan.cols = 3;
 		debugMan.rows = Math.ceil(debugTexts.length / debugMan.cols);
 	}
@@ -238,7 +239,7 @@ function initScenes(canvas, maxScale, minScale, tv) {
 	scene.popupHeight = 512 * minScale;
 	scene.buttonWidth = drawMan.cellSize * minScale * 2;
 	scene.buttonHeight = drawMan.cellSize * minScale;
-	if (debugBuild) {
+	if (gameMan.debugBuild) {
 		scene.buttonPadding = 8 * minScale;
 		scene.debugWidth = scene.buttonWidth * debugMan.cols;
 		scene.debugHeight = scene.buttonHeight * debugMan.rows;
@@ -914,7 +915,7 @@ function drawHud(canvas, context, tv, dTime) {
 		context.drawImage(images["buttonActive"], scene.buttonWidth * menus["button"], y, scene.buttonWidth, scene.buttonHeight);
 	}
 
-	if (debugBuild) {
+	if (gameMan.debugBuild) {
 		drawDebug(canvas, context, dTime);	// TODO do debug animations in update()
 	}
 
