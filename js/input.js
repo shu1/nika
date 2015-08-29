@@ -411,8 +411,11 @@ function mouseUp(event) {
 							menuSetup(3);
 						}
 					}
-					else if (x > 480 && x < 1050 && y > 750 && y < 900) {
+					else if (x > 810 && x < 1050 && y > 650 && y < 775) {
 						menuSetup(4);
+					}
+					else if (x > 480 && x < 1050 && y > 785 && y < 900) {
+						menuSetup(5);
 					}
 				}
 			}
