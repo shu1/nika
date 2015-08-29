@@ -9,6 +9,13 @@ var soundMan = {
 	sound:0.5
 }
 
+var musicMan = {
+	current:"menu",
+	next:"",
+	fading:false,
+	alpha:0
+}
+
 var drawMan = {
 	color:"#00384C",
 	cellSize:96,
