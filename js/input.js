@@ -431,6 +431,7 @@ function mouseUp(event) {
 					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
 						localStorage.removeItem("NikaGameSave");
 						fadeScreen("title");
+						fadeMusic("menu");
 					}
 				}
 				else if (gameMan.tutorialStep >= 0 && x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth

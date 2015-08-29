@@ -389,6 +389,7 @@ function menuTitle(index) {
 		if (gameSave) {
 			resumeGame(gameSave);
 			fadeScreen("board");
+			fadeMusic("music");
 		} else {
 			fadeScreen("setup");
 		}
@@ -426,6 +427,7 @@ function menuSetup(index) {
 	else if (index == 5) {
 		newGame();
 		fadeScreen("board");
+		fadeMusic("music");
 	}
 }
 
@@ -460,6 +462,7 @@ function menuTutorial(index) {
 		break;
 	}
 	fadeScreen("board");
+	fadeMusic("music");
 }
 
 function menuPopup(index) {
@@ -475,6 +478,7 @@ function menuPopup(index) {
 		break;
 	case 3:
 		fadeScreen("title");
+		fadeMusic("menu");
 		break;
 	}
 }

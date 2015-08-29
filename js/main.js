@@ -70,10 +70,13 @@ window.onload = function() {
 	loadAudio("rout",	"mural_rout");
 	loadAudio("rally",	"mural_rally_alt");
 	loadAudio("music",	"nika_main");
+	loadAudio("menu",	"nika_menu");
 
 	sounds["music"].volume = Math.pow(soundMan.music, 2);
+	sounds["menu"].volume = Math.pow(soundMan.music, 2);
 	sounds["music"].loop = true;
-	sounds["music"].play();
+	sounds["menu"].loop = true;
+	sounds["menu"].play();
 
 	gpCanvas = document.getElementById("canvas");
 	muralCanvas = document.createElement("canvas");	// buffer
@@ -306,6 +309,14 @@ function fadeScreen(index) {
 	}
 }
 
+function fadeMusic(nextMusic) {
+	musicMan.next = nextMusic;
+	musicMan.fading = true;
+	sounds[nextMusic].volume = 0;
+	sounds[nextMusic].currentTime = 0;
+	sounds[nextMusic].play();
+}
+
 function pan(dX, dY) {
 	var panned = false;
 	var scene = scenes[gameMan.scene];
@@ -448,6 +459,22 @@ function updateAnims(dTime) {
 			}
 		}
 		return slide;
+	}
+
+	if (musicMan.fading) {
+		musicMan.alpha += dTime / 2000;
+		if (musicMan.alpha > 1) {
+			musicMan.alpha = 1;
+		}
+		sounds[musicMan.current].volume = (1 - musicMan.alpha) * soundMan.music;
+		sounds[musicMan.next].volume = (musicMan.alpha) * soundMan.music;
+
+		if (musicMan.alpha >= 1) {
+			musicMan.fading = false;
+			musicMan.alpha = 0;
+			sounds[musicMan.current].pause();
+			musicMan.current = musicMan.next;
+		}
 	}
 }
 

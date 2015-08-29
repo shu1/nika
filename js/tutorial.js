@@ -26,6 +26,7 @@ function endTutorial() {
 	gameMan.tutorialStep = -1;
 	hudMan.pageText = "";
 	fadeScreen("title");
+	fadeMusic("menu");
 }
 
 function nextTutorialPart() {
