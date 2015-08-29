@@ -417,6 +417,13 @@ function menuSetup(index) {
 		}
 	}
 	else if (index == 4) {
+		gameMan.timerIndex++;
+		if (gameMan.timerIndex > 3) {
+			gameMan.timerIndex = 0;
+		}
+		setupTimer();
+	}
+	else if (index == 5) {
 		newGame();
 		fadeScreen("board");
 	}
@@ -521,12 +528,16 @@ function ai() {
 	}
 }
 
+function setupTimer() {
+	gameMan.timed = (gameMan.timerIndex > 0);
+}
+
 function updateTimer(dTime) {
 	if (gameMan.ais[gameMan.player] || gameMan.winner >= 0) {
 		return;
 	}
 	gameMan.turnTimer += dTime;
-	if (gameMan.timed && gameMan.turnTimer > gameMan.turnTime) {
+	if (gameMan.timed && gameMan.turnTimer > gameMan.turnTimes[gameMan.timerIndex]) {
 		pass();
 	}
 }
