@@ -525,28 +525,33 @@ function mouseWheel(event) {
 function keyDown(event) {
 	var dX = 8;
 
+	if (gameMan.debugBuild) {
+		switch (event.keyCode) {
+		case 68:	// D
+			hudMan.inputText = "Debug";
+			gameMan.debug = !gameMan.debug;
+			initAnimations();
+			break;
+		case 77:	// M
+			hudMan.inputText = "Debug Mural";
+			debugMural();
+			break;
+		case 82:	// R
+			hudMan.inputText = "Replay";
+			replay();
+			break;
+		case 84:	// T
+			hudMan.inputText = "Replay Prev";
+			replayPrev();
+			break;
+		case 89:	// Y
+			hudMan.inputText = "Replay Next";
+			replayNext();
+			break;
+		}
+	}
+
 	switch (event.keyCode) {
-	case 68:	// D
-		hudMan.inputText = "Debug";
-		gameMan.debug = !gameMan.debug;
-		initAnimations();
-		break;
-	case 77:	// M
-		hudMan.inputText = "Debug Mural";
-		debugMural();
-		break;
-	case 82:	// R
-		hudMan.inputText = "Replay";
-		replay();
-		break;
-	case 84:	// T
-		hudMan.inputText = "Replay Prev";
-		replayPrev();
-		break;
-	case 89:	// Y
-		hudMan.inputText = "Replay Next";
-		replayNext();
-		break;
 	case 83:	// S
 	case 228:	// forward
 		hudMan.inputText = "Zoom";
@@ -570,7 +575,7 @@ function keyDown(event) {
 		else if (gameMan.screen == "title" && menus["title"] < 6) {
 			menuTitle(menus["title"]);
 		}
-		else if (gameMan.screen == "setup" && menus["setup"] < 5) {
+		else if (gameMan.screen == "setup" && menus["setup"] < 6) {
 			menuSetup(menus["setup"]);
 		}
 		else if (gameMan.screen == "tutorial" && menus["tutorial"] < 4) {

@@ -124,7 +124,7 @@ window.onload = function() {
 
 	menus["popup"] = 0;
 	menus["title"] = 0;
-	menus["setup"] = 4;
+	menus["setup"] = 5;
 	menus["option"] = 0;
 	menus["tutorial"] = 0;
 
