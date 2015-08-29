@@ -130,7 +130,7 @@ function debugGrid() {
 
 var debugMuralIndex = 0;
 function debugMural() {
-	var anims = [
+	var muralAnims = [
 		[[0,"push"],[1,"pushed"]],[[0,"rout"],[1,"routed"]],[[0,"rout"],[1,"routed"],[3,"pushed"]],
 		[[0,"push"],[3,"pushed"]],[[0,"rout"],[3,"routed"]],[[0,"rout"],[3,"routed"],[1,"pushed"]],
 		[[2,"push"],[1,"pushed"]],[[2,"rout"],[1,"routed"]],[[2,"rout"],[1,"routed"],[3,"pushed"]],
@@ -142,14 +142,14 @@ function debugMural() {
 		[[0,"rally"],[2,"rally"]],[[1,"rally"],[3,"rally"]]
 	]
 
-	console.log(debugMuralIndex + " : " + anims[debugMuralIndex].join(" "));
+	console.log(debugMuralIndex + " : " + muralAnims[debugMuralIndex].join(" "));
 
-	anims[debugMuralIndex].forEach(function(playerAnim) {
+	muralAnims[debugMuralIndex].forEach(function(playerAnim) {
 		playAnimation(playerAnim[0], playerAnim[1]);
 	});
 
 	++debugMuralIndex;
-	if (debugMuralIndex >= anims.length) {
+	if (debugMuralIndex >= muralAnims.length) {
 		debugMuralIndex = 0;
 	}
 }
