@@ -407,32 +407,23 @@ function updateAnims(dTime) {
 		}
 	}
 
-	if (animMan["activeFade"]) {
-		animMan["activeAlpha"] += dTime/250 * animMan["activeFade"];	// set positive/negative
+	function active(index, time, flip) {
+		if (animMan[index]) {
+			animMan["activeAlpha"] += dTime / time * animMan[index];	// set positive/negative
 
-		if (animMan["activeAlpha"] >= 1) {
-			animMan["activeAlpha"] = 1;
-			animMan["activeFade"] = 0;
-		}
-		else if (animMan["activeAlpha"] <= 0) {
-			animMan["activeAlpha"] = 0;
-			animMan["activeFade"] = 0;
+			if (animMan["activeAlpha"] >= 1) {
+				animMan["activeAlpha"] = 1;
+				animMan[index] = 0;
+			}
+			else if (animMan["activeAlpha"] <= 0) {
+				animMan["activeAlpha"] = 0;
+				animMan[index] = flip;
+			}
 		}
 	}
 
-	// TODO refactor this code together
-	if (animMan["activeFlash"]) {
-		animMan["activeAlpha"] -= dTime/100 * animMan["activeFlash"];	// set positive/negative
-
-		if (animMan["activeAlpha"] <= 0) {
-			animMan["activeAlpha"] = 0;
-			animMan["activeFlash"] = -1;
-		}
-		else if (animMan["activeAlpha"] >= 1) {
-			animMan["activeAlpha"] = 1;
-			animMan["activeFlash"] = 0;
-		}
-	}
+	active("activeFade", 250, 0);
+	active("activeFlash", 100, 1);
 
 	animMan["screenSlide"] = slide(animMan["screenSlide"]);
 	animMan["activeSlide"] = slide(animMan["activeSlide"]);

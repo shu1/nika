@@ -406,7 +406,7 @@ function menuTitle(index) {
 		fadeScreen("credit");
 		break;
 	}
-	animMan["activeFlash"] = 1;
+	animMan["activeFlash"] = -1;
 }
 
 function menuSetup(index) {
