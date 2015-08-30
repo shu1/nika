@@ -432,33 +432,31 @@ function updateAnims(dTime) {
 			}
 		}
 	}
-
 	active("activeFade", 250, 0);
 	active("activeFlash", 100, 1);
 
-	animMan["screenSlide"] = slide(animMan["screenSlide"]);
-	animMan["activeSlide"] = slide(animMan["activeSlide"]);
+	function slide(index) {
+		var speed = dTime / 100 * animMan[index];
+
+		if (animMan[index] > 0) {
+			animMan[index] -= speed;
+			if (animMan[index] < 0.001) {
+				animMan[index] = 0;
+			}
+		}
+		else if (animMan[index] < 0) {
+			animMan[index] -= speed;
+			if (animMan[index] > -0.001) {
+				animMan[index] = 0;
+			}
+		}
+	}
+	slide("screenSlide");
+	slide("activeSlide");
 
 	if (gameMan.screen == "title") {
 		var y = drawMan.activeHeight * menus["title"];
 		drawMan.slideY = y + (drawMan.slideY - y) * animMan["activeSlide"];
-	}
-
-	function slide(slide) {
-		var speed = slide * dTime / 100;
-		if (slide > 0) {
-			slide -= speed;
-			if (slide < 0.001) {
-				slide = 0;
-			}
-		}
-		else if (slide < 0) {
-			slide -= speed;
-			if (slide > -0.001) {
-				slide = 0;
-			}
-		}
-		return slide;
 	}
 
 	if (musicMan.fading) {
