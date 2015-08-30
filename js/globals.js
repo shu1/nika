@@ -1,6 +1,6 @@
 "use strict";
 
-var tvCanvas, gpCanvas, muralCanvas, grid, images={}, sounds={}, scenes={}, menus={}, states=[], phalanx=[], murals=[];
+var tvCanvas, gpCanvas, muralCanvas, grid, images={}, sounds={}, scenes={}, states=[], phalanx=[], murals=[];
 
 var eventMan = [[],[],[],[]]
 
@@ -69,7 +69,7 @@ var gameMan = {
 	ais:[0,1,0,1],
 	thinking:false,
 	replaying:false,
-	timerIndex: 0,
+	timerIndex:0,
 	timed:false,
 	turnTimes:[0, 30000, 60000, 120000],
 	turnTimer:0,
@@ -77,6 +77,14 @@ var gameMan = {
 	screen:"title",
 	pScreen:"",
 	nScreen:""
+}
+
+var menuMan = {
+	popup:0,
+	title:0,
+	setup:5,
+	option:0,
+	tutorial:0
 }
 
 var inputMan = {

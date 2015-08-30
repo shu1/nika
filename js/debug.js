@@ -20,7 +20,7 @@ function menuDebug(index) {
 	switch (index) {
 	case 0:
 		debugMan.show = !debugMan.show;
-		menus["debug"] = 0;
+		menuMan["debug"] = 0;
 		break;
 	case 1:
 		gameMan.debug = !gameMan.debug;
@@ -89,7 +89,7 @@ function drawDebug(canvas, context, dTime) {
 			for (var col = 0; col < debugMan.cols; ++col) {
 				var button = row * debugMan.cols + col;
 				if (button < debugTexts.length) {
-					if (inputMan.drag == "debug" && button == menus["debug"]
+					if (inputMan.drag == "debug" && button == menuMan["debug"]
 					|| button == 1 && gameMan.debug) {
 						drawButton(row, col, debugTexts[button], "#004157", "white");
 					} else {
@@ -99,7 +99,7 @@ function drawDebug(canvas, context, dTime) {
 			}
 		}
 	} else {
-		if (inputMan.drag == "debug" && menus["debug"] == 0) {
+		if (inputMan.drag == "debug" && menuMan["debug"] == 0) {
 			drawButton(0, 0, debugTexts[1], drawMan.color, "white");
 		} else {
 			drawButton(0, 0, debugTexts[1], "white");

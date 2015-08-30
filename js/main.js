@@ -122,12 +122,6 @@ window.onload = function() {
 		debugMan.rows = Math.ceil(debugTexts.length / debugMan.cols);
 	}
 
-	menus["popup"] = 0;
-	menus["title"] = 0;
-	menus["setup"] = 5;
-	menus["option"] = 0;
-	menus["tutorial"] = 0;
-
 	scenes["board"] = {};
 	scenes["rules"] = {};
 	scenes["menus"] = {};
@@ -261,7 +255,7 @@ function setScreen(index) {
 	}
 
 	if (gameMan.screen == "title") {
-		drawMan.slideY = drawMan.activeHeight * menus["title"];
+		drawMan.slideY = drawMan.activeHeight * menuMan["title"];
 		animMan["activeAlpha"] = 1;
 	} else {
 		animMan["activeAlpha"] = 0;
@@ -455,7 +449,7 @@ function updateAnims(dTime) {
 	slide("activeSlide");
 
 	if (gameMan.screen == "title") {
-		var y = drawMan.activeHeight * menus["title"];
+		var y = drawMan.activeHeight * menuMan["title"];
 		drawMan.slideY = y + (drawMan.slideY - y) * animMan["activeSlide"];
 	}
 
@@ -577,7 +571,7 @@ function drawContext(context, dTime, tv) {
 	case "title":
 		context.drawImage(images["menuTitle0"], x, y);
 		context.drawImage(images["menuTitle1"], x+512, y);
-		if (menus["title"] < 6) {
+		if (menuMan["title"] < 6) {
 			if (animMan["activeAlpha"] < 1) {
 				context.globalAlpha = animMan["activeAlpha"];
 			}
@@ -679,11 +673,11 @@ function drawRules(context, scene) {
 
 	var arrowY = (scene.height - drawMan.arrowHeight)/2;
 	if (gameMan.rules > 0) {
-		var image = (menus["rules"] == 0) ? "ruleArrowActive0" : "ruleArrow0";
+		var image = (menuMan["rules"] == 0) ? "ruleArrowActive0" : "ruleArrow0";
 		context.drawImage(images[image], drawMan.arrowWidth/2, arrowY);
 	}
 	if (gameMan.rules < rulePages-1) {
-		var image = (menus["rules"] == 1) ? "ruleArrowActive1" : "ruleArrow1";
+		var image = (menuMan["rules"] == 1) ? "ruleArrowActive1" : "ruleArrow1";
 		context.drawImage(images[image], scene.width - drawMan.arrowWidth*1.5, arrowY);
 	}
 }
@@ -912,7 +906,7 @@ function drawHud(canvas, context, tv, dTime) {
 
 		if (inputMan.drag == "popup" && animMan["activeAlpha"] >= 0) {
 			context.fillStyle = "rgba(224,217,179," + 0.5*animMan["activeAlpha"] + ")";
-			context.fillRect(x + 10*scene.scale, y + (9 + 124 * menus["popup"]) * scene.scale, 1004*scene.scale, 122*scene.scale);
+			context.fillRect(x + 10*scene.scale, y + (9 + 124 * menuMan["popup"]) * scene.scale, 1004*scene.scale, 122*scene.scale);
 		}
 	}
 
@@ -929,8 +923,8 @@ function drawHud(canvas, context, tv, dTime) {
 		context.drawImage(images["buttonUndo"], scene.buttonWidth*2, y, scene.buttonWidth, scene.buttonHeight);
 	}
 
-	if (inputMan.drag == "button" && menus["button"] >= 0) {
-		context.drawImage(images["buttonActive"], scene.buttonWidth * menus["button"], y, scene.buttonWidth, scene.buttonHeight);
+	if (inputMan.drag == "button" && menuMan["button"] >= 0) {
+		context.drawImage(images["buttonActive"], scene.buttonWidth * menuMan["button"], y, scene.buttonWidth, scene.buttonHeight);
 	}
 
 	if (gameMan.debugBuild) {
