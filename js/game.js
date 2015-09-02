@@ -195,11 +195,16 @@ function pushState(ai, dontSave) {
 }
 
 function popState() {
+	var currentPlayer = gameMan.player;
 	if (states.length > 1) {
 		do {
 			states.pop();
 			resetState();
 		} while (gameMan.ais[gameMan.player] && states.length > 1)
+	}
+	// If we have un-done into another player's turn, reset the turn timer
+	if (currentPlayer != gameMan.player) {
+		gameMan.turnTimer = 0;
 	}
 	saveGame();
 }
