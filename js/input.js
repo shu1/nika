@@ -240,7 +240,7 @@ function mouseMove(event) {
 			var pDistance = inputMan.pDistance;
 			setPinchDistance();
 
-			var dScale = (inputMan.pDistance - pDistance) / drawMan.screenDistance;	// TODO check on this scaling algorithm
+			var dScale = 2 * (inputMan.pDistance - pDistance) / drawMan.screenDistance;	// TODO check on this scaling algorithm
 			var x = (inputMan.x + inputMan.x2) / 2;	// center of pinch
 			var y = (inputMan.y + inputMan.y2) / 2;
 			pinch(scene, dScale, x, y);
@@ -518,7 +518,7 @@ function mouseWheel(event) {
 	} else if (event.deltaY < 0) {
 		dir = -1;
 	}
-	var dScale = -30 * dir / drawMan.screenDistance;
+	var dScale = -60 * dir / drawMan.screenDistance;
 	pinch(scene, dScale, event.layerX, event.layerY);
 	event.preventDefault();
 }

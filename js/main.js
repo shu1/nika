@@ -634,14 +634,6 @@ function drawContext(context, dTime, tv) {
 				context.globalAlpha = 1;
 			}
 
-			if (gameMan.timed) {
-				drawTimer(context);
-			}
-
-			if (gameMan.tutorialStep >= 0) {
-				drawTutorialProgress(context);
-			}
-
 			setRings();	// TODO don't do this every frame?
 			drawPieces(context);
 			if (gameMan.winner < 0) {
@@ -853,7 +845,7 @@ function drawTiles(context, dTime) {
 	context.restore();
 }
 
-function drawTimer(context) {
+function drawTimer(canvas, context) {
 	if (gameMan.ais[gameMan.player] > 0 || gameMan.tutorialStep >= 0) {
 		return;
 	}
@@ -865,11 +857,11 @@ function drawTimer(context) {
 	var timeString = minutes + divider + seconds;
 	context.font = (2 * fontSize) + "px Georgia";
 	context.fillStyle = "white";
-	context.fillText(timeString, 2000 - context.measureText(timeString).width, 2 * fontSize);
+	context.fillText(timeString, canvas.width - context.measureText(timeString).width, 2 * fontSize);
 	context.restore();
 }
 
-function drawTutorialProgress(context) {
+function drawTutorialProgress(canvas, context) {
 	context.save();
 	var sectionStarts = [0,7,23,34,52]; // HACK last section start represents end of tutorial, included for edge case handling
 	var sectionNames = ["Introduction", "Actions and Routing", "Phalanxes", "Pushing"];
@@ -880,7 +872,7 @@ function drawTutorialProgress(context) {
 	var progressString = sectionNames[i] + ": " + (gameMan.tutorialStep - sectionStarts[i] + 1)  + "/" + (sectionStarts[i+1] - sectionStarts[i]);
 	context.font = (2 * fontSize) + "px Georgia";
 	context.fillStyle = "white";
-	context.fillText(progressString, 2000 - context.measureText(progressString).width, 3 * fontSize);
+	context.fillText(progressString, canvas.width - context.measureText(progressString).width, 2 * fontSize);
 	context.restore();
 }
 
@@ -921,6 +913,14 @@ function drawHud(canvas, context, tv, dTime) {
 		context.drawImage(images["buttonMenu"], 0, y, scene.buttonWidth, scene.buttonHeight);
 		context.drawImage(images["buttonPass"], scene.buttonWidth, y, scene.buttonWidth, scene.buttonHeight);
 		context.drawImage(images["buttonUndo"], scene.buttonWidth*2, y, scene.buttonWidth, scene.buttonHeight);
+
+		if (gameMan.timed) {
+			drawTimer(canvas, context);
+		}
+
+		if (gameMan.tutorialStep >= 0) {
+			drawTutorialProgress(canvas, context);
+		}
 	}
 
 	if (inputMan.drag == "button" && menuMan["button"] >= 0) {
