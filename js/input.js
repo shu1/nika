@@ -263,6 +263,7 @@ function mouseMove(event) {
 				if (inputMan.drag == "music") {
 					soundMan.music = Math.max(0, Math.min(1, Math.round(x / 12.1) / 100));
 					sounds["music"].volume = Math.pow(soundMan.music, 2);
+					sounds["menu"].volume = Math.pow(soundMan.music, 2);
 					handled = true;
 				}
 				else if (inputMan.drag == "sound") {
@@ -601,6 +602,7 @@ function keyDown(event) {
 					soundMan.music = 0;
 				}
 				sounds["music"].volume = Math.pow(soundMan.music, 2);
+				sounds["menu"].volume = Math.pow(soundMan.music, 2);
 			}
 			else if (menuMan["option"] == 1 && soundMan.sound > 0) {
 				soundMan.sound -= 0.1;
@@ -631,6 +633,7 @@ function keyDown(event) {
 					soundMan.music = 1;
 				}
 				sounds["music"].volume = Math.pow(soundMan.music, 2);
+				sounds["menu"].volume = Math.pow(soundMan.music, 2);
 			}
 			else if (menuMan["option"] == 1 && soundMan.sound < 1) {
 				soundMan.sound += 0.1;
