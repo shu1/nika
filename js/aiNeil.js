@@ -90,9 +90,9 @@ function aiNeil(aiNum){
 	}
 
 	// EACH PIECE CHECKING =============
-	for(var i = 0; i < 6; i++) {
+	for(var i = 0; i < 6; ++i) {
 		if(pieces[i].kind == 3) {
-			for(var j = 0; j < rallySpots.length; j++) {
+			for(var j = 0; j < rallySpots.length; ++j) {
 				// Get rally spots
 				phalanx = [pieces[i]];
 				var rally = getRallyArguments(pieces[i],rallySpots[j]);
@@ -113,7 +113,7 @@ function aiNeil(aiNum){
 		else {
 			// Do normal move check, which means rotation, then movement.
 			origRot = pieces[i].rot;
-			for (var rot = 0; rot < 4; rot++){
+			for (var rot = 0; rot < 4; ++rot){
 				if(rot != origRot){
 					pieces[i].rot = rot;
 					var temp = copyState(defaultState);
@@ -127,7 +127,7 @@ function aiNeil(aiNum){
 			setGrid(defGrid,grid);
 			pieces = getAIPieces();
 
-			for (var dir = 0; dir<4; dir++){
+			for (var dir = 0; dir<4; ++dir){
 				// Check moves in each direction
 				phalanx = [pieces[i]];
 
@@ -154,26 +154,26 @@ function aiNeil(aiNum){
 	setGrid(defGrid,grid);
 
 	// PHALANX CHECKING =====================
-	for(var i = 0; i < 4; i++){
+	for(var i = 0; i < 4; ++i) {
 		var sameDir = [];
-		for (var p = 0; p < 6; p++){
-			if(pieces[p].rot == i){
+		for (var p = 0; p < 6; ++p) {
+			if(pieces[p].rot == i) {
 				sameDir.push(pieces[p]);
 			}
 		}
-		if(sameDir.length > 1){
+		if(sameDir.length > 1) {
 			var combinations = getCombinations(sameDir);
-			combinations.forEach(function(e){
+			combinations.forEach(function(e) {
 				phalanx = [];
 				phalanx = e.slice(0);
-				if(phalanx.length > 1 && isPhalanx()){
-					for(var rot = 0; rot < 4; rot++){
+				if(phalanx.length > 1 && isPhalanx()) {
+					for(var rot = 0; rot < 4; ++rot) {
 						if(rot != i){
 							rotatePiece(phalanx[0].row, phalanx[0].col, rot);
 							pieces = getAIPieces();
 							var temp = copyState(defaultState);
 							getValue(temp, pieces);
-							if(temp.value > bestState.value){
+							if(temp.value > bestState.value) {
 								bestState = temp;
 							}
 							setGrid(defGrid, grid);
@@ -211,7 +211,7 @@ function aiNeil(aiNum){
 
 function getValue(state, pieces){
 	var val;
-	for (var i = 0; i < pieces.length; i++) {
+	for (var i = 0; i < pieces.length; ++i) {
 		var piece = pieces[i];
 		val = 0;
 
@@ -227,7 +227,7 @@ function getValue(state, pieces){
 		if(piece.row + 1 < grid.length)            { adj[2] = grid[piece.row+1][piece.col]; } // Down
 		if(piece.col - 1 > 0)                      { adj[3] = grid[piece.row][piece.col-1]; } // Left
 
-		for(var j = 0; j < 4; j++) {
+		for(var j = 0; j < 4; ++j) {
 
 			if(adj[j] != undefined && adj[j].kind != -1 && adj[j].player >- 1) {
 				// Own
@@ -465,7 +465,7 @@ function getCombinations(pieces) {
 	var result = [];
 
 	var f = function(prefix, checking) {
-		for (var i = 0; i < checking.length; i++) {
+		for (var i = 0; i < checking.length; ++i) {
 			result.push(prefix.concat(checking[i]));
 			f(prefix.concat(checking[i]), checking.slice(i + 1));
 		}
@@ -476,7 +476,7 @@ function getCombinations(pieces) {
 }
 
 function checkIfPiecesCanWin(pieces){
-	for (var i = 0; i < 6; i++) {
+	for (var i = 0; i < 6; ++i) {
 		var d = getDistanceFromGoal(pieces[i].row,pieces[i].col,gameMan.player);
 		if(d <= 2){
 			if(d == 1){
