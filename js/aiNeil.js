@@ -296,34 +296,15 @@ function getValue(state, pieces){
 }
 
 function copyState(original){
-	var o = original.board;
 	var s = newState();
-	var b = new Array(15);
-
-	for (var row = 0; row < 15; ++row){
-		b[row] = new Array(21);
-		for (var col = 0; col < 21; ++col){
-			var p = {}
-			p.row       = row;
-			p.col       = col;
-			p.checked   = o[row][col].checked;
-			p.player    = o[row][col].player;
-			p.kind      = o[row][col].kind;
-			p.city      = o[row][col].city;
-			p.rot       = o[row][col].rot;
-			p.ring      = o[row][col].ring;
-			p.prompt    = o[row][col].prompt;
-			b[row][col] = p;
-		}
-	}
-
-	s.board = b;
+	s.board = copyGrid(original.board);
 	return s;
 }
 
 function setGrid(gFrom, gTo){
 	for (var row = 0; row < 15; ++row){
 		for (var col = 0; col < 21; ++col){
+			gTo[row][col] = gTo[row][col] || {};
 			gTo[row][col].row     = row;
 			gTo[row][col].col     = col;
 			gTo[row][col].checked = gFrom[row][col].checked;
@@ -431,22 +412,27 @@ function getDistanceFromGoal(row, col, player) {
 }
 
 function storeGrid(){
-	var pGrid = new Array(15);
+	defGrid = copyGrid(grid);
+}
+
+function copyGrid(original) {
+	var copy = new Array(15);
 	for (var row = 0; row < 15; ++row) {
-		pGrid[row] = new Array(21);
+		copy[row] = new Array(21);
 		for (var col = 0; col < 21; ++col) {
-			var cell = {
-				checked : grid[row][col].checked,
-				player  : grid[row][col].player,
-				kind    : grid[row][col].kind,
-				city    : grid[row][col].city,
-				rot     : grid[row][col].rot,
-				ring    : grid[row][col].ring
+			copy[row][col] = {
+				row     : row,
+				col     : col,
+				checked : original[row][col].checked,
+				player  : original[row][col].player,
+				kind    : original[row][col].kind,
+				city    : original[row][col].city,
+				rot     : original[row][col].rot,
+				ring    : original[row][col].ring
 			}
-			pGrid[row][col] = cell;
 		}
 	}
-	defGrid = pGrid;
+	return copy;
 }
 
 function getAIPieces() {
