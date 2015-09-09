@@ -305,82 +305,79 @@ function getDistanceFromGoal(row, col, player) {
 		if (row <= 5 && col >= 9 && col <= 11) { // in 3x3 square in front of goal
 			return (row-2);
 		}
-		if (row <= 5 && col >= 6 && col <= 8) { // in Messenian territory "west" of 3x3 square
+		else if (row <= 5 && col >= 6 && col <= 8) { // in Messenian territory "west" of 3x3 square
 			return (row-3) + (8-col) + 2;
 		}
-		if (row <= 5 && col >= 12 && col <= 14) { // in Messenian territory "east" of 3x3 square
+		else if (row <= 5 && col >= 12 && col <= 14) { // in Messenian territory "east" of 3x3 square
 			return (row-3) + (col-12) + 2;
 		}
-		if (row >= 3 && row <= 11 && col >= 3 && col <= 5) { // in Spartan territory
+		else if (row >= 3 && row <= 11 && col >= 3 && col <= 5) { // in Spartan territory
 			return (row-3) + (5-col) + 5;
 		}
-		if (row >= 3 && row <= 11 && col >= 15 && col <= 17) { // in Theban territory
+		else if (row >= 3 && row <= 11 && col >= 15 && col <= 17) { // in Theban territory
 			return (row-3) + (col-15) + 5;
 		}
-		if (row >= 9 && col >= 6 && col <= 10) { // in "west" half of Athenian territory (including rally areas)
+		else if (row >= 9 && col >= 6 && col <= 10) { // in "west" half of Athenian territory (including rally areas)
 			return (row-9) + (col-5) + 11;
 		}
-		if (row >= 9 && col >= 11 && col <= 14) { // in "east" half of Athenian territory (including rally areas)
+		else if (row >= 9 && col >= 11 && col <= 14) { // in "east" half of Athenian territory (including rally areas)
 			return (row-9) + (15-col) + 11;
 		}
 	}
-
-	if (player == 1) {
+	else if (player == 1) {
 		if (row >= 6 && row <= 8 && col >= 15) { // in 3x3 square in front of goal
 			return (18-col);
 		}
-		if (row >= 3 && row <= 5 && col >= 3) { // in long rectangle "north" of goal
+		else if (row >= 3 && row <= 5 && col >= 3) { // in long rectangle "north" of goal
 			return (5-row) + (17-col) + 2;
 		}
-		if (row >= 9 && row <= 11 && col >= 3) { // in long rectangle "south" of goal
+		else if (row >= 9 && row <= 11 && col >= 3) { // in long rectangle "south" of goal
 			return (row-9) + (17-col) + 2;
 		}
-		if (row >= 6 && row <= 7 && col <= 5) { // in "north" 2x6 rectangle between center and back of rally area
+		else if (row >= 6 && row <= 7 && col <= 5) { // in "north" 2x6 rectangle between center and back of rally area
 			return (row-5) + (5-col) + 14;
 		}
-		if (row == 8 && col <= 5) { // in "south" 1x6 rectangle between center and back of rally area
+		else if (row == 8 && col <= 5) { // in "south" 1x6 rectangle between center and back of rally area
 			return (9-row) + (5-col) + 14;
 		}
 	}
-
-	if (player == 2) {
+	else if (player == 2) {
 		if (row >= 9 && col >= 9 && col <= 11) { // in 3x3 square in front of goal
 			return (12-row);
 		}
-		if (row >= 9 && col >= 6 && col <= 8) { // in Athenian territory "west" of 3x3 square
+		else if (row >= 9 && col >= 6 && col <= 8) { // in Athenian territory "west" of 3x3 square
 			return (11-row) + (8-col) + 2;
 		}
-		if (row >= 9 && col >= 12 && col <= 14) { // in Athenian territory "east" of 3x3 square
+		else if (row >= 9 && col >= 12 && col <= 14) { // in Athenian territory "east" of 3x3 square
 			return (11-row) + (col-12) + 2;
 		}
-		if (row >= 3 && row <= 11 && col >= 3 && col <= 5) { // in Spartan territory
+		else if (row >= 3 && row <= 11 && col >= 3 && col <= 5) { // in Spartan territory
 			return (11-row) + (5-col) + 5;
 		}
-		if (row >= 3 && row <= 11 && col >= 15 && col <= 17) { // in Theban territory
+		else if (row >= 3 && row <= 11 && col >= 15 && col <= 17) { // in Theban territory
 			return (11-row) + (col-15) + 5;
 		}
-		if (row <= 5 && col >= 6 && col <= 10) { // in "west" half of Messenian territory (including rally areas)
+		else if (row <= 5 && col >= 6 && col <= 10) { // in "west" half of Messenian territory (including rally areas)
 			return (5-row) + (col-5) + 11;
 		}
-		if (row <= 5 && col >= 11 && col <= 14) { // in "east" half of Messenian territory (including rally areas)
+		else if (row <= 5 && col >= 11 && col <= 14) { // in "east" half of Messenian territory (including rally areas)
 			return (5-row) + (15-col) + 11;
 		}
 	}
-
-	if (player == 3) {
+	else if (player == 3) {
 		if (row >= 6 && row <= 8 && col <= 5) { // in 3x3 square in front of goal
 			return (col-2);
 		}
-		if (row >= 3 && row <= 5 && col <= 17) { // in long rectangle "north" of goal
+		else if (row >= 3 && row <= 5 && col <= 17) { // in long rectangle "north" of goal
 			return (5-row) + (col-3) + 2;
 		}
-		if (row >= 9 && row <= 11 && col <= 17) { // in long rectangle "south" of goal
+		else if (row >= 9 && row <= 11 && col <= 17) { // in long rectangle "south" of goal
 			return (row-9) + (col-3) + 2;
 		}
-		if (row >= 6 && row <= 7 && col >= 15) { // in "north" 2x6 rectangle between center and back of rally area
+		else if (row >= 6 && row <= 7 && col >= 15) { // in "north" 2x6 rectangle between center and back of rally area
 			return (row-5) + (col-15) + 14;
 		}
-		if (row == 8 && col >= 15) { // in "south" 1x6 rectangle between center and back of rally area
+		else if (row == 8 && col >= 15) { // in "south" 1x6 rectangle between center and back of rally area
 			return (9-row) + (col-15) + 14;
 		}
 	}
