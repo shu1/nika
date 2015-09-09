@@ -95,7 +95,7 @@ function aiNeil(aiNum){
 			for(var j = 0; j < rallySpots.length; ++j) {
 				// Get rally spots
 				phalanx = [pieces[i]];
-				var rally = getRallyArguments(pieces[i],rallySpots[j]);
+				var rally = getPieceArguments(pieces[i],rallySpots[j]);
 				movePiece(rally.pRow, rally.pCol, rally.tRow, rally.tCol, true);
 				pieces = getAIPieces();
 
@@ -295,29 +295,6 @@ function getValue(state, pieces){
 	}
 }
 
-function copyState(original){
-	var s = newState();
-	s.board = copyGrid(original.board);
-	return s;
-}
-
-function setGrid(gFrom, gTo){
-	for (var row = 0; row < 15; ++row){
-		for (var col = 0; col < 21; ++col){
-			gTo[row][col] = gTo[row][col] || {};
-			gTo[row][col].row     = row;
-			gTo[row][col].col     = col;
-			gTo[row][col].checked = gFrom[row][col].checked;
-			gTo[row][col].player  = gFrom[row][col].player;
-			gTo[row][col].kind    = gFrom[row][col].kind;
-			gTo[row][col].city    = gFrom[row][col].city;
-			gTo[row][col].rot     = gFrom[row][col].rot ;
-			gTo[row][col].ring    = gFrom[row][col].ring;
-			gTo[row][col].prompt  = gFrom[row][col].prompt;
-		}
-	}
-}
-
 function getDistanceFromGoal(row, col, player) {
 
 	if (grid[row][col].kind == 3) {
@@ -407,8 +384,21 @@ function getDistanceFromGoal(row, col, player) {
 			return (9-row) + (col-15) + 14;
 		}
 	}
-
 	return -1;
+}
+
+function copyState(original){
+	var s = newState();
+	s.board = copyGrid(original.board);
+	return s;
+}
+
+function setGrid(fromGrid, toGrid) {
+	for (var row = 0; row < 15; ++row) {
+		for (var col = 0; col < 21; ++col) {
+			toGrid[row][col] = copyCell(fromGrid[row][col]);
+		}
+	}
 }
 
 function storeGrid(){
@@ -416,23 +406,27 @@ function storeGrid(){
 }
 
 function copyGrid(original) {
-	var copy = new Array(15);
+	var copy = [];
 	for (var row = 0; row < 15; ++row) {
-		copy[row] = new Array(21);
+		copy.push([]);
 		for (var col = 0; col < 21; ++col) {
-			copy[row][col] = {
-				row     : row,
-				col     : col,
-				checked : original[row][col].checked,
-				player  : original[row][col].player,
-				kind    : original[row][col].kind,
-				city    : original[row][col].city,
-				rot     : original[row][col].rot,
-				ring    : original[row][col].ring
-			}
+			copy[row].push( copyCell(original[row][col]) );
 		}
 	}
 	return copy;
+}
+
+function copyCell(original) {
+	return {
+		row     : original.row,
+		col     : original.col,
+		checked : original.checked,
+		player  : original.player,
+		kind    : original.kind,
+		city    : original.city,
+		rot     : original.rot,
+		ring    : original.ring
+	}
 }
 
 function getAIPieces() {
@@ -440,7 +434,7 @@ function getAIPieces() {
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			if (grid[row][col].player == gameMan.player) {
-				p.push(grid[row][col]);
+				p.push(copyCell(grid[row][col]));
 			}
 		}
 	}
@@ -482,7 +476,7 @@ function getDirection(dir) {
 	var incRow = 0;
 	var incCol = 0;
 
-	switch(dir){
+	switch(dir) {
 	case 0:
 		incRow = -1;
 		incCol = 0;
@@ -500,22 +494,19 @@ function getDirection(dir) {
 		incCol = -1;
 		break;
 	}
-	return { row: incRow, col: incCol};
+	return { row: incRow, col: incCol };
 }
 
 function getMoveArguments(p, dir) {
 	var d = getDirection(dir);
-	var newRow = p.row + d.row;
-	var newCol = p.col + d.col;
-	return {
-		pRow : p.row,
-		pCol : p.col,
-		tRow : newRow,
-		tCol : newCol
-	}
+	var target = {
+		row: p.row + d.row,
+		col: p.col + d.col
+	};
+  return getPieceArguments(p, target);
 }
 
-function getRallyArguments(p, target) {
+function getPieceArguments(p, target) {
 	return {
 		pRow : p.row,
 		pCol : p.col,
