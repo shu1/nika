@@ -77,6 +77,10 @@ function mouseDown(event) {
 					inputMan.pX = scene.x + (gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
 					inputMan.pY = scene.y + (gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
 					handled = true;
+
+					if (inPhalanx(gameMan.pRow, gameMan.pCol) && !routedCell(gameMan.pRow, gameMan.pCol)) {
+						animMan["radiusFlag"] = 1;
+					}
 				} else {
 					gameMan.selection = false;	// back to normal selection if you deselect pieces
 					phalanx.length = 0;
@@ -456,6 +460,10 @@ function mouseUp(event) {
 				}
 				else if (!gameMan.ais[gameMan.player]) {
 					movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col);
+				}
+
+				if (animMan["radius"]) {
+					animMan["radiusFlag"] = -1;	// TODO refactor and put this in elseif chain above?
 				}
 
 				if (gameMan.tutorialStep >= 0) {

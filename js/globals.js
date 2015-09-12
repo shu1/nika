@@ -50,7 +50,8 @@ var animMan = {
 	"screenSlide":0,
 	"activeSlide":0,
 	"screenAlpha":0,
-	"activeAlpha":1
+	"activeAlpha":1,
+	"radius":0
 }
 
 var gameMan = {

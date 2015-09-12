@@ -453,6 +453,19 @@ function updateAnims(dTime) {
 		drawMan.slideY = y + (drawMan.slideY - y) * animMan["activeSlide"];
 	}
 
+	if (animMan["radiusFlag"]) {
+		animMan["radius"] += dTime/100 * animMan["radiusFlag"];
+
+		if (animMan["radius"] > 1) {
+			animMan["radius"] = 1;
+			animMan["radiusFlag"] = 0;
+		}
+		else if (animMan["radius"] < 0) {
+			animMan["radius"] = 0;
+			animMan["radiusFlag"] = 0;
+		}
+	}
+
 	if (musicMan.fading) {
 		musicMan.alpha += dTime/2000;
 		if (musicMan.alpha > 1) {
@@ -698,26 +711,25 @@ function setRings() {
 
 function drawPieces(context) {
 	// draw drag radius
-	if (inputMan.touchID >= 0 && !inputMan.drag && gameMan.screen != "popup" && gameMan.pRow >= 0 && gameMan.pCol >= 0
-	&& inPhalanx(gameMan.pRow, gameMan.pCol) && !routedCell(gameMan.pRow, gameMan.pCol)) {
+	if (animMan["radius"]) {
 		var x = gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2;
 		var y = gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2;
-
-		context.fillStyle = "rgba(191,191,191,0.5)";
-		context.beginPath();
-		context.arc(x, y, drawMan.cellSize * 2.0, 0, Math.PI*2);
-		context.fill();
 
 		context.strokeStyle = "white";
 		context.lineWidth = 2;
 		context.beginPath();
-		context.arc(x, y, drawMan.cellSize * 1.8, 0, Math.PI*2);
+		context.arc(x, y, drawMan.cellSize * 1.8 * animMan["radius"], 0, Math.PI*2);
 		context.stroke();
 
 		context.lineWidth = 6;
 		context.beginPath();
-		context.arc(x, y, drawMan.cellSize * 2.0, 0, Math.PI*2);
+		context.arc(x, y, drawMan.cellSize * 2.0 * animMan["radius"], 0, Math.PI*2);
 		context.stroke();
+
+		context.fillStyle = "rgba(191,191,191,0.5)";
+		context.beginPath();
+		context.arc(x, y, drawMan.cellSize * 2.0 * animMan["radius"], 0, Math.PI*2);
+		context.fill();
 	}
 
 	// TODO optimize context changes
