@@ -430,7 +430,7 @@ function updateAnims(dTime) {
 	active("activeFlash", 100, 1);
 
 	function slide(index) {
-		var speed = dTime / 100 * animMan[index];
+		var speed = dTime/100 * animMan[index];
 
 		if (animMan[index] > 0) {
 			animMan[index] -= speed;
@@ -454,7 +454,7 @@ function updateAnims(dTime) {
 	}
 
 	if (musicMan.fading) {
-		musicMan.alpha += dTime / 2000;
+		musicMan.alpha += dTime/2000;
 		if (musicMan.alpha > 1) {
 			musicMan.alpha = 1;
 		}

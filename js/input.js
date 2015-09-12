@@ -77,8 +77,7 @@ function mouseDown(event) {
 					inputMan.pX = scene.x + (gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
 					inputMan.pY = scene.y + (gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
 					handled = true;
-				}
-				else {
+				} else {
 					gameMan.selection = false;	// back to normal selection if you deselect pieces
 					phalanx.length = 0;
 				}

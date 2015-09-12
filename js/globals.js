@@ -47,10 +47,10 @@ var drawMan = {
 }
 
 var animMan = {
-	screenSlide:0,
-	activeSlide:0,
-	screenAlpha:0,
-	activeAlpha:1
+	"screenSlide":0,
+	"activeSlide":0,
+	"screenAlpha":0,
+	"activeAlpha":1
 }
 
 var gameMan = {
