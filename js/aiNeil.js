@@ -59,7 +59,7 @@ var aiWeights = [
 
 var aiP = aiWeights[0]; // Alias?
 
-function newState (){
+function newState() {
 	return {
 		value : 0,   // value of state after board state adjustments
 		board : grid // grid object, state of board after this move, will be applied to board upon ai exit.
@@ -99,11 +99,11 @@ function aiNeil(aiNum){
 				movePiece(rally.pRow, rally.pCol, rally.tRow, rally.tCol, true);
 				pieces = getAIPieces();
 
-				var temp = copyState(defaultState);
-				getValue(temp, pieces);
+				var testState = copyState(defaultState);
+				getValue(testState, pieces);
 
-				if(temp.value > bestState.value) {
-					bestState = temp;
+				if(testState.value > bestState.value) {
+					bestState = testState;
 				}
 
 				setGrid(defGrid, grid);
@@ -116,10 +116,10 @@ function aiNeil(aiNum){
 			for (var rot = 0; rot < 4; ++rot){
 				if(rot != origRot){
 					pieces[i].rot = rot;
-					var temp = copyState(defaultState);
-					getValue(temp, pieces);
-					if(temp.value > bestState.value){
-						bestState = temp;
+					var testState = copyState(defaultState);
+					getValue(testState, pieces);
+					if(testState.value > bestState.value){
+						bestState = testState;
 					}
 				}
 			}
@@ -137,11 +137,11 @@ function aiNeil(aiNum){
 				movePiece(move.pRow,move.pCol,move.tRow,move.tCol,true);
 				pieces = getAIPieces();
 
-				var temp = copyState(defaultState);
-				getValue(temp, pieces);
+				var testState = copyState(defaultState);
+				getValue(testState, pieces);
 
-				if(temp.value>bestState.value){
-					bestState = temp;
+				if(testState.value>bestState.value){
+					bestState = testState;
 				}
 
 				setGrid(defGrid, grid);
@@ -171,10 +171,10 @@ function aiNeil(aiNum){
 						if(rot != i){
 							rotatePiece(phalanx[0].row, phalanx[0].col, rot);
 							pieces = getAIPieces();
-							var temp = copyState(defaultState);
-							getValue(temp, pieces);
-							if(temp.value > bestState.value) {
-								bestState = temp;
+							var testState = copyState(defaultState);
+							getValue(testState, pieces);
+							if(testState.value > bestState.value) {
+								bestState = testState;
 							}
 							setGrid(defGrid, grid);
 							pieces = getAIPieces();
@@ -190,10 +190,10 @@ function aiNeil(aiNum){
 					phalanx = e.slice(0);
 					pieces = getAIPieces();
 
-					var temp = copyState(defaultState);
-					getValue(temp, pieces);
-					if(temp.value > bestState.value){
-						bestState = temp;
+					var testState = copyState(defaultState);
+					getValue(testState, pieces);
+					if(testState.value > bestState.value){
+						bestState = testState;
 					}
 					setGrid(defGrid, grid);
 					pieces = getAIPieces();
