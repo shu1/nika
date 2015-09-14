@@ -146,11 +146,11 @@ function useAction(n) {
 		gameMan.player = (gameMan.player + 1) % 4;
 		gameMan.turnTimer = 0;
 		if (gameMan.tutorialStep < 0) {
-			drawMan.helmetScale = 1;	// zoom helmets
+			animMan["helmetScale"] = 1;	// zoom helmets
 		}
 	}
 	else if (gameMan.tutorialStep != 2) {	// hack
-		drawMan.helmetFlash = 1;	// flash helmet
+		animMan["helmetFlash"] = 1;	// flash helmet
 	}
 	checkWin();
 }

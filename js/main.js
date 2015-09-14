@@ -466,6 +466,26 @@ function updateAnims(dTime) {
 		}
 	}
 
+	if (gameMan.screen == "board") {
+		animMan["helmetTheta"] += dTime/400;
+
+		if (animMan["helmetScale"] > 0) {
+			if (animMan["helmetScale"] == 1) {
+				animMan["helmetTheta"] = 0;	// reset alpha every zoom
+			}
+
+			animMan["helmetScale"] -= dTime/400;
+			if (animMan["helmetScale"] <= 0) {
+				animMan["helmetFlash"] = 1;
+			}
+		}
+
+		if (animMan["helmetFlash"] > 0) {
+			animMan["helmetFlash"] -= dTime/600;
+			animMan["helmetTheta"] += dTime/50;
+		}
+	}
+
 	if (musicMan.fading) {
 		musicMan.alpha += dTime/2000;
 		if (musicMan.alpha > 1) {
@@ -650,7 +670,7 @@ function drawContext(context, dTime, tv) {
 			setRings();	// TODO don't do this every frame?
 			drawPieces(context);
 			if (gameMan.winner < 0) {
-				drawTiles(context, dTime);
+				drawTiles(context);
 			}
 		}
 		break;
@@ -790,7 +810,7 @@ function drawPieces(context) {
 	}
 }
 
-function drawTiles(context, dTime) {
+function drawTiles(context) {
 	if (gameMan.tutorialStep < 0 || (gameMan.tutorialStep > 0 && gameMan.tutorialStep < 7) || gameMan.tutorialStep == 50) {
 		var theta = drawMan.time/400 % (Math.PI*2);
 		context.globalAlpha = (Math.sin(theta)+1)/2;
@@ -835,24 +855,12 @@ function drawTiles(context, dTime) {
 		context.translate(1920, 432);
 		break;
 	}
-	drawMan.helmetTheta += dTime/400;
-	if (drawMan.helmetScale == 1) {
-		drawMan.helmetTheta = 0;	// reset alpha every zoom
-	}
-	if (drawMan.helmetScale > 0) {
-		var scale = 1 + drawMan.helmetScale*7;
+	if (animMan["helmetScale"] > 0) {
+		var scale = 1 + animMan["helmetScale"] * 7;
 		context.scale(scale, scale);
-		drawMan.helmetScale -= dTime/400;
-		if (drawMan.helmetScale <= 0) {
-			drawMan.helmetFlash = 1;
-		}
-	}
-	if (drawMan.helmetFlash > 0) {
-		drawMan.helmetFlash -= dTime/600;
-		drawMan.helmetTheta += dTime/50;
 	}
 	context.rotate(gameMan.player * Math.PI/2);
-	context.globalAlpha = (Math.sin(drawMan.helmetTheta % (Math.PI*2))+1)/4 + 0.5;
+	context.globalAlpha = (Math.sin(animMan["helmetTheta"] % (Math.PI*2))+1)/4 + 0.5;
 	context.drawImage(images["helmet" + (gameMan.actions-1)], -128, -128);	// TODO make gameMan.actions 0,1 instead of 1,2
 	context.restore();
 }

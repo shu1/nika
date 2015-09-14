@@ -38,9 +38,6 @@ var drawMan = {
 	tutorialButtonHeight:48,
 	tutorialTheta:0,
 	tutorialFlash:0,
-	helmetScale:0,
-	helmetTheta:0,
-	helmetFlash:0,
 	pixelRatio:1,
 	zoom:0,
 	time:0
@@ -51,6 +48,7 @@ var animMan = {
 	"activeSlide":0,
 	"screenAlpha":0,
 	"activeAlpha":1,
+	"helmetTheta":0,
 	"radius":0
 }
 
