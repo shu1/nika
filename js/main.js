@@ -394,7 +394,7 @@ function updateAnims(dTime) {
 	}
 
 	if (animMan["screenFade"]) {
-		animMan["screenAlpha"] += dTime/250 * animMan["screenFade"];	// set positive/negative
+		animMan["screenAlpha"] += dTime/250 * animMan["screenFade"];
 
 		if (gameMan.nScreen == "popup" && animMan["screenAlpha"] >= 0.5) {
 			animMan["screenAlpha"] = 0.5;
@@ -414,7 +414,7 @@ function updateAnims(dTime) {
 
 	function active(index, time, flip) {
 		if (animMan[index]) {
-			animMan["activeAlpha"] += dTime / time * animMan[index];	// set positive/negative
+			animMan["activeAlpha"] += dTime / time * animMan[index];
 
 			if (animMan["activeAlpha"] >= 1) {
 				animMan["activeAlpha"] = 1;
@@ -453,33 +453,17 @@ function updateAnims(dTime) {
 		drawMan.slideY = y + (drawMan.slideY - y) * animMan["activeSlide"];
 	}
 
-	if (animMan["radiusFlag"]) {
-		animMan["radius"] += dTime/100 * animMan["radiusFlag"];
-
-		if (animMan["radius"] > 1) {
-			animMan["radius"] = 1;
-			animMan["radiusFlag"] = 0;
-		}
-		else if (animMan["radius"] < 0) {
-			animMan["radius"] = 0;
-			animMan["radiusFlag"] = 0;
-		}
-	}
-
 	if (gameMan.screen == "board") {
 		animMan["helmetTheta"] += dTime/400;
-
 		if (animMan["helmetScale"] > 0) {
 			if (animMan["helmetScale"] == 1) {
 				animMan["helmetTheta"] = 0;	// reset alpha every zoom
 			}
-
 			animMan["helmetScale"] -= dTime/400;
 			if (animMan["helmetScale"] <= 0) {
 				animMan["helmetFlash"] = 1;
 			}
 		}
-
 		if (animMan["helmetFlash"] > 0) {
 			animMan["helmetFlash"] -= dTime/600;
 			animMan["helmetTheta"] += dTime/50;
@@ -490,6 +474,19 @@ function updateAnims(dTime) {
 			if (animMan["tutorialFlash"] > 0) {
 				animMan["tutorialFlash"] -= dTime/600;
 				animMan["tutorialTheta"] += dTime/40;
+			}
+		}
+
+		if (animMan["radiusFlag"]) {
+			animMan["radius"] += dTime/100 * animMan["radiusFlag"];
+
+			if (animMan["radius"] > 1) {
+				animMan["radius"] = 1;
+				animMan["radiusFlag"] = 0;
+			}
+			else if (animMan["radius"] < 0) {
+				animMan["radius"] = 0;
+				animMan["radiusFlag"] = 0;
 			}
 		}
 	}
@@ -980,7 +977,7 @@ function drawHud(canvas, context, tv, dTime) {
 		};
 }());
 
-if (!window.nwf) {
+if (!true) {
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)

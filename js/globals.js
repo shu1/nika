@@ -43,11 +43,11 @@ var drawMan = {
 
 var animMan = {
 	"tutorialTheta":0,
+	"helmetTheta":0,
 	"screenSlide":0,
 	"activeSlide":0,
 	"screenAlpha":0,
 	"activeAlpha":1,
-	"helmetTheta":0,
 	"radius":0
 }
 
