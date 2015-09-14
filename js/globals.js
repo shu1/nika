@@ -36,14 +36,13 @@ var drawMan = {
 	tutorialButtonY:805,
 	tutorialButtonWidth:190,
 	tutorialButtonHeight:48,
-	tutorialTheta:0,
-	tutorialFlash:0,
 	pixelRatio:1,
 	zoom:0,
 	time:0
 }
 
 var animMan = {
+	"tutorialTheta":0,
 	"screenSlide":0,
 	"activeSlide":0,
 	"screenAlpha":0,

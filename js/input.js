@@ -448,7 +448,7 @@ function mouseUp(event) {
 						nextTutorialStep();
 					}
 					else {
-						drawMan.tutorialFlash = 1.5;
+						animMan["tutorialFlash"] = 1.5;
 					}
 				}
 				else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol

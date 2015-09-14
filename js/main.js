@@ -484,6 +484,14 @@ function updateAnims(dTime) {
 			animMan["helmetFlash"] -= dTime/600;
 			animMan["helmetTheta"] += dTime/50;
 		}
+
+		if (gameMan.tutorialStep >= 0 && tutorials[gameMan.tutorialStep].input) {
+			animMan["tutorialTheta"] += dTime/250;
+			if (animMan["tutorialFlash"] > 0) {
+				animMan["tutorialFlash"] -= dTime/600;
+				animMan["tutorialTheta"] += dTime/40;
+			}
+		}
 	}
 
 	if (musicMan.fading) {
@@ -655,14 +663,8 @@ function drawContext(context, dTime, tv) {
 			}
 
 			if (gameMan.tutorialStep >= 0 && tutorials[gameMan.tutorialStep].input) {
-				drawMan.tutorialTheta += dTime/250;
-				if (drawMan.tutorialFlash > 0) {
-					drawMan.tutorialFlash -= dTime/600;
-					drawMan.tutorialTheta += dTime/40;
-				}
-
 				context.drawImage(images["tutorialButton1"], drawMan.tutorialNextX, drawMan.tutorialButtonY);
-				context.globalAlpha = (Math.sin(drawMan.tutorialTheta % (Math.PI*2))+1)/2;
+				context.globalAlpha = (Math.sin(animMan["tutorialTheta"] % (Math.PI*2))+1)/2;
 				context.drawImage(images["tutorialButton2"], drawMan.tutorialNextX, drawMan.tutorialButtonY);
 				context.globalAlpha = 1;
 			}
