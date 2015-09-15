@@ -97,11 +97,35 @@ function aiNeil(aiNum){
 		else {
 			// Do normal move check, which means rotation, then movement.
 
-			setGrid(defGrid,grid);
-			pieces = getAIPieces();
+			for (var dir = 0; dir < 3; ++dir) {
+				setGrid(defGrid,grid);
+				pieces = getAIPieces();
+				phalanx = [pieces[i]];
+
+				var newDir = (pieces[i].rot + dir) % 4;
+				var rotation = { rot: newDir };
+
+				rotatePiece(pieces[i].row, pieces[i].col);
+				pieces = getAIPieces();
+
+				var testState = copyState(defaultState);
+				getValue(testState, pieces);
+
+				if (testState.value > bestState.value) {
+					bestState = testState;
+					bestState.rotation = rotation;
+					bestState.phalanx = phalanx;
+				}
+
+				setGrid(defGrid, grid);
+				pieces = getAIPieces();
+				phalanx = [];
+			}
 
 			// Check moves in each direction
-			for (var dir = 0; dir<4; ++dir){
+			for (var dir = 0; dir < 4; ++dir){
+				setGrid(defGrid,grid);
+				pieces = getAIPieces();
 				phalanx = [pieces[i]];
 
 				var move = getMoveArguments(phalanx[0],dir);
@@ -113,7 +137,7 @@ function aiNeil(aiNum){
 				var testState = copyState(defaultState);
 				getValue(testState, pieces);
 
-				if(testState.value>bestState.value){
+				if (testState.value > bestState.value) {
 					bestState = testState;
 					bestState.move = move;
 					bestState.phalanx = phalanx;
@@ -134,6 +158,11 @@ function aiNeil(aiNum){
 	if (bestState.move) {
 		phalanx = bestState.phalanx
 		movePiece(bestState.move.pRow, bestState.move.pCol, bestState.move.tRow, bestState.move.tCol);
+		playerAction();
+	}
+	else if (bestState.rotation) {
+		phalanx = bestState.phalanx
+		rotatePiece(phalanx[0].row, phalanx[0].col, bestState.rotation.rot);
 		playerAction();
 	}
 	else {
