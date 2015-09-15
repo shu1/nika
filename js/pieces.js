@@ -105,7 +105,7 @@ function movePiece(pRow, pCol, row, col) {
 }
 
 function endMove() {
-	if (!gameMan.ais[gameMan.player]) {
+	if (!gameMan.ais[gameMan.player]) {	// TODO this probably isn't necessary once AI is refactored
 		phalanx.length = 0;
 	}
 

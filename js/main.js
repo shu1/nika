@@ -412,7 +412,7 @@ function updateAnims(dTime) {
 		}
 	}
 
-	function active(index, time, flip) {
+	function alpha(index, time, flip) {
 		if (animMan[index]) {
 			animMan["activeAlpha"] += dTime / time * animMan[index];
 
@@ -426,8 +426,8 @@ function updateAnims(dTime) {
 			}
 		}
 	}
-	active("activeFade", 250, 0);
-	active("activeFlash", 100, 1);
+	alpha("activeFade", 250, 0);
+	alpha("activeFlash", 100, 1);
 
 	function slide(index, time, callback) {
 		var speed = dTime / time * animMan[index];
