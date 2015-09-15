@@ -64,7 +64,7 @@ function rotatePiece(pRow, pCol, rot) {
 	}
 }
 
-function movePiece(pRow, pCol, row, col, isAI) {
+function movePiece(pRow, pCol, row, col) {
 	var moved = false;
 
 	if (pRow >= 0 && pCol >= 0) {
@@ -74,20 +74,12 @@ function movePiece(pRow, pCol, row, col, isAI) {
 				if (eventMan[currentPlayer].length == 0) {
 					eventMan[currentPlayer].push("move");
 				}
-
-				if (!isAI) {
-					phalanx.length = 0;
-					moved = true;
-				}
+				moved = true;
 			}
 		}
 		else if (checkMove(pRow, pCol, row, col) && pushPiece(pRow, pCol, row, col, grid[pRow][pCol].player, 1)) {
 			moveOnePiece(pRow, pCol, row, col);
-
-			if (!isAI) {
-				phalanx.length = 0;
-				moved = true;	// return if a piece was moved so it can be redrawn
-			}
+			moved = true;
 
 			if (routedCell(pRow, pCol) && grid[row][col].kind == 2) {	// rally
 				grid[row][col].rot = grid[row][col].player;	// set rotation toward center of board
@@ -102,25 +94,25 @@ function movePiece(pRow, pCol, row, col, isAI) {
 			if (eventMan[currentPlayer].length == 0) {
 				eventMan[currentPlayer].push("rotate");
 			}
-
-			if (!isAI) {
-				phalanx.length = 0;
-				moved = true;
-			}
-		}
-
-		if (moved) {
-			if (!gameMan.debug) {
-				useAction();
-			}
-
-			if (gameMan.tutorialStep < 0) {
-				pushState();
-			}
+			moved = true;
 		}
 	}
 
-	return moved;
+	return moved;	// return if a piece was moved, so it can be redrawn
+}
+
+function endMove() {
+	if (!gameMan.ais[gameMan.player]) {
+		phalanx.length = 0;
+	}
+
+	if (!gameMan.debug) {
+		useAction();
+	}
+
+	if (gameMan.tutorialStep < 0) {
+		pushState();
+	}
 }
 
 function moveOnePiece(pRow, pCol, row, col) {

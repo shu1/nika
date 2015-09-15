@@ -48,6 +48,7 @@ var animMan = {
 	"activeSlide":0,
 	"screenAlpha":0,
 	"activeAlpha":1,
+	"pieceSlide":0,
 	"radius":0
 }
 
@@ -64,7 +65,7 @@ var gameMan = {
 	pRow:-1,
 	pCol:-1,
 	pRot:-1,
-	ais:[0,1,0,1],
+	ais:[0,0,0,0],
 	thinking:false,
 	replaying:false,
 	timerIndex:0,

@@ -489,6 +489,15 @@ function updateAnims(dTime) {
 			animMan["radius"] = 0;
 			animMan["radiusFlag"] = 0;
 		}
+
+		if (animMan["pieceSlide"] > 0) {
+			animMan["pieceSlide"] -= dTime/250;
+
+			if (animMan["pieceSlide"] < 0) {
+				animMan["pieceSlide"] = 0;
+				endMove();
+			}
+		}
 	}
 
 	if (musicMan.fading) {
@@ -751,6 +760,24 @@ function drawPieces(context) {
 		context.fill();
 	}
 
+	var dX = 0, dY = 0;
+	if (animMan["pieceSlide"] > 0) {
+		switch (inputMan.rot) {
+		case 0:
+			dY = drawMan.cellSize * animMan["pieceSlide"];
+			break;
+		case 1:
+			dX = -drawMan.cellSize * animMan["pieceSlide"];
+			break;
+		case 2:
+			dY = -drawMan.cellSize * animMan["pieceSlide"];
+			break;
+		case 3:
+			dX = drawMan.cellSize * animMan["pieceSlide"];
+			break;
+		}
+	}
+
 	// TODO optimize context changes
 	var theta = drawMan.time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
@@ -758,7 +785,12 @@ function drawPieces(context) {
 			var cell = grid[row][col];
 			if (cell.player >= 0 || cell.ring >= 0 || cell.prompt >= 0) {
 				context.save();
-				context.translate(col * drawMan.cellSize + drawMan.cellSize/2, row * drawMan.cellSize + drawMan.cellSize/2);
+				if (inPhalanx(row, col)) {
+					context.translate(col * drawMan.cellSize + drawMan.cellSize/2 + dX, row * drawMan.cellSize + drawMan.cellSize/2 + dY);
+				}
+				else {
+					context.translate(col * drawMan.cellSize + drawMan.cellSize/2, row * drawMan.cellSize + drawMan.cellSize/2);
+				}
 
 				if (cell.player >= 0) {
 					context.rotate(cell.rot * Math.PI/2);
