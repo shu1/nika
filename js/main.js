@@ -477,17 +477,17 @@ function updateAnims(dTime) {
 			}
 		}
 
-		if (animMan["radiusFlag"]) {
+		if (animMan["radiusFlag"] > 0) {
 			animMan["radius"] += dTime/100 * animMan["radiusFlag"];
 
 			if (animMan["radius"] > 1) {
 				animMan["radius"] = 1;
 				animMan["radiusFlag"] = 0;
 			}
-			else if (animMan["radius"] < 0) {
-				animMan["radius"] = 0;
-				animMan["radiusFlag"] = 0;
-			}
+		}
+		else if (animMan["radiusFlag"] < 0) {
+			animMan["radius"] = 0;
+			animMan["radiusFlag"] = 0;
 		}
 	}
 
