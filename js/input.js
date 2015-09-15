@@ -459,9 +459,7 @@ function mouseUp(event) {
 				 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
 				}
 				else if (!gameMan.ais[gameMan.player]) {
-					if (movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
-						animMan["pieceSlide"] = 1;
-					}
+					movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col);
 				}
 
 				if (animMan["radius"]) {

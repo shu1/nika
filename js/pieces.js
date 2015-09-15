@@ -98,6 +98,9 @@ function movePiece(pRow, pCol, row, col) {
 		}
 	}
 
+	if (moved) {
+		animMan["pieceSlide"] = 1;
+	}
 	return moved;	// return if a piece was moved, so it can be redrawn
 }
 
