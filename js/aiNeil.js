@@ -92,43 +92,16 @@ function aiNeil(aiNum){
 	// EACH PIECE CHECKING =============
 	for(var i = 0; i < 6; ++i) {
 		if(pieces[i].kind == 3) {
-			for(var j = 0; j < rallySpots.length; ++j) {
-				// Get rally spots
-				phalanx = [pieces[i]];
-				var rally = getPieceArguments(pieces[i],rallySpots[j]);
-				movePiece(rally.pRow, rally.pCol, rally.tRow, rally.tCol, true);
-				pieces = getAIPieces();
-
-				var testState = copyState(defaultState);
-				getValue(testState, pieces);
-
-				if(testState.value > bestState.value) {
-					bestState = testState;
-				}
-
-				setGrid(defGrid, grid);
-				pieces = getAIPieces();
-			}
+			// Get rally spots
 		}
 		else {
 			// Do normal move check, which means rotation, then movement.
-			origRot = pieces[i].rot;
-			for (var rot = 0; rot < 4; ++rot){
-				if(rot != origRot){
-					pieces[i].rot = rot;
-					var testState = copyState(defaultState);
-					getValue(testState, pieces);
-					if(testState.value > bestState.value){
-						bestState = testState;
-					}
-				}
-			}
 
 			setGrid(defGrid,grid);
 			pieces = getAIPieces();
 
+			// Check moves in each direction
 			for (var dir = 0; dir<4; ++dir){
-				// Check moves in each direction
 				phalanx = [pieces[i]];
 
 				var move = getMoveArguments(phalanx[0],dir);
@@ -142,6 +115,8 @@ function aiNeil(aiNum){
 
 				if(testState.value>bestState.value){
 					bestState = testState;
+					bestState.move = move;
+					bestState.phalanx = phalanx;
 				}
 
 				setGrid(defGrid, grid);
@@ -154,59 +129,18 @@ function aiNeil(aiNum){
 	setGrid(defGrid,grid);
 
 	// PHALANX CHECKING =====================
-	for(var i = 0; i < 4; ++i) {
-		var sameDir = [];
-		for (var p = 0; p < 6; ++p) {
-			if(pieces[p].rot == i) {
-				sameDir.push(pieces[p]);
-			}
-		}
-		if(sameDir.length > 1) {
-			var combinations = getCombinations(sameDir);
-			combinations.forEach(function(e) {
-				phalanx = [];
-				phalanx = e.slice(0);
-				if(phalanx.length > 1 && isPhalanx()) {
-					for(var rot = 0; rot < 4; ++rot) {
-						if(rot != i){
-							rotatePiece(phalanx[0].row, phalanx[0].col, rot);
-							pieces = getAIPieces();
-							var testState = copyState(defaultState);
-							getValue(testState, pieces);
-							if(testState.value > bestState.value) {
-								bestState = testState;
-							}
-							setGrid(defGrid, grid);
-							pieces = getAIPieces();
-						}
-					}
-					setGrid(defGrid, grid);
-					pieces = getAIPieces();
-
-					var rot = phalanx[0].rot;
-					var move = getMoveArguments(phalanx[0], rot);
-					movePiece(move.pRow, move.pCol, move.tRow, move.tCol, true);
-
-					phalanx = e.slice(0);
-					pieces = getAIPieces();
-
-					var testState = copyState(defaultState);
-					getValue(testState, pieces);
-					if(testState.value > bestState.value){
-						bestState = testState;
-					}
-					setGrid(defGrid, grid);
-					pieces = getAIPieces();
-				}
-			});
-		}
-	}
 
 	// AFTER ALL CHECKING IS DONE ===========
-	setGrid(bestState.board, grid);
-	phalanx = [];
-	useAction();
-	pushState();
+	if (bestState.move) {
+		phalanx = bestState.phalanx
+		movePiece(bestState.move.pRow, bestState.move.pCol, bestState.move.tRow, bestState.move.tCol);
+		playerAction();
+	}
+	else {
+		pass();
+	}
+
+	console.dir(bestState);
 }
 
 function getValue(state, pieces){
