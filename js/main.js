@@ -429,24 +429,26 @@ function updateAnims(dTime) {
 	active("activeFade", 250, 0);
 	active("activeFlash", 100, 1);
 
-	function slide(index) {
-		var speed = dTime/100 * animMan[index];
+	function slide(index, time, callback) {
+		var speed = dTime / time * animMan[index];
 
 		if (animMan[index] > 0) {
 			animMan[index] -= speed;
 			if (animMan[index] < 0.001) {
 				animMan[index] = 0;
+				if (callback) callback();
 			}
 		}
 		else if (animMan[index] < 0) {
 			animMan[index] -= speed;
 			if (animMan[index] > -0.001) {
 				animMan[index] = 0;
+				if (callback) callback();
 			}
 		}
 	}
-	slide("screenSlide");
-	slide("activeSlide");
+	slide("screenSlide", 100);
+	slide("activeSlide", 100);
 
 	if (gameMan.screen == "title") {
 		var y = drawMan.activeHeight * menuMan["title"];
@@ -490,14 +492,7 @@ function updateAnims(dTime) {
 			animMan["radiusFlag"] = 0;
 		}
 
-		if (animMan["pieceSlide"] > 0) {
-			animMan["pieceSlide"] -= dTime/250;
-
-			if (animMan["pieceSlide"] < 0) {
-				animMan["pieceSlide"] = 0;
-				endMove();
-			}
-		}
+		slide("pieceSlide", 100, endMove);
 	}
 
 	if (musicMan.fading) {
