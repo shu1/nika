@@ -752,7 +752,6 @@ function drawPieces(context) {
 	}
 
 	// TODO optimize context changes
-	var pieceSize = 80;
 	var theta = drawMan.time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
@@ -763,7 +762,7 @@ function drawPieces(context) {
 
 				if (cell.player >= 0) {
 					context.rotate(cell.rot * Math.PI/2);
-					context.drawImage(images["piece" + cell.player], pieceSize/-2, pieceSize/-2);
+					context.drawImage(images["piece" + cell.player], -40, -40);
 					context.rotate(cell.rot * Math.PI/-2);
 
 					if (cell.player == gameMan.player) {
@@ -772,13 +771,13 @@ function drawPieces(context) {
 						context.globalAlpha = 1;
 					}
 					else {
-						context.drawImage(images["pieceDark"], pieceSize/-2, pieceSize/-2);
+						context.drawImage(images["pieceDark"], -40, -40);
 					}
 				}
 
 				if (cell.prompt == 0) {
 					context.rotate(theta);
-					context.drawImage(images["pieceGreenComet"], pieceSize/-2, pieceSize/-2);
+					context.drawImage(images["pieceGreenComet"], -40, -40);
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 1) {
@@ -787,7 +786,7 @@ function drawPieces(context) {
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 2) {
-					context.drawImage(images["pieceGreenShadow"], pieceSize/-2, pieceSize/-2);
+					context.drawImage(images["pieceGreenShadow"], -40, -40);
 				}
 
 				if (cell.ring == 0) {
@@ -798,7 +797,7 @@ function drawPieces(context) {
 				else if (cell.ring == 1) {
 					var rotation = (cell.kind == 2) ? cell.city : inputMan.rot;
 					context.rotate(rotation * Math.PI/2);
-					context.drawImage(images["pieceShadow"], pieceSize/-2, pieceSize/-2);
+					context.drawImage(images["pieceShadow"], -40, -40);
 					context.rotate(rotation * Math.PI/-2);
 				}
 				cell.ring = -1;	// clear for next time
