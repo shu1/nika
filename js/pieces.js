@@ -64,7 +64,7 @@ function rotatePiece(pRow, pCol, rot) {
 	}
 }
 
-function movePiece(pRow, pCol, row, col, isAI) {
+function movePiece(pRow, pCol, row, col, pretend) {
 	var moved = false;
 
 	if (pRow >= 0 && pCol >= 0) {
@@ -75,15 +75,14 @@ function movePiece(pRow, pCol, row, col, isAI) {
 					eventMan[currentPlayer].push("move");
 				}
 
-				if (!isAI) {
-					if (animMan.phalanx.length == 0) {
-						for(var i = phalanx.length - 1; i >= 0; --i) {
-							animMan.phalanx.push({
-								row: phalanx[i].row + (row - pRow),
-								col: phalanx[i].col + (col - pCol)
-							});
-						}
+				if (!pretend) {
+					for(var i = phalanx.length - 1; i >= 0; --i) {
+						animMan.phalanx.push({
+							row: phalanx[i].row + (row - pRow),
+							col: phalanx[i].col + (col - pCol)
+						});
 					}
+					animMan["pieceSlide"] = 1;
 					phalanx.length = 0;
 					moved = true;
 				}
@@ -92,15 +91,14 @@ function movePiece(pRow, pCol, row, col, isAI) {
 		else if (checkMove(pRow, pCol, row, col) && pushPiece(pRow, pCol, row, col, grid[pRow][pCol].player, 1)) {
 			moveOnePiece(pRow, pCol, row, col);
 
-			if (!isAI) {
-				if (animMan.phalanx.length == 0) {
-					for(var i = phalanx.length - 1; i >= 0; --i) {
-						animMan.phalanx.push({
-							row: phalanx[i].row + (row - pRow),
-							col: phalanx[i].col + (col - pCol)
-						});
-					}
+			if (!pretend) {
+				for(var i = phalanx.length - 1; i >= 0; --i) {
+					animMan.phalanx.push({
+						row: phalanx[i].row + (row - pRow),
+						col: phalanx[i].col + (col - pCol)
+					});
 				}
+				animMan["pieceSlide"] = 1;
 				phalanx.length = 0;
 				moved = true;	// return if a piece was moved so it can be redrawn
 			}
@@ -119,7 +117,7 @@ function movePiece(pRow, pCol, row, col, isAI) {
 				eventMan[currentPlayer].push("rotate");
 			}
 
-			if (!isAI) {
+			if (!pretend) {
 				phalanx.length = 0;
 				moved = true;
 			}
@@ -133,27 +131,11 @@ function movePiece(pRow, pCol, row, col, isAI) {
 			if (gameMan.tutorialStep < 0) {
 				pushState();
 			}
-
-			animMan["pieceSlide"] = 1;
 		}
 	}
 
 	return moved;	// return if a piece was moved, so it can be redrawn
 }
-
-// function endMove() {
-// 	if (!gameMan.ais[gameMan.player]) {	// TODO this probably isn't necessary once AI is refactored
-// 		phalanx.length = 0;
-// 	}
-//
-// 	if (!gameMan.debug) {
-// 		useAction();
-// 	}
-//
-// 	if (gameMan.tutorialStep < 0) {
-// 		pushState();
-// 	}
-// }
 
 function moveOnePiece(pRow, pCol, row, col) {
 	grid[row][col].player = grid[pRow][pCol].player;
