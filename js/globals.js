@@ -92,6 +92,7 @@ var inputMan = {
 	touchID2:-1,
 	touchID:-1,
 	menu:false,
+	theta:0,
 	drag:"",
 	row:-1,
 	col:-1,

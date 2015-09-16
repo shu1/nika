@@ -790,9 +790,13 @@ function drawPieces(context) {
 				}
 
 				if (cell.player >= 0) {
-					context.rotate(cell.rot * Math.PI/2);
+					var rot = cell.rot * Math.PI/2;
+					if (inputMan.theta && inPhalanx(row, col)) {
+						rot = inputMan.theta;
+					}
+					context.rotate(rot);
 					context.drawImage(images["piece" + cell.player], -40, -40);
-					context.rotate(cell.rot * Math.PI/-2);
+					context.rotate(-rot);
 
 					if (cell.player == gameMan.player) {
 						context.globalAlpha = (Math.sin(theta*2)+1)/2;	// pulse 2x the speed of ring rotation
