@@ -456,6 +456,18 @@ function updateAnims(dTime) {
 	}
 
 	if (gameMan.screen == "board") {
+		if (animMan["pieceRot"]) {
+			slide("pieceRot", 100);
+			var theta = inputMan.rot * Math.PI/2;
+			if (inputMan.rot == 3 && drawMan.pieceTheta < Math.PI*0.5) {
+				drawMan.pieceTheta += Math.PI*2;
+			}
+			else if (inputMan.rot == 0 && drawMan.pieceTheta > Math.PI) {
+				drawMan.pieceTheta -= Math.PI*2;
+			}
+			drawMan.pieceTheta = theta + (drawMan.pieceTheta - theta) * animMan["pieceRot"];
+		}
+
 		animMan["helmetTheta"] += dTime/400;
 		if (animMan["helmetScale"] > 0) {
 			if (animMan["helmetScale"] == 1) {
@@ -791,8 +803,8 @@ function drawPieces(context) {
 
 				if (cell.player >= 0) {
 					var rot = cell.rot * Math.PI/2;
-					if (inputMan.theta && inPhalanx(row, col)) {
-						rot = inputMan.theta;
+					if (drawMan.pieceTheta && inPhalanx(row, col)) {
+						rot = drawMan.pieceTheta;
 					}
 					context.rotate(rot);
 					context.drawImage(images["piece" + cell.player], -40, -40);

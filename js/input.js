@@ -76,6 +76,8 @@ function mouseDown(event) {
 				if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && (gameMan.tutorialStep < 0 || !tutorials[gameMan.tutorialStep].input)) {
 					inputMan.pX = scene.x + (gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
 					inputMan.pY = scene.y + (gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
+					inputMan.pRot = grid[gameMan.pRow][gameMan.pCol].rot;
+					drawMan.pieceTheta = inputMan.pRot * Math.PI/2;
 					handled = true;
 
 					if (inPhalanx(gameMan.pRow, gameMan.pCol) && !routedCell(gameMan.pRow, gameMan.pCol)) {
@@ -293,7 +295,6 @@ function mouseMove(event) {
 							else {	// left
 								inputMan.rot = 3;
 							}
-							inputMan.theta = Math.atan2(dX, -dY);
 
 							var radius = drawMan.cellSize * drawMan.cellSize * 4;
 							if (dX*dX + dY*dY < radius) {
@@ -311,6 +312,10 @@ function mouseMove(event) {
 								else if (inputMan.rot == 3) {
 									inputMan.col--;
 								}
+							}
+							else if (inputMan.rot != inputMan.pRot) {
+								inputMan.pRot = inputMan.rot;
+								animMan["pieceRot"] = 1;
 							}
 						}
 						rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
@@ -483,7 +488,7 @@ function mouseUp(event) {
 
 		gameMan.selection = false;
 		inputMan.drag = "";
-		inputMan.theta = 0;
+		inputMan.pRot = -1;
 		menuMan["button"] = -1;
 		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 		event.preventDefault();	// prevent firing twice in environments with both touch and mouse
