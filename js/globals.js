@@ -49,7 +49,8 @@ var animMan = {
 	"screenAlpha":0,
 	"activeAlpha":1,
 	"pieceSlide":0,
-	"radius":0
+	"radius":0,
+	phalanx:[]
 }
 
 var gameMan = {

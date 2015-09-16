@@ -492,7 +492,9 @@ function updateAnims(dTime) {
 			animMan["radiusFlag"] = 0;
 		}
 
-		slide("pieceSlide", 100, endMove);
+		slide("pieceSlide", 100, function() {
+			animMan.phalanx = []
+		});
 	}
 
 	if (musicMan.fading) {
@@ -780,7 +782,7 @@ function drawPieces(context) {
 			var cell = grid[row][col];
 			if (cell.player >= 0 || cell.ring >= 0 || cell.prompt >= 0) {
 				context.save();
-				if (inPhalanx(row, col)) {
+				if (inAnimPhalanx(row, col)) {
 					context.translate(col * drawMan.cellSize + drawMan.cellSize/2 + dX, row * drawMan.cellSize + drawMan.cellSize/2 + dY);
 				}
 				else {

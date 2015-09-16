@@ -64,7 +64,7 @@ function rotatePiece(pRow, pCol, rot) {
 	}
 }
 
-function movePiece(pRow, pCol, row, col) {
+function movePiece(pRow, pCol, row, col, isAI) {
 	var moved = false;
 
 	if (pRow >= 0 && pCol >= 0) {
@@ -74,12 +74,36 @@ function movePiece(pRow, pCol, row, col) {
 				if (eventMan[currentPlayer].length == 0) {
 					eventMan[currentPlayer].push("move");
 				}
-				moved = true;
+
+				if (!isAI) {
+					if (animMan.phalanx.length == 0) {
+						for(var i = phalanx.length - 1; i >= 0; --i) {
+							animMan.phalanx.push({
+								row: phalanx[i].row + (row - pRow),
+								col: phalanx[i].col + (col - pCol)
+							});
+						}
+					}
+					phalanx.length = 0;
+					moved = true;
+				}
 			}
 		}
 		else if (checkMove(pRow, pCol, row, col) && pushPiece(pRow, pCol, row, col, grid[pRow][pCol].player, 1)) {
 			moveOnePiece(pRow, pCol, row, col);
-			moved = true;
+
+			if (!isAI) {
+				if (animMan.phalanx.length == 0) {
+					for(var i = phalanx.length - 1; i >= 0; --i) {
+						animMan.phalanx.push({
+							row: phalanx[i].row + (row - pRow),
+							col: phalanx[i].col + (col - pCol)
+						});
+					}
+				}
+				phalanx.length = 0;
+				moved = true;	// return if a piece was moved so it can be redrawn
+			}
 
 			if (routedCell(pRow, pCol) && grid[row][col].kind == 2) {	// rally
 				grid[row][col].rot = grid[row][col].player;	// set rotation toward center of board
@@ -94,29 +118,42 @@ function movePiece(pRow, pCol, row, col) {
 			if (eventMan[currentPlayer].length == 0) {
 				eventMan[currentPlayer].push("rotate");
 			}
-			moved = true;
+
+			if (!isAI) {
+				phalanx.length = 0;
+				moved = true;
+			}
+		}
+
+		if (moved) {
+			if (!gameMan.debug) {
+				useAction();
+			}
+
+			if (gameMan.tutorialStep < 0) {
+				pushState();
+			}
+
+			animMan["pieceSlide"] = 1;
 		}
 	}
 
-	if (moved) {
-		animMan["pieceSlide"] = 1;
-	}
 	return moved;	// return if a piece was moved, so it can be redrawn
 }
 
-function endMove() {
-	if (!gameMan.ais[gameMan.player]) {	// TODO this probably isn't necessary once AI is refactored
-		phalanx.length = 0;
-	}
-
-	if (!gameMan.debug) {
-		useAction();
-	}
-
-	if (gameMan.tutorialStep < 0) {
-		pushState();
-	}
-}
+// function endMove() {
+// 	if (!gameMan.ais[gameMan.player]) {	// TODO this probably isn't necessary once AI is refactored
+// 		phalanx.length = 0;
+// 	}
+//
+// 	if (!gameMan.debug) {
+// 		useAction();
+// 	}
+//
+// 	if (gameMan.tutorialStep < 0) {
+// 		pushState();
+// 	}
+// }
 
 function moveOnePiece(pRow, pCol, row, col) {
 	grid[row][col].player = grid[pRow][pCol].player;
@@ -281,6 +318,15 @@ function getRoutCell(player) {
 function inPhalanx(row, col) {
 	for (var i = phalanx.length - 1; i >= 0; --i) {
 		if (phalanx[i].row == row && phalanx[i].col == col) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function inAnimPhalanx(row, col) {
+	for (var i = animMan.phalanx.length - 1; i >= 0; --i) {
+		if (animMan.phalanx[i].row == row && animMan.phalanx[i].col == col) {
 			return true;
 		}
 	}
