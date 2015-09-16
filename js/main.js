@@ -412,22 +412,27 @@ function updateAnims(dTime) {
 		}
 	}
 
-	function alpha(index, time, flip) {
-		if (animMan[index]) {
-			animMan["activeAlpha"] += dTime / time * animMan[index];
+	function alpha(time, flip) {
+		animMan["activeAlpha"] += dTime / time * animMan["activeFade"];
 
-			if (animMan["activeAlpha"] >= 1) {
-				animMan["activeAlpha"] = 1;
-				animMan[index] = 0;
-			}
-			else if (animMan["activeAlpha"] <= 0) {
-				animMan["activeAlpha"] = 0;
-				animMan[index] = flip;
-			}
+		if (animMan["activeAlpha"] >= 1) {
+			animMan["activeAlpha"] = 1;
+			animMan["activeFade"] = 0;
+		}
+		else if (animMan["activeAlpha"] <= 0) {
+			animMan["activeAlpha"] = 0;
+			animMan["activeFade"] = flip;
 		}
 	}
-	alpha("activeFade", 250, 0);
-	alpha("activeFlash", 100, 1);
+
+	if (animMan["activeFade"]) {
+		if (gameMan.screen == "title") {
+			alpha(100, 1);
+		}
+		else if (gameMan.screen == "popup") {
+			alpha(250, 0);
+		}
+	}
 
 	function easeOut(index, time, callback) {
 		var speed = dTime / time * animMan[index];
