@@ -293,6 +293,7 @@ function mouseMove(event) {
 							else {	// left
 								inputMan.rot = 3;
 							}
+							inputMan.theta = Math.atan2(dX, -dY);
 
 							var radius = drawMan.cellSize * drawMan.cellSize * 4;
 							if (dX*dX + dY*dY < radius) {
@@ -482,6 +483,7 @@ function mouseUp(event) {
 
 		gameMan.selection = false;
 		inputMan.drag = "";
+		inputMan.theta = 0;
 		menuMan["button"] = -1;
 		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 		event.preventDefault();	// prevent firing twice in environments with both touch and mouse

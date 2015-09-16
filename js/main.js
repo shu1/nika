@@ -412,7 +412,7 @@ function updateAnims(dTime) {
 		}
 	}
 
-	function active(index, time, flip) {
+	function alpha(index, time, flip) {
 		if (animMan[index]) {
 			animMan["activeAlpha"] += dTime / time * animMan[index];
 
@@ -426,27 +426,29 @@ function updateAnims(dTime) {
 			}
 		}
 	}
-	active("activeFade", 250, 0);
-	active("activeFlash", 100, 1);
+	alpha("activeFade", 250, 0);
+	alpha("activeFlash", 100, 1);
 
-	function slide(index) {
-		var speed = dTime/100 * animMan[index];
+	function slide(index, time, callback) {
+		var speed = dTime / time * animMan[index];
 
 		if (animMan[index] > 0) {
 			animMan[index] -= speed;
 			if (animMan[index] < 0.001) {
 				animMan[index] = 0;
+				if (callback) callback();
 			}
 		}
 		else if (animMan[index] < 0) {
 			animMan[index] -= speed;
 			if (animMan[index] > -0.001) {
 				animMan[index] = 0;
+				if (callback) callback();
 			}
 		}
 	}
-	slide("screenSlide");
-	slide("activeSlide");
+	slide("screenSlide", 100);
+	slide("activeSlide", 100);
 
 	if (gameMan.screen == "title") {
 		var y = drawMan.activeHeight * menuMan["title"];
@@ -489,6 +491,10 @@ function updateAnims(dTime) {
 			animMan["radius"] = 0;
 			animMan["radiusFlag"] = 0;
 		}
+
+		slide("pieceSlide", 100, function() {
+			animMan.phalanx = []
+		});
 	}
 
 	if (musicMan.fading) {
@@ -751,6 +757,24 @@ function drawPieces(context) {
 		context.fill();
 	}
 
+	var dX = 0, dY = 0;
+	if (animMan["pieceSlide"] > 0) {
+		switch (inputMan.rot) {
+		case 0:
+			dY = drawMan.cellSize * animMan["pieceSlide"];
+			break;
+		case 1:
+			dX = -drawMan.cellSize * animMan["pieceSlide"];
+			break;
+		case 2:
+			dY = -drawMan.cellSize * animMan["pieceSlide"];
+			break;
+		case 3:
+			dX = drawMan.cellSize * animMan["pieceSlide"];
+			break;
+		}
+	}
+
 	// TODO optimize context changes
 	var theta = drawMan.time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
@@ -758,12 +782,21 @@ function drawPieces(context) {
 			var cell = grid[row][col];
 			if (cell.player >= 0 || cell.ring >= 0 || cell.prompt >= 0) {
 				context.save();
-				context.translate(col * drawMan.cellSize + drawMan.cellSize/2, row * drawMan.cellSize + drawMan.cellSize/2);
+				if (inAnimPhalanx(row, col)) {
+					context.translate(col * drawMan.cellSize + drawMan.cellSize/2 + dX, row * drawMan.cellSize + drawMan.cellSize/2 + dY);
+				}
+				else {
+					context.translate(col * drawMan.cellSize + drawMan.cellSize/2, row * drawMan.cellSize + drawMan.cellSize/2);
+				}
 
 				if (cell.player >= 0) {
-					context.rotate(cell.rot * Math.PI/2);
+					var rot = cell.rot * Math.PI/2;
+					if (inputMan.theta && inPhalanx(row, col)) {
+						rot = inputMan.theta;
+					}
+					context.rotate(rot);
 					context.drawImage(images["piece" + cell.player], -40, -40);
-					context.rotate(cell.rot * Math.PI/-2);
+					context.rotate(-rot);
 
 					if (cell.player == gameMan.player) {
 						context.globalAlpha = (Math.sin(theta*2)+1)/2;	// pulse 2x the speed of ring rotation
