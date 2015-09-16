@@ -2,7 +2,7 @@
 
 var tvCanvas, gpCanvas, muralCanvas, grid, images={}, sounds={}, scenes={}, states=[], phalanx=[], murals=[];
 
-var eventMan = [[],[],[],[]]
+var eventMan = [[],[],[],[]];
 
 var soundMan = {
 	music:0.5,
@@ -44,10 +44,10 @@ var drawMan = {
 var animMan = {
 	"tutorialTheta":0,
 	"helmetTheta":0,
-	"screenSlide":0,
-	"activeSlide":0,
 	"screenAlpha":0,
 	"activeAlpha":1,
+	"screenSlide":0,
+	"activeSlide":0,
 	"pieceSlide":0,
 	"radius":0,
 	phalanx:[]
@@ -63,9 +63,9 @@ var gameMan = {
 	actions:2,
 	player:0,
 	rules:0,
+	pRot:-1,
 	pRow:-1,
 	pCol:-1,
-	pRot:-1,
 	ais:[0,0,0,0],
 	thinking:false,
 	replaying:false,
@@ -80,11 +80,11 @@ var gameMan = {
 }
 
 var menuMan = {
-	popup:0,
-	title:0,
-	setup:5,
-	option:0,
-	tutorial:0
+	"popup":0,
+	"title":0,
+	"setup":5,
+	"option":0,
+	"tutorial":0
 }
 
 var inputMan = {
@@ -94,9 +94,9 @@ var inputMan = {
 	menu:false,
 	drag:"",
 	pRot:-1,
+	rot:-1,
 	row:-1,
 	col:-1,
-	rot:-1,
 	pX:0,
 	pY:0,
 	x:0,

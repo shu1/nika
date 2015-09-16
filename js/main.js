@@ -448,9 +448,9 @@ function updateAnims(dTime) {
 		}
 	}
 	slide("screenSlide", 100);
-	slide("activeSlide", 100);
 
-	if (gameMan.screen == "title") {
+	if (gameMan.screen == "title" && animMan["activeSlide"]) {
+		slide("activeSlide", 100);
 		var y = drawMan.activeHeight * menuMan["title"];
 		drawMan.slideY = y + (drawMan.slideY - y) * animMan["activeSlide"];
 	}
@@ -467,6 +467,10 @@ function updateAnims(dTime) {
 			}
 			drawMan.pieceTheta = theta + (drawMan.pieceTheta - theta) * animMan["pieceRot"];
 		}
+
+		slide("pieceSlide", 100, function() {
+			animMan.phalanx = [];
+		});
 
 		animMan["helmetTheta"] += dTime/400;
 		if (animMan["helmetScale"] > 0) {
@@ -493,7 +497,6 @@ function updateAnims(dTime) {
 
 		if (animMan["radiusFlag"] > 0) {
 			animMan["radius"] += dTime/100 * animMan["radiusFlag"];
-
 			if (animMan["radius"] > 1) {
 				animMan["radius"] = 1;
 				animMan["radiusFlag"] = 0;
@@ -503,10 +506,6 @@ function updateAnims(dTime) {
 			animMan["radius"] = 0;
 			animMan["radiusFlag"] = 0;
 		}
-
-		slide("pieceSlide", 100, function() {
-			animMan.phalanx = []
-		});
 	}
 
 	if (musicMan.fading) {
@@ -1021,7 +1020,7 @@ function drawHud(canvas, context, tv, dTime) {
 		};
 }());
 
-if (!true) {
+if (!window.nwf) {
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)

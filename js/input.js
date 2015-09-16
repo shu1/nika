@@ -487,9 +487,9 @@ function mouseUp(event) {
 		}
 
 		gameMan.selection = false;
+		menuMan["button"] = -1;
 		inputMan.drag = "";
 		inputMan.pRot = -1;
-		menuMan["button"] = -1;
 		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 		event.preventDefault();	// prevent firing twice in environments with both touch and mouse
 	}
