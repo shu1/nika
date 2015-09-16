@@ -226,7 +226,7 @@ function handleScreen(scene, x, y) {
 			var i = Math.floor(y / drawMan.activeHeight);
 			if (menuMan["title"] != i) {
 				menuMan["title"] = i;
-				animMan["activeSlide"] = 1;
+				animMan["screenSlide"] = 1;
 			}
 			return true;
 		}
@@ -468,7 +468,7 @@ function mouseUp(event) {
 					movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col);
 				}
 
-				if (animMan["radius"]) {
+				if (animMan["dragRadius"]) {
 					animMan["radiusFlag"] = -1;	// TODO refactor and put this in elseif chain above?
 				}
 
@@ -681,7 +681,7 @@ function keyPrev() {
 	}
 	else if (gameMan.screen == "title" && menuMan["title"] > 0) {
 		menuMan["title"]--;
-		animMan["activeSlide"] = 1;
+		animMan["screenSlide"] = 1;
 		return true;
 	}
 	else if (gameMan.screen == "tutorial" && menuMan["tutorial"] > 0) {
@@ -724,7 +724,7 @@ function keyNext() {
 	}
 	else if (gameMan.screen == "title" && menuMan["title"] < 5) {
 		menuMan["title"]++;
-		animMan["activeSlide"] = 1;
+		animMan["screenSlide"] = 1;
 		return true;
 	}
 	else if (gameMan.screen == "tutorial" && menuMan["tutorial"] < 3) {

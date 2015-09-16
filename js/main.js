@@ -352,24 +352,24 @@ function pan(dX, dY) {
 function zoom() {
 	var scene = scenes[gameMan.scene];
 	if (scene.scale == scene.minScale) {
-		drawMan.zoom = 1;
+		animMan["zoom"] = 1;
 	} else {
-		drawMan.zoom = -1;
+		animMan["zoom"] = -1;
 	}
 }
 
 function updateAnims(dTime) {
-	if (drawMan.zoom) {
+	if (animMan["zoom"]) {
 		var scene = scenes[gameMan.scene];
-		var speed = (scene.maxScale - scene.minScale) * dTime/250 * drawMan.zoom;	// set positive/negative
+		var speed = (scene.maxScale - scene.minScale) * dTime/250 * animMan["zoom"];	// set positive/negative
 
-		if (drawMan.zoom > 0) {
+		if (animMan["zoom"] > 0) {
 			if (scene.scale + speed < scene.maxScale) {
 				scene.scale += speed;
 			} else {
 				speed = scene.maxScale - scene.scale;	// move exactly the remainder of the animation
 				scene.scale = scene.maxScale;
-				drawMan.zoom = 0;
+				animMan["zoom"] = 0;
 			}
 		} else {
 			if (scene.scale + speed > scene.minScale) {
@@ -377,7 +377,7 @@ function updateAnims(dTime) {
 			} else {
 				speed = scene.minScale - scene.scale;
 				scene.scale = scene.minScale;
-				drawMan.zoom = 0;
+				animMan["zoom"] = 0;
 			}
 		}
 
@@ -429,7 +429,7 @@ function updateAnims(dTime) {
 	alpha("activeFade", 250, 0);
 	alpha("activeFlash", 100, 1);
 
-	function slide(index, time, callback) {
+	function easeOut(index, time, callback) {
 		var speed = dTime / time * animMan[index];
 
 		if (animMan[index] > 0) {
@@ -447,19 +447,21 @@ function updateAnims(dTime) {
 			}
 		}
 	}
-	slide("screenSlide", 100);
 
-	if (gameMan.screen == "title" && animMan["activeSlide"]) {
-		slide("activeSlide", 100);
-		var y = drawMan.activeHeight * menuMan["title"];
-		drawMan.slideY = y + (drawMan.slideY - y) * animMan["activeSlide"];
+	if (animMan["screenSlide"]) {
+		easeOut("screenSlide", 100);
+
+		if (gameMan.screen == "title") {
+			var y = drawMan.activeHeight * menuMan["title"];
+			drawMan.slideY = y + (drawMan.slideY - y) * animMan["screenSlide"];
+		}
 	}
 
 	if (gameMan.screen == "board") {
 		if (animMan["pieceRot"]) {
-			slide("pieceRot", 100);
+			easeOut("pieceRot", 100);
 			var theta = inputMan.rot * Math.PI/2;
-			if (inputMan.rot == 3 && drawMan.pieceTheta < Math.PI*0.5) {
+			if (inputMan.rot == 3 && drawMan.pieceTheta < Math.PI/2) {
 				drawMan.pieceTheta += Math.PI*2;
 			}
 			else if (inputMan.rot == 0 && drawMan.pieceTheta > Math.PI) {
@@ -468,9 +470,11 @@ function updateAnims(dTime) {
 			drawMan.pieceTheta = theta + (drawMan.pieceTheta - theta) * animMan["pieceRot"];
 		}
 
-		slide("pieceSlide", 100, function() {
-			animMan.phalanx = [];
-		});
+		if (animMan["pieceSlide"]) {
+			easeOut("pieceSlide", 100, function() {
+				animMan.phalanx = [];
+			});
+		}
 
 		animMan["helmetTheta"] += dTime/400;
 		if (animMan["helmetScale"] > 0) {
@@ -496,14 +500,14 @@ function updateAnims(dTime) {
 		}
 
 		if (animMan["radiusFlag"] > 0) {
-			animMan["radius"] += dTime/100 * animMan["radiusFlag"];
-			if (animMan["radius"] > 1) {
-				animMan["radius"] = 1;
+			animMan["dragRadius"] += dTime/100 * animMan["radiusFlag"];
+			if (animMan["dragRadius"] > 1) {
+				animMan["dragRadius"] = 1;
 				animMan["radiusFlag"] = 0;
 			}
 		}
 		else if (animMan["radiusFlag"] < 0) {
-			animMan["radius"] = 0;
+			animMan["dragRadius"] = 0;
 			animMan["radiusFlag"] = 0;
 		}
 	}
@@ -747,24 +751,24 @@ function setRings() {
 
 function drawPieces(context) {
 	// draw drag radius
-	if (animMan["radius"]) {
+	if (animMan["dragRadius"]) {
 		var x = gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2;
 		var y = gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2;
 
 		context.strokeStyle = "white";
 		context.lineWidth = 2;
 		context.beginPath();
-		context.arc(x, y, drawMan.cellSize * 1.8 * animMan["radius"], 0, Math.PI*2);
+		context.arc(x, y, drawMan.cellSize * 1.8 * animMan["dragRadius"], 0, Math.PI*2);
 		context.stroke();
 
 		context.lineWidth = 6;
 		context.beginPath();
-		context.arc(x, y, drawMan.cellSize * 2.0 * animMan["radius"], 0, Math.PI*2);
+		context.arc(x, y, drawMan.cellSize * 2.0 * animMan["dragRadius"], 0, Math.PI*2);
 		context.stroke();
 
 		context.fillStyle = "rgba(191,191,191,0.5)";
 		context.beginPath();
-		context.arc(x, y, drawMan.cellSize * 2.0 * animMan["radius"], 0, Math.PI*2);
+		context.arc(x, y, drawMan.cellSize * 2.0 * animMan["dragRadius"], 0, Math.PI*2);
 		context.fill();
 	}
 

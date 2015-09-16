@@ -37,19 +37,17 @@ var drawMan = {
 	tutorialButtonWidth:190,
 	tutorialButtonHeight:48,
 	pixelRatio:1,
-	zoom:0,
 	time:0
 }
 
 var animMan = {
 	"tutorialTheta":0,
 	"helmetTheta":0,
-	"screenAlpha":0,
 	"activeAlpha":1,
+	"screenAlpha":0,
 	"screenSlide":0,
-	"activeSlide":0,
 	"pieceSlide":0,
-	"radius":0,
+	"dragRadius":0,
 	phalanx:[]
 }
 
