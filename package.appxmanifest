@@ -3,7 +3,7 @@
   <Identity Name="8188707e-9486-4890-b5f3-8d76125dab40" Version="1.0.0.0" Publisher="CN=shu" />
   <mp:PhoneIdentity PhoneProductId="8188707e-9486-4890-b5f3-8d76125dab40" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>nika</DisplayName>
+    <DisplayName>Nika</DisplayName>
     <PublisherDisplayName>Studio Mercato</PublisherDisplayName>
     <Logo>images\storelogo.png</Logo>
   </Properties>
@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <uap:VisualElements DisplayName="nika" Description="nika" BackgroundColor="transparent" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png">
+      <uap:VisualElements DisplayName="Nika" Description="Nika Digital by Studio Mercato 2013" BackgroundColor="transparent" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png">
         <uap:DefaultTile Wide310x150Logo="images\Wide310x150Logo.png">
         </uap:DefaultTile>
         <uap:SplashScreen Image="images\splashscreen.png" />
