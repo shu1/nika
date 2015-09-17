@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+      <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+      <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+      <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>8188707e-9486-4890-b5f3-8d76125dab40</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup Condition="'$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0'">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\$(WMSJSProjectDirectory)\Microsoft.VisualStudio.$(WMSJSProject).Default.props" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\$(WMSJSProjectDirectory)\Microsoft.VisualStudio.$(WMSJSProject).props" />
+  <PropertyGroup>
+    <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>$(VersionNumberMajor).$(VersionNumberMinor)</MinimumVisualStudioVersion>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <PackageCertificateKeyFile>nika_TemporaryKey.pfx</PackageCertificateKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppxManifest Include="package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <None Include="nika_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="audio\move.mp3" />
+    <Content Include="audio\move.ogg" />
+    <Content Include="audio\mural_push.mp3" />
+    <Content Include="audio\mural_push.ogg" />
+    <Content Include="audio\mural_rally_alt.mp3" />
+    <Content Include="audio\mural_rally_alt.ogg" />
+    <Content Include="audio\mural_rout.mp3" />
+    <Content Include="audio\mural_rout.ogg" />
+    <Content Include="audio\nika_main.mp3" />
+    <Content Include="audio\nika_main.ogg" />
+    <Content Include="audio\nika_menu.mp3" />
+    <Content Include="audio\nika_menu.ogg" />
+    <Content Include="audio\rotate.mp3" />
+    <Content Include="audio\rotate.ogg" />
+    <Content Include="default.html" />
+    <Content Include="images\board0.png" />
+    <Content Include="images\board1.png" />
+    <Content Include="images\buttonActive.png" />
+    <Content Include="images\buttonBack.png" />
+    <Content Include="images\buttonClose.png" />
+    <Content Include="images\buttonMenu.png" />
+    <Content Include="images\buttonPass.png" />
+    <Content Include="images\buttonUndo.png" />
+    <Content Include="images\helmet0.png" />
+    <Content Include="images\helmet1.png" />
+    <Content Include="images\LockScreenLogo.scale-200.png" />
+    <Content Include="images\menuCredit0.png" />
+    <Content Include="images\menuCredit1.png" />
+    <Content Include="images\menuOption0.png" />
+    <Content Include="images\menuOption1.png" />
+    <Content Include="images\menuOptionSlider.png" />
+    <Content Include="images\menuPopup.png" />
+    <Content Include="images\menuSetup0.png" />
+    <Content Include="images\menuSetup1.png" />
+    <Content Include="images\menuSetupAI0.png" />
+    <Content Include="images\menuSetupAI1.png" />
+    <Content Include="images\menuSetupAI2.png" />
+    <Content Include="images\menuSetupTimer0.png" />
+    <Content Include="images\menuSetupTimer1.png" />
+    <Content Include="images\menuSetupTimer2.png" />
+    <Content Include="images\menuSetupTimer3.png" />
+    <Content Include="images\menuTitle0.png" />
+    <Content Include="images\menuTitle1.png" />
+    <Content Include="images\menuTitleActive.png" />
+    <Content Include="images\menuTutorial0.png" />
+    <Content Include="images\menuTutorial1.png" />
+    <Content Include="images\mural.png" />
+    <Content Include="images\mural\blackHand.png" />
+    <Content Include="images\mural\blackHead.png" />
+    <Content Include="images\mural\blackShield.png" />
+    <Content Include="images\mural\blackShoulder.png" />
+    <Content Include="images\mural\blackSpear.png" />
+    <Content Include="images\mural\blackTorso.png" />
+    <Content Include="images\mural\blueForearmShield.png" />
+    <Content Include="images\mural\blueForearmSpear.png" />
+    <Content Include="images\mural\blueHead.png" />
+    <Content Include="images\mural\blueHips.png" />
+    <Content Include="images\mural\blueNeck.png" />
+    <Content Include="images\mural\blueShield.png" />
+    <Content Include="images\mural\blueShoulders.png" />
+    <Content Include="images\mural\blueSpear.png" />
+    <Content Include="images\mural\blueTorso.png" />
+    <Content Include="images\mural\blueUpperArmShield.png" />
+    <Content Include="images\mural\blueUpperArmSpear.png" />
+    <Content Include="images\mural\muralBlack.scml" />
+    <Content Include="images\mural\muralBlue.scml" />
+    <Content Include="images\mural\muralOrange.scml" />
+    <Content Include="images\mural\muralWhite.scml" />
+    <Content Include="images\mural\orangeHand.png" />
+    <Content Include="images\mural\orangeHead.png" />
+    <Content Include="images\mural\orangeShield.png" />
+    <Content Include="images\mural\orangeShoulder.png" />
+    <Content Include="images\mural\orangeSpear.png" />
+    <Content Include="images\mural\orangeTorso.png" />
+    <Content Include="images\mural\whiteForearmShield.png" />
+    <Content Include="images\mural\whiteForearmSpear.png" />
+    <Content Include="images\mural\whiteHead.png" />
+    <Content Include="images\mural\whiteHips.png" />
+    <Content Include="images\mural\whiteNeck.png" />
+    <Content Include="images\mural\whiteShield.png" />
+    <Content Include="images\mural\whiteShoulders.png" />
+    <Content Include="images\mural\whiteSpear.png" />
+    <Content Include="images\mural\whiteTorso.png" />
+    <Content Include="images\mural\whiteUpperArmShield.png" />
+    <Content Include="images\mural\whiteUpperArmSpear.png" />
+    <Content Include="images\piece0.png" />
+    <Content Include="images\piece1.png" />
+    <Content Include="images\piece2.png" />
+    <Content Include="images\piece3.png" />
+    <Content Include="images\pieceDark.png" />
+    <Content Include="images\pieceGlow.png" />
+    <Content Include="images\pieceGold.png" />
+    <Content Include="images\pieceGreen.png" />
+    <Content Include="images\pieceGreenComet.png" />
+    <Content Include="images\pieceGreenShadow.png" />
+    <Content Include="images\pieceShadow.png" />
+    <Content Include="images\pieceSheen.png" />
+    <Content Include="images\pieceSilver.png" />
+    <Content Include="images\rule00.png" />
+    <Content Include="images\rule01.png" />
+    <Content Include="images\rule10.png" />
+    <Content Include="images\rule100.png" />
+    <Content Include="images\rule101.png" />
+    <Content Include="images\rule11.png" />
+    <Content Include="images\rule20.png" />
+    <Content Include="images\rule21.png" />
+    <Content Include="images\rule30.png" />
+    <Content Include="images\rule31.png" />
+    <Content Include="images\rule40.png" />
+    <Content Include="images\rule41.png" />
+    <Content Include="images\rule50.png" />
+    <Content Include="images\rule51.png" />
+    <Content Include="images\rule60.png" />
+    <Content Include="images\rule61.png" />
+    <Content Include="images\rule70.png" />
+    <Content Include="images\rule71.png" />
+    <Content Include="images\rule80.png" />
+    <Content Include="images\rule81.png" />
+    <Content Include="images\rule90.png" />
+    <Content Include="images\rule91.png" />
+    <Content Include="images\ruleArrow0.png" />
+    <Content Include="images\ruleArrow1.png" />
+    <Content Include="images\ruleArrowActive0.png" />
+    <Content Include="images\ruleArrowActive1.png" />
+    <Content Include="images\SplashScreen.scale-200.png" />
+    <Content Include="images\Square150x150Logo.scale-200.png" />
+    <Content Include="images\Square44x44Logo.scale-200.png" />
+    <Content Include="images\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="images\StoreLogo.png" />
+    <Content Include="images\tileGoal.png" />
+    <Content Include="images\tutorialButton0.png" />
+    <Content Include="images\tutorialButton1.png" />
+    <Content Include="images\tutorialButton2.png" />
+    <Content Include="images\Wide310x150Logo.scale-200.png" />
+    <Content Include="js\aiNeil.js" />
+    <Content Include="js\aiShu.js" />
+    <Content Include="js\debug.js" />
+    <Content Include="js\default.js" />
+    <Content Include="js\game.js" />
+    <Content Include="js\globals.js" />
+    <Content Include="js\input.js" />
+    <Content Include="js\main.js" />
+    <Content Include="js\muralBlack.js" />
+    <Content Include="js\muralBlue.js" />
+    <Content Include="js\muralOrange.js" />
+    <Content Include="js\muralWhite.js" />
+    <Content Include="js\pieces.js" />
+    <Content Include="js\spriter.js" />
+    <Content Include="js\spriter_draw_2d.js" />
+    <Content Include="js\spriter_object.js" />
+    <Content Include="js\tutorial.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\$(WMSJSProjectDirectory)\Microsoft.VisualStudio.$(WMSJSProject).targets" />
+  <!-- To modify your build process, add your task inside one of the targets below then uncomment
+       that target and the DisableFastUpToDateCheck PropertyGroup. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <PropertyGroup>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
+  -->
+</Project>
