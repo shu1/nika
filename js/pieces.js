@@ -66,6 +66,16 @@ function rotatePiece(pRow, pCol, rot) {
 
 function movePiece(pRow, pCol, row, col, pretend) {
 	var moved = false;
+	var rot;
+	if (pRow > row) {
+		rot = 0;
+	} else if (pCol < col) {
+		rot = 1;
+	} else if (pRow < row) {
+		rot = 2;
+	} else if (pCol > col) {
+		rot = 3;
+	}
 
 	if (pRow >= 0 && pCol >= 0) {
 		var currentPlayer = grid[pRow][pCol].player;
@@ -77,12 +87,14 @@ function movePiece(pRow, pCol, row, col, pretend) {
 
 				if (!pretend) {
 					for(var i = phalanx.length - 1; i >= 0; --i) {
-						animMan.phalanx.push({
+						animMan["pieceSlidePhalanx"].push({
 							row: phalanx[i].row + (row - pRow),
 							col: phalanx[i].col + (col - pCol)
 						});
 					}
 					animMan["pieceSlide"] = 1;
+					animMan["pieceSlideRot"] = rot;
+					console.log(rot);
 					phalanx.length = 0;
 					moved = true;
 				}
@@ -93,12 +105,14 @@ function movePiece(pRow, pCol, row, col, pretend) {
 
 			if (!pretend) {
 				for(var i = phalanx.length - 1; i >= 0; --i) {
-					animMan.phalanx.push({
+					animMan["pieceSlidePhalanx"].push({
 						row: phalanx[i].row + (row - pRow),
 						col: phalanx[i].col + (col - pCol)
 					});
 				}
 				animMan["pieceSlide"] = 1;
+				animMan["pieceSlideRot"] = rot;
+				console.log(rot);
 				phalanx.length = 0;
 				moved = true;	// return if a piece was moved so it can be redrawn
 			}
@@ -307,8 +321,8 @@ function inPhalanx(row, col) {
 }
 
 function inAnimPhalanx(row, col) {
-	for (var i = animMan.phalanx.length - 1; i >= 0; --i) {
-		if (animMan.phalanx[i].row == row && animMan.phalanx[i].col == col) {
+	for (var i = animMan["pieceSlidePhalanx"].length - 1; i >= 0; --i) {
+		if (animMan["pieceSlidePhalanx"][i].row == row && animMan["pieceSlidePhalanx"][i].col == col) {
 			return true;
 		}
 	}

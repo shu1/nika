@@ -477,7 +477,7 @@ function updateAnims(dTime) {
 
 		if (animMan["pieceSlide"]) {
 			easeOut("pieceSlide", 100, function() {
-				animMan.phalanx = [];
+				animMan["pieceSlidePhalanx"] = [];
 			});
 		}
 
@@ -779,7 +779,7 @@ function drawPieces(context) {
 
 	var dX = 0, dY = 0;
 	if (animMan["pieceSlide"] > 0) {
-		switch (inputMan.rot) {
+		switch (animMan["pieceSlideRot"]) {
 		case 0:
 			dY = drawMan.cellSize * animMan["pieceSlide"];
 			break;
