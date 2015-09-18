@@ -352,24 +352,24 @@ function pan(dX, dY) {
 function zoom() {
 	var scene = scenes[gameMan.scene];
 	if (scene.scale == scene.minScale) {
-		drawMan.zoom = 1;
+		animMan["zoom"] = 1;
 	} else {
-		drawMan.zoom = -1;
+		animMan["zoom"] = -1;
 	}
 }
 
 function updateAnims(dTime) {
-	if (drawMan.zoom) {
+	if (animMan["zoom"]) {
 		var scene = scenes[gameMan.scene];
-		var speed = (scene.maxScale - scene.minScale) * dTime/250 * drawMan.zoom;	// set positive/negative
+		var speed = (scene.maxScale - scene.minScale) * dTime/250 * animMan["zoom"];	// set positive/negative
 
-		if (drawMan.zoom > 0) {
+		if (animMan["zoom"] > 0) {
 			if (scene.scale + speed < scene.maxScale) {
 				scene.scale += speed;
 			} else {
 				speed = scene.maxScale - scene.scale;	// move exactly the remainder of the animation
 				scene.scale = scene.maxScale;
-				drawMan.zoom = 0;
+				animMan["zoom"] = 0;
 			}
 		} else {
 			if (scene.scale + speed > scene.minScale) {
@@ -377,7 +377,7 @@ function updateAnims(dTime) {
 			} else {
 				speed = scene.minScale - scene.scale;
 				scene.scale = scene.minScale;
-				drawMan.zoom = 0;
+				animMan["zoom"] = 0;
 			}
 		}
 
@@ -394,7 +394,7 @@ function updateAnims(dTime) {
 	}
 
 	if (animMan["screenFade"]) {
-		animMan["screenAlpha"] += dTime/250 * animMan["screenFade"];	// set positive/negative
+		animMan["screenAlpha"] += dTime/250 * animMan["screenFade"];
 
 		if (gameMan.nScreen == "popup" && animMan["screenAlpha"] >= 0.5) {
 			animMan["screenAlpha"] = 0.5;
@@ -412,49 +412,113 @@ function updateAnims(dTime) {
 		}
 	}
 
-	function active(index, time, flip) {
-		if (animMan[index]) {
-			animMan["activeAlpha"] += dTime / time * animMan[index];	// set positive/negative
+	function alpha(time, flip) {
+		animMan["activeAlpha"] += dTime / time * animMan["activeFade"];
 
-			if (animMan["activeAlpha"] >= 1) {
-				animMan["activeAlpha"] = 1;
-				animMan[index] = 0;
-			}
-			else if (animMan["activeAlpha"] <= 0) {
-				animMan["activeAlpha"] = 0;
-				animMan[index] = flip;
-			}
+		if (animMan["activeAlpha"] >= 1) {
+			animMan["activeAlpha"] = 1;
+			animMan["activeFade"] = 0;
+		}
+		else if (animMan["activeAlpha"] <= 0) {
+			animMan["activeAlpha"] = 0;
+			animMan["activeFade"] = flip;
 		}
 	}
-	active("activeFade", 250, 0);
-	active("activeFlash", 100, 1);
 
-	function slide(index) {
-		var speed = dTime / 100 * animMan[index];
+	if (animMan["activeFade"]) {
+		if (gameMan.screen == "title") {
+			alpha(100, 1);
+		}
+		else if (gameMan.screen == "popup") {
+			alpha(250, 0);
+		}
+	}
+
+	function easeOut(index, time, callback) {
+		var speed = dTime / time * animMan[index];
 
 		if (animMan[index] > 0) {
 			animMan[index] -= speed;
 			if (animMan[index] < 0.001) {
 				animMan[index] = 0;
+				if (callback) callback();
 			}
 		}
 		else if (animMan[index] < 0) {
 			animMan[index] -= speed;
 			if (animMan[index] > -0.001) {
 				animMan[index] = 0;
+				if (callback) callback();
 			}
 		}
 	}
-	slide("screenSlide");
-	slide("activeSlide");
 
-	if (gameMan.screen == "title") {
-		var y = drawMan.activeHeight * menuMan["title"];
-		drawMan.slideY = y + (drawMan.slideY - y) * animMan["activeSlide"];
+	if (animMan["screenSlide"]) {
+		easeOut("screenSlide", 100);
+
+		if (gameMan.screen == "title") {
+			var y = drawMan.activeHeight * menuMan["title"];
+			drawMan.slideY = y + (drawMan.slideY - y) * animMan["screenSlide"];
+		}
+	}
+
+	if (gameMan.screen == "board") {
+		if (animMan["pieceRot"]) {
+			easeOut("pieceRot", 100);
+			var theta = inputMan.rot * Math.PI/2;
+			if (inputMan.rot == 3 && drawMan.pieceTheta < Math.PI/2) {
+				drawMan.pieceTheta += Math.PI*2;
+			}
+			else if (inputMan.rot == 0 && drawMan.pieceTheta > Math.PI) {
+				drawMan.pieceTheta -= Math.PI*2;
+			}
+			drawMan.pieceTheta = theta + (drawMan.pieceTheta - theta) * animMan["pieceRot"];
+		}
+
+		if (animMan["pieceSlide"]) {
+			easeOut("pieceSlide", 100, function() {
+				animMan.phalanx = [];
+			});
+		}
+
+		animMan["helmetTheta"] += dTime/400;
+		if (animMan["helmetScale"] > 0) {
+			if (animMan["helmetScale"] == 1) {
+				animMan["helmetTheta"] = 0;	// reset alpha every zoom
+			}
+			animMan["helmetScale"] -= dTime/400;
+			if (animMan["helmetScale"] <= 0) {
+				animMan["helmetFlash"] = 1;
+			}
+		}
+		if (animMan["helmetFlash"] > 0) {
+			animMan["helmetFlash"] -= dTime/600;
+			animMan["helmetTheta"] += dTime/50;
+		}
+
+		if (gameMan.tutorialStep >= 0 && tutorials[gameMan.tutorialStep].input) {
+			animMan["tutorialTheta"] += dTime/250;
+			if (animMan["tutorialFlash"] > 0) {
+				animMan["tutorialFlash"] -= dTime/600;
+				animMan["tutorialTheta"] += dTime/40;
+			}
+		}
+
+		if (animMan["radiusFlag"] > 0) {
+			animMan["dragRadius"] += dTime/100 * animMan["radiusFlag"];
+			if (animMan["dragRadius"] > 1) {
+				animMan["dragRadius"] = 1;
+				animMan["radiusFlag"] = 0;
+			}
+		}
+		else if (animMan["radiusFlag"] < 0) {
+			animMan["dragRadius"] = 0;
+			animMan["radiusFlag"] = 0;
+		}
 	}
 
 	if (musicMan.fading) {
-		musicMan.alpha += dTime / 2000;
+		musicMan.alpha += dTime/2000;
 		if (musicMan.alpha > 1) {
 			musicMan.alpha = 1;
 		}
@@ -622,14 +686,8 @@ function drawContext(context, dTime, tv) {
 			}
 
 			if (gameMan.tutorialStep >= 0 && tutorials[gameMan.tutorialStep].input) {
-				drawMan.tutorialTheta += dTime/250;
-				if (drawMan.tutorialFlash > 0) {
-					drawMan.tutorialFlash -= dTime/600;
-					drawMan.tutorialTheta += dTime/40;
-				}
-
 				context.drawImage(images["tutorialButton1"], drawMan.tutorialNextX, drawMan.tutorialButtonY);
-				context.globalAlpha = (Math.sin(drawMan.tutorialTheta % (Math.PI*2))+1)/2;
+				context.globalAlpha = (Math.sin(animMan["tutorialTheta"] % (Math.PI*2))+1)/2;
 				context.drawImage(images["tutorialButton2"], drawMan.tutorialNextX, drawMan.tutorialButtonY);
 				context.globalAlpha = 1;
 			}
@@ -637,7 +695,7 @@ function drawContext(context, dTime, tv) {
 			setRings();	// TODO don't do this every frame?
 			drawPieces(context);
 			if (gameMan.winner < 0) {
-				drawTiles(context, dTime);
+				drawTiles(context);
 			}
 		}
 		break;
@@ -698,42 +756,67 @@ function setRings() {
 
 function drawPieces(context) {
 	// draw drag radius
-	if (inputMan.touchID >= 0 && !inputMan.drag && gameMan.screen != "popup" && gameMan.pRow >= 0 && gameMan.pCol >= 0
-	&& inPhalanx(gameMan.pRow, gameMan.pCol) && !routedCell(gameMan.pRow, gameMan.pCol)) {
+	if (animMan["dragRadius"]) {
 		var x = gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2;
 		var y = gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2;
-
-		context.fillStyle = "rgba(191,191,191,0.5)";
-		context.beginPath();
-		context.arc(x, y, drawMan.cellSize * 2.0, 0, Math.PI*2);
-		context.fill();
 
 		context.strokeStyle = "white";
 		context.lineWidth = 2;
 		context.beginPath();
-		context.arc(x, y, drawMan.cellSize * 1.8, 0, Math.PI*2);
+		context.arc(x, y, drawMan.cellSize * 1.8 * animMan["dragRadius"], 0, Math.PI*2);
 		context.stroke();
 
 		context.lineWidth = 6;
 		context.beginPath();
-		context.arc(x, y, drawMan.cellSize * 2.0, 0, Math.PI*2);
+		context.arc(x, y, drawMan.cellSize * 2.0 * animMan["dragRadius"], 0, Math.PI*2);
 		context.stroke();
+
+		context.fillStyle = "rgba(191,191,191,0.5)";
+		context.beginPath();
+		context.arc(x, y, drawMan.cellSize * 2.0 * animMan["dragRadius"], 0, Math.PI*2);
+		context.fill();
+	}
+
+	var dX = 0, dY = 0;
+	if (animMan["pieceSlide"] > 0) {
+		switch (inputMan.rot) {
+		case 0:
+			dY = drawMan.cellSize * animMan["pieceSlide"];
+			break;
+		case 1:
+			dX = -drawMan.cellSize * animMan["pieceSlide"];
+			break;
+		case 2:
+			dY = -drawMan.cellSize * animMan["pieceSlide"];
+			break;
+		case 3:
+			dX = drawMan.cellSize * animMan["pieceSlide"];
+			break;
+		}
 	}
 
 	// TODO optimize context changes
-	var pieceSize = 80;
 	var theta = drawMan.time/500 % (Math.PI*2);
 	for (var row = 0; row < 15; ++row) {
 		for (var col = 0; col < 21; ++col) {
 			var cell = grid[row][col];
 			if (cell.player >= 0 || cell.ring >= 0 || cell.prompt >= 0) {
 				context.save();
-				context.translate(col * drawMan.cellSize + drawMan.cellSize/2, row * drawMan.cellSize + drawMan.cellSize/2);
+				if (inAnimPhalanx(row, col)) {
+					context.translate(col * drawMan.cellSize + drawMan.cellSize/2 + dX, row * drawMan.cellSize + drawMan.cellSize/2 + dY);
+				}
+				else {
+					context.translate(col * drawMan.cellSize + drawMan.cellSize/2, row * drawMan.cellSize + drawMan.cellSize/2);
+				}
 
 				if (cell.player >= 0) {
-					context.rotate(cell.rot * Math.PI/2);
-					context.drawImage(images["piece" + cell.player], pieceSize/-2, pieceSize/-2);
-					context.rotate(cell.rot * Math.PI/-2);
+					var rot = cell.rot * Math.PI/2;
+					if (drawMan.pieceTheta && inPhalanx(row, col)) {
+						rot = drawMan.pieceTheta;
+					}
+					context.rotate(rot);
+					context.drawImage(images["piece" + cell.player], -40, -40);
+					context.rotate(-rot);
 
 					if (cell.player == gameMan.player) {
 						context.globalAlpha = (Math.sin(theta*2)+1)/2;	// pulse 2x the speed of ring rotation
@@ -741,13 +824,13 @@ function drawPieces(context) {
 						context.globalAlpha = 1;
 					}
 					else {
-						context.drawImage(images["pieceDark"], pieceSize/-2, pieceSize/-2);
+						context.drawImage(images["pieceDark"], -40, -40);
 					}
 				}
 
 				if (cell.prompt == 0) {
 					context.rotate(theta);
-					context.drawImage(images["pieceGreenComet"], pieceSize/-2, pieceSize/-2);
+					context.drawImage(images["pieceGreenComet"], -40, -40);
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 1) {
@@ -756,7 +839,7 @@ function drawPieces(context) {
 					context.rotate(-theta);
 				}
 				else if (cell.prompt == 2) {
-					context.drawImage(images["pieceGreenShadow"], pieceSize/-2, pieceSize/-2);
+					context.drawImage(images["pieceGreenShadow"], -40, -40);
 				}
 
 				if (cell.ring == 0) {
@@ -767,7 +850,7 @@ function drawPieces(context) {
 				else if (cell.ring == 1) {
 					var rotation = (cell.kind == 2) ? cell.city : inputMan.rot;
 					context.rotate(rotation * Math.PI/2);
-					context.drawImage(images["pieceShadow"], pieceSize/-2, pieceSize/-2);
+					context.drawImage(images["pieceShadow"], -40, -40);
 					context.rotate(rotation * Math.PI/-2);
 				}
 				cell.ring = -1;	// clear for next time
@@ -778,7 +861,7 @@ function drawPieces(context) {
 	}
 }
 
-function drawTiles(context, dTime) {
+function drawTiles(context) {
 	if (gameMan.tutorialStep < 0 || (gameMan.tutorialStep > 0 && gameMan.tutorialStep < 7) || gameMan.tutorialStep == 50) {
 		var theta = drawMan.time/400 % (Math.PI*2);
 		context.globalAlpha = (Math.sin(theta)+1)/2;
@@ -823,24 +906,12 @@ function drawTiles(context, dTime) {
 		context.translate(1920, 432);
 		break;
 	}
-	drawMan.helmetTheta += dTime/400;
-	if (drawMan.helmetScale == 1) {
-		drawMan.helmetTheta = 0;	// reset alpha every zoom
-	}
-	if (drawMan.helmetScale > 0) {
-		var scale = 1 + drawMan.helmetScale*7;
+	if (animMan["helmetScale"] > 0) {
+		var scale = 1 + animMan["helmetScale"] * 7;
 		context.scale(scale, scale);
-		drawMan.helmetScale -= dTime/400;
-		if (drawMan.helmetScale <= 0) {
-			drawMan.helmetFlash = 1;
-		}
-	}
-	if (drawMan.helmetFlash > 0) {
-		drawMan.helmetFlash -= dTime/600;
-		drawMan.helmetTheta += dTime/50;
 	}
 	context.rotate(gameMan.player * Math.PI/2);
-	context.globalAlpha = (Math.sin(drawMan.helmetTheta % (Math.PI*2))+1)/4 + 0.5;
+	context.globalAlpha = (Math.sin(animMan["helmetTheta"] % (Math.PI*2))+1)/4 + 0.5;
 	context.drawImage(images["helmet" + (gameMan.actions-1)], -128, -128);	// TODO make gameMan.actions 0,1 instead of 1,2
 	context.restore();
 }

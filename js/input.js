@@ -76,9 +76,14 @@ function mouseDown(event) {
 				if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && (gameMan.tutorialStep < 0 || !tutorials[gameMan.tutorialStep].input)) {
 					inputMan.pX = scene.x + (gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
 					inputMan.pY = scene.y + (gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2) * scene.scale;
+					inputMan.pRot = grid[gameMan.pRow][gameMan.pCol].rot;
+					drawMan.pieceTheta = inputMan.pRot * Math.PI/2;
 					handled = true;
-				}
-				else {
+
+					if (inPhalanx(gameMan.pRow, gameMan.pCol) && !routedCell(gameMan.pRow, gameMan.pCol)) {
+						animMan["radiusFlag"] = 1;
+					}
+				} else {
 					gameMan.selection = false;	// back to normal selection if you deselect pieces
 					phalanx.length = 0;
 				}
@@ -221,7 +226,7 @@ function handleScreen(scene, x, y) {
 			var i = Math.floor(y / drawMan.activeHeight);
 			if (menuMan["title"] != i) {
 				menuMan["title"] = i;
-				animMan["activeSlide"] = 1;
+				animMan["screenSlide"] = 1;
 			}
 			return true;
 		}
@@ -307,6 +312,10 @@ function mouseMove(event) {
 								else if (inputMan.rot == 3) {
 									inputMan.col--;
 								}
+							}
+							else if (inputMan.rot != inputMan.pRot) {
+								inputMan.pRot = inputMan.rot;
+								animMan["pieceRot"] = 1;
 							}
 						}
 						rotatePiece(gameMan.pRow, gameMan.pCol, inputMan.rot);
@@ -445,7 +454,7 @@ function mouseUp(event) {
 						nextTutorialStep();
 					}
 					else {
-						drawMan.tutorialFlash = 1.5;
+						animMan["tutorialFlash"] = 1.5;
 					}
 				}
 				else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol
@@ -457,6 +466,10 @@ function mouseUp(event) {
 				}
 				else if (!gameMan.ais[gameMan.player]) {
 					movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col);
+				}
+
+				if (animMan["dragRadius"]) {
+					animMan["radiusFlag"] = -1;	// TODO refactor and put this in elseif chain above?
 				}
 
 				if (gameMan.tutorialStep >= 0) {
@@ -474,8 +487,9 @@ function mouseUp(event) {
 		}
 
 		gameMan.selection = false;
-		inputMan.drag = "";
 		menuMan["button"] = -1;
+		inputMan.drag = "";
+		inputMan.pRot = -1;
 		inputMan.touchID2 = inputMan.touchID = -1;	// end touches
 		event.preventDefault();	// prevent firing twice in environments with both touch and mouse
 	}
@@ -667,7 +681,7 @@ function keyPrev() {
 	}
 	else if (gameMan.screen == "title" && menuMan["title"] > 0) {
 		menuMan["title"]--;
-		animMan["activeSlide"] = 1;
+		animMan["screenSlide"] = 1;
 		return true;
 	}
 	else if (gameMan.screen == "tutorial" && menuMan["tutorial"] > 0) {
@@ -710,7 +724,7 @@ function keyNext() {
 	}
 	else if (gameMan.screen == "title" && menuMan["title"] < 5) {
 		menuMan["title"]++;
-		animMan["activeSlide"] = 1;
+		animMan["screenSlide"] = 1;
 		return true;
 	}
 	else if (gameMan.screen == "tutorial" && menuMan["tutorial"] < 3) {

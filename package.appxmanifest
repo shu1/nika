@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
+  <Identity Name="8188707e-9486-4890-b5f3-8d76125dab40" Version="1.0.0.0" Publisher="CN=shu" />
+  <mp:PhoneIdentity PhoneProductId="8188707e-9486-4890-b5f3-8d76125dab40" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>Nika</DisplayName>
+    <PublisherDisplayName>Studio Mercato</PublisherDisplayName>
+    <Logo>StoreLogo.png</Logo>
+  </Properties>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" StartPage="default.html">
+      <uap:VisualElements DisplayName="Nika" Description="Nika Digital by Studio Mercato" BackgroundColor="transparent" Square150x150Logo="Square150x150Logo.png" Square44x44Logo="Square44x44Logo.png">
+        <uap:LockScreen Notification="badgeAndTileText" BadgeLogo="LockScreenLogo.png" />
+        <uap:DefaultTile Wide310x150Logo="Wide310x150Logo.png" Square310x310Logo="Square310x310Logo.png" ShortName="Nika">
+        </uap:DefaultTile>
+        <uap:SplashScreen Image="SplashScreen.png" BackgroundColor="#0A3C51" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape" />
+          <uap:Rotation Preference="landscapeFlipped" />
+        </uap:InitialRotationPreference>
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>

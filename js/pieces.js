@@ -64,7 +64,7 @@ function rotatePiece(pRow, pCol, rot) {
 	}
 }
 
-function movePiece(pRow, pCol, row, col, isAI) {
+function movePiece(pRow, pCol, row, col, pretend) {
 	var moved = false;
 
 	if (pRow >= 0 && pCol >= 0) {
@@ -75,7 +75,14 @@ function movePiece(pRow, pCol, row, col, isAI) {
 					eventMan[currentPlayer].push("move");
 				}
 
-				if (!isAI) {
+				if (!pretend) {
+					for(var i = phalanx.length - 1; i >= 0; --i) {
+						animMan.phalanx.push({
+							row: phalanx[i].row + (row - pRow),
+							col: phalanx[i].col + (col - pCol)
+						});
+					}
+					animMan["pieceSlide"] = 1;
 					phalanx.length = 0;
 					moved = true;
 				}
@@ -84,7 +91,14 @@ function movePiece(pRow, pCol, row, col, isAI) {
 		else if (checkMove(pRow, pCol, row, col) && pushPiece(pRow, pCol, row, col, grid[pRow][pCol].player, 1)) {
 			moveOnePiece(pRow, pCol, row, col);
 
-			if (!isAI) {
+			if (!pretend) {
+				for(var i = phalanx.length - 1; i >= 0; --i) {
+					animMan.phalanx.push({
+						row: phalanx[i].row + (row - pRow),
+						col: phalanx[i].col + (col - pCol)
+					});
+				}
+				animMan["pieceSlide"] = 1;
 				phalanx.length = 0;
 				moved = true;	// return if a piece was moved so it can be redrawn
 			}
@@ -103,7 +117,7 @@ function movePiece(pRow, pCol, row, col, isAI) {
 				eventMan[currentPlayer].push("rotate");
 			}
 
-			if (!isAI) {
+			if (!pretend) {
 				phalanx.length = 0;
 				moved = true;
 			}
@@ -120,7 +134,7 @@ function movePiece(pRow, pCol, row, col, isAI) {
 		}
 	}
 
-	return moved;
+	return moved;	// return if a piece was moved, so it can be redrawn
 }
 
 function moveOnePiece(pRow, pCol, row, col) {
@@ -286,6 +300,15 @@ function getRoutCell(player) {
 function inPhalanx(row, col) {
 	for (var i = phalanx.length - 1; i >= 0; --i) {
 		if (phalanx[i].row == row && phalanx[i].col == col) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function inAnimPhalanx(row, col) {
+	for (var i = animMan.phalanx.length - 1; i >= 0; --i) {
+		if (animMan.phalanx[i].row == row && animMan.phalanx[i].col == col) {
 			return true;
 		}
 	}
