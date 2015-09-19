@@ -760,7 +760,7 @@ function drawPieces(context) {
 		var x = gameMan.pCol * drawMan.cellSize + drawMan.cellSize/2;
 		var y = gameMan.pRow * drawMan.cellSize + drawMan.cellSize/2;
 
-		context.strokeStyle = "white";
+		context.strokeStyle = "rgba(255,255,255,0.5)";
 		context.lineWidth = 2;
 		context.beginPath();
 		context.arc(x, y, drawMan.cellSize * 1.8 * animMan["dragRadius"], 0, Math.PI*2);
