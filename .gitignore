@@ -4,5 +4,7 @@ desktop.ini
 sftp-config.json
 *.jar
 *.pfx
-bin/
-bld/
+*.user
+.vs
+bin
+bld
