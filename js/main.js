@@ -553,9 +553,9 @@ function update(time) {
 		drawMural(muralCanvas.getContext("2d"), dTime);	// draw mural to buffer
 	}
 
-	drawContext(gpCanvas.getContext("2d"), dTime);	// draw main screen
+	drawContext(gpCanvas.getContext("2d"));	// draw main screen
 	if (window.nwf) {
-		drawContext(tvCanvas.getContext("2d"), dTime, "tv");	// draw tv
+		drawContext(tvCanvas.getContext("2d"), "tv");	// draw tv
 	}
 
 	// This is triggering AI turns, not draw functionality
@@ -616,7 +616,7 @@ function drawMural(context, dTime) {
 	}
 }
 
-function drawContext(context, dTime, tv) {
+function drawContext(context, tv) {
 	tv = tv ? tv : "";
 
 	var canvas = context.canvas;
@@ -701,7 +701,7 @@ function drawContext(context, dTime, tv) {
 	}
 
 	context.restore();
-	drawHud(canvas, context, tv, dTime);
+	drawHud(canvas, context, tv);
 }
 
 function drawRules(context, scene) {
@@ -946,7 +946,7 @@ function drawTutorialProgress(canvas, context) {
 	context.restore();
 }
 
-function drawHud(canvas, context, tv, dTime) {
+function drawHud(canvas, context, tv) {
 	var x, y, scene = scenes["hud"];
 
 	if (gameMan.debug) {
@@ -998,7 +998,7 @@ function drawHud(canvas, context, tv, dTime) {
 	}
 
 	if (gameMan.debugBuild) {
-		drawDebug(canvas, context, dTime);	// TODO do debug animations in update()
+		drawDebug(canvas, context);
 	}
 
 	if (animMan["screenAlpha"] > 0 && gameMan.screen != "popup") {
