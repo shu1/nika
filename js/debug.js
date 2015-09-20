@@ -3,17 +3,17 @@
 var debugMan = {
 	scaling:false,
 	show:false,
-	rows:1,
-	cols:1
+	rows:2,
+	cols:3
 }
 
-var debugTexts = [
+var debugTexts = [	// make sure number of items match rows x cols above
 	"  Close",
 	" Debug",
 	"     AI",
 	"  Zoom",
 	"  Mural",
-	"AI Tool"
+	" AI Tool"
 ]
 
 function menuDebug(index) {
@@ -41,7 +41,7 @@ function menuDebug(index) {
 	}
 }
 
-function drawDebug(canvas, context, dTime) {
+function updateDebug(dTime) {
 	var scene = scenes["hud"];
 	var time = 200;
 	debugMan.scaling = false;	// whether menu is animating
@@ -80,7 +80,10 @@ function drawDebug(canvas, context, dTime) {
 			scene.debugHeight = scene.buttonHeight;
 		}
 	}
+}
 
+function drawDebug(canvas, context) {
+	var scene = scenes["hud"];
 	context.fillStyle = drawMan.color;
 	context.fillRect(canvas.width - scene.debugWidth, canvas.height - scene.debugHeight, scene.debugWidth, scene.debugHeight);
 

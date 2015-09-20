@@ -117,11 +117,6 @@ window.onload = function() {
 	window.addEventListener("keydown", keyDown);
 	window.addEventListener("resize", reSize);
 
-	if (gameMan.debugBuild) {
-		debugMan.cols = 3;
-		debugMan.rows = Math.ceil(debugTexts.length / debugMan.cols);
-	}
-
 	scenes["board"] = {};
 	scenes["rules"] = {};
 	scenes["menus"] = {};
@@ -515,6 +510,10 @@ function updateAnims(dTime) {
 			animMan["dragRadius"] = 0;
 			animMan["radiusFlag"] = 0;
 		}
+	}
+
+	if (gameMan.debugBuild) {
+		updateDebug(dTime);
 	}
 
 	if (musicMan.fading) {
