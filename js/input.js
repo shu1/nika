@@ -313,7 +313,8 @@ function mouseMove(event) {
 									inputMan.col--;
 								}
 							}
-							else if (inputMan.rot != inputMan.pRot) {
+
+							if (inputMan.rot != inputMan.pRot) {
 								inputMan.pRot = inputMan.rot;
 								animMan["pieceRot"] = 1;
 							}
