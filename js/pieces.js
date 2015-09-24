@@ -169,6 +169,76 @@ function checkMove(pRow, pCol, row, col) {
 	return true;
 }
 
+function checkPush(pRow, pCol, row, col, pusher, weight) {
+	if (pRow < 0 || pCol < 0) {
+		return false;
+	}
+
+	if (pRow == row && pCol == col) {
+		return false;
+	}
+
+	var currentPlayer = grid[pRow][pCol].player;
+	if (!pusher) {
+		pusher = currentPlayer;
+	}
+
+	if (invalidCell(row, col)) {
+		return false;
+	}
+
+	if (emptyCell(row, col)) {
+		if (grid[row][col].kind == 0	// normal cell
+		|| (grid[row][col].kind > 0 && Math.abs(grid[pRow][pCol].player - grid[row][col].city)%2 == 0)) {	// allied win or rally cell
+			return true;
+		}
+		return false;
+	}
+
+	var fRow = 2*row - pRow;
+	var fCol = 2*col - pCol;
+
+	if (inPhalanx(row, col)) {
+		if (checkPush(row, col, fRow, fCol, pusher, weight+1)) {	// i'll push if the cell in front will too
+			return true;
+		}
+		return false;
+	}
+
+	if (Math.abs(pusher - grid[row][col].player)%2 == 0) {	// non-phalanx ally
+		return false;
+	}
+	else {	// enemy piece
+		var comingFrom; // Which rotation direction the offensive piece is coming from
+		if (pRow < row) {
+			comingFrom = 0;
+		} else if (pRow > row) {
+			comingFrom = 2;
+		} else if (pCol > col) {
+			comingFrom = 1;
+		} else {
+			comingFrom = 3;
+		}
+
+		if (grid[row][col].rot != comingFrom && grid[pRow][pCol].player == pusher) {	// not facing enemy
+			return true;
+		}
+
+		if (weight > 1) {	// check line weight
+			if (invalidCell(fRow, fCol)
+			|| (grid[fRow][fCol].player >= 0 && Math.abs(grid[fRow][fCol].player - grid[row][col].player)%2 == 1)	// pushed into enemy piece
+			|| (grid[fRow][fCol].kind == 1 && Math.abs(grid[fRow][fCol].city - grid[row][col].player)%2 == 1)) {	// pushed into enemy win cell
+				return true;
+			}
+
+			if (checkPush(row, col, fRow, fCol, pusher, weight-1)) {	// i'll be pushed if the piece behind me will too
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 function pushPiece(pRow, pCol, row, col, pusher, weight) {
 	var currentPlayer = grid[pRow][pCol].player;
 	if (invalidCell(row, col)) {
