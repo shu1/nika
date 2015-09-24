@@ -421,6 +421,48 @@ function getPhalanx(row, col) {
 	}
 }
 
+function checkPushPhalanx(pRow, pCol, row, col) {
+	if (pRow < 0 || pCol < 0) {
+		return false;
+	}
+
+	if (pRow == row && pCol == col) {
+		return false;
+	}
+
+	var phalanxIndex = [];
+	var currentPlayer = grid[pRow][pCol].player;
+	if (checkMovePhalanx(pRow, pCol, row, col)) {
+		var dRow = row - pRow;
+		var dCol = col - pCol;
+		var moved = false;
+		var flag = true;
+
+		// find all pieces to push
+		for (var i=phalanx.length-1; i>=0; --i) {
+			if(!inPhalanx(phalanx[i].row-dRow, phalanx[i].col-dCol)) {
+				phalanxIndex.push(i);
+			}
+		}
+
+		// see if you can push them
+		for (var i = phalanxIndex.length - 1; i >= 0 && flag; --i) {
+			if (checkPush(phalanx[phalanxIndex[i]].row, phalanx[phalanxIndex[i]].col, phalanx[phalanxIndex[i]].row + dRow, phalanx[phalanxIndex[i]].col + dCol, grid[phalanx[phalanxIndex[i]].row][phalanx[phalanxIndex[i]].col].player, 1)) {
+				// moveOnePiece(phalanx[phalanxIndex[i]].row, phalanx[phalanxIndex[i]].col, phalanx[phalanxIndex[i]].row + dRow, phalanx[phalanxIndex[i]].col + dCol);
+				moved = true;
+			}
+			else {
+				// revertState();
+				moved = false;
+				// eventMan[currentPlayer] = [];
+				flag = false;
+			}
+		}
+		clearChecked();
+	}
+	return moved;
+}
+
 function movePhalanx(pRow, pCol, row, col) {
 	var phalanxIndex = [];
 	var currentPlayer = grid[pRow][pCol].player;
