@@ -315,23 +315,17 @@ function pushOnePiece(row, col, fRow, fCol, pusher) {
 
 function routPiece(row, col, router) {
 	if (grid[row][col].player >= 0) {
-		eventMan[router].push("rout");
 		var routed = grid[row][col].player;
+		eventMan[router].push("rout");
 		eventMan[routed].push("routed");
+
+		var cell = getRoutCell(routed);
+		grid[cell.row][cell.col].player = routed;
+		grid[cell.row][cell.col].rot = routed;	// facing direction is same as city id
 
 		pieceMan["routed"].push({row:row, col:col, rot:grid[row][col].rot, player:routed});
 		animMan["pieceScale"] = 1;
 	}
-}
-
-function endRout() {	// FIXME this gets undone due to hotgrid
-	var a = pieceMan["routed"];
-	for (var i = a.length-1; i >= 0; --i) {
-		var cell = getRoutCell(a[i].player);
-		grid[cell.row][cell.col].player = a[i].player;
-		grid[cell.row][cell.col].rot = a[i].player;	// facing direction is same as city id
-	}
-	a.length = 0;
 }
 
 function checkPiece(index, row, col) {

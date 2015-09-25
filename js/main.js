@@ -480,7 +480,7 @@ function updateAnims(dTime) {
 			animMan["pieceScale"] -= dTime/500;
 			if (animMan["pieceScale"] <= 0) {
 				animMan["pieceScale"] = 0;
-				endRout();
+				pieceMan["routed"].length = 0;
 			}
 		}
 
