@@ -16,7 +16,8 @@ var aiWeights = [
 			enemyAdjCanRoutMe 				: [-5,-12],
 			enemyAdjBothNotFacing			: [2,-8],
 			perSquareDistanceFromGoal : -8,
-			perRoutedEnemyPiece				: 25
+			perRoutedEnemyPiece				: 25,
+			phalanxBonus              : 500
 		}
 	},
 
@@ -34,7 +35,8 @@ var aiWeights = [
 			enemyAdjCanRoutMe 				: [-5,-12],
 			enemyAdjBothNotFacing			: [2,-8],
 			perSquareDistanceFromGoal : -8,
-			perRoutedEnemyPiece				: 20
+			perRoutedEnemyPiece				: 20,
+			phalanxBonus              : 500
 		}
 	},
 
@@ -52,7 +54,8 @@ var aiWeights = [
 			enemyAdjCanRoutMe 				: [-5,-12],
 			enemyAdjBothNotFacing			: [2,-8],
 			perSquareDistanceFromGoal : -8,
-			perRoutedEnemyPiece				: 20
+			perRoutedEnemyPiece				: 20,
+			phalanxBonus              : 500
 		}
 	}
 ];
@@ -80,82 +83,126 @@ function aiNeil(aiNum){
 	getValue(defaultState, pieces);
 	var bestState = defaultState; // Stores best state, which is default at this point. Altough we might be better off just setting best state.
 
-	var rallySpots = [];
-	for (var row = 0 ; row < 15; ++row) {
-		for (var col = 0; col < 21; ++col) {
-			if(grid[row][col].kind == 2 && grid[row][col].city == pieces[0].player){
-				rallySpots.push(grid[row][col]);
-			}
-		}
-	}
-
-	// EACH PIECE CHECKING =============
-	for(var i = 0; i < 6; ++i) {
-		if(pieces[i].kind == 3) {
-			// Get rally spots
-		}
-		else {
-			// Do normal move check, which means rotation, then movement.
-
-			for (var dir = 0; dir < 3; ++dir) {
-				setGrid(defGrid,grid);
-				pieces = getAIPieces();
-				phalanx = [pieces[i]];
-
-				var newDir = (pieces[i].rot + dir) % 4;
-				var rotation = { rot: newDir };
-
-				rotatePiece(pieces[i].row, pieces[i].col);
-				pieces = getAIPieces();
-
-				var testState = copyState(defaultState);
-				getValue(testState, pieces);
-
-				if (testState.value > bestState.value) {
-					bestState = testState;
-					bestState.rotation = rotation;
-					bestState.phalanx = phalanx;
-				}
-
-				setGrid(defGrid, grid);
-				pieces = getAIPieces();
-				phalanx = [];
-			}
-
-			// Check moves in each direction
-			for (var dir = 0; dir < 4; ++dir){
-				setGrid(defGrid,grid);
-				pieces = getAIPieces();
-				phalanx = [pieces[i]];
-
-				var move = getMoveArguments(phalanx[0],dir);
-				var origRot = phalanx[0].rot;
-
-				movePiece(move.pRow,move.pCol,move.tRow,move.tCol,true);
-				pieces = getAIPieces();
-
-				var testState = copyState(defaultState);
-				getValue(testState, pieces);
-
-				if (testState.value > bestState.value) {
-					bestState = testState;
-					bestState.move = move;
-					bestState.phalanx = phalanx;
-				}
-
-				setGrid(defGrid, grid);
-				pieces = getAIPieces();
-				phalanx = [];
-			}
-		}
-	}
-
-	setGrid(defGrid,grid);
+	// var rallySpots = [];
+	// for (var row = 0 ; row < 15; ++row) {
+	// 	for (var col = 0; col < 21; ++col) {
+	// 		if(grid[row][col].kind == 2 && grid[row][col].city == pieces[0].player){
+	// 			rallySpots.push(grid[row][col]);
+	// 		}
+	// 	}
+	// }
+	//
+	// // EACH PIECE CHECKING =============
+	// for(var i = 0; i < 6; ++i) {
+	// 	if(pieces[i].kind == 3) {
+	// 		// Get rally spots
+	// 	}
+	// 	else {
+	// 		// Do normal move check, which means rotation, then movement.
+	//
+	// 		for (var dir = 0; dir < 3; ++dir) {
+	// 			setGrid(defGrid,grid);
+	// 			pieces = getAIPieces();
+	// 			phalanx = [pieces[i]];
+	//
+	// 			var newDir = (pieces[i].rot + dir) % 4;
+	// 			var rotation = { rot: newDir };
+	//
+	// 			rotatePiece(pieces[i].row, pieces[i].col);
+	// 			pieces = getAIPieces();
+	//
+	// 			var testState = copyState(defaultState);
+	// 			getValue(testState, pieces);
+	//
+	// 			if (testState.value > bestState.value) {
+	// 				bestState = testState;
+	// 				bestState.rotation = rotation;
+	// 				bestState.phalanx = phalanx;
+	// 			}
+	//
+	// 			setGrid(defGrid, grid);
+	// 			pieces = getAIPieces();
+	// 			phalanx = [];
+	// 		}
+	//
+	// 		// Check moves in each direction
+	// 		for (var dir = 0; dir < 4; ++dir){
+	// 			setGrid(defGrid,grid);
+	// 			pieces = getAIPieces();
+	// 			phalanx = [pieces[i]];
+	//
+	// 			var move = getMoveArguments(phalanx[0],dir);
+	// 			var origRot = phalanx[0].rot;
+	//
+	// 			movePiece(move.pRow,move.pCol,move.tRow,move.tCol,true);
+	// 			pieces = getAIPieces();
+	//
+	// 			var testState = copyState(defaultState);
+	// 			getValue(testState, pieces);
+	//
+	// 			if (testState.value > bestState.value) {
+	// 				bestState = testState;
+	// 				bestState.move = move;
+	// 				bestState.phalanx = phalanx;
+	// 			}
+	//
+	// 			setGrid(defGrid, grid);
+	// 			pieces = getAIPieces();
+	// 			phalanx = [];
+	// 		}
+	// 	}
+	// }
 
 	// PHALANX CHECKING =====================
+	setGrid(defGrid,grid);
+	pieces = getAIPieces();
+	var combos = getCombinations(pieces);
+
+	for (var i = combos.length - 1; i >= 0; --i) {
+
+		if (combos[i].length < 2) {
+			continue;
+		}
+
+		phalanx = combos[i];
+
+		if (!isPhalanx()) {
+			continue;
+		}
+
+		var pRow = phalanx[0].row;
+		var pCol = phalanx[0].col;
+		gameMan.pRot = phalanx[0].rot;
+
+		// Move in each direction
+		for (var dir = 0; dir < 4; ++dir) {
+			setGrid(defGrid,grid);
+			pieces = getAIPieces();
+			phalanx = combos[i];
+			var move = getMoveArguments({ row: pRow, col: pCol }, dir);
+			movePiece(move.pRow, move.pCol, move.tRow, move.tCol, true);
+			pieces = getAIPieces();
+
+			var testState = copyState(defaultState);
+			testState.move = move;
+			testState.phalanx = phalanx;
+			getValue(testState, pieces);
+
+			if (testState.value > bestState.value) {
+				bestState = testState;
+				bestState.move = move;
+				bestState.phalanx = phalanx;
+			}
+			setGrid(defGrid,grid);
+		}
+
+	}
+
+	console.dir(bestState);
 
 	// AFTER ALL CHECKING IS DONE ===========
 	if (bestState.move) {
+		console.log(bestState.phalanx)
 		phalanx = bestState.phalanx
 		movePiece(bestState.move.pRow, bestState.move.pCol, bestState.move.tRow, bestState.move.tCol);
 		playerAction();
@@ -168,8 +215,19 @@ function aiNeil(aiNum){
 	else {
 		pass();
 	}
+}
 
-	console.dir(bestState);
+// http://codereview.stackexchange.com/a/7042
+function getCombinations(pieces) {
+  var result = [];
+  var f = function(prefix, pieces) {
+    for (var i = 0; i < pieces.length; i++) {
+      result.push(prefix + pieces[i]);
+      f(prefix.concat(pieces[i]), pieces.slice(i + 1));
+    }
+  }
+  f([], pieces);
+  return result;
 }
 
 function getValue(state, pieces){
@@ -255,6 +313,11 @@ function getValue(state, pieces){
 				state.value += aiP.values.perRoutedEnemyPiece;
 			}
 		}
+	}
+
+	if (state.phalanx && state.phalanx.length > 1) {
+		console.log('bonus!');
+		state.value += aiP.values.phalanxBonus;
 	}
 }
 

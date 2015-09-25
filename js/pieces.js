@@ -94,7 +94,6 @@ function movePiece(pRow, pCol, row, col, pretend) {
 					}
 					animMan["pieceSlide"] = 1;
 					animMan["pieceSlideRot"] = rot;
-					console.log(rot);
 					phalanx.length = 0;
 					moved = true;
 				}
