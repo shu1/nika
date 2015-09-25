@@ -313,16 +313,35 @@ function pushOnePiece(row, col, fRow, fCol, pusher) {
 	grid[fRow][fCol].rot = grid[row][col].rot;
 }
 
-// move piece to rout cell
 function routPiece(row, col, router) {
 	if (grid[row][col].player >= 0) {
 		eventMan[router].push("rout");
-		eventMan[grid[row][col].player].push("routed");
-		var cell = getRoutCell(grid[row][col].player);
+		var routed = grid[row][col].player;
+		eventMan[routed].push("routed");
 
-		grid[cell.row][cell.col].player = grid[row][col].player;
-		grid[cell.row][cell.col].rot = grid[row][col].player;
+		pieceMan["routed"].push({row:row, col:col, rot:grid[row][col].rot, player:routed});
+		animMan["pieceScale"] = 1;
 	}
+}
+
+function endRout() {	// FIXME this gets undone due to hotgrid
+	var a = pieceMan["routed"];
+	for (var i = a.length-1; i >= 0; --i) {
+		var cell = getRoutCell(a[i].player);
+		grid[cell.row][cell.col].player = a[i].player;
+		grid[cell.row][cell.col].rot = a[i].player;	// facing direction is same as city id
+	}
+	a.length = 0;
+}
+
+function checkPiece(index, row, col) {
+	var a = pieceMan[index];
+	for (var i = a.length-1; i >= 0; --i) {
+		if (a[i].row == row && a[i].col == col) {
+			return a[i];
+		}
+	}
+	return null;
 }
 
 // find first empty rout cell

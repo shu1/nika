@@ -476,6 +476,14 @@ function updateAnims(dTime) {
 			});
 		}
 
+		if (animMan["pieceScale"] > 0) {	// rout
+			animMan["pieceScale"] -= dTime/500;
+			if (animMan["pieceScale"] <= 0) {
+				animMan["pieceScale"] = 0;
+				endRout();
+			}
+		}
+
 		animMan["helmetTheta"] += dTime/400;
 		if (animMan["helmetScale"] > 0) {
 			if (animMan["helmetScale"] == 1) {
@@ -801,11 +809,21 @@ function drawPieces(context) {
 			var cell = grid[row][col];
 			if (cell.player >= 0 || cell.ring >= 0 || cell.prompt >= 0) {
 				context.save();
-				if (inAnimPhalanx(row, col)) {
-					context.translate(col * drawMan.cellSize + drawMan.cellSize/2 + dX, row * drawMan.cellSize + drawMan.cellSize/2 + dY);
+				context.translate(col * drawMan.cellSize + drawMan.cellSize/2, row * drawMan.cellSize + drawMan.cellSize/2);
+
+				var routed = checkPiece("routed", row, col);
+				if (routed && animMan["pieceScale"] > 0) {
+					var scale = animMan["pieceScale"];
+					var rot = routed.rot * Math.PI/2;
+					context.scale(scale, scale);
+					context.rotate(rot);
+					context.drawImage(images["piece" + routed.player], -40, -40);
+					context.rotate(-rot);
+					context.scale(1/scale, 1/scale);
 				}
-				else {
-					context.translate(col * drawMan.cellSize + drawMan.cellSize/2, row * drawMan.cellSize + drawMan.cellSize/2);
+
+				if (animMan["pieceSlide"] > 0 && inAnimPhalanx(row, col)) {
+					context.translate(dX, dY);
 				}
 
 				if (cell.player >= 0) {

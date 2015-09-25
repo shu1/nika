@@ -47,8 +47,13 @@ var animMan = {
 	"screenAlpha":0,
 	"screenSlide":0,
 	"pieceSlide":0,
+	"pieceScale":0,
 	"dragRadius":0,
 	phalanx:[]
+}
+
+var pieceMan = {
+	"routed":[]
 }
 
 var gameMan = {
