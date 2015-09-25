@@ -77,7 +77,7 @@ function movePiece(pRow, pCol, row, col, pretend) {
 
 				if (!pretend) {
 					for(var i = phalanx.length - 1; i >= 0; --i) {
-						animMan.phalanx.push({
+						pieceMan["animPhalanx"].push({
 							row: phalanx[i].row + (row - pRow),
 							col: phalanx[i].col + (col - pCol)
 						});
@@ -93,7 +93,7 @@ function movePiece(pRow, pCol, row, col, pretend) {
 
 			if (!pretend) {
 				for(var i = phalanx.length - 1; i >= 0; --i) {
-					animMan.phalanx.push({
+					pieceMan["animPhalanx"].push({
 						row: phalanx[i].row + (row - pRow),
 						col: phalanx[i].col + (col - pCol)
 					});
@@ -389,15 +389,6 @@ function getRoutCell(player) {
 function inPhalanx(row, col) {
 	for (var i = phalanx.length - 1; i >= 0; --i) {
 		if (phalanx[i].row == row && phalanx[i].col == col) {
-			return true;
-		}
-	}
-	return false;
-}
-
-function inAnimPhalanx(row, col) {
-	for (var i = animMan.phalanx.length - 1; i >= 0; --i) {
-		if (animMan.phalanx[i].row == row && animMan.phalanx[i].col == col) {
 			return true;
 		}
 	}

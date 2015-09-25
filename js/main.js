@@ -472,7 +472,7 @@ function updateAnims(dTime) {
 
 		if (animMan["pieceSlide"]) {
 			easeOut("pieceSlide", 100, function() {
-				animMan.phalanx = [];
+				pieceMan["animPhalanx"].length = 0;
 			});
 		}
 
@@ -822,7 +822,7 @@ function drawPieces(context) {
 					context.scale(1/scale, 1/scale);
 				}
 
-				if (animMan["pieceSlide"] > 0 && inAnimPhalanx(row, col)) {
+				if (animMan["pieceSlide"] > 0 && checkPiece("animPhalanx", row, col)) {
 					context.translate(dX, dY);
 				}
 

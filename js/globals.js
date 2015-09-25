@@ -48,12 +48,12 @@ var animMan = {
 	"screenSlide":0,
 	"pieceSlide":0,
 	"pieceScale":0,
-	"dragRadius":0,
-	phalanx:[]
+	"dragRadius":0
 }
 
 var pieceMan = {
-	"routed":[]
+	"routed":[],
+	"animPhalanx":[]
 }
 
 var gameMan = {
