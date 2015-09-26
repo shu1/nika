@@ -80,7 +80,7 @@ function mouseDown(event) {
 					drawMan.pieceTheta = inputMan.pRot * Math.PI/2;
 					handled = true;
 
-					if (inPhalanx(gameMan.pRow, gameMan.pCol) && !routedCell(gameMan.pRow, gameMan.pCol)) {
+					if (checkPiece("phalanx", gameMan.pRow, gameMan.pCol) && !routedCell(gameMan.pRow, gameMan.pCol)) {
 						animMan["radiusFlag"] = 1;
 					}
 				} else {

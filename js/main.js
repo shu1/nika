@@ -828,7 +828,7 @@ function drawPieces(context) {
 
 				if (cell.player >= 0) {
 					var rot = cell.rot * Math.PI/2;
-					if (drawMan.pieceTheta && inPhalanx(row, col)) {
+					if (drawMan.pieceTheta && checkPiece("phalanx", row, col)) {
 						rot = drawMan.pieceTheta;
 					}
 					context.rotate(rot);

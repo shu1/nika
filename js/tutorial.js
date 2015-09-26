@@ -71,7 +71,7 @@ function checkTutorialMove() {
 
 	if (selection) { // if correctness depends on phalanx after selection
 		for (var i = selection.length-1; i >= 0; --i) {
-			if (!inPhalanx(selection[i][0], selection[i][1])) {
+			if (!checkPiece("phalanx", selection[i][0], selection[i][1])) {
 				correct = false;
 			}
 		}
@@ -103,9 +103,9 @@ function checkTutorialMove() {
 function checkTutorialSelection() {
 	switch(gameMan.tutorialStep) {
 	case 28:
-		if (inPhalanx(10,14)
-		 && !inPhalanx(9,14)
-		 && !inPhalanx(11,14)) {
+		if (checkPiece("phalanx", 10, 14)
+		 && !checkPiece("phalanx", 9, 14)
+		 && !checkPiece("phalanx", 11, 14)) {
 			nextTutorialStep();
 		}
 		else {
@@ -113,10 +113,10 @@ function checkTutorialSelection() {
 		}
 		break;
 	case 29:
-		if (inPhalanx(10, 14)
-		 && inPhalanx(11,14)
-		 && !inPhalanx(9,14)
-		 && !inPhalanx(11,15)) {
+		if (checkPiece("phalanx", 10, 14)
+		 && checkPiece("phalanx", 11, 14)
+		 && !checkPiece("phalanx", 9, 14)
+		 && !checkPiece("phalanx", 11, 15)) {
 			nextTutorialStep();
 		}
 		else {
@@ -125,10 +125,10 @@ function checkTutorialSelection() {
 		}
 		break;
 	case 30:
-		if (inPhalanx(10,14)
-		 && inPhalanx(11,14)
-		 && inPhalanx(11,15)
-		 && !inPhalanx(9,14)) {
+		if (checkPiece("phalanx", 10, 14)
+		 && checkPiece("phalanx", 11, 14)
+		 && checkPiece("phalanx", 11, 15)
+		 && !checkPiece("phalanx", 9, 14)) {
 			nextTutorialStep();
 		}
 		else {
