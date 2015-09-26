@@ -43,7 +43,7 @@ function getPiece(row, col) {
 			gameMan.selection = true;
 		}
 		else {
-			phalanx.length = 0;
+			pieceMan["phalanx"].length = 0;
 			getPhalanx(row, col);
 			clearChecked();
 		}
@@ -51,15 +51,15 @@ function getPiece(row, col) {
 }
 
 function resetRotation() {
-	for (var i = phalanx.length - 1; i >= 0; --i) {
-		grid[phalanx[i].row][phalanx[i].col].rot = gameMan.pRot;
+	for (var i = pieceMan["phalanx"].length-1; i >= 0; --i) {
+		grid[pieceMan["phalanx"][i].row][pieceMan["phalanx"][i].col].rot = gameMan.pRot;
 	}
 }
 
 function rotatePiece(pRow, pCol, rot) {
 	if (grid[pRow][pCol].kind != 3 && inPhalanx(pRow,pCol)) {
-		for (var i = phalanx.length-1; i >= 0; --i) {
-			grid[phalanx[i].row][phalanx[i].col].rot = rot;
+		for (var i = pieceMan["phalanx"].length-1; i >= 0; --i) {
+			grid[pieceMan["phalanx"][i].row][pieceMan["phalanx"][i].col].rot = rot;
 		}
 	}
 }
@@ -69,21 +69,21 @@ function movePiece(pRow, pCol, row, col, pretend) {
 
 	if (pRow >= 0 && pCol >= 0) {
 		var currentPlayer = grid[pRow][pCol].player;
-		if (phalanx.length > 1) {
+		if (pieceMan["phalanx"].length > 1) {
 			if (movePhalanx(pRow, pCol, row, col)) {
 				if (eventMan[currentPlayer].length == 0) {
 					eventMan[currentPlayer].push("move");
 				}
 
 				if (!pretend) {
-					for(var i = phalanx.length - 1; i >= 0; --i) {
+					for(var i = pieceMan["phalanx"].length-1; i >= 0; --i) {
 						pieceMan["animPhalanx"].push({
-							row: phalanx[i].row + (row - pRow),
-							col: phalanx[i].col + (col - pCol)
+							row: pieceMan["phalanx"][i].row + (row - pRow),
+							col: pieceMan["phalanx"][i].col + (col - pCol)
 						});
 					}
 					animMan["pieceSlide"] = 1;
-					phalanx.length = 0;
+					pieceMan["phalanx"].length = 0;
 					moved = true;
 				}
 			}
@@ -92,14 +92,14 @@ function movePiece(pRow, pCol, row, col, pretend) {
 			moveOnePiece(pRow, pCol, row, col);
 
 			if (!pretend) {
-				for(var i = phalanx.length - 1; i >= 0; --i) {
+				for(var i = pieceMan["phalanx"].length-1; i >= 0; --i) {
 					pieceMan["animPhalanx"].push({
-						row: phalanx[i].row + (row - pRow),
-						col: phalanx[i].col + (col - pCol)
+						row: pieceMan["phalanx"][i].row + (row - pRow),
+						col: pieceMan["phalanx"][i].col + (col - pCol)
 					});
 				}
 				animMan["pieceSlide"] = 1;
-				phalanx.length = 0;
+				pieceMan["phalanx"].length = 0;
 				moved = true;	// return if a piece was moved so it can be redrawn
 			}
 
@@ -118,7 +118,7 @@ function movePiece(pRow, pCol, row, col, pretend) {
 			}
 
 			if (!pretend) {
-				phalanx.length = 0;
+				pieceMan["phalanx"].length = 0;
 				moved = true;
 			}
 		}
@@ -381,8 +381,8 @@ function getRoutCell(player) {
 }
 
 function inPhalanx(row, col) {
-	for (var i = phalanx.length - 1; i >= 0; --i) {
-		if (phalanx[i].row == row && phalanx[i].col == col) {
+	for (var i = pieceMan["phalanx"].length-1; i >= 0; --i) {
+		if (pieceMan["phalanx"][i].row == row && pieceMan["phalanx"][i].col == col) {
 			return true;
 		}
 	}
@@ -392,7 +392,7 @@ function inPhalanx(row, col) {
 function getPhalanx(row, col) {
 	var me = grid[row][col];
 	me.checked = true;
-	phalanx.push({row:row, col:col});
+	pieceMan["phalanx"].push({row:row, col:col});
 
 	if (me.kind != 3) { // check adjacent if not-routed-square
 		if (row-1 >= 0) {
@@ -443,16 +443,19 @@ function checkPushPhalanx(pRow, pCol, row, col) {
 		var flag = true;
 
 		// find all pieces to push
-		for (var i=phalanx.length-1; i>=0; --i) {
-			if(!inPhalanx(phalanx[i].row-dRow, phalanx[i].col-dCol)) {
+		for (var i = pieceMan["phalanx"].length-1; i >= 0; --i) {
+			if(!inPhalanx(pieceMan["phalanx"][i].row-dRow, pieceMan["phalanx"][i].col-dCol)) {
 				phalanxIndex.push(i);
 			}
 		}
 
 		// see if you can push them
-		for (var i = phalanxIndex.length - 1; i >= 0 && flag; --i) {
-			if (checkPush(phalanx[phalanxIndex[i]].row, phalanx[phalanxIndex[i]].col, phalanx[phalanxIndex[i]].row + dRow, phalanx[phalanxIndex[i]].col + dCol, grid[phalanx[phalanxIndex[i]].row][phalanx[phalanxIndex[i]].col].player, 1)) {
-				// moveOnePiece(phalanx[phalanxIndex[i]].row, phalanx[phalanxIndex[i]].col, phalanx[phalanxIndex[i]].row + dRow, phalanx[phalanxIndex[i]].col + dCol);
+		for (var i = phalanxIndex.length-1; i >= 0 && flag; --i) {
+			if (checkPush(pieceMan["phalanx"][phalanxIndex[i]].row, pieceMan["phalanx"][phalanxIndex[i]].col,
+			pieceMan["phalanx"][phalanxIndex[i]].row + dRow, pieceMan["phalanx"][phalanxIndex[i]].col + dCol,
+			grid[pieceMan["phalanx"][phalanxIndex[i]].row][pieceMan["phalanx"][phalanxIndex[i]].col].player, 1)) {
+//				moveOnePiece(pieceMan["phalanx"][phalanxIndex[i]].row, pieceMan["phalanx"][phalanxIndex[i]].col,
+//					pieceMan["phalanx"][phalanxIndex[i]].row + dRow, pieceMan["phalanx"][phalanxIndex[i]].col + dCol);
 				moved = true;
 			}
 			else {
@@ -477,16 +480,19 @@ function movePhalanx(pRow, pCol, row, col) {
 		var flag = true;
 
 		// find all pieces to push
-		for (var i=phalanx.length-1; i>=0; --i) {
-			if(!inPhalanx(phalanx[i].row-dRow, phalanx[i].col-dCol)) {
+		for (var i = pieceMan["phalanx"].length-1; i >= 0; --i) {
+			if(!inPhalanx(pieceMan["phalanx"][i].row-dRow, pieceMan["phalanx"][i].col-dCol)) {
 				phalanxIndex.push(i);
 			}
 		}
 
 		// push them
-		for (var i = phalanxIndex.length - 1; i >= 0 && flag; --i) {
-			if (pushPiece(phalanx[phalanxIndex[i]].row, phalanx[phalanxIndex[i]].col, phalanx[phalanxIndex[i]].row + dRow, phalanx[phalanxIndex[i]].col + dCol, grid[phalanx[phalanxIndex[i]].row][phalanx[phalanxIndex[i]].col].player, 1)) {
-				moveOnePiece(phalanx[phalanxIndex[i]].row, phalanx[phalanxIndex[i]].col, phalanx[phalanxIndex[i]].row + dRow, phalanx[phalanxIndex[i]].col + dCol);
+		for (var i = phalanxIndex.length-1; i >= 0 && flag; --i) {
+			if (pushPiece(pieceMan["phalanx"][phalanxIndex[i]].row, pieceMan["phalanx"][phalanxIndex[i]].col,
+			pieceMan["phalanx"][phalanxIndex[i]].row + dRow, pieceMan["phalanx"][phalanxIndex[i]].col + dCol,
+			grid[pieceMan["phalanx"][phalanxIndex[i]].row][pieceMan["phalanx"][phalanxIndex[i]].col].player, 1)) {
+				moveOnePiece(pieceMan["phalanx"][phalanxIndex[i]].row, pieceMan["phalanx"][phalanxIndex[i]].col,
+					pieceMan["phalanx"][phalanxIndex[i]].row + dRow, pieceMan["phalanx"][phalanxIndex[i]].col + dCol);
 				moved = true;
 			}
 			else {
@@ -504,9 +510,9 @@ function movePhalanx(pRow, pCol, row, col) {
 function checkMovePhalanx(pRow, pCol, row, col) {
 	var dRow = row - pRow;
 	var dCol = col - pCol;
-	for (var i = phalanx.length - 1; i >= 0; --i) {
-		var iRow = phalanx[i].row;
-		var iCol = phalanx[i].col;
+	for (var i = pieceMan["phalanx"].length-1; i >= 0; --i) {
+		var iRow = pieceMan["phalanx"][i].row;
+		var iCol = pieceMan["phalanx"][i].col;
 
 		if (outOfBounds(iRow, iCol) || outOfBounds(iRow + dRow, iCol + dCol)
 		||  invalidCell(iRow+dRow, iCol+dCol)
@@ -543,50 +549,50 @@ function checkMovePhalanx(pRow, pCol, row, col) {
 }
 
 function togglePhalanxPiece(row, col) {
-	if (inPhalanx(row, col) && phalanx.length > 1) {	// if in phalanx, find and remove
-		for (var i = phalanx.length-1; i >= 0; --i) {
-			if (phalanx[i].row == row && phalanx[i].col == col) {
-				phalanx = phalanx.splice(i, 1);
+	if (inPhalanx(row, col) && pieceMan["phalanx"].length > 1) {	// if in pieceMan["phalanx"], find and remove
+		for (var i = pieceMan["phalanx"].length-1; i >= 0; --i) {
+			if (pieceMan["phalanx"][i].row == row && pieceMan["phalanx"][i].col == col) {
+				pieceMan["phalanx"] = pieceMan["phalanx"].splice(i, 1);
 				return;
 			}
 		}
 	}
 	else {	// else add to phalanx if you can
-		if (phalanx.length == 0) {
-			phalanx.push({row:row, col:col});
+		if (pieceMan["phalanx"].length == 0) {
+			pieceMan["phalanx"].push({row:row, col:col});
 			return;
 		}
 
-		for (var i = phalanx.length-1; i >= 0; --i) {
-			if (Math.abs(phalanx[i].row-row) + Math.abs(phalanx[i].col-col) == 1	// adjacent cell
-			&& grid[phalanx[i].row][phalanx[i].col].player == grid[row][col].player	// same player
-			&& grid[phalanx[i].row][phalanx[i].col].rot == grid[row][col].rot	// same rotation
+		for (var i = pieceMan["phalanx"].length-1; i >= 0; --i) {
+			if (Math.abs(pieceMan["phalanx"][i].row - row) + Math.abs(pieceMan["phalanx"][i].col - col) == 1	// adjacent cell
+			&& grid[pieceMan["phalanx"][i].row][pieceMan["phalanx"][i].col].player == grid[row][col].player	// same player
+			&& grid[pieceMan["phalanx"][i].row][pieceMan["phalanx"][i].col].rot == grid[row][col].rot	// same rotation
 			&& !routedCell(row, col)) {
-				phalanx.push({row:row, col:col});
+				pieceMan["phalanx"].push({row:row, col:col});
 				return;
 			}
 		}
 
-		phalanx.length = 0;
-		phalanx.push({row:row, col:col});
+		pieceMan["phalanx"].length = 0;
+		pieceMan["phalanx"].push({row:row, col:col});
 	}
 }
 
 function canBeInPhalanx(row, col) {
-	phalanx.push({row: row, col: col});
-	var result = isPhalanx() && (phalanx.length > 1);
-	phalanx.pop();
+	pieceMan["phalanx"].push({row: row, col: col});
+	var result = isPhalanx() && (pieceMan["phalanx"].length > 1);
+	pieceMan["phalanx"].pop();
 	return result;
 }
 
 function isPhalanx() {
-	for (var i = phalanx.length-1; i >= 0; --i) {
+	for (var i = pieceMan["phalanx"].length-1; i >= 0; --i) {
 		for (var j = i - 1; j >= 0; --j) {
-			if (!findMember(phalanx[i].row, phalanx[i].col, phalanx[j].row, phalanx[j].col)) {
+			if (!findMember(pieceMan["phalanx"][i].row, pieceMan["phalanx"][i].col, pieceMan["phalanx"][j].row, pieceMan["phalanx"][j].col)) {
 				clearChecked();
 				return false;
 			}
-			if (grid[phalanx[i].row][phalanx[i].col].rot != grid[phalanx[j].row][phalanx[j].col].rot) {
+			if (grid[pieceMan["phalanx"][i].row][pieceMan["phalanx"][i].col].rot != grid[pieceMan["phalanx"][j].row][pieceMan["phalanx"][j].col].rot) {
 				clearChecked();
 				return false;
 			}

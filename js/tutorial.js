@@ -9,8 +9,8 @@ function clearTutorialRings() {
 }
 
 function initTutorial(step) {
-	if (step == undefined) { step = 0; }
-	phalanx = [];
+	if (step == undefined) step = 0;
+	pieceMan["phalanx"].length = 0;
 	gameMan.winner = -1;
 	gameMan.tutorialStep = step - 1;
 	nextTutorialStep();
@@ -70,12 +70,12 @@ function checkTutorialMove() {
 	var selection = tutorials[gameMan.tutorialStep].selection;
 
 	if (selection) { // if correctness depends on phalanx after selection
-		for (var i = selection.length - 1; i >= 0; --i) {
+		for (var i = selection.length-1; i >= 0; --i) {
 			if (!inPhalanx(selection[i][0], selection[i][1])) {
 				correct = false;
 			}
 		}
-		if (selection.length != phalanx.length) { // make sure there are no extras
+		if (selection.length != pieceMan["phalanx"].length) { // make sure there are no extras
 			correct = false;
 		}
 	}
@@ -83,7 +83,7 @@ function checkTutorialMove() {
 		var nextStep = gameMan.tutorialStep + 1;
 		if (tutorials[nextStep]) {
 			var pieces = tutorials[nextStep].pieces;
-			for (var i = pieces.length - 1; i >= 0; --i) {
+			for (var i = pieces.length-1; i >= 0; --i) {
 				var p = pieces[i];
 				if (grid[p[1]][p[2]].rot != p[3] || grid[p[1]][p[2]].player != p[0]) {
 					correct = false;
@@ -109,7 +109,7 @@ function checkTutorialSelection() {
 			nextTutorialStep();
 		}
 		else {
-			phalanx.length = 0;
+			pieceMan["phalanx"].length = 0;
 		}
 		break;
 	case 29:
@@ -120,7 +120,7 @@ function checkTutorialSelection() {
 			nextTutorialStep();
 		}
 		else {
-			phalanx.length = 0;
+			pieceMan["phalanx"].length = 0;
 			togglePhalanxPiece(10, 14);
 		}
 		break;
@@ -132,7 +132,7 @@ function checkTutorialSelection() {
 			nextTutorialStep();
 		}
 		else {
-			phalanx.length = 0;
+			pieceMan["phalanx"].length = 0;
 			togglePhalanxPiece(10, 14);
 			togglePhalanxPiece(11, 14);
 		}

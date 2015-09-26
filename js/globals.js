@@ -1,6 +1,6 @@
 "use strict";
 
-var tvCanvas, gpCanvas, muralCanvas, grid, images={}, sounds={}, scenes={}, states=[], phalanx=[], murals=[];
+var tvCanvas, gpCanvas, muralCanvas, grid, images={}, sounds={}, scenes={}, states=[], murals=[];
 
 var eventMan = [[],[],[],[]];
 
@@ -53,6 +53,7 @@ var animMan = {
 
 var pieceMan = {
 	"routed":[],
+	"phalanx":[],
 	"animPhalanx":[]
 }
 

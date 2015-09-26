@@ -69,8 +69,8 @@ function mouseDown(event) {
 			else if (gameMan.screen == "board" && gameMan.winner < 0 && !gameMan.ais[gameMan.player]) {
 				getRowCol(scene);
 				getPiece(inputMan.row, inputMan.col);
-				if (phalanx.length > 0) {
-					setRallyHighlights(phalanx[0].row, phalanx[0].col);
+				if (pieceMan["phalanx"].length > 0) {
+					setRallyHighlights(pieceMan["phalanx"][0].row, pieceMan["phalanx"][0].col);
 				}
 
 				if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && (gameMan.tutorialStep < 0 || !tutorials[gameMan.tutorialStep].input)) {
@@ -85,7 +85,7 @@ function mouseDown(event) {
 					}
 				} else {
 					gameMan.selection = false;	// back to normal selection if you deselect pieces
-					phalanx.length = 0;
+					pieceMan["phalanx"].length = 0;
 				}
 			}
 
@@ -461,7 +461,7 @@ function mouseUp(event) {
 				else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol
 				&& grid[gameMan.pRow][gameMan.pCol].rot == gameMan.pRot) {	// one-click selection
 				 	if (!gameMan.selection) {
-				 		phalanx.length = 0;
+				 		pieceMan["phalanx"].length = 0;
 				 	}
 				 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
 				}
@@ -477,8 +477,8 @@ function mouseUp(event) {
 					checkTutorialMove();
 				}
 
-				if (phalanx.length > 0 && grid[phalanx[0].row][phalanx[0].col].kind == 3) {
-					phalanx.length = 0;
+				if (pieceMan["phalanx"].length > 0 && grid[pieceMan["phalanx"][0].row][pieceMan["phalanx"][0].col].kind == 3) {
+					pieceMan["phalanx"].length = 0;
 				}
 
 				playerAction();

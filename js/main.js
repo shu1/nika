@@ -740,18 +740,18 @@ function drawRules(context, scene) {
 }
 
 function setRings() {
-	for (var i = phalanx.length-1; i >= 0; --i) {
-		grid[phalanx[i].row][phalanx[i].col].ring = 0;
+	for (var i = pieceMan["phalanx"].length-1; i >= 0; --i) {
+		grid[pieceMan["phalanx"][i].row][pieceMan["phalanx"][i].col].ring = 0;
 	}
 
 	if (inputMan.touchID >= 0) {
-		if (phalanx.length > 1) {
+		if (pieceMan["phalanx"].length > 1) {
 			if (checkMovePhalanx(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col)) {
 				var dRow = inputMan.row - gameMan.pRow;
 				var dCol = inputMan.col - gameMan.pCol;
 
-				for (var i = phalanx.length-1; i >= 0; --i) {
-					grid[phalanx[i].row + dRow][phalanx[i].col + dCol].ring = 1;
+				for (var i = pieceMan["phalanx"].length-1; i >= 0; --i) {
+					grid[pieceMan["phalanx"][i].row + dRow][pieceMan["phalanx"][i].col + dCol].ring = 1;
 				}
 			}
 		}

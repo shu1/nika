@@ -114,8 +114,8 @@ function clearRallyHighlights() {
 
 function newGame() {
 	generateGrid(newGrid);
-	states = [];
-	phalanx = [];
+	states.length = 0;
+	pieceMan["phalanx"].length = 0;
 	gameMan.winner = -1;
 	gameMan.player = 0;
 	gameMan.actions = 2;
@@ -129,7 +129,7 @@ function newGame() {
 
 function resumeGame(gameSave) {
 	states = gameSave.states;
-	phalanx = [];
+	pieceMan["phalanx"].length = 0;
 	gameMan.turnTimer = 0;
 	gameMan.tutorialStep = -1;
 	gameMan.ais = gameSave.ais;
@@ -211,7 +211,7 @@ function popState() {
 
 function resetState() {
 	if (gameMan.screen == "board") {	// reset game actions for zoom
-		phalanx.length = 0;
+		pieceMan["phalanx"].length = 0;
 		revertState();
 	}
 }
@@ -240,9 +240,9 @@ function loadState(state) {
 	// Create phalanxes for some tutorial steps
 	if (state.phalanx) {
 		// Deep copy so changes to phalanx don't affect tutorial states
-		phalanx = [];
-		for(var i = state.phalanx.length - 1; i >= 0; --i) {
-			phalanx.push({
+		pieceMan["phalanx"].length = 0;
+		for(var i = state.phalanx.length-1; i >= 0; --i) {
+			pieceMan["phalanx"].push({
 				row: state.phalanx[i].row,
 				col: state.phalanx[i].col
 			});
