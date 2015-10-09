@@ -2,7 +2,7 @@
 
 // TODO should refactor so this isn't necessary in AI code
 function resetPieces(row, col) {
-		phalanx.length = 0;
+		phalanx = [];
 		phalanx.push({row:row, col:col});
 		gameMan.pRot = grid[row][col].rot;	// Only single pieces
 //		getPiece(row, col);					// Only phalanxes

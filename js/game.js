@@ -211,7 +211,7 @@ function popState() {
 
 function resetState() {
 	if (gameMan.screen == "board") {	// reset game actions for zoom
-		phalanx.length = 0;
+		phalanx = [];
 		revertState();
 	}
 }

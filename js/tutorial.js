@@ -109,7 +109,7 @@ function checkTutorialSelection() {
 			nextTutorialStep();
 		}
 		else {
-			phalanx.length = 0;
+			phalanx = [];
 		}
 		break;
 	case 29:
@@ -120,7 +120,7 @@ function checkTutorialSelection() {
 			nextTutorialStep();
 		}
 		else {
-			phalanx.length = 0;
+			phalanx = [];
 			togglePhalanxPiece(10, 14);
 		}
 		break;
@@ -132,7 +132,7 @@ function checkTutorialSelection() {
 			nextTutorialStep();
 		}
 		else {
-			phalanx.length = 0;
+			phalanx = [];
 			togglePhalanxPiece(10, 14);
 			togglePhalanxPiece(11, 14);
 		}

@@ -43,7 +43,7 @@ function getPiece(row, col) {
 			gameMan.selection = true;
 		}
 		else {
-			phalanx.length = 0;
+			phalanx = [];
 			getPhalanx(row, col);
 			clearChecked();
 		}
@@ -94,7 +94,7 @@ function movePiece(pRow, pCol, row, col, pretend) {
 					}
 					animMan["pieceSlide"] = 1;
 					animMan["pieceSlideRot"] = rot;
-					phalanx.length = 0;
+					phalanx = [];
 					moved = true;
 				}
 			}
@@ -112,7 +112,7 @@ function movePiece(pRow, pCol, row, col, pretend) {
 				animMan["pieceSlide"] = 1;
 				animMan["pieceSlideRot"] = rot;
 				console.log(rot);
-				phalanx.length = 0;
+				phalanx = [];
 				moved = true;	// return if a piece was moved so it can be redrawn
 			}
 
@@ -131,7 +131,7 @@ function movePiece(pRow, pCol, row, col, pretend) {
 			}
 
 			if (!pretend) {
-				phalanx.length = 0;
+				phalanx = [];
 				moved = true;
 			}
 		}
@@ -576,7 +576,7 @@ function togglePhalanxPiece(row, col) {
 			}
 		}
 
-		phalanx.length = 0;
+		phalanx = [];
 		phalanx.push({row:row, col:col});
 	}
 }

@@ -85,7 +85,7 @@ function mouseDown(event) {
 					}
 				} else {
 					gameMan.selection = false;	// back to normal selection if you deselect pieces
-					phalanx.length = 0;
+					phalanx = [];
 				}
 			}
 
@@ -461,7 +461,7 @@ function mouseUp(event) {
 				else if (gameMan.pRow >= 0 && gameMan.pCol >= 0 && inputMan.row == gameMan.pRow && inputMan.col == gameMan.pCol
 				&& grid[gameMan.pRow][gameMan.pCol].rot == gameMan.pRot) {	// one-click selection
 				 	if (!gameMan.selection) {
-				 		phalanx.length = 0;
+				 		phalanx = [];
 				 	}
 				 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
 				}
@@ -478,7 +478,7 @@ function mouseUp(event) {
 				}
 
 				if (phalanx.length > 0 && grid[phalanx[0].row][phalanx[0].col].kind == 3) {
-					phalanx.length = 0;
+					phalanx = [];
 				}
 
 				playerAction();
