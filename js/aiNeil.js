@@ -96,6 +96,27 @@ function aiNeil(aiNum){
 	for(var i = 0; i < 6; ++i) {
 		if(pieces[i].kind == 3) {
 			// Get rally spots
+			for(var j = rallySpots.length - 1; j >= 0; --j) {
+				phalanx = [pieces[i]];
+				var move = getPieceArguments({
+					row: pieces[i].row,
+					col: pieces[i].col
+				}, {
+					row: rallySpots[j].row,
+					col: rallySpots[j].col
+				});
+				movePiece(move.pRow, move.pCol, move.tRow, move.tCol, true);
+				pieces = getAIPieces();
+				var temp = copyState(defaultState);
+				getValue(temp, pieces);
+				if(temp.value > bestState.value) {
+					bestState = temp;
+					bestState.move = move;
+					bestState.phalanx = phalanx;
+				}
+				setGrid(defGrid,grid);
+				pieces = getAIPieces();
+			}
 		}
 		else {
 			// Do normal move check, which means rotation, then movement.
