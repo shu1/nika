@@ -591,16 +591,11 @@ function drawMural(context, dTime) {
 		murals[3].update(tick);
 		murals[3].draw();
 	}
-	else {	// draw dialog
+	else if (gameMan.tutorialStep >= 0) {	// draw dialog
 		context.fillStyle = "#221E1F";
 		context.fillRect(drawMan.dialogX, 0, drawMan.muralWidth - drawMan.dialogX, drawMan.muralHeight);
 
-		var lines;
-		if (gameMan.tutorialStep >= 0) {
-			lines = tutorials[gameMan.tutorialStep].text;
-		} else {
-			lines = [getWinnerText(gameMan.winner)];
-		}
+		var lines = tutorials[gameMan.tutorialStep].text;
 
 		var spacing = 36, topPadding = 26, bottomPadding = 14, nextX = 672, font = "px Georgia";
 		// TODO either do tutstep > 0 or see if this is required at all
@@ -618,6 +613,9 @@ function drawMural(context, dTime) {
 		for (var i = lines.length-1; i >= 0; --i) {
 			context.fillText(lines[i], drawMan.dialogX+8, topPadding + spacing * i);
 		}
+	}
+	else if (gameMan.winner >= 0) {
+		context.drawImage(images["victory" + (gameMan.winner % 2)], 0, 0);
 	}
 }
 
@@ -689,6 +687,11 @@ function drawContext(context, tv) {
 				context.globalAlpha = (Math.sin(animMan["tutorialTheta"] % (Math.PI*2))+1)/2;
 				context.drawImage(images["tutorialButton2"], drawMan.tutorialNextX, drawMan.tutorialButtonY);
 				context.globalAlpha = 1;
+			}
+
+			if (gameMan.winner >= 0 && gameMan.tutorialStep < 0) {
+				context.drawImage(images["victoryMenuButton"], drawMan.tutorialPrevX, drawMan.tutorialButtonY);
+				context.drawImage(images["victoryRematchButton"], drawMan.tutorialNextX, drawMan.tutorialButtonY);
 			}
 
 			setRings();	// TODO don't do this every frame?
