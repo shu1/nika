@@ -53,6 +53,11 @@ window.onload = function() {
 	loadImage("menuCredit", 1);
 	loadImage("ruleArrow", 1);
 	loadImage("ruleArrowActive", 1);
+	loadImage("victory", 1);
+	loadImage("victoryMenuButton");
+	loadImage("victoryMenuButtonActive");
+	loadImage("victoryRematchButton");
+	loadImage("victoryRematchButtonActive");
 
 	for (var i = 0; i < rulePages; ++i) {	// TODO remove rulePages from html
 		loadImage("rule" + i, 1);
