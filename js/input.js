@@ -420,11 +420,16 @@ function mouseUp(event) {
 			else if (gameMan.screen == "board") {
 				var margin = 11;
 
-				if (gameMan.winner >= 0) {
-					if (x > drawMan.muralX && x < drawMan.muralX + drawMan.muralWidth
-					&& y > drawMan.muralY && y < drawMan.muralY + drawMan.muralHeight) {
+				if (gameMan.winner >= 0 && gameMan.tutorialStep < 0) {
+					if (x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth
+					&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
 						localStorage.removeItem("NikaGameSave");
 						fadeScreen("title");
+						fadeMusic("menu");
+					}
+					else if (x > drawMan.tutorialNextX && x < drawMan.tutorialNextX + drawMan.tutorialButtonWidth
+						&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
+						fadeScreen("setup");
 						fadeMusic("menu");
 					}
 				}
