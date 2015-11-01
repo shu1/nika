@@ -415,25 +415,10 @@ function menuTitle(index) {
 	animMan["activeFade"] = -1;
 }
 
-function menuSetup(index) {
-	if (index >= 0 && index < 4) {
-		gameMan.ais[index]++;
-		if (gameMan.ais[index] > 2) {
-			gameMan.ais[index] = 0;
-		}
-	}
-	else if (index == 4) {
-		gameMan.timerIndex++;
-		if (gameMan.timerIndex > 3) {
-			gameMan.timerIndex = 0;
-		}
-		setupTimer();
-	}
-	else if (index == 5) {
-		newGame();
-		fadeScreen("board");
-		fadeMusic("music");
-	}
+function menuSetup() {
+	newGame();
+	fadeScreen("board");
+	fadeMusic("music");
 }
 
 function menuRules(index) {

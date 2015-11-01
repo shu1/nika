@@ -408,25 +408,8 @@ function mouseUp(event) {
 					}
 				}
 				else if (gameMan.screen == "setup") {
-					if (y > 220 && y < 610) {
-						if (x > 20 & x < 240) {
-							menuSetup(0);
-						}
-						else if (x > 320 & x < 540) {
-							menuSetup(2);
-						}
-						else if (x > 1000 & x < 1220) {
-							menuSetup(1);
-						}
-						else if (x > 1280 & x < 1500) {
-							menuSetup(3);
-						}
-					}
-					else if (x > 810 && x < 1050 && y > 650 && y < 775) {
-						menuSetup(4);
-					}
-					else if (x > 480 && x < 1050 && y > 785 && y < 900) {
-						menuSetup(5);
+					if (x > 480 && x < 1050 && y > 790 && y < 960) {
+						menuSetup();
 					}
 				}
 			}

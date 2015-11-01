@@ -645,11 +645,6 @@ function drawContext(context, tv) {
 	case "setup":
 		context.drawImage(images["menuSetup0"], x, y);
 		context.drawImage(images["menuSetup1"], x+512, y);
-		context.drawImage(images["menuSetupAI" + gameMan.ais[0]], x+50, y+520);
-		context.drawImage(images["menuSetupAI" + gameMan.ais[2]], x+340, y+520);
-		context.drawImage(images["menuSetupAI" + gameMan.ais[1]], x+1020, y+520);
-		context.drawImage(images["menuSetupAI" + gameMan.ais[3]], x+1310, y+520);
-		context.drawImage(images["menuSetupTimer" + gameMan.timerIndex], x+840, y+685);
 		break;
 	case "tutorial":
 		context.drawImage(images["menuTutorial0"], x, y);
