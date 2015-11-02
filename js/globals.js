@@ -80,7 +80,7 @@ var gameMan = {
 var menuMan = {
 	"popup":0,
 	"title":0,
-	"setup":5,
+	"setup":0,
 	"option":0,
 	"tutorial":0
 }
