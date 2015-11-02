@@ -620,7 +620,7 @@ var tutorials = [{
 		[10,14]
 	]
 },{
-	text:["Next, highlight this piece..."],
+	text:["Next, tap this piece..."],
 	input:false,
 	player:0,
 	actions:2,
