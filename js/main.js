@@ -73,7 +73,8 @@ window.onload = function() {
 	loadAudio("rotate",	"rotate");
 	loadAudio("push",	"mural_push");
 	loadAudio("rout",	"mural_rout");
-	loadAudio("rally",	"mural_rally_alt");
+	loadAudio("rally",	"mural_rally");
+	loadAudio("ui",	"ui");
 	loadAudio("music",	"nika_main");
 	loadAudio("menu",	"nika_menu");
 

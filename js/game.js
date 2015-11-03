@@ -335,6 +335,7 @@ function getPriorityEvent(events) {
 function playSound(event) {
 	if (sounds[event]) {
 		sounds[event].volume = Math.pow(soundMan.sound, 2);
+		sounds[event].currentTime = 0;
 		sounds[event].play();
 	}
 }

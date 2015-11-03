@@ -405,6 +405,7 @@ function mouseUp(event) {
 		}
 		else if (inputMan.drag == "button") {
 			menuButton(menuMan["button"]);
+			playSound("ui");
 		}
 		else if (inputMan.drag == "popup") {
 			var scene = scenes["hud"];
@@ -412,6 +413,7 @@ function mouseUp(event) {
 			var y = inputMan.y - (gpCanvas.height - scene.popupHeight)/2;
 			if (x > 0 && x < scene.popupWidth && y > 0 && y < scene.popupHeight) {
 				menuPopup(menuMan["popup"]);
+				playSound("ui");
 			}
 		}
 		else {
@@ -427,17 +429,20 @@ function mouseUp(event) {
 					y -= 282;
 					if (x > 128 && x < 528 && y > 0 && y < drawMan.activeHeight*6) {
 						menuTitle(menuMan["title"]);
+						playSound("ui");
 					}
 				}
 				else if (gameMan.screen == "tutorial") {
 					y -= 190;
 					if (x > 285 && x < 1245 && y > 0 && y < 800) {
 						menuTutorial(Math.floor(y / 200));
+						playSound("ui");
 					}
 				}
 				else if (gameMan.screen == "setup") {
 					if (x > 480 && x < 1050 && y > 790 && y < 960) {
 						menuSetup();
+						playSound("ui");
 					}
 				}
 			}
@@ -464,11 +469,13 @@ function mouseUp(event) {
 				else if (gameMan.tutorialStep >= 0 && x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth
 				&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
 					prevTutorialPart();
+					playSound("ui");
 				}
 				else if (gameMan.tutorialStep >= 0 && (tutorials[gameMan.tutorialStep].input || gameMan.debug)) {
 					if (x > drawMan.tutorialNextX && x < drawMan.tutorialNextX + drawMan.tutorialButtonWidth
 					&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
 						nextTutorialStep();
+						playSound("ui");
 					}
 					else {
 						animMan["tutorialFlash"] = 1.5;
@@ -480,6 +487,7 @@ function mouseUp(event) {
 				 		phalanx.length = 0;
 				 	}
 				 	togglePhalanxPiece(gameMan.pRow, gameMan.pCol);
+					playSound("ui");
 				}
 				else if (!gameMan.ais[gameMan.player]) {
 					movePiece(gameMan.pRow, gameMan.pCol, inputMan.row, inputMan.col);
