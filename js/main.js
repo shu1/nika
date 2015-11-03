@@ -75,6 +75,7 @@ window.onload = function() {
 	loadAudio("rout",	"mural_rout");
 	loadAudio("rally",	"mural_rally");
 	loadAudio("ui",	"ui");
+	loadAudio("victory",	"victory");
 	loadAudio("music",	"nika_main");
 	loadAudio("menu",	"nika_menu");
 

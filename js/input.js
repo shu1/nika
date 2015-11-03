@@ -448,6 +448,9 @@ function mouseUp(event) {
 			}
 			else if (gameMan.screen == "rules") {
 				menuRules(menuMan["rules"]);
+				if (menuMan["rules"] >= 0) {
+					playSound("ui");
+				}
 				menuMan["rules"] = -1;
 			}
 			else if (gameMan.screen == "board") {
@@ -457,11 +460,13 @@ function mouseUp(event) {
 					if (x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth
 					&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
 						localStorage.removeItem("NikaGameSave");
+						playSound("ui");
 						fadeScreen("title");
 						fadeMusic("menu");
 					}
 					else if (x > drawMan.tutorialNextX && x < drawMan.tutorialNextX + drawMan.tutorialButtonWidth
 						&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
+						playSound("ui");
 						fadeScreen("setup");
 						fadeMusic("menu");
 					}
@@ -604,6 +609,7 @@ function keyDown(event) {
 		hudMan.inputText = "Menu";
 		if (gameMan.scene == "board") {
 			menuButton(0);
+			playSound("ui");
 		}
 		break;
 	case 13:	// enter
@@ -611,15 +617,19 @@ function keyDown(event) {
 		hudMan.inputText = "Enter";
 		if (gameMan.screen == "popup" && menuMan["popup"] < 4) {
 			menuPopup(menuMan["popup"]);
+			playSound("ui");
 		}
 		else if (gameMan.screen == "title" && menuMan["title"] < 6) {
 			menuTitle(menuMan["title"]);
+			playSound("ui");
 		}
 		else if (gameMan.screen == "setup" && menuMan["setup"] < 6) {
 			menuSetup(menuMan["setup"]);
+			playSound("ui");
 		}
 		else if (gameMan.screen == "tutorial" && menuMan["tutorial"] < 4) {
 			menuTutorial(menuMan["tutorial"]);
+			playSound("ui");
 		}
 		break;
 	case 27:	// escape
@@ -628,9 +638,11 @@ function keyDown(event) {
 		hudMan.inputText = "Back";
 		if (gameMan.tutorialStep >= 0) {
 			endTutorial();
+			playSound("ui");
 		}
 		else if (gameMan.screen != "board") {
 			menuButton(0);
+			playSound("ui");
 		}
 		break;
 	case 37:	// left
@@ -731,11 +743,13 @@ function keyPrev() {
 		var scene = scenes[gameMan.scene];
 		if (scene.scale == scene.minScale) {	// allow panning if zoomed in
 			menuRules(0);
+			playSound("ui");
 			return true;
 		}
 	}
 	else if (gameMan.tutorialStep > 0) {
 		prevTutorialPart();
+		playSound("ui");
 		return true;
 	}
 	return gameMan.screen == "popup";	// don't pan during popup
@@ -774,12 +788,14 @@ function keyNext() {
 		var scene = scenes[gameMan.scene];
 		if (scene.scale == scene.minScale) {	// allow panning if zoomed in
 			menuRules(1);
+			playSound("ui");
 			return true;
 		}
 	}
 	else if (gameMan.screen == "board" && gameMan.tutorialStep >= 0) {
 		if (tutorials[gameMan.tutorialStep].input) {
 			nextTutorialStep();
+			playSound("ui");
 		}
 		return true;
 	}

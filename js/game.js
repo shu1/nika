@@ -299,6 +299,9 @@ function checkWin() {
 		for (var col = 0; col < 21; ++col) {
 			if (grid[row][col].kind == 1 && grid[row][col].player >= 0 && grid[row][col].player != grid[row][col].city
 			 && gameMan.tutorialStep < 0) {
+				if (gameMan.winner != grid[row][col].player) {
+					playSound("victory");
+				}
 				gameMan.winner = grid[row][col].player;
 				murals[gameMan.winner].setAnim("victory");
 				murals[getPartner(gameMan.winner)].setAnim("victory");
