@@ -179,7 +179,7 @@ function handleHud(down) {
 	if (gameMan.screen == "popup") {
 		if (x > 0 && x < scene.popupWidth && y > 0 && y < scene.popupHeight) {
 			var i = Math.floor(y / (scene.popupHeight/4));
-			if (menuMan["popup"] != i || !animMan["activeAlpha"]) {	// newly clicking within popup
+			if (menuMan["popup"] != i || !animMan["activeAlpha"]) {	// newly selected button
 				menuMan["popup"] = i;
 				animMan["activeAlpha"] = 0;
 				animMan["activeFade"] = 1;
@@ -242,6 +242,22 @@ function handleScreen(scene, x, y) {
 				animMan["screenSlide"] = 1;
 			}
 			return true;
+		}
+	}
+	else if (gameMan.screen == "tutorial") {
+		x -= (scene.width - drawMan.screenWidth)/2;
+		y -= (scene.height - drawMan.screenHeight)/2 + 192;	// offset to top of menu
+		if (x > 285 && x < 1245 && y > 0 && y < 800) {
+			var i = Math.floor(y / 200);
+			if (menuMan["tutorial"] != i || !animMan["activeAlpha"]) {	// newly selected button
+				menuMan["tutorial"] = i;
+				animMan["activeAlpha"] = 0;
+				animMan["activeFade"] = 1;
+				inputMan.drag = "tutorial";
+			}
+			return true;
+		} else {
+			animMan["activeFade"] = -1;
 		}
 	}
 
@@ -435,7 +451,7 @@ function mouseUp(event) {
 				else if (gameMan.screen == "tutorial") {
 					y -= 190;
 					if (x > 285 && x < 1245 && y > 0 && y < 800) {
-						menuTutorial(Math.floor(y / 200));
+						menuTutorial(menuMan["tutorial"]);
 						playSound("ui");
 					}
 				}

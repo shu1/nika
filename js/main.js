@@ -48,6 +48,7 @@ window.onload = function() {
 	loadImage("menuSetupAI", 2);
 	loadImage("menuSetupTimer", 3);
 	loadImage("menuTutorial", 1);
+	loadImage("menuTutorialActive");
 	loadImage("menuOption", 1);
 	loadImage("menuOptionSlider");
 	loadImage("menuCredit", 1);
@@ -431,7 +432,7 @@ function updateAnims(dTime) {
 		if (gameMan.screen == "title") {
 			alpha(100, 1);
 		}
-		else if (gameMan.screen == "popup") {
+		else if (gameMan.screen == "tutorial" || gameMan.screen == "popup") {
 			alpha(250, 0);
 		}
 	}
@@ -654,6 +655,10 @@ function drawContext(context, tv) {
 	case "tutorial":
 		context.drawImage(images["menuTutorial0"], x, y);
 		context.drawImage(images["menuTutorial1"], x+512, y);
+		if (animMan["activeAlpha"] > 0) {
+			context.globalAlpha = animMan["activeAlpha"];
+			context.drawImage(images["menuTutorialActive"], x+335, y+216 + 200*menuMan["tutorial"]);
+		}
 		break;
 	case "option":
 		context.drawImage(images["menuOption0"], x, y);
@@ -973,7 +978,7 @@ function drawHud(canvas, context, tv) {
 		context.fillRect(0, 0, canvas.width, canvas.height);	// TODO do this before if, do fade correctly
 		context.drawImage(images["menuPopup"], x, y, scene.popupWidth, scene.popupHeight);
 
-		if (inputMan.drag == "popup" && animMan["activeAlpha"] >= 0) {
+		if (inputMan.drag == "popup" && animMan["activeAlpha"] > 0) {
 			context.fillStyle = "rgba(224,217,179," + 0.5*animMan["activeAlpha"] + ")";
 			context.fillRect(x + 10*scene.scale, y + (9 + 124 * menuMan["popup"]) * scene.scale, 1004*scene.scale, 122*scene.scale);
 		}
