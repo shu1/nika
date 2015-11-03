@@ -690,8 +690,10 @@ function drawContext(context, tv) {
 			}
 
 			if (gameMan.winner >= 0 && gameMan.tutorialStep < 0) {
-				context.drawImage(images["victoryMenuButton"], drawMan.tutorialPrevX, drawMan.tutorialButtonY);
-				context.drawImage(images["victoryRematchButton"], drawMan.tutorialNextX, drawMan.tutorialButtonY);
+				var menuSuffix = inputMan.drag == "victoryMenu" ? "Active" : "";
+				var rematchSuffix = inputMan.drag == "victoryRematch" ? "Active" : "";
+				context.drawImage(images["victoryMenuButton" + menuSuffix], drawMan.tutorialPrevX, drawMan.tutorialButtonY);
+				context.drawImage(images["victoryRematchButton" + rematchSuffix], drawMan.tutorialNextX, drawMan.tutorialButtonY);
 			}
 
 			setRings();	// TODO don't do this every frame?

@@ -66,6 +66,19 @@ function mouseDown(event) {
 					handled = true;
 				}
 			}
+			else if (gameMan.screen == "board" && gameMan.winner >= 0 && gameMan.tutorialStep < 0) {
+				var margin = 11;
+				if (x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth
+				&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
+					inputMan.drag = "victoryMenu";
+					handled = true;
+				}
+				else if (x > drawMan.tutorialNextX && x < drawMan.tutorialNextX + drawMan.tutorialButtonWidth
+					&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
+					inputMan.drag = "victoryRematch";
+					handled = true;
+				}
+			}
 			else if (gameMan.screen == "board" && gameMan.winner < 0 && !gameMan.ais[gameMan.player]) {
 				getRowCol(scene);
 				getPiece(inputMan.row, inputMan.col);
@@ -274,6 +287,21 @@ function mouseMove(event) {
 				else if (inputMan.drag == "sound") {
 					soundMan.sound = Math.max(0, Math.min(1, Math.round(x / 12.1) / 100));
 					handled = true;
+				}
+			}
+			if (gameMan.screen == "board" && gameMan.winner >= 0 && gameMan.tutorialStep < 0) {
+				var margin = 11;
+				if (x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth
+				&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
+					inputMan.drag = "victoryMenu";
+					handled = true;
+				}
+				else if (x > drawMan.tutorialNextX && x < drawMan.tutorialNextX + drawMan.tutorialButtonWidth
+					&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
+					inputMan.drag = "victoryRematch";
+					handled = true;
+				} else {
+					inputMan.drag = "";
 				}
 			}
 			else if (gameMan.screen == "board" && gameMan.winner < 0) {
