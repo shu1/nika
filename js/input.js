@@ -369,6 +369,11 @@ function mouseMove(event) {
 						resetRotation();
 						inputMan.row = gameMan.pRow;
 						inputMan.col = gameMan.pCol;
+
+						if (inputMan.rot != gameMan.pRot) {	// revert rotation animation
+							inputMan.rot = gameMan.pRot;
+							animMan["pieceRot"] = 1;
+						}
 					}
 					handled = true;
 					preventPan = true;
