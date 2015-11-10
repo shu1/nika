@@ -966,7 +966,7 @@ function drawHud(canvas, context, tv) {
 		context.fillRect(0, 0, canvas.width, scene.hudHeight);
 		hudMan.drawText = canvas.width + "x" + canvas.height + " " + scenes[tv + gameMan.scene].scale.toFixed(4) + "x";
 		context.fillStyle = "white";
-		context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 138, scene.hudFont);
+		context.fillText(hudMan.fpsText + "  |  " + hudMan.drawText + "  |  " + hudMan.inputText + "  |  " + hudMan.pageText, 0, scene.hudFont);
 	}
 
 	if (gameMan.screen == "popup") {
