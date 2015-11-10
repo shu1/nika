@@ -381,9 +381,11 @@ function setIdleAnimation(player) {
 }
 
 function menuTitle(index) {
+	var handled = false;
 	switch (index) {
 	case 0:
 		fadeScreen("setup");
+		handled = true;
 		break;
 	case 1:
 		var gameSave;
@@ -400,82 +402,118 @@ function menuTitle(index) {
 		} else {
 			fadeScreen("setup");
 		}
+		handled = true;
 		break;
 	case 2:
 		fadeScreen("tutorial");
+		handled = true;
 		break;
 	case 3:
 		fadeScreen("rules");
+		handled = true;
 		break;
 	case 4:
 		fadeScreen("option");
+		handled = true;
 		break;
 	case 5:
 		fadeScreen("credit");
+		handled = true;
 		break;
 	}
 	animMan["activeFade"] = -1;
+
+	if (handled) {
+		playSound("ui");
+	}
 }
 
 function menuSetup() {
 	newGame();
+	playSound("ui");
 	fadeScreen("board");
 	fadeMusic("music");
 }
 
 function menuRules(index) {
+	var handled = false;
 	switch (index) {
 	case 0:
 		gameMan.rules--;
 		animMan["screenSlide"] = -1;
 		hudMan.pageText = "Rule " + gameMan.rules;
+		handled = true;
 		break;
 	case 1:
 		gameMan.rules++;
 		animMan["screenSlide"] = 1;
 		hudMan.pageText = "Rule " + gameMan.rules;
+		handled = true;
 		break;
+	}
+
+	if(handled) {
+		playSound("ui");
 	}
 }
 
 function menuTutorial(index) {
+	var handled = false;
 	switch(index) {
 	case 0:
 		initTutorial(0);
+		handled = true;
 		break;
 	case 1:
 		initTutorial(7);
+		handled = true;
 		break;
 	case 2:
 		initTutorial(24);
+		handled = true;
 		break;
 	case 3:
 		initTutorial(35);
+		handled = true;
 		break;
 	}
-	fadeScreen("board");
-	fadeMusic("music");
+
+	if(handled) {
+		fadeScreen("board");
+		fadeMusic("music");
+		playSound("ui");
+	}
 }
 
 function menuPopup(index) {
+	var handled = false;
 	switch (index) {
 	case 0:
 		fadeScreen("board");
+		handled = true;
 		break;
 	case 1:
 		fadeScreen("rules");
+		handled = true;
 		break;
 	case 2:
 		fadeScreen("option");
+		handled = true;
 		break;
 	case 3:
 		fadeScreen("title");
 		fadeMusic("menu");
+		handled = true;
 		break;
+	}
+
+	if(handled) {
+		playSound("ui");
 	}
 }
 
 function menuButton(index) {
+	var handled = false;
 	switch (index) {
 	case 0:
 		if (gameMan.screen == "rules") {
@@ -495,15 +533,22 @@ function menuButton(index) {
 			fadeScreen("popup");
 			animMan["screenSlide"] = 1;
 		}
+		handled = true;
 		break;
 	case 1:
 		if(!gameMan.ais[gameMan.player] && gameMan.tutorialStep < 0) {
 			pass();
 		}
+		handled = true;
 		break;
 	case 2:
 		popState();
+		handled = true;
 		break;
+	}
+
+	if(handled) {
+		playSound("ui");
 	}
 }
 

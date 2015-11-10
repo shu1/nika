@@ -20,6 +20,7 @@ function nextTutorialStep() {
 	gameMan.tutorialStep++;
 	hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
 	setupTutorial(gameMan.tutorialStep);
+	playSound("ui");
 }
 
 function endTutorial() {
@@ -36,13 +37,19 @@ function nextTutorialPart() {
 }
 
 function prevTutorialPart() {
+	var handled = false;
 	do {
 		if (gameMan.tutorialStep > 0) {
+			handled = true;
 			gameMan.tutorialStep--;
 			hudMan.pageText = "Tutorial " + gameMan.tutorialStep;
 			setupTutorial(gameMan.tutorialStep);
 		}
 	} while (tutorials[gameMan.tutorialStep].skip)
+
+	if (handled) {
+		playSound("ui");
+	}
 }
 
 function resetActions(player) {
