@@ -447,10 +447,10 @@ function menuTutorial(index) {
 		initTutorial(7);
 		break;
 	case 2:
-		initTutorial(23);
+		initTutorial(24);
 		break;
 	case 3:
-		initTutorial(34);
+		initTutorial(35);
 		break;
 	}
 	fadeScreen("board");

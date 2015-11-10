@@ -873,7 +873,7 @@ function drawPieces(context) {
 }
 
 function drawTiles(context) {
-	if (gameMan.tutorialStep < 0 || (gameMan.tutorialStep > 0 && gameMan.tutorialStep < 7) || gameMan.tutorialStep == 50) {
+	if (gameMan.tutorialStep < 0 || (gameMan.tutorialStep > 0 && gameMan.tutorialStep < 7) || gameMan.tutorialStep == 51) {
 		var theta = drawMan.time/400 % (Math.PI*2);
 		context.globalAlpha = (Math.sin(theta)+1)/2;
 
@@ -893,7 +893,7 @@ function drawTiles(context) {
 			context.drawImage(images["tileGoal"], 176, 752);
 		}
 
-		if (gameMan.player == 2 || gameMan.tutorialStep == 50) {
+		if (gameMan.player == 2 || gameMan.tutorialStep == 51) {
 			context.drawImage(images["tileGoal"], 848,  1136);
 			context.drawImage(images["tileGoal"], 944,  1136);
 			context.drawImage(images["tileGoal"], 1040, 1136);
@@ -945,7 +945,7 @@ function drawTimer(canvas, context) {
 
 function drawTutorialProgress(canvas, context) {
 	context.save();
-	var sectionStarts = [0,7,23,34,52]; // HACK last section start represents end of tutorial, included for edge case handling
+	var sectionStarts = [0,7,24,35,53]; // HACK last section start represents end of tutorial, included for edge case handling
 	var sectionNames = ["Introduction", "Actions and Routing", "Phalanxes", "Pushing"];
 	var i = sectionStarts.length - 2;
 	while (gameMan.tutorialStep < sectionStarts[i] && i > 0) {

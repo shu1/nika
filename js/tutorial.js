@@ -102,7 +102,7 @@ function checkTutorialMove() {
 
 function checkTutorialSelection() {
 	switch(gameMan.tutorialStep) {
-	case 28:
+	case 29:
 		if (inPhalanx(10,14)
 		 && !inPhalanx(9,14)
 		 && !inPhalanx(11,14)) {
@@ -112,7 +112,7 @@ function checkTutorialSelection() {
 			phalanx.length = 0;
 		}
 		break;
-	case 29:
+	case 30:
 		if (inPhalanx(10, 14)
 		 && inPhalanx(11,14)
 		 && !inPhalanx(9,14)
@@ -124,7 +124,7 @@ function checkTutorialSelection() {
 			togglePhalanxPiece(10, 14);
 		}
 		break;
-	case 30:
+	case 31:
 		if (inPhalanx(10,14)
 		 && inPhalanx(11,14)
 		 && inPhalanx(11,15)

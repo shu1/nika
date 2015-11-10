@@ -371,7 +371,21 @@ var tutorials = [{
 		[10,11,1]
 	]
 },{
-	text:["We must protect ourselves! To ROTATE","a piece in place, drag it in the direction","you want it to face, and end your touch","outside the white circle. Rotate this piece","so that it faces the right." ],
+	text:["We must protect ourselves by rotating","to face our enemy!"],
+	input:true,
+	player:0,
+	actions:2,
+	pieces:[
+		[0,9,11,3],
+		[0,10,11,0],
+		[0,13,8,0],
+		[3,9,12,3],
+		[3,9,14,3],
+		[3,11,14,3]
+	],
+	prompts:[]
+},{
+	text:["Drag this piece to the right and release","your touch OUTSIDE the white circle."],
 	input:false,
 	player:0,
 	actions:2,
