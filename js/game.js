@@ -303,8 +303,6 @@ function checkWin() {
 					playSound("victory");
 				}
 				gameMan.winner = grid[row][col].player;
-				murals[gameMan.winner].setAnim("victory");
-				murals[getPartner(gameMan.winner)].setAnim("victory");
 				return;
 			}
 		}
