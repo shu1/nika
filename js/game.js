@@ -398,7 +398,7 @@ function menuTitle(index) {
 		if (gameSave) {
 			resumeGame(gameSave);
 			fadeScreen("board");
-			fadeMusic("music");
+			fadeMusic("musicGame");
 		} else {
 			fadeScreen("setup");
 		}
@@ -430,9 +430,9 @@ function menuTitle(index) {
 
 function menuSetup() {
 	newGame();
-	playSound("ui");
+	playSound("gameStart");
 	fadeScreen("board");
-	fadeMusic("music");
+	fadeMusic("musicGame");
 }
 
 function menuRules(index) {
@@ -480,8 +480,8 @@ function menuTutorial(index) {
 
 	if(handled) {
 		fadeScreen("board");
-		fadeMusic("music");
-		playSound("ui");
+		fadeMusic("musicGame");
+		playSound("gameStart");
 	}
 }
 
@@ -502,7 +502,7 @@ function menuPopup(index) {
 		break;
 	case 3:
 		fadeScreen("title");
-		fadeMusic("menu");
+		fadeMusic("musicMenu");
 		handled = true;
 		break;
 	}
@@ -533,22 +533,18 @@ function menuButton(index) {
 			fadeScreen("popup");
 			animMan["screenSlide"] = 1;
 		}
-		handled = true;
+		playSound("close");
 		break;
 	case 1:
 		if(!gameMan.ais[gameMan.player] && gameMan.tutorialStep < 0) {
 			pass();
+			playSound("pass");
 		}
-		handled = true;
 		break;
 	case 2:
 		popState();
-		handled = true;
+		playSound("undo");
 		break;
-	}
-
-	if(handled) {
-		playSound("ui");
 	}
 }
 

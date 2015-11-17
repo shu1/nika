@@ -70,21 +70,25 @@ window.onload = function() {
 		sounds[name].src = "audio/" + file + "." + type;
 	}
 
+	loadAudio("ui",		"ui");
+	loadAudio("close",	"close");
+	loadAudio("pass",	"pass");
+	loadAudio("undo",	"undo");
 	loadAudio("move",	"move");
 	loadAudio("rotate",	"rotate");
-	loadAudio("push",	"mural_push");
-	loadAudio("rout",	"mural_rout");
-	loadAudio("rally",	"mural_rally");
-	loadAudio("ui",	"ui");
+	loadAudio("push",	"muralPush");
+	loadAudio("rout",	"muralRout");
+	loadAudio("rally",	"muralRally");
 	loadAudio("victory",	"victory");
-	loadAudio("music",	"nika_main");
-	loadAudio("menu",	"nika_menu");
+	loadAudio("gameStart",	"gameStart");
+	loadAudio("musicMenu",	"musicMenu");
+	loadAudio("musicGame",	"musicGame");
 
-	sounds["music"].volume = Math.pow(soundMan.music, 2);
-	sounds["menu"].volume = Math.pow(soundMan.music, 2);
-	sounds["music"].loop = true;
-	sounds["menu"].loop = true;
-	sounds["menu"].play();
+	sounds["musicMenu"].volume = Math.pow(soundMan.music, 2);
+	sounds["musicGame"].volume = Math.pow(soundMan.music, 2);
+	sounds["musicMenu"].loop = true;
+	sounds["musicGame"].loop = true;
+	sounds["musicMenu"].play();
 
 	gpCanvas = document.getElementById("canvas");
 	muralCanvas = document.createElement("canvas");	// buffer

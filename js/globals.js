@@ -10,7 +10,7 @@ var soundMan = {
 }
 
 var musicMan = {
-	current:"menu",
+	current:"musicMenu",
 	next:"",
 	fading:false,
 	alpha:0

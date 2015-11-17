@@ -58,7 +58,7 @@ function mouseDown(event) {
 				var radius = 96;	// bigger radius for fat fingers
 				var musicX = 1210 * soundMan.music, soundX = 1210 * soundMan.sound;
 				if (x > musicX - radius && x < musicX + radius && y > 446 - radius && y < 446 + radius) {
-					inputMan.drag = "music";	// only drag if touch started on button
+					inputMan.drag = "musicGame";	// only drag if touch started on button
 					handled = true;
 				}
 				else if (x > soundX - radius && x < soundX + radius && y > 710 - radius && y < 710 + radius) {
@@ -294,10 +294,10 @@ function mouseMove(event) {
 				x -= (scene.width - drawMan.screenWidth)/2 + 156;	// offset to near x of volume line
 				y -= (scene.height - drawMan.screenHeight)/2;
 
-				if (inputMan.drag == "music") {
+				if (inputMan.drag == "musicGame") {
 					soundMan.music = Math.max(0, Math.min(1, Math.round(x / 12.1) / 100));
-					sounds["music"].volume = Math.pow(soundMan.music, 2);
-					sounds["menu"].volume = Math.pow(soundMan.music, 2);
+					sounds["musicGame"].volume = Math.pow(soundMan.music, 2);
+					sounds["musicMenu"].volume = Math.pow(soundMan.music, 2);
 					handled = true;
 				}
 				else if (inputMan.drag == "sound") {
@@ -471,17 +471,17 @@ function mouseUp(event) {
 
 				if (gameMan.winner >= 0 && gameMan.tutorialStep < 0) {
 					if (x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth
-					&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
+					&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {	// main menu
 						localStorage.removeItem("NikaGameSave");
 						playSound("ui");
 						fadeScreen("title");
-						fadeMusic("menu");
+						fadeMusic("musicMenu");
 					}
 					else if (x > drawMan.tutorialNextX && x < drawMan.tutorialNextX + drawMan.tutorialButtonWidth
-						&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {
+						&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {	// rematch
 						playSound("ui");
 						fadeScreen("setup");
-						fadeMusic("menu");
+						fadeMusic("musicMenu");
 					}
 				}
 				else if (gameMan.tutorialStep >= 0 && x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth
@@ -617,7 +617,7 @@ function keyDown(event) {
 		break;
 	case 65:	// A
 	case 179:	// pause
-		hudMan.inputText = "Menu";
+		hudMan.inputText = "musicMenu";
 		if (gameMan.scene == "board") {
 			menuButton(0);
 		}
@@ -644,7 +644,6 @@ function keyDown(event) {
 		hudMan.inputText = "Back";
 		if (gameMan.tutorialStep >= 0) {
 			endTutorial();
-			playSound("ui");
 		}
 		else if (gameMan.screen != "board") {
 			menuButton(0);
@@ -657,8 +656,8 @@ function keyDown(event) {
 				if (soundMan.music < 0) {
 					soundMan.music = 0;
 				}
-				sounds["music"].volume = Math.pow(soundMan.music, 2);
-				sounds["menu"].volume = Math.pow(soundMan.music, 2);
+				sounds["musicGame"].volume = Math.pow(soundMan.music, 2);
+				sounds["musicMenu"].volume = Math.pow(soundMan.music, 2);
 			}
 			else if (menuMan["option"] == 1 && soundMan.sound > 0) {
 				soundMan.sound -= 0.1;
@@ -688,8 +687,8 @@ function keyDown(event) {
 				if (soundMan.music > 1) {
 					soundMan.music = 1;
 				}
-				sounds["music"].volume = Math.pow(soundMan.music, 2);
-				sounds["menu"].volume = Math.pow(soundMan.music, 2);
+				sounds["musicGame"].volume = Math.pow(soundMan.music, 2);
+				sounds["musicMenu"].volume = Math.pow(soundMan.music, 2);
 			}
 			else if (menuMan["option"] == 1 && soundMan.sound < 1) {
 				soundMan.sound += 0.1;
