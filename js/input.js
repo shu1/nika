@@ -435,6 +435,9 @@ function mouseUp(event) {
 				menuPopup(menuMan["popup"]);
 			}
 		}
+		else if (inputMan.drag == "sound") {
+			playSound("victory");
+		}
 		else {
 			var scene = scenes[gameMan.scene];
 			var x = (inputMan.x - scene.x) / scene.scale;
