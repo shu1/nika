@@ -1,0 +1,97 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+require 'pp' # deleteme
+
+class ManifestGenerator
+  attr_reader :config
+
+  def initialize(config)
+    @config = config
+  end
+
+  def manifests
+    platforms = config.keys.reject do |platform|
+      platform == 'all'
+    end.map do |platform|
+      [platform, manifest_for(platform)]
+    end.to_h
+  end
+
+  def manifest_for(platform)
+    manifest = Hash.new { [] }
+
+    default_files(platform).each do |directory, files|
+      manifest[directory] = manifest[directory].concat(files)
+    end
+
+    custom_files(platform).each do |directory, files|
+      manifest[directory] = manifest[directory].concat(files)
+    end
+
+    manifest
+  end
+
+  def inspect
+    config.each do |platform, files|
+      puts platform
+      js_files = files['js'] || []
+      audio_files = files['audio'] || []
+      image_files = files['images'] || []
+      html_files = files['html'] || []
+    end
+  end
+
+  private
+  def default_files(platform)
+    files = config['all'] || {}
+    sanitize_files(files)
+  end
+
+  def custom_files(platform)
+    files = config[platform] || {}
+    sanitize_files(files)
+  end
+
+  def sanitize_files(files)
+    {
+      'audio' => files['audio']  || [],
+      'images' => files['images'] || [],
+      '.'  => files['html']   || [],
+      'js'    => files['js']     || []
+    }
+  end
+end
+
+build_dir = File.dirname(__FILE__)
+output_dir = File.join(build_dir, 'output')
+root_dir = File.join(build_dir, '..')
+config_path = File.join(build_dir, 'config.yml')
+
+config = YAML::load(File.open(config_path))
+manifests = ManifestGenerator.new(config).manifests
+
+unless Dir.exists?(output_dir)
+  Dir.mkdir(output_dir)
+end
+
+manifests.each do |platform, manifest|
+  platform_dir = File.join(output_dir, platform)
+  if Dir.exists?(platform_dir)
+    `rm -r #{platform_dir}`
+  end
+  `mkdir #{platform_dir}`
+
+  manifest.each do |dir, files|
+    destination_dir = File.join(platform_dir, dir)
+
+    unless Dir.exists?(destination_dir)
+      `mkdir #{destination_dir}`
+    end
+
+    files.each do |file|
+      source_path = File.join(root_dir, file)
+      `cp -r #{source_path} #{destination_dir}`
+    end
+  end
+end

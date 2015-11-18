@@ -1,0 +1,50 @@
+all:
+  images:
+    - images/*
+  js:
+    - js/game.js
+    - js/globals.js
+    - js/input.js
+    - js/main.js
+    - js/muralBlack.js
+    - js/muralBlue.js
+    - js/muralOrange.js
+    - js/muralWhite.js
+    - js/pieces.js
+    - js/spriter.js
+    - js/spriter_draw_2d.js
+    - js/spriter_object.js
+    - js/tutorial.js
+android:
+  audio:
+    - audio/*.ogg
+  html:
+    - android.html
+fire:
+  audio:
+    - audio/*.ogg
+  html:
+    - fire.html
+index:
+  audio:
+    - audio/*.mp3
+  html:
+    - index.html
+ios:
+  audio:
+    - audio/*.mp3
+  html:
+    - ios.html
+wiiu:
+  audio:
+    - audio/*.ogg
+  html:
+    - wiiu.html
+    - wiiutv.html
+win:
+  audio:
+    - audio/*.mp3
+  html:
+    - default.html
+  js:
+    - js/default.js

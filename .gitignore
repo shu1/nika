@@ -8,3 +8,4 @@ sftp-config.json
 .vs
 bin
 bld
+build/output
