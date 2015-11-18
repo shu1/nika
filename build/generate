@@ -1,7 +1,11 @@
 #!/usr/bin/env ruby
 
 require 'yaml'
-require 'pp' # deleteme
+require 'optparse'
+require 'uglifier'
+require 'pry' # deleteme
+
+$verbose = false
 
 class ManifestGenerator
   attr_reader :config
@@ -32,16 +36,6 @@ class ManifestGenerator
     manifest
   end
 
-  def inspect
-    config.each do |platform, files|
-      puts platform
-      js_files = files['js'] || []
-      audio_files = files['audio'] || []
-      image_files = files['images'] || []
-      html_files = files['html'] || []
-    end
-  end
-
   private
   def default_files(platform)
     files = config['all'] || {}
@@ -57,11 +51,24 @@ class ManifestGenerator
     {
       'audio' => files['audio']  || [],
       'images' => files['images'] || [],
-      '.'  => files['html']   || [],
+      'html'  => files['html']   || [],
       'js'    => files['js']     || []
     }
   end
 end
+
+def log(str)
+  return unless $verbose
+  puts str
+end
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: build/generate [options]"
+
+  opts.on("-v", "--verbose", "Run verbosely") do
+    $verbose = true
+  end
+end.parse!
 
 build_dir = File.dirname(__FILE__)
 output_dir = File.join(build_dir, 'output')
@@ -76,22 +83,49 @@ unless Dir.exists?(output_dir)
 end
 
 manifests.each do |platform, manifest|
+  log "----------------"
+  log platform
+  log "----------------"
   platform_dir = File.join(output_dir, platform)
+  audio_dir    = File.join(platform_dir, 'audio')
+  images_dir   = File.join(platform_dir, 'images')
+  js_dir       = File.join(platform_dir, 'js')
+
   if Dir.exists?(platform_dir)
     `rm -r #{platform_dir}`
   end
   `mkdir #{platform_dir}`
+  `mkdir #{audio_dir}`
+  `mkdir #{images_dir}`
+  `mkdir #{js_dir}`
 
-  manifest.each do |dir, files|
-    destination_dir = File.join(platform_dir, dir)
+  log "HTML"
+  manifest['html'].each do |file|
+    log "- #{file}"
+    `cp #{File.join(root_dir, file)} #{platform_dir}`
+  end
 
-    unless Dir.exists?(destination_dir)
-      `mkdir #{destination_dir}`
-    end
+  log "AUDIO"
+  manifest['audio'].each do |file|
+    log "- #{file}"
+    `cp -r #{File.join(root_dir, file)} #{audio_dir}`
+  end
 
-    files.each do |file|
-      source_path = File.join(root_dir, file)
-      `cp -r #{source_path} #{destination_dir}`
-    end
+  log "IMAGES"
+  manifest['images'].each do |file|
+    log "- #{file}"
+    `cp -r #{File.join(root_dir, file)} #{images_dir}`
+  end
+
+  log "JS"
+  manifest['js'].each do |file|
+    log "- #{file}"
+    js_source_path = File.join(root_dir, file)
+    js_source = File.open(js_source_path)
+    ugly_js = Uglifier.compile(js_source.read)
+
+    js_destination_path = File.join(js_dir, File.basename(js_source))
+    `touch #{js_destination_path}`
+    File.write(js_destination_path, ugly_js)
   end
 end
