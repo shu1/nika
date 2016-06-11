@@ -9,3 +9,6 @@ sftp-config.json
 bin
 bld
 build/output
+AppPackages/
+BundleArtifacts/
+_pkginfo.txt
