@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 window.onload = function() {
 	console.log(navigator.userAgent);

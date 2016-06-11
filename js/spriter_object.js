@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (c) 2012 Flyover Games, LLC 
  * Copyright (c) 2013 Zaxuhe
  *  

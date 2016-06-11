@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 function generateGrid(ascii) {
 	grid = new Array(15);

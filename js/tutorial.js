@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 function clearTutorialRings() {
 	for (var row=0; row<15; ++row) {

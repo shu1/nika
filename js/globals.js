@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 var tvCanvas, gpCanvas, muralCanvas, grid, images={}, sounds={}, scenes={}, states=[], phalanx=[], murals=[];
 

@@ -1,4 +1,4 @@
-var muralOrange_data = {
+﻿var muralOrange_data = {
 "spriter_data":{
 "@scml_version":"1.0",
 "@generator":"BrashMonkey Spriter",

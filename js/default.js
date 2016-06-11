@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 var fontSize = 32;
 var screenType = 3;

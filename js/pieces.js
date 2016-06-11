@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 function rallyCell(row, col) {
 	return grid[row][col].kind == 2;

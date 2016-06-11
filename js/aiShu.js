@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 // TODO should refactor so this isn't necessary in AI code
 function resetPieces(row, col) {
