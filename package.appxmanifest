@@ -5,7 +5,7 @@
   <Properties>
     <DisplayName>Nika</DisplayName>
     <PublisherDisplayName>Studio Mercato</PublisherDisplayName>
-    <Logo>StoreLogo.png</Logo>
+    <Logo>assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
@@ -15,10 +15,10 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <uap:VisualElements DisplayName="Nika" Description="Nika by Studio Mercato" BackgroundColor="transparent" Square150x150Logo="Square150x150Logo.png" Square44x44Logo="Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Wide310x150Logo.png" Square310x310Logo="Square310x310Logo.png" ShortName="Nika">
+      <uap:VisualElements DisplayName="Nika" Description="Nika by Studio Mercato" BackgroundColor="transparent" Square150x150Logo="assets\Square150x150Logo.png" Square44x44Logo="assets\Square44x44Logo.png">
+        <uap:DefaultTile ShortName="Nika" Square71x71Logo="assets\Square71x71Logo.png" Wide310x150Logo="assets\Wide310x150Logo.png" Square310x310Logo="assets\Square310x310Logo.png">
         </uap:DefaultTile>
-        <uap:SplashScreen Image="SplashScreen.png" BackgroundColor="#0A3C51" />
+        <uap:SplashScreen Image="assets\SplashScreen.jpg" BackgroundColor="#0A3C51" />
         <uap:InitialRotationPreference>
           <uap:Rotation Preference="landscape" />
           <uap:Rotation Preference="landscapeFlipped" />
