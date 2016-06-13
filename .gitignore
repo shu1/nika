@@ -5,10 +5,10 @@ sftp-config.json
 *.jar
 *.pfx
 *.user
+*.appx
 .vs
 bin
 bld
-build/output
 AppPackages/
 BundleArtifacts/
 _pkginfo.txt
