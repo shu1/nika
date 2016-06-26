@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "nika", "nika.jsproj", "{8188707E-9486-4890-B5F3-8D76125DAB40}"
+Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "Nika", "Nika.jsproj", "{8188707E-9486-4890-B5F3-8D76125DAB40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
