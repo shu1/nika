@@ -9,6 +9,7 @@ sftp-config.json
 .vs
 bin
 bld
-AppPackages/
-BundleArtifacts/
+AppPackages
+BundleArtifacts
+*.StoreAssociation.xml
 _pkginfo.txt
