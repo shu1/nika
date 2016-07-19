@@ -4,13 +4,22 @@ window.onload = function() {
 	console.log(navigator.userAgent);
 	gameMan.debugBuild = typeof debugMan != "undefined";	// HACK if debug.js is included
 
-	try {
-		var soundSave = JSON.parse(localStorage.getItem("NikaSoundSave"));
-		if (soundSave) {
-			soundMan = soundSave;
+	if (chrome.storage) {
+		chrome.storage.local.get("NikaSoundSave", function (result) {
+			if (result.NikaSoundSave) {
+				soundMan = JSON.parse(result.NikaSoundSave);
+			}
+		});
+	}
+	else {
+		try {
+			var soundSave = JSON.parse(localStorage.getItem("NikaSoundSave"));
+			if (soundSave) {
+				soundMan = soundSave;
+			}
+		} catch (e) {
+			console.warn("NikaSoundSave error");
 		}
-	} catch (e) {
-		console.warn("NikaSoundSave error");
 	}
 
 	function loadImage(name, i) {

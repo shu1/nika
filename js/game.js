@@ -257,7 +257,13 @@ function saveGame() {
 		states: states,
 		ais: gameMan.ais
 	}
-	localStorage.setItem("NikaGameSave", JSON.stringify(gameSave));
+
+	if (chrome.storage) {
+		chrome.storage.local.set({"NikaGameSave": JSON.stringify(gameSave)});
+	}
+	else {
+		localStorage.setItem("NikaGameSave", JSON.stringify(gameSave));
+	}
 }
 
 function getCity(player) {
@@ -388,19 +394,32 @@ function menuTitle(index) {
 		handled = true;
 		break;
 	case 1:
-		var gameSave;
-		try {
-			gameSave = JSON.parse(localStorage.getItem("NikaGameSave"));
-		} catch (e) {
-			console.warn("NikaGameSave error");
+		if (chrome.storage) {
+			chrome.storage.local.get("NikaGameSave", function (result) {
+				if (result.NikaGameSave) {
+					resumeGame(JSON.parse(result.NikaGameSave));
+					fadeScreen("board");
+					fadeMusic("musicGame");
+				} else {
+					fadeScreen("setup");
+				}
+			});
 		}
+		else {
+			var gameSave;
+			try {
+				gameSave = JSON.parse(localStorage.getItem("NikaGameSave"));
+			} catch (e) {
+				console.warn("NikaGameSave error");
+			}
 
-		if (gameSave) {
-			resumeGame(gameSave);
-			fadeScreen("board");
-			fadeMusic("musicGame");
-		} else {
-			fadeScreen("setup");
+			if (gameSave) {
+				resumeGame(gameSave);
+				fadeScreen("board");
+				fadeMusic("musicGame");
+			} else {
+				fadeScreen("setup");
+			}
 		}
 		handled = true;
 		break;
@@ -520,7 +539,12 @@ function menuButton(index) {
 			fadeScreen(gameMan.pScreen);
 		}
 		else if (gameMan.screen == "option") {
-			localStorage.setItem("NikaSoundSave", JSON.stringify(soundMan));
+			if (chrome.storage) {
+				chrome.storage.local.set({"NikaSoundSave": JSON.stringify(soundMan)});
+			}
+			else {
+				localStorage.setItem("NikaSoundSave", JSON.stringify(soundMan));
+			}
 			fadeScreen(gameMan.pScreen);
 		}
 		else if (gameMan.screen == "setup" || gameMan.screen == "credit" || gameMan.screen == "tutorial") {

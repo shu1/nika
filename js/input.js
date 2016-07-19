@@ -475,7 +475,12 @@ function mouseUp(event) {
 				if (gameMan.winner >= 0 && gameMan.tutorialStep < 0) {
 					if (x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth
 					&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {	// main menu
-						localStorage.removeItem("NikaGameSave");
+						if (chrome.storage) {
+							chrome.storage.local.remove("NikaGameSave");
+						}
+						else {
+							localStorage.removeItem("NikaGameSave");
+						}
 						playSound("ui");
 						fadeScreen("title");
 						fadeMusic("musicMenu");
