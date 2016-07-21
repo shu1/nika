@@ -7,7 +7,7 @@ window.onload = function() {
 	if (chrome.storage) {
 		chrome.storage.local.get("NikaSoundSave", function (result) {
 			if (result.NikaSoundSave) {
-				soundMan = JSON.parse(result.NikaSoundSave);
+				soundMan = result.NikaSoundSave;
 			}
 		});
 	}
