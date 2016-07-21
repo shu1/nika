@@ -258,7 +258,7 @@ function saveGame() {
 		ais: gameMan.ais
 	}
 
-	if (chrome.storage) {
+	if (window.chrome && chrome.storage) {
 		chrome.storage.sync.set({"NikaGameSave": gameSave});
 	}
 	else {
@@ -394,7 +394,7 @@ function menuTitle(index) {
 		handled = true;
 		break;
 	case 1:
-		if (chrome.storage) {
+		if (window.chrome && chrome.storage) {
 			chrome.storage.sync.get("NikaGameSave", function (result) {
 				if (result.NikaGameSave) {
 					resumeGame(result.NikaGameSave);
@@ -539,7 +539,7 @@ function menuButton(index) {
 			fadeScreen(gameMan.pScreen);
 		}
 		else if (gameMan.screen == "option") {
-			if (chrome.storage) {
+			if (window.chrome && chrome.storage) {
 				chrome.storage.sync.set({"NikaSoundSave": soundMan});
 			}
 			else {

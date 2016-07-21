@@ -4,7 +4,7 @@ window.onload = function() {
 	console.log(navigator.userAgent);
 	gameMan.debugBuild = typeof debugMan != "undefined";	// HACK if debug.js is included
 
-	if (chrome.storage) {
+	if (window.chrome && chrome.storage) {
 		chrome.storage.sync.get("NikaSoundSave", function (result) {
 			if (result.NikaSoundSave) {
 				soundMan = result.NikaSoundSave;
