@@ -259,7 +259,7 @@ function saveGame() {
 	}
 
 	if (chrome.storage) {
-		chrome.storage.local.set({"NikaGameSave": gameSave});
+		chrome.storage.sync.set({"NikaGameSave": gameSave});
 	}
 	else {
 		localStorage.setItem("NikaGameSave", JSON.stringify(gameSave));
@@ -395,7 +395,7 @@ function menuTitle(index) {
 		break;
 	case 1:
 		if (chrome.storage) {
-			chrome.storage.local.get("NikaGameSave", function (result) {
+			chrome.storage.sync.get("NikaGameSave", function (result) {
 				if (result.NikaGameSave) {
 					resumeGame(result.NikaGameSave);
 					fadeScreen("board");
@@ -540,7 +540,7 @@ function menuButton(index) {
 		}
 		else if (gameMan.screen == "option") {
 			if (chrome.storage) {
-				chrome.storage.local.set({"NikaSoundSave": soundMan});
+				chrome.storage.sync.set({"NikaSoundSave": soundMan});
 			}
 			else {
 				localStorage.setItem("NikaSoundSave", JSON.stringify(soundMan));

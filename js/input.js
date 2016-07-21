@@ -476,7 +476,7 @@ function mouseUp(event) {
 					if (x > drawMan.tutorialPrevX && x < drawMan.tutorialPrevX + drawMan.tutorialButtonWidth
 					&& y > drawMan.tutorialButtonY - margin && y < drawMan.tutorialButtonY + drawMan.tutorialButtonHeight + margin) {	// main menu
 						if (chrome.storage) {
-							chrome.storage.local.remove("NikaGameSave");
+							chrome.storage.sync.remove("NikaGameSave");
 						}
 						else {
 							localStorage.removeItem("NikaGameSave");
