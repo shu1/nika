@@ -1,5 +1,5 @@
-Available now, for free!  On [Android](https://play.google.com/store/apps/details?id=com.studiomercato.nika "Google Play"), [Kindle Fire](https://www.amazon.com/Studio-Mercato-Nika/dp/B01JCETYTM "Amazon"), [Windows 8/10](https://www.microsoft.com/store/apps/9wzdncrdlkb5 "Windows"), [Chrome OS](https://chrome.google.com/webstore/detail/nika/nldiglnhpkopnopfhofiddjcfpnlkbci "Chrome"), and [web](http://www.studio-mercato.com/play/nika/ "web")
------
+Available now, for free!  On [Android](https://play.google.com/store/apps/details?id=com.studiomercato.nika "Google Play"), [Kindle Fire](https://www.amazon.com/Studio-Mercato-Nika/dp/B01JCETYTM "Amazon"), [Windows](https://www.microsoft.com/store/apps/9wzdncrdlkb5 "Windows"), [Chromebook](https://chrome.google.com/webstore/detail/nika/nldiglnhpkopnopfhofiddjcfpnlkbci "Chrome"), and [web](http://www.studio-mercato.com/play/nika/ "web")
+---
 
 Nika is a digital board game written in html5 / javascript, released on 5 platforms at once, with one codebase.  It was designed to run on all touchscreen / mouse / pointer devices at any resolution: phones, tablets, PCs and consoles.
 
