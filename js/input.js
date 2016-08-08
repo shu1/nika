@@ -58,7 +58,7 @@ function mouseDown(event) {
 				var radius = 96;	// bigger radius for fat fingers
 				var musicX = 1210 * soundMan.music, soundX = 1210 * soundMan.sound;
 				if (x > musicX - radius && x < musicX + radius && y > 446 - radius && y < 446 + radius) {
-					inputMan.drag = "musicGame";	// only drag if touch started on button
+					inputMan.drag = "music";	// only drag if touch started on button
 					handled = true;
 				}
 				else if (x > soundX - radius && x < soundX + radius && y > 710 - radius && y < 710 + radius) {
@@ -294,7 +294,7 @@ function mouseMove(event) {
 				x -= (scene.width - drawMan.screenWidth)/2 + 156;	// offset to near x of volume line
 				y -= (scene.height - drawMan.screenHeight)/2;
 
-				if (inputMan.drag == "musicGame") {
+				if (inputMan.drag == "music") {
 					soundMan.music = Math.max(0, Math.min(1, Math.round(x / 12.1) / 100));
 					sounds["musicGame"].volume = Math.pow(soundMan.music, 2);
 					sounds["musicMenu"].volume = Math.pow(soundMan.music, 2);
