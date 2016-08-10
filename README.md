@@ -3,6 +3,6 @@ Available now, for free!  On [Android](https://play.google.com/store/apps/detail
 
 Nika is a digital board game written in html5 / javascript, released on 5 platforms at once, with one codebase.  It was designed to run on all touchscreen / mouse / pointer devices at any resolution: phones, tablets, PCs and consoles.
 
-The Android and Kindle Fire apps were compiled in [Cocoon.io](https://cocoon.io), using the Canvas+ graphics accelerator.  The Windows version is a single Universal Windows Platform app that can run on PC, mobile, Surface Hub, and potentially HoloLens.
+The Android and Kindle Fire apps were compiled in [Cocoon.io](https://cocoon.io), using the Canvas+ graphics accelerator.  The Windows version is a single Universal Windows Platform app that can run on PC, mobile, Surface Hub, and potentially HoloLens.  The Chrome app can be installed on any Chrome desktop browser as well as Chromebooks.
 
 In addition to the releases listed above, the game has run on other platforms like Firefox OS, Tizen, and Nintendo Wii U.  We have not released on the Apple App Store, but you can play on iOS by [going here in Safari](http://www.studio-mercato.com/play/nika/ios.html "iOS") and then Add to Home Screen.
