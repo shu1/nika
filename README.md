@@ -7,6 +7,6 @@ The Android and Kindle Fire apps were compiled in [Cocoon.io](https://cocoon.io)
 
 In addition to the releases listed above, the game has run on other platforms like Firefox OS, Tizen, and Nintendo Wii U.  We have not released on the Apple App Store, but you can play on iOS by [going here in Safari](http://www.studio-mercato.com/play/nika/ios.html "iOS") and then Add to Home Screen.
 
-Crystal Brawl is also out now for free on [Windows](https://www.microsoft.com/store/apps/9wzdncrdlkb3 "Windows Store"), [Kongregate](http://www.kongregate.com/games/StudioMercato/ "Kongregate"), and [web](http://www.studio-mercato.com/play/crystalbrawl/ "studio-mercato.com")!
+Crystal Brawl is also out now for free on [Windows](https://www.microsoft.com/store/apps/9wzdncrdlkb3 "Windows Store"), [Chrome](https://chrome.google.com/webstore/detail/crystal-brawl/gpojgnoanbbdkdblfmajhhnnflbgfbno "Chrome Web Store"), [Kongregate](http://www.kongregate.com/games/StudioMercato/ "Kongregate"), and [web](http://www.studio-mercato.com/play/crystalbrawl/ "studio-mercato.com")!
 ---
 Crystal Brawl is an html5 game for PC developed with [Construct 2](https://www.scirra.com).  It has also run on consoles such as Xbox One and Nintendo Wii U.  **4 controllers required.**
